@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Profiling;
+using static UnityEditor.Searcher.SearcherWindow.Alignment;
 
 [RequireComponent(typeof(MeshRenderer))]
 [RequireComponent(typeof(MeshFilter))]
@@ -137,17 +138,13 @@ public class TerrainGenerator : MonoBehaviour
         Profiler.EndSample();
         Profiler.BeginSample("CreatingMesh");
         _mesh.Clear();
-        _mesh.vertices = _vertices;
-        _mesh.triangles = _triangles;
+        _mesh.SetVertices(_vertices);
+        _mesh.SetTriangles(_triangles, 0);
         Profiler.EndSample();
         Profiler.BeginSample("Creating UV");
-        if (_mesh.uv.Length == 0)
-        {
-            List<Vector2> uvs = new();
-            foreach (var uv in GetUvs())
-                uvs.Add(uv);
-            _mesh.uv = uvs.ToArray();
-        }
+        _mesh.SetUVs(0, _vertices
+            .Select(x => new Vector2(x.x, x.z))
+            .ToArray());
         _mesh.RecalculateNormals();
         _mesh.RecalculateTangents();
         Profiler.EndSample();
