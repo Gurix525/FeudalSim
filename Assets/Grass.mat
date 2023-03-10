@@ -35,12 +35,17 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _Pixelation: 25
+    - _Pixelation: 15
     - _QueueControl: 0
     - _QueueOffset: 0
     m_Colors:
-    - _PrimaryColor: {r: 0, g: 1, b: 0.06467652, a: 0}
-    - _SecondaryColor: {r: 0.91665435, g: 1, b: 0, a: 0}
+    - _DryColor: {r: 1, g: 0.9001926, b: 0.2216981, a: 0}
+    - _PrimaryColor: {r: 0, g: 1, b: 0.062745094, a: 0}
+    - _SandColor1: {r: 1, g: 1, b: 1, a: 0}
+    - _SandColor2: {r: 1, g: 1, b: 1, a: 0}
+    - _SecondaryColor: {r: 0.65, g: 1, b: 0, a: 0}
+    - _StoneColor1: {r: 0.6886792, g: 0.5865091, b: 0.4775276, a: 0}
+    - _StoneColor2: {r: 0.4245283, g: 0.3468431, b: 0.28235137, a: 0}
   m_BuildTextureStacks: []
 --- !u!114 &6304450723835276025
 MonoBehaviour:

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.Profiling;
 using static UnityEditor.Searcher.SearcherWindow.Alignment;
 
@@ -13,6 +14,7 @@ using static UnityEditor.Searcher.SearcherWindow.Alignment;
 public class TerrainGenerator : MonoBehaviour
 {
     public static TerrainGenerator Instance { get; private set; }
+    public static UnityEvent<Vector2> TerrainUpdating { get; private set; } = new();
 
     private MeshFilter _meshFilter;
     private MeshCollider _meshCollider;
@@ -67,6 +69,7 @@ public class TerrainGenerator : MonoBehaviour
         Profiler.BeginSample("UpdateTerrain");
         GenerateChunks();
         GenerateMesh();
+        TerrainUpdating.Invoke(ActiveChunk.Position);
         Profiler.EndSample();
     }
 
@@ -154,17 +157,7 @@ public class TerrainGenerator : MonoBehaviour
 
     private Task BakePhysicsMesh()
     {
-        Debug.Log("Task started");
-        try
-        {
-            Physics.BakeMesh(_meshInstanceId, false);
-            Debug.Log("MeshBaked");
-        }
-        catch (Exception e)
-        {
-            Debug.LogException(e);
-        }
-        Debug.Log("Task finished");
+        Physics.BakeMesh(_meshInstanceId, false);
         return Task.CompletedTask;
     }
 
@@ -182,7 +175,6 @@ public class TerrainGenerator : MonoBehaviour
                 break;
             yield return null;
         }
-        Debug.Log("Finished coroutine");
         Profiler.BeginSample("Assigning mesh to collider");
         _meshCollider.sharedMesh = _mesh;
         _isBaking = false;
@@ -195,12 +187,6 @@ public class Chunk
     public Vector2Int Position { get; }
     public int X => Position.x;
     public int Z => Position.y;
-
-    private static readonly float _detailScale = 0.007F;
-    private static readonly float _frequencyFactor = 2F;
-    private static readonly float _amplitudeFactor = 2F;
-    private static readonly float _maxHeight = 10F;
-    private static readonly int _octaves = 3;
 
     private float[,] _heights { get; }
 
@@ -221,25 +207,56 @@ public class Chunk
         for (int z = 0; z < 100; z++)
             for (int x = 0; x < 100; x++)
             {
-                heights[x, z] = GetPerlinHeight(Position.x * 100 + x, Position.y * 100 + z, _octaves);
+                heights[x, z] = PerlinGenerator.GetHeight(Position.x * 100 + x, Position.y * 100 + z);
             }
         return heights;
     }
+}
 
-    private static float GetPerlinHeight(int x, int z, int octaves)
+public static class PerlinGenerator
+{
+    private static readonly float _detailScale = 0.007F;
+    private static readonly float _frequencyFactor = 2F;
+    private static readonly float _amplitudeFactor = 2F;
+    private static readonly int _octaves = 4;
+    private static readonly string _seed = "42";
+
+    private static int _seedHashCode = _seed.GetHashCode();
+
+    public static float GetHeight(int x, int z)
+    {
+        float mediumNoise = GetMediumNoise(x, z);
+        float largeNoise = GetLargeNoise(x, z);
+        return Mathf.Round(mediumNoise * largeNoise * 2F) / 4F + 6F;
+    }
+
+    private static float GetMediumNoise(int x, int z)
     {
         float result = 0F;
         float resultDivider = 0F;
-        for (int i = 0; i < octaves; i++)
+        for (int i = 0; i < _octaves; i++)
         {
-            result += Mathf.PerlinNoise(
-                x * _detailScale * Mathf.Pow(_frequencyFactor, i),
-                z * _detailScale * Mathf.Pow(_frequencyFactor, i))
+            result += OpenSimplex2S.Noise3_ImproveXZ(
+                _seedHashCode,
+                x * _detailScale * Mathf.Pow(_frequencyFactor, i) + ((i + 1) * 42),
+                _seedHashCode,
+                z * _detailScale * Mathf.Pow(_frequencyFactor, i) + ((i + 1) * 42))
                 / Mathf.Pow(_amplitudeFactor, i);
             resultDivider += 1F / Mathf.Pow(_amplitudeFactor, i);
         }
         result /= resultDivider;
-        float remapped = result.Remap(0.4F, 0.6F, 0F, _maxHeight);
+        float remapped = result.Remap(0F, 1F, 0F, 10F);
         return Mathf.Round(remapped * 2F) / 2F;
+    }
+
+    private static float GetLargeNoise(int x, int z)
+    {
+        float result = OpenSimplex2S.Noise3_ImproveXZ(
+            _seedHashCode,
+            x * _detailScale / _frequencyFactor * 2 + _seed.GetHashCode() * 100,
+            _seedHashCode,
+            z * _detailScale / _frequencyFactor * 2 + _seed.GetHashCode() * 100);
+        float remapped = result.Remap(0F, 1F, 0F, 10F);
+        return Mathf.Round(remapped);
     }
 }
