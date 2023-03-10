@@ -332,6 +332,20 @@
         {
             "m_OutputSlot": {
                 "m_Node": {
+                    "m_Id": "6efa73582e9440a39bdf81519eafb8f9"
+                },
+                "m_SlotId": 3
+            },
+            "m_InputSlot": {
+                "m_Node": {
+                    "m_Id": "67a5880297164874a0baed7156aae1eb"
+                },
+                "m_SlotId": 0
+            }
+        },
+        {
+            "m_OutputSlot": {
+                "m_Node": {
                     "m_Id": "83f5be50fad84a2f812387e6d5b8d229"
                 },
                 "m_SlotId": 1
@@ -2186,7 +2200,7 @@
     "m_ShaderOutputName": "Edge1",
     "m_StageCapability": 3,
     "m_Value": {
-        "x": -1.0,
+        "x": 0.5,
         "y": 0.0,
         "z": 0.0,
         "w": 0.0
