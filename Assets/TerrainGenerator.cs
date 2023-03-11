@@ -3,9 +3,11 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.Profiling;
+using UnityEngine.Rendering;
 using static UnityEditor.Searcher.SearcherWindow.Alignment;
 
 [RequireComponent(typeof(MeshRenderer))]
@@ -47,9 +49,16 @@ public class TerrainGenerator : MonoBehaviour
         Instance = this;
         _meshFilter = GetComponent<MeshFilter>();
         _meshCollider = GetComponent<MeshCollider>();
-        _heightmap = new(300, 300);
+        InitializeHeightmap();
         InitializeMesh();
         UpdateTerrain();
+    }
+
+    private void InitializeHeightmap()
+    {
+        _heightmap = new(300, 300, TextureFormat.RGBA32, false);
+        _heightmap.wrapMode = TextureWrapMode.Clamp;
+        _heightmap.filterMode = FilterMode.Point;
     }
 
     private void InitializeMesh()
@@ -81,13 +90,24 @@ public class TerrainGenerator : MonoBehaviour
     private void GenerateHeightmap()
     {
         Profiler.BeginSample("GenerateHeightmap");
-        for (int z = 0; z < 300; z++)
-            for (int x = 0; x < 300; x++)
+        //for (int z = 0; z < 300; z++)
+        //    for (int x = 0; x < 300; x++)
+        //    {
+        //        float y = _vertices[z * 100 + x].y;
+        //        float greyValue = y.Remap(-20F, 20F, 0F, 1F);
+        //        _heightmap.SetPixel(x, z, new(greyValue, greyValue, greyValue));
+        //    }
+        //_heightmap.SetPixel(0, 0, new Color(1.0f, 1.0f, 1.0f));
+        //_heightmap.SetPixel(1, 0, new Color(0.75f, 0.75f, 0.75f));
+        //_heightmap.SetPixel(1, 1, new Color(0.5f, 0.5f, 0.5f));
+        //_heightmap.SetPixel(0, 1, new Color(0f, 0f, 0f));
+        _heightmap.SetPixels(
+            _vertices.Select(x =>
             {
-                float y = _vertices[z * 100 + x].y;
-                y += 50F;
-                _heightmap.SetPixel(x, z, new(y / 100F, y / 100F, y / 100F));
-            }
+                float remapped = x.y.Remap(-20F, 20F, 0F, 1F);
+                return new Color(remapped, remapped, remapped);
+            })
+            .ToArray());
         _heightmap.Apply();
         _grassMaterial.SetTexture("_Heightmap", _heightmap);
         Profiler.EndSample();
