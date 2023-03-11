@@ -16,6 +16,8 @@ public class TerrainGenerator : MonoBehaviour
     public static TerrainGenerator Instance { get; private set; }
     public static UnityEvent<Vector2> TerrainUpdating { get; private set; } = new();
 
+    [SerializeField] private Material _grassMaterial;
+
     private MeshFilter _meshFilter;
     private MeshCollider _meshCollider;
     private Dictionary<Vector2Int, Chunk> _chunks = new();
@@ -25,6 +27,7 @@ public class TerrainGenerator : MonoBehaviour
     private Vector3[] _vertices = new Vector3[90000];
     private int _meshInstanceId;
     private bool _isBaking = false;
+    private Texture2D _heightmap;
 
     public Chunk ActiveChunk
     {
@@ -44,6 +47,7 @@ public class TerrainGenerator : MonoBehaviour
         Instance = this;
         _meshFilter = GetComponent<MeshFilter>();
         _meshCollider = GetComponent<MeshCollider>();
+        _heightmap = new(300, 300);
         InitializeMesh();
         UpdateTerrain();
     }
@@ -69,7 +73,23 @@ public class TerrainGenerator : MonoBehaviour
         Profiler.BeginSample("UpdateTerrain");
         GenerateChunks();
         GenerateMesh();
+        GenerateHeightmap();
         TerrainUpdating.Invoke(ActiveChunk.Position);
+        Profiler.EndSample();
+    }
+
+    private void GenerateHeightmap()
+    {
+        Profiler.BeginSample("GenerateHeightmap");
+        for (int z = 0; z < 300; z++)
+            for (int x = 0; x < 300; x++)
+            {
+                float y = _vertices[z * 100 + x].y;
+                y += 50F;
+                _heightmap.SetPixel(x, z, new(y / 100F, y / 100F, y / 100F));
+            }
+        _heightmap.Apply();
+        _grassMaterial.SetTexture("_Heightmap", _heightmap);
         Profiler.EndSample();
     }
 

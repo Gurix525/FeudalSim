@@ -1,0 +1,69 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Terrain
+  m_Shader: {fileID: -6465566751694194690, guid: d7c56d1b30f659442a32f05768a2f453,
+    type: 3}
+  m_ValidKeywords: []
+  m_InvalidKeywords: []
+  m_LightmapFlags: 2
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - unity_Lightmaps:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_LightmapsInd:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_ShadowMasks:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats:
+    - _Displacement: 0
+    - _DisplacementNoiseScale: 0
+    - _Pixelation: 15
+    - _QueueControl: 0
+    - _QueueOffset: 0
+    - _StoneLerpValue: 1
+    - _StoneMinimumHeight: 9.5
+    - _StoneNoiseScale: 0.5
+    m_Colors:
+    - _DirtColor1: {r: 0.3773585, g: 0.35513264, b: 0.33997864, a: 0}
+    - _DirtColor2: {r: 0.3018868, g: 0.23215424, b: 0.15806337, a: 0}
+    - _DryColor: {r: 1, g: 0.9001926, b: 0.2216981, a: 0}
+    - _PrimaryColor: {r: 0, g: 1, b: 0.062745094, a: 0}
+    - _SandColor1: {r: 1, g: 1, b: 1, a: 0}
+    - _SandColor2: {r: 1, g: 0.932783, b: 0.7311321, a: 0}
+    - _SecondaryColor: {r: 0.65, g: 1, b: 0, a: 0}
+    - _StoneColor1: {r: 1, g: 1, b: 1, a: 0}
+    - _StoneColor2: {r: 0.8962264, g: 0.8962264, b: 0.8962264, a: 0}
+  m_BuildTextureStacks: []
+--- !u!114 &6304450723835276025
+MonoBehaviour:
+  m_ObjectHideFlags: 11
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0353a89b1f911e48b9e16bdc9f2e058, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  version: 5
