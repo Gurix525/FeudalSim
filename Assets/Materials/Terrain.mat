@@ -51,8 +51,8 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _DirtNormalStrength: 0.43
-    - _DirtNormalTiling: 0.01
+    - _DirtNormalStrength: 0.61
+    - _DirtNormalTiling: 0.02
     - _Displacement: 0
     - _DisplacementNoiseScale: 0
     - _GrassNormalStrength: 0.4
