@@ -27,12 +27,10 @@ public class TerrainGenerator : MonoBehaviour
 
     public Chunk ActiveChunk { get; private set; }
 
-    public Dictionary<Vector2Int, Chunk> Chunks { get; private set; } = new();
-
     public static void SetActiveChunk(Vector2Int position)
     {
         GenerateChunks(position);
-        Instance.ActiveChunk = Instance.Chunks[position];
+        Instance.ActiveChunk = Terrain.Chunks[position];
         UpdateTerrain();
     }
 
@@ -66,7 +64,7 @@ public class TerrainGenerator : MonoBehaviour
 
     private static void RecalculateActiveChunkBorderSteepness()
     {
-        throw new NotImplementedException();
+        Terrain.Chunks[Instance.ActiveChunk.Position].RecalculateBorderSteepness();
     }
 
     private static void GenerateChunks(Vector2Int activePosition)
@@ -75,10 +73,10 @@ public class TerrainGenerator : MonoBehaviour
         for (int x = activePosition.x - 1; x <= activePosition.x + 1; x++)
             for (int z = activePosition.y - 1; z <= activePosition.y + 1; z++)
             {
-                if (!Instance.Chunks.ContainsKey(new(x, z)))
-                    Instance.Chunks.Add(new(x, z), new(new(x, z)));
+                if (!Terrain.Chunks.ContainsKey(new(x, z)))
+                    Terrain.Chunks.Add(new(x, z), new(new(x, z)));
             }
-        Instance.ActiveChunk ??= Instance.Chunks[activePosition];
+        Instance.ActiveChunk ??= Terrain.Chunks[activePosition];
         Profiler.EndSample();
     }
 
@@ -109,7 +107,7 @@ public class TerrainGenerator : MonoBehaviour
                 else
                     chunkX = ActiveChunk.X + 1;
 
-                _vertices[index] = new(chunkX * 100 + x % 100, Chunks[new(chunkX, chunkZ)][x % 100, z % 100], chunkZ * 100 + z % 100);
+                _vertices[index] = new(chunkX * 100 + x % 100, Terrain.Chunks[new(chunkX, chunkZ)][x % 100, z % 100], chunkZ * 100 + z % 100);
                 index++;
             }
         Profiler.EndSample();

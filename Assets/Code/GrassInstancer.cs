@@ -56,7 +56,7 @@ public class GrassInstancer : MonoBehaviour
             {
                 Vector3 position = new(
                     x,
-                    TerrainGenerator.Instance.Chunks[new((int)MathF.Floor(x / 100F), (int)Mathf.Floor(z / 100F))][x % 100 < 0 ? 100 - Mathf.Abs(x % 100) : x % 100, z % 100 < 0 ? 100 - Mathf.Abs(z % 100) : z % 100],
+                    Terrain.Chunks[new((int)MathF.Floor(x / 100F), (int)Mathf.Floor(z / 100F))][x % 100 < 0 ? 100 - Mathf.Abs(x % 100) : x % 100, z % 100 < 0 ? 100 - Mathf.Abs(z % 100) : z % 100],
                     z);
                 float noise = NoiseSampler.GetNoise(position, -1F, 1F, 1000F);
                 float noise2 = Mathf.Abs((noise * 2) % 1F);
