@@ -54,9 +54,14 @@ public class GrassInstancer : MonoBehaviour
         for (int z = _currentPlayerPosition.y - 49; z < _currentPlayerPosition.y + 50; z++)
             for (int x = _currentPlayerPosition.x - 49; x < _currentPlayerPosition.x + 50; x++)
             {
+                if (Terrain.GetSteepness(new(x, z)) > 0.4F)
+                {
+                    index += 2;
+                    continue;
+                }
                 Vector3 position = new(
                     x,
-                    Terrain.Chunks[new((int)MathF.Floor(x / 100F), (int)Mathf.Floor(z / 100F))][x % 100 < 0 ? 100 - Mathf.Abs(x % 100) : x % 100, z % 100 < 0 ? 100 - Mathf.Abs(z % 100) : z % 100],
+                    Terrain.GetHeight(new(x, z)),
                     z);
                 float noise = NoiseSampler.GetNoise(position, -1F, 1F, 1000F);
                 float noise2 = Mathf.Abs((noise * 2) % 1F);

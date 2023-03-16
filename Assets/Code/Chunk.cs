@@ -21,6 +21,11 @@ public class Chunk
         _steepnesses = CalculateSteepness();
     }
 
+    public float GetSteepness(Vector2Int position)
+    {
+        return _steepnesses[position.x, position.y];
+    }
+
     public void RecalculateBorderSteepness()
     {
         float[] nextXses = new float[100];

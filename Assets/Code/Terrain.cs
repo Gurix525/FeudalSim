@@ -7,7 +7,7 @@ public static class Terrain
 {
     public static Dictionary<Vector2Int, Chunk> Chunks { get; } = new();
 
-    public static float GetVerticeHeight(Vector2 inputPosition)
+    public static float GetHeight(Vector2 inputPosition)
     {
         Vector2Int chunkPosition = Vector2Int.zero;
         Vector2Int verticePosition = GetVerticeCoordinates(inputPosition);
@@ -21,6 +21,22 @@ public static class Terrain
             return 0F;
         }
         return Chunks[chunkPosition][verticePosition.x, verticePosition.y];
+    }
+
+    public static float GetSteepness(Vector2 inputPosition)
+    {
+        Vector2Int chunkPosition = Vector2Int.zero;
+        Vector2Int verticePosition = GetVerticeCoordinates(inputPosition);
+        try
+        {
+            chunkPosition = GetChunkCoordinates(inputPosition);
+        }
+        catch (ArgumentOutOfRangeException e)
+        {
+            Debug.LogError(e.Message);
+            return 0F;
+        }
+        return Chunks[chunkPosition].GetSteepness(verticePosition);
     }
 
     private static Vector2Int GetChunkCoordinates(Vector2 inputPosition)
