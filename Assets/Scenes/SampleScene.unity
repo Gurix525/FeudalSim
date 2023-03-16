@@ -271,7 +271,7 @@ Light:
   m_Type: 1
   m_Shape: 0
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Intensity: 2
+  m_Intensity: 1.2
   m_Range: 10
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
@@ -369,6 +369,7 @@ GameObject:
   - component: {fileID: 770188196}
   - component: {fileID: 770188194}
   - component: {fileID: 770188199}
+  - component: {fileID: 770188200}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -468,6 +469,20 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &770188200
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 770188193}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a752788e98cfe345965c08b2143051b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _mesh: {fileID: -462981019419857548, guid: 1770e0013bc8b3e42865011f293e8f83, type: 3}
+  _material: {fileID: 2100000, guid: 4289f23a7996c6d44be6cffcecc0d35a, type: 2}
 --- !u!1 &832575517
 GameObject:
   m_ObjectHideFlags: 0
@@ -530,7 +545,6 @@ GameObject:
   - component: {fileID: 1207663839}
   - component: {fileID: 1207663838}
   - component: {fileID: 1207663842}
-  - component: {fileID: 1207663843}
   - component: {fileID: 1207663844}
   m_Layer: 0
   m_Name: Terrain
@@ -630,20 +644,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 95e767be0f542c44599606be5bab9759, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &1207663843
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1207663837}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9a752788e98cfe345965c08b2143051b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _mesh: {fileID: -462981019419857548, guid: 1770e0013bc8b3e42865011f293e8f83, type: 3}
-  _material: {fileID: 2100000, guid: 4289f23a7996c6d44be6cffcecc0d35a, type: 2}
 --- !u!114 &1207663844
 MonoBehaviour:
   m_ObjectHideFlags: 0

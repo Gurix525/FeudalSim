@@ -120,7 +120,7 @@ Material:
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1
-    - _StoneLerpValue: 1
+    - _StoneLerpValue: 0
     - _StoneMinimumHeight: 9.5
     - _StoneNoiseScale: 0.5
     - _Surface: 0
