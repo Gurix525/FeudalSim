@@ -159,7 +159,7 @@ public class TerrainGenerator : MonoBehaviour
         {
             if (task.IsCompleted)
                 break;
-            if (Input.GetKeyDown(KeyCode.U))
+            if (UnityEngine.Input.GetKeyDown(KeyCode.U))
                 break;
             yield return null;
         }

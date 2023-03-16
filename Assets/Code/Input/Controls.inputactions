@@ -1,0 +1,22 @@
+{
+    "name": "Controls",
+    "maps": [
+        {
+            "name": "Main",
+            "id": "db3c3319-ce52-4ffd-a79a-a90aef1c2f1b",
+            "actions": [
+                {
+                    "name": "Move",
+                    "type": "Button",
+                    "id": "132a81bb-cb12-44bb-bfec-3ae30aaeee46",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": []
+        }
+    ],
+    "controlSchemes": []
+}
