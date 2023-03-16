@@ -19,26 +19,22 @@ public class TerrainGenerator : MonoBehaviour
 
     private MeshFilter _meshFilter;
     private MeshCollider _meshCollider;
-    private Dictionary<Vector2Int, Chunk> _chunks = new();
-    private Chunk _activeChunk;
     private Mesh _mesh;
     private int[] _triangles = new int[532824];
     private Vector3[] _vertices = new Vector3[90000];
     private int _meshInstanceId;
     private bool _isBaking = false;
 
-    public Chunk ActiveChunk
-    {
-        get => _activeChunk;
-        set
-        {
-            _activeChunk = value;
-            UpdateTerrain();
-        }
-    }
+    public Chunk ActiveChunk { get; private set; }
 
-    public Dictionary<Vector2Int, Chunk> Chunks
-        => _chunks;
+    public Dictionary<Vector2Int, Chunk> Chunks { get; private set; } = new();
+
+    public static void SetActiveChunk(Vector2Int position)
+    {
+        GenerateChunks(position);
+        Instance.ActiveChunk = Instance.Chunks[position];
+        UpdateTerrain();
+    }
 
     private void Awake()
     {
@@ -46,6 +42,7 @@ public class TerrainGenerator : MonoBehaviour
         _meshFilter = GetComponent<MeshFilter>();
         _meshCollider = GetComponent<MeshCollider>();
         InitializeMesh();
+        GenerateChunks(Vector2Int.zero);
         UpdateTerrain();
     }
 
@@ -58,38 +55,24 @@ public class TerrainGenerator : MonoBehaviour
         _meshInstanceId = _mesh.GetInstanceID();
     }
 
-    private IEnumerable<Vector2> GetUvs()
-    {
-        for (int z = -100; z < 200; z++)
-            for (int x = -100; x < 200; x++)
-                yield return new Vector2(x, z);
-    }
-
-    private void UpdateTerrain()
+    private static void UpdateTerrain()
     {
         Profiler.BeginSample("UpdateTerrain");
-        GenerateChunks();
-        GenerateMesh();
-        TerrainUpdating.Invoke(ActiveChunk.Position);
+        Instance.GenerateMesh();
+        TerrainUpdating.Invoke(Instance.ActiveChunk.Position);
         Profiler.EndSample();
     }
 
-    private void GenerateChunks()
+    private static void GenerateChunks(Vector2Int activePosition)
     {
         Profiler.BeginSample("GenerateChunks");
-        if (ActiveChunk == null)
-        {
-            _chunks.Add(new(0, 0), new(new(0, 0)));
-            ActiveChunk = _chunks.First().Value;
-        }
-        for (int x = ActiveChunk.X - 1; x <= ActiveChunk.X + 1; x++)
-            for (int z = ActiveChunk.Z - 1; z <= ActiveChunk.Z + 1; z++)
+        for (int x = activePosition.x - 1; x <= activePosition.x + 1; x++)
+            for (int z = activePosition.y - 1; z <= activePosition.y + 1; z++)
             {
-                if (x == ActiveChunk.X && z == ActiveChunk.Z)
-                    continue;
-                if (!_chunks.ContainsKey(new(x, z)))
-                    _chunks.Add(new(x, z), new(new(x, z)));
+                if (!Instance.Chunks.ContainsKey(new(x, z)))
+                    Instance.Chunks.Add(new(x, z), new(new(x, z)));
             }
+        Instance.ActiveChunk ??= Instance.Chunks[activePosition];
         Profiler.EndSample();
     }
 
@@ -107,20 +90,20 @@ public class TerrainGenerator : MonoBehaviour
                 int chunkX = 0;
 
                 if (z < 100)
-                    chunkZ = _activeChunk.Z - 1;
+                    chunkZ = ActiveChunk.Z - 1;
                 else if (z < 200)
-                    chunkZ = _activeChunk.Z;
+                    chunkZ = ActiveChunk.Z;
                 else
-                    chunkZ = _activeChunk.Z + 1;
+                    chunkZ = ActiveChunk.Z + 1;
 
                 if (x < 100)
-                    chunkX = _activeChunk.X - 1;
+                    chunkX = ActiveChunk.X - 1;
                 else if (x < 200)
-                    chunkX = _activeChunk.X;
+                    chunkX = ActiveChunk.X;
                 else
-                    chunkX = _activeChunk.X + 1;
+                    chunkX = ActiveChunk.X + 1;
 
-                _vertices[index] = new(chunkX * 100 + x % 100, _chunks[new(chunkX, chunkZ)][x % 100, z % 100], chunkZ * 100 + z % 100);
+                _vertices[index] = new(chunkX * 100 + x % 100, Chunks[new(chunkX, chunkZ)][x % 100, z % 100], chunkZ * 100 + z % 100);
                 index++;
             }
         Profiler.EndSample();
