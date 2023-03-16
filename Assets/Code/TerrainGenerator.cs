@@ -60,7 +60,13 @@ public class TerrainGenerator : MonoBehaviour
         Profiler.BeginSample("UpdateTerrain");
         Instance.GenerateMesh();
         TerrainUpdating.Invoke(Instance.ActiveChunk.Position);
+        RecalculateActiveChunkBorderSteepness();
         Profiler.EndSample();
+    }
+
+    private static void RecalculateActiveChunkBorderSteepness()
+    {
+        throw new NotImplementedException();
     }
 
     private static void GenerateChunks(Vector2Int activePosition)
