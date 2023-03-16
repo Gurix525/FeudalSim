@@ -1,6 +1,5 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
+using System.Threading.Tasks;
 using UnityEngine;
 
 public class GrassInstancer : MonoBehaviour
@@ -12,6 +11,8 @@ public class GrassInstancer : MonoBehaviour
 
     private float _timeSinceLastActivation = 0F;
     private Vector3 _lastPosition = Vector3.zero;
+    private bool _isInitialized = false;
+    private Vector2Int _currentPlayerPosition;
 
     private void Awake()
     {
@@ -22,8 +23,22 @@ public class GrassInstancer : MonoBehaviour
     private void FixedUpdate()
     {
         _timeSinceLastActivation += Time.fixedDeltaTime;
-        if (_timeSinceLastActivation > 0.5F && Vector3.Distance(transform.position, _lastPosition) > 10F)
-            InstantiateGrass();
+        if ((_timeSinceLastActivation > 0.5F && Vector3.Distance(transform.position, _lastPosition) > 10F)
+            || _isInitialized == false)
+        {
+            _isInitialized = true;
+            _timeSinceLastActivation = 0F;
+            _lastPosition = transform.position;
+            _currentPlayerPosition = new((int)Mathf.Floor(transform.position.x), (int)Mathf.Floor(transform.position.z));
+            try
+            {
+                Task.Run(InstantiateGrass);
+            }
+            catch (Exception e)
+            {
+                Debug.LogError(e);
+            }
+        }
     }
 
     private void Update()
@@ -31,16 +46,13 @@ public class GrassInstancer : MonoBehaviour
         RenderBatches();
     }
 
-    private void InstantiateGrass()
+    private Task InstantiateGrass()
     {
-        _timeSinceLastActivation = 0F;
-        _lastPosition = transform.position;
-        Vector2Int playerPosition = new((int)Mathf.Floor(transform.position.x), (int)Mathf.Floor(transform.position.z));
         Matrix4x4[] positions = new Matrix4x4[20000];
 
         int index = 0;
-        for (int z = playerPosition.y - 49; z < playerPosition.y + 50; z++)
-            for (int x = playerPosition.x - 49; x < playerPosition.x + 50; x++)
+        for (int z = _currentPlayerPosition.y - 49; z < _currentPlayerPosition.y + 50; z++)
+            for (int x = _currentPlayerPosition.x - 49; x < _currentPlayerPosition.x + 50; x++)
             {
                 Vector3 position = new(
                     x,
@@ -78,6 +90,7 @@ public class GrassInstancer : MonoBehaviour
         {
             _batches[i / 1000][i % 1000] = positions[i];
         }
+        return Task.CompletedTask;
     }
 
     private void RenderBatches()
