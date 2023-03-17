@@ -8,35 +8,43 @@ public class PlayerController : MonoBehaviour
     [SerializeField]
     private PlayerInput _playerInput;
 
+    private static bool _isInitialized = false;
+
     #endregion Fields
 
     #region Properties
 
-    public static PlayerController Instance { get; private set; }
     public static PlayerInput PlayerInput { get; private set; }
 
-    public static InputActionMap ActionMapMain { get; private set; }
+    public static InputActionMap Main { get; private set; }
 
     public static ModifiableInputAction MainMove { get; set; } = new();
+    public static ModifiableInputAction MainRun { get; set; } = new();
+    public static ModifiableInputAction MainJump { get; set; } = new();
 
     #endregion Properties
 
-    #region Unity
+    #region Public
 
-    private void Awake()
+    public static void Initialize()
     {
-        Instance = this;
-        PlayerInput = _playerInput;
+        if (_isInitialized)
+            return;
+        _isInitialized = true;
+
+        PlayerInput = FindObjectOfType<PlayerController>()._playerInput;
 
         //PlayerInput.SwitchCurrentActionMap("Steering");
         //ActionMapSteering = PlayerInput.currentActionMap;
         //PlayerInput.SwitchCurrentActionMap("Building");
         //ActionMapBuilding = PlayerInput.currentActionMap;
-        PlayerInput.SwitchCurrentActionMap("Default");
-        ActionMapMain = PlayerInput.currentActionMap;
+        PlayerInput.SwitchCurrentActionMap("Main");
+        Main = PlayerInput.currentActionMap;
 
-        MainMove.Action = ActionMapMain.FindAction("Move");
+        MainMove.Action = Main.FindAction("Move");
+        MainRun.Action = Main.FindAction("Run");
+        MainJump.Action = Main.FindAction("Jump");
     }
 
-    #endregion Unity
+    #endregion Public
 }

@@ -23,6 +23,7 @@ public class ModifiableInputAction
 
     public void ClearAllEvents()
     {
+        PlayerController.Initialize();
         ClearCanceledEvent();
         ClearPerformedEvent();
         ClearCanceledEvent();
@@ -30,24 +31,28 @@ public class ModifiableInputAction
 
     public void ClearStartedEvent()
     {
+        PlayerController.Initialize();
         _startedCallbacks.ForEach(callback => Action.started -= callback);
         _startedCallbacks.Clear();
     }
 
     public void ClearPerformedEvent()
     {
+        PlayerController.Initialize();
         _performedCallbacks.ForEach(callback => Action.performed -= callback);
         _performedCallbacks.Clear();
     }
 
     public void ClearCanceledEvent()
     {
+        PlayerController.Initialize();
         _canceledCallbacks.ForEach(callback => Action.canceled -= callback);
         _canceledCallbacks.Clear();
     }
 
     public void AddListener(ActionType actionType, Action<CallbackContext> callback)
     {
+        PlayerController.Initialize();
         switch (actionType)
         {
             case ActionType.Started:
@@ -70,11 +75,13 @@ public class ModifiableInputAction
     public TValue ReadValue<TValue>()
         where TValue : struct
     {
+        PlayerController.Initialize();
         return Action.ReadValue<TValue>();
     }
 
     public bool IsPressed()
     {
+        PlayerController.Initialize();
         return Action.IsPressed();
     }
 
