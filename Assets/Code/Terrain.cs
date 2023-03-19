@@ -23,6 +23,32 @@ public static class Terrain
         return Chunks[chunkPosition][verticePosition.x, verticePosition.y];
     }
 
+    internal static void LowerTerrain(Vector2? terrainCell)
+    {
+        Vector2Int chunkPosition = Vector2Int.zero;
+        Vector2Int verticePosition = GetVerticeCoordinates((Vector2)terrainCell);
+        try
+        {
+            chunkPosition = GetChunkCoordinates((Vector2)terrainCell);
+        }
+        catch (ArgumentOutOfRangeException e)
+        {
+            Debug.LogError(e.Message);
+            return;
+        }
+    }
+
+    public static Vector2Int GetCell(Vector2 position)
+    {
+        Vector2 floored = position.Floor();
+        return new((int)floored.x, (int)floored.y);
+    }
+
+    public static Vector2Int GetCell(Vector3 position)
+    {
+        return GetCell(new Vector2(position.x, position.z));
+    }
+
     public static float GetSteepness(Vector2 inputPosition)
     {
         Vector2Int chunkPosition = Vector2Int.zero;
