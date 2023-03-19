@@ -7,10 +7,15 @@ public static class Terrain
 {
     public static Dictionary<Vector2Int, Chunk> Chunks { get; } = new();
 
-    public static float GetHeight(Vector2 inputPosition)
+    public static Cell GetCell(Vector3 inputPosition)
+    {
+        return GetCell(new Vector2(inputPosition.x, inputPosition.z));
+    }
+
+    public static Cell GetCell(Vector2 inputPosition)
     {
         Vector2Int chunkPosition = Vector2Int.zero;
-        Vector2Int verticePosition = GetVerticeCoordinates(inputPosition);
+        Vector2Int cellPosition = GetVerticeCoordinates(inputPosition);
         try
         {
             chunkPosition = GetChunkCoordinates(inputPosition);
@@ -18,51 +23,19 @@ public static class Terrain
         catch (ArgumentOutOfRangeException e)
         {
             Debug.LogError(e.Message);
-            return 0F;
+            return null;
         }
-        return Chunks[chunkPosition][verticePosition.x, verticePosition.y];
+        return Chunks[chunkPosition][cellPosition];
     }
 
-    internal static void LowerTerrain(Vector2? terrainCell)
+    public static float GetHeight(Vector2 inputPosition)
     {
-        Vector2Int chunkPosition = Vector2Int.zero;
-        Vector2Int verticePosition = GetVerticeCoordinates((Vector2)terrainCell);
-        try
-        {
-            chunkPosition = GetChunkCoordinates((Vector2)terrainCell);
-        }
-        catch (ArgumentOutOfRangeException e)
-        {
-            Debug.LogError(e.Message);
-            return;
-        }
-    }
-
-    public static Vector2Int GetCell(Vector2 position)
-    {
-        Vector2 floored = position.Floor();
-        return new((int)floored.x, (int)floored.y);
-    }
-
-    public static Vector2Int GetCell(Vector3 position)
-    {
-        return GetCell(new Vector2(position.x, position.z));
+        return GetCell(inputPosition).Height;
     }
 
     public static float GetSteepness(Vector2 inputPosition)
     {
-        Vector2Int chunkPosition = Vector2Int.zero;
-        Vector2Int verticePosition = GetVerticeCoordinates(inputPosition);
-        try
-        {
-            chunkPosition = GetChunkCoordinates(inputPosition);
-        }
-        catch (ArgumentOutOfRangeException e)
-        {
-            Debug.LogError(e.Message);
-            return 0F;
-        }
-        return Chunks[chunkPosition].GetSteepness(verticePosition);
+        return GetCell(inputPosition).Steepness;
     }
 
     private static Vector2Int GetChunkCoordinates(Vector2 inputPosition)
@@ -82,13 +55,12 @@ public static class Terrain
 
     private static Vector2Int GetVerticeCoordinates(Vector2 inputPosition)
     {
-        Vector2Int verticePosition = new(
+        return new(
             (int)(inputPosition.x % 100 < 0
                 ? 100 - Mathf.Abs(inputPosition.x % 100)
                 : inputPosition.x % 100),
             (int)(inputPosition.y % 100 < 0
                 ? 100 - Mathf.Abs(inputPosition.y % 100)
                 : inputPosition.y % 100));
-        return verticePosition;
     }
 }

@@ -7,12 +7,12 @@ public class CursorPositionFinder : MonoBehaviour
         Ray ray = Camera.main
             .ScreenPointToRay(PlayerController.MainPoint.ReadValue<Vector2>());
         Physics.Raycast(ray, out RaycastHit hit);
-        Cursor.TerrainCell = Terrain.GetCell(hit.point);
-        //Debug.Log(Cursor.TerrainCell);
+        Cursor.Cell = Terrain.GetCell(hit.point);
+        Debug.Log($"{hit.point}, {Cursor.Cell}");
     }
 
     private void OnMouseExit()
     {
-        Cursor.TerrainCell = null;
+        Cursor.Cell = null;
     }
 }

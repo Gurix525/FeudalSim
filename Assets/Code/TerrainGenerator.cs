@@ -107,7 +107,7 @@ public class TerrainGenerator : MonoBehaviour
                 else
                     chunkX = ActiveChunk.X + 1;
 
-                _vertices[index] = new(chunkX * 100 + x % 100, Terrain.Chunks[new(chunkX, chunkZ)][x % 100, z % 100], chunkZ * 100 + z % 100);
+                _vertices[index] = new(chunkX * 100 + x % 100, Terrain.Chunks[new(chunkX, chunkZ)][new(x % 100, z % 100)].Height, chunkZ * 100 + z % 100);
                 index++;
             }
         Profiler.EndSample();
