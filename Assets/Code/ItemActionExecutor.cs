@@ -23,6 +23,6 @@ public class ItemActionExecutor : MonoBehaviour
     private void LowerTerrain()
     {
         if (Cursor.IsAboveTerrain)
-            Terrain.LowerTerrain
+            Terrain.LowerTerrain(Cursor.TerrainCell);
     }
 }
