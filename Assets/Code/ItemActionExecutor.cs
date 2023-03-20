@@ -22,8 +22,10 @@ public class ItemActionExecutor : MonoBehaviour
 
     private void LowerTerrain()
     {
-        //Debug.Log(Cursor.Cell);
-        //if (Cursor.IsAboveTerrain)
-        //    Terrain.LowerTerrain(Cursor.Cell);
+        if (Cursor.CellPosition != null)
+        {
+            Terrain.ModifyHeight((Vector2Int)Cursor.CellPosition, -1F);
+            Debug.Log(Cursor.CellPosition);
+        }
     }
 }

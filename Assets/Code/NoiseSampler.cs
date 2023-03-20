@@ -29,7 +29,7 @@ public static class NoiseSampler
     {
         float mediumNoise = GetMediumNoise(x, z);
         float largeNoise = GetLargeNoise(x, z);
-        return Mathf.Round(Mathf.Round(mediumNoise * largeNoise * 2F) / 2F) / 2F + 6F;
+        return Mathf.Round(Mathf.Round(Mathf.Round(mediumNoise * largeNoise * 2F) / 2F) / 4F) + 6F;
     }
 
     private static float GetMediumNoise(int x, int z)

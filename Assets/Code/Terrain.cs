@@ -1,11 +1,63 @@
 ﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UIElements;
+using System.Linq;
 
 public static class Terrain
 {
     public static Dictionary<Vector2Int, Chunk> Chunks { get; } = new();
+
+    public static void ModifyHeight(
+        Vector2Int cellPosition,
+        float deltaHeight,
+        bool hasToSetNeighbours = true,
+        bool hasToReload = true)
+    {
+        Cell[] neighbours = GetNeighbours(cellPosition);
+        if (hasToSetNeighbours)
+        {
+            float min = neighbours.Select(x => x.Height).Min();
+            if (neighbours[0].Steepness > 0F)
+                foreach (var neighbour in neighbours)
+                {
+                    if (neighbour.Height > min)
+                        neighbour.ModifyHeight(deltaHeight);
+                }
+            else
+                foreach (var neighbour in neighbours)
+                    neighbour.ModifyHeight(deltaHeight);
+            foreach (var neighbour in neighbours)
+                neighbour.RecalculateSteepness();
+        }
+        else
+        {
+            neighbours[0].ModifyHeight(deltaHeight);
+            neighbours[0].RecalculateSteepness();
+        }
+        if (hasToReload)
+        {
+            TerrainGenerator.Reload();
+            GrassInstancer.MarkToReload();
+        }
+    }
+
+    private static Cell[] GetNeighbours(Vector2Int cellPosition)
+    {
+        int x = cellPosition.x;
+        int z = cellPosition.y;
+        return new Cell[4]
+        {
+            GetCell(cellPosition),
+            GetCell(new Vector2Int(x + 1, z)),
+            GetCell(new Vector2Int(x, z + 1)),
+            GetCell(new Vector2Int(x + 1, z + 1))
+        };
+    }
+
+    public static Cell GetCell(Vector2Int cellPosition)
+    {
+        return GetCell(new Vector2(cellPosition.x, cellPosition.y));
+    }
 
     public static Cell GetCell(Vector3 inputPosition)
     {
@@ -15,7 +67,7 @@ public static class Terrain
     public static Cell GetCell(Vector2 inputPosition)
     {
         Vector2Int chunkPosition = Vector2Int.zero;
-        Vector2Int cellPosition = GetVerticeCoordinates(inputPosition);
+        Vector2Int verticePosition = GetVerticeCoordinates(inputPosition);
         try
         {
             chunkPosition = GetChunkCoordinates(inputPosition);
@@ -25,7 +77,7 @@ public static class Terrain
             Debug.LogError(e.Message);
             return null;
         }
-        return Chunks[chunkPosition][cellPosition];
+        return Chunks[chunkPosition][verticePosition];
     }
 
     public static float GetHeight(Vector2 inputPosition)

@@ -14,6 +14,13 @@ public class GrassInstancer : MonoBehaviour
     private bool _isInitialized = false;
     private Vector2Int _currentPlayerPosition;
 
+    public static bool HasToReload = false;
+
+    public static void MarkToReload()
+    {
+        HasToReload = true;
+    }
+
     private void Awake()
     {
         for (int i = 0; i < _batches.Length; i++)
@@ -24,20 +31,16 @@ public class GrassInstancer : MonoBehaviour
     {
         _timeSinceLastActivation += Time.fixedDeltaTime;
         if ((_timeSinceLastActivation > 0.5F && Vector3.Distance(transform.position, _lastPosition) > 10F)
-            || _isInitialized == false)
+            || !_isInitialized
+            || HasToReload)
         {
             _isInitialized = true;
+            HasToReload = false;
             _timeSinceLastActivation = 0F;
             _lastPosition = transform.position;
             _currentPlayerPosition = new((int)Mathf.Floor(transform.position.x), (int)Mathf.Floor(transform.position.z));
-            try
-            {
-                Task.Run(InstantiateGrass);
-            }
-            catch (Exception e)
-            {
-                Debug.LogError(e);
-            }
+
+            Task.Run(InstantiateGrass);
         }
     }
 

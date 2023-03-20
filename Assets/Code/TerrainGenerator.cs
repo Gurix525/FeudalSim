@@ -1,6 +1,4 @@
-using System;
 using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using UnityEditor;
@@ -31,7 +29,16 @@ public class TerrainGenerator : MonoBehaviour
     {
         GenerateChunks(position);
         Instance.ActiveChunk = Terrain.Chunks[position];
-        UpdateTerrain();
+        Reload();
+    }
+
+    public static void Reload()
+    {
+        Profiler.BeginSample("Reload");
+        Instance.GenerateMesh();
+        TerrainUpdating.Invoke(Instance.ActiveChunk.Position);
+        RecalculateActiveChunkBorderSteepness();
+        Profiler.EndSample();
     }
 
     private void Awake()
@@ -41,7 +48,7 @@ public class TerrainGenerator : MonoBehaviour
         _meshCollider = GetComponent<MeshCollider>();
         InitializeMesh();
         GenerateChunks(Vector2Int.zero);
-        UpdateTerrain();
+        Reload();
     }
 
     private void InitializeMesh()
@@ -51,15 +58,6 @@ public class TerrainGenerator : MonoBehaviour
         _meshFilter.mesh = _mesh;
         _mesh.indexFormat = UnityEngine.Rendering.IndexFormat.UInt32;
         _meshInstanceId = _mesh.GetInstanceID();
-    }
-
-    private static void UpdateTerrain()
-    {
-        Profiler.BeginSample("UpdateTerrain");
-        Instance.GenerateMesh();
-        TerrainUpdating.Invoke(Instance.ActiveChunk.Position);
-        RecalculateActiveChunkBorderSteepness();
-        Profiler.EndSample();
     }
 
     private static void RecalculateActiveChunkBorderSteepness()

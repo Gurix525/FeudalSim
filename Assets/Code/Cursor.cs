@@ -2,15 +2,15 @@
 
 public static class Cursor
 {
-    private static Cell _cell;
+    private static Vector2Int? _cellPosition;
 
-    public static Cell Cell
+    public static Vector2Int? CellPosition
     {
-        get => _cell ?? null;
+        get => _cellPosition ?? null;
         set
         {
-            _cell = value;
-            IsAboveTerrain = _cell != null ? true : false;
+            _cellPosition = value;
+            IsAboveTerrain = _cellPosition != null ? true : false;
         }
     }
 

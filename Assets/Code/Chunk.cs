@@ -29,7 +29,7 @@ public class Chunk
     public Chunk(Vector2Int position)
     {
         Position = position;
-        GenerateHeights();
+        GenerateCells();
         CalculateSteepness();
     }
 
@@ -37,16 +37,20 @@ public class Chunk
 
     #region Private
 
-    private void GenerateHeights()
+    private void GenerateCells()
     {
         for (int z = 0; z < 100; z++)
             for (int x = 0; x < 100; x++)
                 _cells.Add(
                     new(x, z),
                     new Cell(
+                        new Vector2Int(
+                            Position.x * 100 + x,
+                            Position.y * 100 + z),
                         NoiseSampler.GetHeight(
                             Position.x * 100 + x,
-                            Position.y * 100 + z)));
+                            Position.y * 100 + z)
+                        ));
     }
 
     public void RecalculateBorderSteepness()
