@@ -1,10 +1,13 @@
 using System;
+using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using static UnityEngine.InputSystem.InputAction;
 
 public class ItemActionExecutor : MonoBehaviour
 {
+    [SerializeField] private TextMeshProUGUI _modeText;
+
     private float _delta = -1F;
     private int _mode = 0;
 
@@ -44,7 +47,14 @@ public class ItemActionExecutor : MonoBehaviour
         _delta *= -1F;
         _mode++;
         if (_mode == 4)
-            _mode = 1;
+            _mode = 0;
+        _modeText.text = _mode switch
+        {
+            0 => $"Tryb: kopanie",
+            1 => $"Tryb: wznoszenie",
+            2 => $"Tryb: ścieżkowanie",
+            _ => $"Tryb: oranie"
+        };
     }
 
     private void Plow()
