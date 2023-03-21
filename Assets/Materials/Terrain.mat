@@ -55,8 +55,12 @@ Material:
     - _DirtNormalTiling: 0.02
     - _Displacement: 0
     - _DisplacementNoiseScale: 0
+    - _FarmNormalStrength: 2.5
+    - _FarmNormalTiling: 0.05
     - _GrassNormalStrength: 0.4
     - _GrassNormalTiling: 0.025
+    - _PathNormalStrength: 0.4
+    - _PathNormalTiling: 0.05
     - _Pixelation: 15
     - _QueueControl: 0
     - _QueueOffset: 0
@@ -71,6 +75,10 @@ Material:
     - _DirtColor1: {r: 0.3773585, g: 0.35513264, b: 0.33997864, a: 0}
     - _DirtColor2: {r: 0.3018868, g: 0.23215424, b: 0.15806337, a: 0}
     - _DryColor: {r: 1, g: 0.9001926, b: 0.2216981, a: 0}
+    - _FarmColor1: {r: 0.3584906, g: 0.19084616, b: 0.021982923, a: 0}
+    - _FarmColor2: {r: 0.2924528, g: 0.1296236, b: 0.0013794977, a: 0}
+    - _PathColor1: {r: 0.41509432, g: 0.29852107, b: 0.22908507, a: 0}
+    - _PathColor2: {r: 0.3490566, g: 0.30029508, b: 0.25849947, a: 0}
     - _PrimaryColor: {r: 0, g: 1, b: 0.062745094, a: 0}
     - _SandColor1: {r: 1, g: 1, b: 1, a: 0}
     - _SandColor2: {r: 1, g: 0.932783, b: 0.7311321, a: 0}

@@ -57,7 +57,9 @@ public class GrassInstancer : MonoBehaviour
         for (int z = _currentPlayerPosition.y - 49; z < _currentPlayerPosition.y + 50; z++)
             for (int x = _currentPlayerPosition.x - 49; x < _currentPlayerPosition.x + 50; x++)
             {
-                if (Terrain.GetSteepness(new(x, z)) > 0.4F)
+                Cell cell = Terrain.GetCell(new Vector2Int(x, z));
+                if (cell.Steepness > 0.4F
+                    || cell.Color != new Color(0F, 0F, 0F, 0F))
                 {
                     index += 2;
                     continue;

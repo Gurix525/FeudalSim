@@ -23,6 +23,7 @@ public class PlayerController : MonoBehaviour
     public static ModifiableInputAction MainJump { get; set; } = new();
     public static ModifiableInputAction MainUse { get; set; } = new();
     public static ModifiableInputAction MainPoint { get; set; } = new();
+    public static ModifiableInputAction MainChange { get; set; } = new();
 
     #endregion Properties
 
@@ -48,6 +49,7 @@ public class PlayerController : MonoBehaviour
         MainJump.Action = Main.FindAction("Jump");
         MainUse.Action = Main.FindAction("Use");
         MainPoint.Action = Main.FindAction("Point");
+        MainChange.Action = Main.FindAction("Change");
     }
 
     #endregion Public

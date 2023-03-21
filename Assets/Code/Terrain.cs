@@ -11,16 +11,20 @@ public static class Terrain
         Vector2Int cellPosition,
         float deltaHeight,
         bool hasToSetNeighbours = true,
-        bool hasToReload = true)
+        bool hasToReload = true,
+        bool hasToChangeColor = true)
     {
         Cell[] neighbours = Get4Neighbours(cellPosition);
         if (hasToSetNeighbours)
         {
-            float min = neighbours.Select(x => x.Height).Min();
+            float limit = deltaHeight < 0
+                ? neighbours.Select(x => x.Height).Min()
+                : neighbours.Select(x => x.Height).Max();
             if (neighbours[0].Steepness > 0F)
                 foreach (var neighbour in neighbours)
                 {
-                    if (neighbour.Height > min)
+                    if ((deltaHeight < 0 && neighbour.Height > limit)
+                        || (deltaHeight > 0 && neighbour.Height < limit))
                         neighbour.ModifyHeight(deltaHeight);
                 }
             else
@@ -35,6 +39,32 @@ public static class Terrain
             foreach (var neighbour in Get9Neighbours(cellPosition))
                 neighbour.RecalculateSteepness();
         }
+        if (hasToChangeColor)
+        {
+            foreach (var neighbour in neighbours)
+                neighbour.SetColor(Color.red);
+        }
+        if (hasToReload)
+        {
+            TerrainGenerator.Reload();
+            GrassInstancer.MarkToReload();
+        }
+    }
+
+    internal static void ChangeColor(
+        Vector2Int cellPosition,
+        Color color,
+        bool hasToSetNeighbours = true,
+        bool hasToReload = true)
+    {
+        if (hasToSetNeighbours)
+        {
+            Cell[] neighbours = Get4Neighbours(cellPosition);
+            foreach (var neighbour in neighbours)
+                neighbour.SetColor(color);
+        }
+        else
+            GetCell(cellPosition).SetColor(color);
         if (hasToReload)
         {
             TerrainGenerator.Reload();
@@ -103,6 +133,11 @@ public static class Terrain
     public static float GetSteepness(Vector2 inputPosition)
     {
         return GetCell(inputPosition).Steepness;
+    }
+
+    public static Color GetColor(Vector2 inputPosition)
+    {
+        return GetCell(inputPosition).Color;
     }
 
     private static Vector2Int GetChunkCoordinates(Vector2 inputPosition)

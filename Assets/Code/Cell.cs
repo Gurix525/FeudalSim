@@ -3,19 +3,21 @@ using UnityEngine;
 
 public class Cell
 {
-    private Vector2Int _position;
-    private float _height;
-    private float _steepness;
+    public Vector2Int Position { get; private set; }
+    public float Height { get; private set; }
+    public float Steepness { get; private set; }
+    public Color Color { get; private set; }
 
-    public Vector2Int Position => _position;
-    public float Height => _height;
-    public float Steepness => _steepness;
-
-    public Cell(Vector2Int position, float height, float steepness = 0F)
+    public Cell(
+        Vector2Int position,
+        float height,
+        float steepness = 0F,
+        Color color = new())
     {
-        _position = position;
-        _height = height;
-        _steepness = steepness;
+        Position = position;
+        Height = height;
+        Steepness = steepness;
+        Color = color;
     }
 
     public void RecalculateSteepness()
@@ -30,26 +32,31 @@ public class Cell
             Terrain.GetHeight(new Vector2Int(Position.x + 1, Position.y)),
             Terrain.GetHeight(new Vector2Int(Position.x, Position.y + 1)),
             Terrain.GetHeight(new Vector2Int(Position.x + 1, Position.y + 1)));
-        _steepness = max - min;
+        Steepness = max - min;
     }
 
     public void ModifyHeight(float deltaHeight)
     {
-        _height += deltaHeight;
+        Height += deltaHeight;
     }
 
     public void SetHeight(float height)
     {
-        _height = height;
+        Height = height;
     }
 
     public void SetSteepness(float steepness)
     {
-        _steepness = steepness;
+        Steepness = steepness;
+    }
+
+    public void SetColor(Color red)
+    {
+        Color = red;
     }
 
     public override string ToString()
     {
-        return $"{Height}";
+        return $"{Position}";
     }
 }

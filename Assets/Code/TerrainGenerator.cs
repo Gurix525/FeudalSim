@@ -13,13 +13,13 @@ public class TerrainGenerator : MonoBehaviour
 {
     public static TerrainGenerator Instance { get; private set; }
     public static UnityEvent<Vector2> TerrainUpdating { get; private set; } = new();
-    public Vector3[] Vertices => _vertices;
 
     private MeshFilter _meshFilter;
     private MeshCollider _meshCollider;
     private Mesh _mesh;
     private int[] _triangles = new int[532824];
     private Vector3[] _vertices = new Vector3[90000];
+    private Color[] _colors = new Color[90000];
     private int _meshInstanceId;
     private bool _isBaking = false;
 
@@ -105,7 +105,9 @@ public class TerrainGenerator : MonoBehaviour
                 else
                     chunkX = ActiveChunk.X + 1;
 
-                _vertices[index] = new(chunkX * 100 + x % 100, Terrain.Chunks[new(chunkX, chunkZ)][new(x % 100, z % 100)].Height, chunkZ * 100 + z % 100);
+                Cell cell = Terrain.Chunks[new(chunkX, chunkZ)][new(x % 100, z % 100)];
+                _vertices[index] = new(chunkX * 100 + x % 100, cell.Height, chunkZ * 100 + z % 100);
+                _colors[index] = cell.Color;
                 index++;
             }
         Profiler.EndSample();
@@ -128,6 +130,7 @@ public class TerrainGenerator : MonoBehaviour
         Profiler.BeginSample("CreatingMesh");
         _mesh.Clear();
         _mesh.SetVertices(_vertices);
+        _mesh.SetColors(_colors);
         _mesh.SetTriangles(_triangles, 0);
         Profiler.EndSample();
         Profiler.BeginSample("Creating UV");

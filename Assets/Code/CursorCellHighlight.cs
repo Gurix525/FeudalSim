@@ -16,7 +16,6 @@ public class CursorCellHighlight : MonoBehaviour
         _highlight = new GameObject();
         _meshFilter = _highlight.AddComponent<MeshFilter>();
         _renderer = _highlight.AddComponent<MeshRenderer>();
-        _material.renderQueue = 4000;
         _renderer.material = _material;
         InitializeMesh();
     }
@@ -49,9 +48,11 @@ public class CursorCellHighlight : MonoBehaviour
 
     private void UpdateHighlight()
     {
+        _material.renderQueue = 3001;
         Vector2 cursorPosition = (Vector2)Cursor.CellPosition;
         if (cursorPosition == _lastPosition)
             return;
+        _lastPosition = cursorPosition;
         float x = cursorPosition.x;
         float z = cursorPosition.y;
         Vector3[] vertices = new Vector3[4]
