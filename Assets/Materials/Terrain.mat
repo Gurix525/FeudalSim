@@ -63,7 +63,7 @@ Material:
     - _SandNormalStrength: 0.8
     - _SandNormalTiling: 0.035
     - _StoneLerpValue: 1
-    - _StoneMinimumHeight: 9.5
+    - _StoneMinimumHeight: 6
     - _StoneNoiseScale: 0.5
     - _StoneNormalStrength: 0.7
     - _StoneNormalTiling: 0.05

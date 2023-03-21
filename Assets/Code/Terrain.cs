@@ -13,7 +13,7 @@ public static class Terrain
         bool hasToSetNeighbours = true,
         bool hasToReload = true)
     {
-        Cell[] neighbours = GetNeighbours(cellPosition);
+        Cell[] neighbours = Get4Neighbours(cellPosition);
         if (hasToSetNeighbours)
         {
             float min = neighbours.Select(x => x.Height).Min();
@@ -26,13 +26,14 @@ public static class Terrain
             else
                 foreach (var neighbour in neighbours)
                     neighbour.ModifyHeight(deltaHeight);
-            foreach (var neighbour in neighbours)
+            foreach (var neighbour in Get9Neighbours(cellPosition))
                 neighbour.RecalculateSteepness();
         }
         else
         {
             neighbours[0].ModifyHeight(deltaHeight);
-            neighbours[0].RecalculateSteepness();
+            foreach (var neighbour in Get9Neighbours(cellPosition))
+                neighbour.RecalculateSteepness();
         }
         if (hasToReload)
         {
@@ -41,7 +42,7 @@ public static class Terrain
         }
     }
 
-    private static Cell[] GetNeighbours(Vector2Int cellPosition)
+    private static Cell[] Get4Neighbours(Vector2Int cellPosition)
     {
         int x = cellPosition.x;
         int z = cellPosition.y;
@@ -52,6 +53,20 @@ public static class Terrain
             GetCell(new Vector2Int(x, z + 1)),
             GetCell(new Vector2Int(x + 1, z + 1))
         };
+    }
+
+    private static Cell[] Get9Neighbours(Vector2Int cellPosition)
+    {
+        int originalX = cellPosition.x;
+        int originalZ = cellPosition.y;
+        Cell[] cells = new Cell[9];
+        int index = 0;
+        for (int z = originalZ - 1; z < originalZ + 2; z++)
+            for (int x = originalX - 1; x < originalX + 2; x++)
+            {
+                cells[index++] = GetCell(new Vector2Int(x, z));
+            }
+        return cells;
     }
 
     public static Cell GetCell(Vector2Int cellPosition)
