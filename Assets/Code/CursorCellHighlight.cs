@@ -14,6 +14,7 @@ public class CursorCellHighlight : MonoBehaviour
     private void Awake()
     {
         _highlight = new GameObject();
+        _highlight.name = $"TerrainHighlight";
         _meshFilter = _highlight.AddComponent<MeshFilter>();
         _renderer = _highlight.AddComponent<MeshRenderer>();
         _renderer.material = _material;

@@ -13,9 +13,7 @@ public class ChunkRenderer : MonoBehaviour
     private MeshFilter _meshFilter;
     private MeshCollider _meshCollider;
     private Mesh _mesh;
-    private int[] _triangles = new int[58806];
-    private Vector3[] _vertices = new Vector3[10000];
-    private Color[] _colors = new Color[10000];
+    private Color[] _colors = new Color[10201];
     private int _meshInstanceId;
     private bool _isBaking = false;
     private bool _isInitialized = false;
@@ -46,29 +44,51 @@ public class ChunkRenderer : MonoBehaviour
     {
         if (!_isInitialized)
             Initialize();
-        int size = 99;
 
-        _vertices = Terrain.Chunks[Position].Vertices;
+        //int size = 101;
 
+        Vector3[] vertices = new Vector3[10201];
         int index = 0;
-        for (int z = 0; z < size - 1; z++)
-            for (int x = 0; x < size - 1; x++)
+        var thisChunk = Terrain.Chunks[Position].Vertices;
+        var rightChunk = Terrain.Chunks[new(Position.x + 1, Position.y)].Vertices;
+        var upChunk = Terrain.Chunks[new(Position.x, Position.y + 1)].Vertices;
+        var diagonalChunk = Terrain.Chunks[new(Position.x + 1, Position.y + 1)].Vertices;
+        for (int z = 0; z < 101; z++)
+        {
+            for (int x = 0; x < 101; x++)
             {
-                int i = (z * size) + z + x;
+                if (z < 100 && x < 100)
+                    vertices[z * 101 + x] = thisChunk[z * 100 + x];
+                else if (x == 100 && z < 100)
+                    vertices[z * 101 + x] = rightChunk[z * 100];
+                else if (z == 100 && x < 100)
+                    vertices[z * 101 + x] = upChunk[x];
+                else
+                    vertices[10200] = diagonalChunk[0];
+            }
+        }
+        int[] triangles = new int[60000];
 
-                _triangles[index] = i;
-                _triangles[index + 1] = i + size + 1;
-                _triangles[index + 2] = i + size + 2;
-                _triangles[index + 3] = i;
-                _triangles[index + 4] = i + size + 2;
-                _triangles[index + 5] = i + 1;
+        index = 0;
+        for (int z = 0; z < 100; z++)
+            for (int x = 0; x < 100; x++)
+            {
+                int i = (z * 101) + x;
+
+                triangles[index] = i;
+                triangles[index + 1] = i + 101;
+                triangles[index + 2] = i + 102;
+                triangles[index + 3] = i;
+                triangles[index + 4] = i + 102;
+                triangles[index + 5] = i + 1;
                 index += 6;
             }
+        Debug.Log(triangles.Where(indice => indice == 0).Count());
         _mesh.Clear();
-        _mesh.SetVertices(_vertices);
+        _mesh.SetVertices(vertices);
         _mesh.SetColors(_colors);
-        _mesh.SetTriangles(_triangles, 0);
-        _mesh.SetUVs(0, _vertices
+        _mesh.SetTriangles(triangles, 0);
+        _mesh.SetUVs(0, vertices
             .Select(x => new Vector2(x.x, x.z))
             .ToArray());
         _mesh.RecalculateNormals();
