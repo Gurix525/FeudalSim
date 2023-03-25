@@ -17,10 +17,10 @@ public class TerrainChunkActivator : MonoBehaviour
     private void ActivateChunk()
     {
         Vector2Int currentChunkPos = new((int)Mathf.Floor(transform.position.x / 100F), (int)Mathf.Floor(transform.position.z / 100F));
-        if (TerrainGenerator.Instance.ActiveChunk.Position != currentChunkPos)
+        if (TerrainRenderer.Instance.ActiveChunk.Position != currentChunkPos)
         {
             _timeSinceLastActivation = 0F;
-            TerrainGenerator.SetActiveChunk(currentChunkPos);
+            TerrainRenderer.SetActiveChunk(currentChunkPos);
         }
     }
 }

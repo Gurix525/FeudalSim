@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class Chunk
@@ -9,6 +10,12 @@ public class Chunk
     public Vector2Int Position { get; }
     public int X => Position.x;
     public int Z => Position.y;
+
+    public Vector3[] Vertices => _cells.Values
+        .Select(cell => new Vector3(
+            cell.Position.x,
+            cell.Height,
+            cell.Position.y)).ToArray();
 
     private Dictionary<Vector2Int, Cell> _cells = new();
 

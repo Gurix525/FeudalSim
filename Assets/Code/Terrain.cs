@@ -46,7 +46,7 @@ public static class Terrain
         }
         if (hasToReload)
         {
-            TerrainGenerator.Reload();
+            TerrainRenderer.Reload();
             GrassInstancer.MarkToReload();
         }
     }
@@ -67,7 +67,7 @@ public static class Terrain
             GetCell(cellPosition).SetColor(color);
         if (hasToReload)
         {
-            TerrainGenerator.Reload();
+            TerrainRenderer.Reload();
             GrassInstancer.MarkToReload();
         }
     }

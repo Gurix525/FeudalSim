@@ -6,7 +6,7 @@ public class TerrainWaterMover : MonoBehaviour
 {
     private void Awake()
     {
-        TerrainGenerator.TerrainUpdating.AddListener(OnTerrainUpdating);
+        TerrainRenderer.TerrainUpdating.AddListener(OnTerrainUpdating);
     }
 
     private void OnTerrainUpdating(Vector2 activeChunkPosition)
