@@ -1,11 +1,6 @@
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.Events;
-using UnityEngine.Profiling;
 
 public class TerrainRenderer : MonoBehaviour
 {
@@ -27,7 +22,6 @@ public class TerrainRenderer : MonoBehaviour
 
     public static void Reload()
     {
-        Profiler.BeginSample("Reload");
         foreach (var chunk in Instance._chunks)
         {
             if (Vector2Int.Distance(chunk.Value.Position, Instance.ActiveChunk.Position) < 2F)
@@ -37,13 +31,8 @@ public class TerrainRenderer : MonoBehaviour
             else
                 chunk.Value.gameObject.SetActive(false);
         }
-        //foreach (var chunk in Instance._chunks.Values)
-        //{
-        //    chunk.GenerateMesh();
-        //}
         TerrainUpdating.Invoke(Instance.ActiveChunk.Position);
         RecalculateActiveChunkBorderSteepness();
-        Profiler.EndSample();
     }
 
     private void Awake()
@@ -60,25 +49,29 @@ public class TerrainRenderer : MonoBehaviour
 
     private static void GenerateChunks(Vector2Int activePosition)
     {
-        Profiler.BeginSample("GenerateChunks");
-        for (int x = activePosition.x - 1; x <= activePosition.x + 1; x++)
-            for (int z = activePosition.y - 1; z <= activePosition.y + 1; z++)
-            {
+        for (int z = activePosition.y - 1; z <= activePosition.y + 2; z++)
+            for (int x = activePosition.x - 1; x <= activePosition.x + 2; x++)
                 if (!Terrain.Chunks.ContainsKey(new(x, z)))
-                {
                     Terrain.Chunks.Add(new(x, z), new(new(x, z)));
-                    GameObject chunk = new GameObject();
-                    chunk.transform.parent = Instance.transform;
-                    chunk.gameObject.name = new Vector2Int(x, z).ToString();
-                    chunk.AddComponent<ChunkRenderer>();
-                    chunk.GetComponent<MeshRenderer>().material = Instance._material;
-                    var chunkRenderer = chunk.GetComponent<ChunkRenderer>();
-                    chunkRenderer.SetPosition(new(x, z));
-                    Instance._chunks.Add(new(x, z), chunkRenderer);
-                    chunkRenderer.GenerateMesh();
-                }
-            }
+
+        for (int z = activePosition.y - 1; z <= activePosition.y + 1; z++)
+            for (int x = activePosition.x - 1; x <= activePosition.x + 1; x++)
+                if (!Instance._chunks.ContainsKey(new(x, z)))
+                    GenerateChunk(x, z);
+
         Instance.ActiveChunk ??= Terrain.Chunks[activePosition];
-        Profiler.EndSample();
+    }
+
+    private static void GenerateChunk(int x, int z)
+    {
+        GameObject chunk = new GameObject();
+        chunk.transform.parent = Instance.transform;
+        chunk.gameObject.name = new Vector2Int(x, z).ToString();
+        chunk.AddComponent<ChunkRenderer>();
+        chunk.GetComponent<MeshRenderer>().material = Instance._material;
+        var chunkRenderer = chunk.GetComponent<ChunkRenderer>();
+        chunkRenderer.SetPosition(new(x, z));
+        Instance._chunks.Add(new(x, z), chunkRenderer);
+        chunkRenderer.GenerateMesh();
     }
 }

@@ -1,9 +1,7 @@
 using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using UnityEngine;
-using UnityEngine.Profiling;
 
 [RequireComponent(typeof(MeshRenderer))]
 [RequireComponent(typeof(MeshFilter))]
@@ -48,14 +46,10 @@ public class ChunkRenderer : MonoBehaviour
     {
         if (!_isInitialized)
             Initialize();
-        Profiler.BeginSample("GenerateMesh");
         int size = 99;
 
-        Profiler.BeginSample("VertexAssigning");
         _vertices = Terrain.Chunks[Position].Vertices;
-        Profiler.EndSample();
 
-        Profiler.BeginSample("CreatingTriangles");
         int index = 0;
         for (int z = 0; z < size - 1; z++)
             for (int x = 0; x < size - 1; x++)
@@ -70,22 +64,16 @@ public class ChunkRenderer : MonoBehaviour
                 _triangles[index + 5] = i + 1;
                 index += 6;
             }
-        Profiler.EndSample();
-        Profiler.BeginSample("CreatingMesh");
         _mesh.Clear();
         _mesh.SetVertices(_vertices);
         _mesh.SetColors(_colors);
         _mesh.SetTriangles(_triangles, 0);
-        Profiler.EndSample();
-        Profiler.BeginSample("Creating UV");
         _mesh.SetUVs(0, _vertices
             .Select(x => new Vector2(x.x, x.z))
             .ToArray());
         _mesh.RecalculateNormals();
         _mesh.RecalculateTangents();
-        Profiler.EndSample();
         StartCoroutine(AssignMeshToColliderCoroutine());
-        Profiler.EndSample();
     }
 
     private IEnumerator AssignMeshToColliderCoroutine()
@@ -102,10 +90,8 @@ public class ChunkRenderer : MonoBehaviour
                 break;
             yield return null;
         }
-        Profiler.BeginSample("Assigning mesh to collider");
         _meshCollider.sharedMesh = _mesh;
         _isBaking = false;
-        Profiler.EndSample();
     }
 
     private Task BakePhysicsMesh()
