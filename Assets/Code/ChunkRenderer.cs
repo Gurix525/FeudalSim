@@ -6,6 +6,7 @@ using UnityEngine;
 [RequireComponent(typeof(MeshRenderer))]
 [RequireComponent(typeof(MeshFilter))]
 [RequireComponent(typeof(MeshCollider))]
+[RequireComponent(typeof(CursorPositionFinder))]
 public class ChunkRenderer : MonoBehaviour
 {
     public Vector2Int Position { get; private set; }
@@ -13,7 +14,6 @@ public class ChunkRenderer : MonoBehaviour
     private MeshFilter _meshFilter;
     private MeshCollider _meshCollider;
     private Mesh _mesh;
-    private Color[] _colors = new Color[10201];
     private int _meshInstanceId;
     private bool _isBaking = false;
     private bool _isInitialized = false;
@@ -48,7 +48,6 @@ public class ChunkRenderer : MonoBehaviour
         //int size = 101;
 
         Vector3[] vertices = new Vector3[10201];
-        int index = 0;
         var thisChunk = Terrain.Chunks[Position].Vertices;
         var rightChunk = Terrain.Chunks[new(Position.x + 1, Position.y)].Vertices;
         var upChunk = Terrain.Chunks[new(Position.x, Position.y + 1)].Vertices;
@@ -69,7 +68,7 @@ public class ChunkRenderer : MonoBehaviour
         }
         int[] triangles = new int[60000];
 
-        index = 0;
+        int index = 0;
         for (int z = 0; z < 100; z++)
             for (int x = 0; x < 100; x++)
             {
@@ -83,10 +82,9 @@ public class ChunkRenderer : MonoBehaviour
                 triangles[index + 5] = i + 1;
                 index += 6;
             }
-        Debug.Log(triangles.Where(indice => indice == 0).Count());
         _mesh.Clear();
         _mesh.SetVertices(vertices);
-        _mesh.SetColors(_colors);
+        SetColors();
         _mesh.SetTriangles(triangles, 0);
         _mesh.SetUVs(0, vertices
             .Select(x => new Vector2(x.x, x.z))
@@ -94,6 +92,30 @@ public class ChunkRenderer : MonoBehaviour
         _mesh.RecalculateNormals();
         _mesh.RecalculateTangents();
         StartCoroutine(AssignMeshToColliderCoroutine());
+    }
+
+    public void SetColors()
+    {
+        Color[] colors = new Color[10201];
+        var thisChunk = Terrain.Chunks[Position].Colors;
+        var rightChunk = Terrain.Chunks[new(Position.x + 1, Position.y)].Colors;
+        var upChunk = Terrain.Chunks[new(Position.x, Position.y + 1)].Colors;
+        var diagonalChunk = Terrain.Chunks[new(Position.x + 1, Position.y + 1)].Colors;
+        for (int z = 0; z < 101; z++)
+        {
+            for (int x = 0; x < 101; x++)
+            {
+                if (z < 100 && x < 100)
+                    colors[z * 101 + x] = thisChunk[z * 100 + x];
+                else if (x == 100 && z < 100)
+                    colors[z * 101 + x] = rightChunk[z * 100];
+                else if (z == 100 && x < 100)
+                    colors[z * 101 + x] = upChunk[x];
+                else
+                    colors[10200] = diagonalChunk[0];
+            }
+        }
+        _mesh.SetColors(colors);
     }
 
     private IEnumerator AssignMeshToColliderCoroutine()

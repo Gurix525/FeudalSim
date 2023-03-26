@@ -46,7 +46,8 @@ public static class Terrain
         }
         if (hasToReload)
         {
-            TerrainRenderer.Reload();
+            foreach (var chunk in GetChunksToReload(cellPosition))
+                TerrainRenderer.ReloadChunk(chunk);
             GrassInstancer.MarkToReload();
         }
     }
@@ -67,9 +68,27 @@ public static class Terrain
             GetCell(cellPosition).SetColor(color);
         if (hasToReload)
         {
-            TerrainRenderer.Reload();
+            foreach (var chunk in GetChunksToReload(cellPosition))
+                TerrainRenderer.ReloadChunk(chunk);
             GrassInstancer.MarkToReload();
         }
+    }
+
+    private static Vector2Int[] GetChunksToReload(Vector2Int cellPosition)
+    {
+        List<Vector2Int> chunks = new();
+        Vector2Int centralChunk = GetChunkCoordinates(cellPosition);
+        chunks.Add(centralChunk);
+        Vector2Int vertice = GetVerticeCoordinates(cellPosition);
+        if (vertice.x <= 1)
+            chunks.Add(new(centralChunk.x - 1, centralChunk.y));
+        else if (vertice.x >= 98)
+            chunks.Add(new(centralChunk.x + 1, centralChunk.y));
+        if (vertice.y <= 1)
+            chunks.Add(new(centralChunk.x, centralChunk.y - 1));
+        else if (vertice.y >= 98)
+            chunks.Add(new(centralChunk.x, centralChunk.y + 1));
+        return chunks.ToArray();
     }
 
     private static Cell[] Get4Neighbours(Vector2Int cellPosition)

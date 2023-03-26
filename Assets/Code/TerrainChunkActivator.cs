@@ -20,7 +20,7 @@ public class TerrainChunkActivator : MonoBehaviour
         if (TerrainRenderer.Instance.ActiveChunk.Position != currentChunkPos)
         {
             _timeSinceLastActivation = 0F;
-            TerrainRenderer.SetActiveChunk(currentChunkPos);
+            StartCoroutine(TerrainRenderer.SetActiveChunk(currentChunkPos));
         }
     }
 }

@@ -15,7 +15,12 @@ public class Chunk
         .Select(cell => new Vector3(
             cell.Position.x,
             cell.Height,
-            cell.Position.y)).ToArray();
+            cell.Position.y))
+        .ToArray();
+
+    public Color[] Colors => _cells.Values
+        .Select(cell => cell.Color)
+        .ToArray();
 
     private Dictionary<Vector2Int, Cell> _cells = new();
 

@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
@@ -13,11 +14,20 @@ public class TerrainRenderer : MonoBehaviour
 
     private Dictionary<Vector2Int, ChunkRenderer> _chunks = new();
 
-    public static void SetActiveChunk(Vector2Int position)
+    public static IEnumerator SetActiveChunk(Vector2Int position)
     {
+        LoadingImage.Enable();
+        yield return null;
         GenerateChunks(position);
         Instance.ActiveChunk = Terrain.Chunks[position];
         Reload();
+        LoadingImage.Disable();
+    }
+
+    public static void ReloadChunk(Vector2Int position)
+    {
+        Instance._chunks[position].GenerateMesh();
+        TerrainUpdating.Invoke(Instance.ActiveChunk.Position);
     }
 
     public static void Reload()
@@ -49,8 +59,9 @@ public class TerrainRenderer : MonoBehaviour
 
     private static void GenerateChunks(Vector2Int activePosition)
     {
-        for (int z = activePosition.y - 1; z <= activePosition.y + 2; z++)
-            for (int x = activePosition.x - 1; x <= activePosition.x + 2; x++)
+        int mod = activePosition == Vector2Int.zero ? 3 : 0;
+        for (int z = activePosition.y - 1 - mod; z <= activePosition.y + 2 + mod; z++)
+            for (int x = activePosition.x - 1 - mod; x <= activePosition.x + 2 + mod; x++)
                 if (!Terrain.Chunks.ContainsKey(new(x, z)))
                     Terrain.Chunks.Add(new(x, z), new(new(x, z)));
 

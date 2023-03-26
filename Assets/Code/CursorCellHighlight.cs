@@ -21,15 +21,30 @@ public class CursorCellHighlight : MonoBehaviour
         InitializeMesh();
     }
 
-    private void OnMouseOver()
+    private void OnEnable()
     {
-        _highlight.SetActive(true);
-        UpdateHighlight();
+        TerrainRenderer.TerrainUpdating.AddListener(OnTerrainUpdating);
     }
 
-    private void OnMouseExit()
+    private void Update()
     {
-        _highlight.SetActive(false);
+        if (Cursor.IsAboveTerrain)
+        {
+            _highlight.SetActive(true);
+            UpdateHighlight();
+        }
+        else
+            _highlight.SetActive(false);
+    }
+
+    private void OnDisable()
+    {
+        TerrainRenderer.TerrainUpdating.RemoveListener(OnTerrainUpdating);
+    }
+
+    private void OnTerrainUpdating(Vector2 activeChunkPosition)
+    {
+        _lastPosition = Vector2.zero;
     }
 
     private void InitializeMesh()
@@ -69,6 +84,7 @@ public class CursorCellHighlight : MonoBehaviour
         _mesh.SetUVs(0, vertices
             .Select(x => new Vector2(x.x, x.z))
             .ToArray());
+        _mesh.RecalculateBounds();
         _mesh.RecalculateNormals();
         _mesh.RecalculateTangents();
     }
