@@ -88,6 +88,8 @@ public static class Terrain
             chunks.Add(new(centralChunk.x, centralChunk.y - 1));
         else if (vertice.y >= 98)
             chunks.Add(new(centralChunk.x, centralChunk.y + 1));
+        if (chunks.Count == 3)
+            chunks.Add(new(chunks[1].x, chunks[2].y));
         return chunks.ToArray();
     }
 
