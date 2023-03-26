@@ -1,6 +1,9 @@
-﻿public enum ActionType
+﻿namespace Input
 {
-    Started,
-    Performed,
-    Canceled
+    public enum ActionType
+    {
+        Started,
+        Performed,
+        Canceled
+    }
 }

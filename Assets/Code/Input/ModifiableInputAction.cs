@@ -3,106 +3,109 @@ using System.Collections.Generic;
 using UnityEngine.InputSystem;
 using static UnityEngine.InputSystem.InputAction;
 
-public class ModifiableInputAction
+namespace Input
 {
-    #region Fields
-
-    private List<Action<CallbackContext>> _startedCallbacks = new();
-    private List<Action<CallbackContext>> _performedCallbacks = new();
-    private List<Action<CallbackContext>> _canceledCallbacks = new();
-
-    #endregion Fields
-
-    #region Properties
-
-    public InputAction Action { get; set; }
-
-    #endregion Properties
-
-    #region Public
-
-    public void ClearAllEvents()
+    public class ModifiableInputAction
     {
-        PlayerController.Initialize();
-        ClearCanceledEvent();
-        ClearPerformedEvent();
-        ClearCanceledEvent();
-    }
+        #region Fields
 
-    public void ClearStartedEvent()
-    {
-        PlayerController.Initialize();
-        _startedCallbacks.ForEach(callback => Action.started -= callback);
-        _startedCallbacks.Clear();
-    }
+        private List<Action<CallbackContext>> _startedCallbacks = new();
+        private List<Action<CallbackContext>> _performedCallbacks = new();
+        private List<Action<CallbackContext>> _canceledCallbacks = new();
 
-    public void ClearPerformedEvent()
-    {
-        PlayerController.Initialize();
-        _performedCallbacks.ForEach(callback => Action.performed -= callback);
-        _performedCallbacks.Clear();
-    }
+        #endregion Fields
 
-    public void ClearCanceledEvent()
-    {
-        PlayerController.Initialize();
-        _canceledCallbacks.ForEach(callback => Action.canceled -= callback);
-        _canceledCallbacks.Clear();
-    }
+        #region Properties
 
-    public void AddListener(ActionType actionType, Action<CallbackContext> callback)
-    {
-        PlayerController.Initialize();
-        switch (actionType)
+        public InputAction Action { get; set; }
+
+        #endregion Properties
+
+        #region Public
+
+        public void ClearAllEvents()
         {
-            case ActionType.Started:
-                _startedCallbacks.Add(callback);
-                AddStartedCallback(callback);
-                break;
-
-            case ActionType.Performed:
-                _performedCallbacks.Add(callback);
-                AddPerformedCallback(callback);
-                break;
-
-            case ActionType.Canceled:
-                _canceledCallbacks.Add(callback);
-                AddCanceledCallback(callback);
-                break;
+            PlayerController.Initialize();
+            ClearCanceledEvent();
+            ClearPerformedEvent();
+            ClearCanceledEvent();
         }
+
+        public void ClearStartedEvent()
+        {
+            PlayerController.Initialize();
+            _startedCallbacks.ForEach(callback => Action.started -= callback);
+            _startedCallbacks.Clear();
+        }
+
+        public void ClearPerformedEvent()
+        {
+            PlayerController.Initialize();
+            _performedCallbacks.ForEach(callback => Action.performed -= callback);
+            _performedCallbacks.Clear();
+        }
+
+        public void ClearCanceledEvent()
+        {
+            PlayerController.Initialize();
+            _canceledCallbacks.ForEach(callback => Action.canceled -= callback);
+            _canceledCallbacks.Clear();
+        }
+
+        public void AddListener(ActionType actionType, Action<CallbackContext> callback)
+        {
+            PlayerController.Initialize();
+            switch (actionType)
+            {
+                case ActionType.Started:
+                    _startedCallbacks.Add(callback);
+                    AddStartedCallback(callback);
+                    break;
+
+                case ActionType.Performed:
+                    _performedCallbacks.Add(callback);
+                    AddPerformedCallback(callback);
+                    break;
+
+                case ActionType.Canceled:
+                    _canceledCallbacks.Add(callback);
+                    AddCanceledCallback(callback);
+                    break;
+            }
+        }
+
+        public TValue ReadValue<TValue>()
+            where TValue : struct
+        {
+            PlayerController.Initialize();
+            return Action.ReadValue<TValue>();
+        }
+
+        public bool IsPressed()
+        {
+            PlayerController.Initialize();
+            return Action.IsPressed();
+        }
+
+        #endregion Public
+
+        #region Private
+
+        private void AddStartedCallback(Action<CallbackContext> callback)
+        {
+            Action.started += callback;
+        }
+
+        private void AddPerformedCallback(Action<CallbackContext> callback)
+        {
+            Action.performed += callback;
+        }
+
+        private void AddCanceledCallback(Action<CallbackContext> callback)
+        {
+            Action.canceled += callback;
+        }
+
+        #endregion Private
     }
-
-    public TValue ReadValue<TValue>()
-        where TValue : struct
-    {
-        PlayerController.Initialize();
-        return Action.ReadValue<TValue>();
-    }
-
-    public bool IsPressed()
-    {
-        PlayerController.Initialize();
-        return Action.IsPressed();
-    }
-
-    #endregion Public
-
-    #region Private
-
-    private void AddStartedCallback(Action<CallbackContext> callback)
-    {
-        Action.started += callback;
-    }
-
-    private void AddPerformedCallback(Action<CallbackContext> callback)
-    {
-        Action.performed += callback;
-    }
-
-    private void AddCanceledCallback(Action<CallbackContext> callback)
-    {
-        Action.canceled += callback;
-    }
-
-    #endregion Private
 }
