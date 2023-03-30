@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Items
 {
@@ -31,6 +32,20 @@ namespace Items
 
         #region Public
 
+        public void Sort(bool hasToStack = true)
+        {
+            if (hasToStack)
+                StackItems();
+            var sortedItems = _items
+                .Where(item => item != null)
+                .OrderBy(item => item.Name)
+                .ThenByDescending(item => item.Count)
+                .ToArray();
+            Array.Clear(_items, 0, _items.Length);
+            for (int i = 0; i < sortedItems.Length; i++)
+                _items[i] = sortedItems[i];
+        }
+
         public Item ExtractAt(int index, int count = 0)
         {
             if (_items[index] == null)
@@ -46,26 +61,22 @@ namespace Items
             return output;
         }
 
-        public bool InsertAt(Item item, int index)
+        public void InsertAt(int index, Item item)
         {
-            if (_items[index].Name == item.Name && _items[index].Count < item.MaxStack)
+            if (_items[index] == null)
+            {
+                _items[index] = item.Clone();
+                item.Count = 0;
+            }
+            else if (_items[index].Name == item.Name && _items[index].Count < item.MaxStack)
             {
                 int delta = item.MaxStack - _items[index].Count;
                 _items[index].Count += delta;
                 item.Count -= delta;
-                if (item.Count == 0)
-                    return true;
-                else return false;
             }
-            else if (_items[index] == null)
-            {
-                _items[index] = item;
-                return true;
-            }
-            return false;
         }
 
-        public bool Insert(Item item)
+        public void Insert(Item item)
         {
             List<int> itemIndexes = new();
             List<int> nullIndexes = new();
@@ -81,18 +92,17 @@ namespace Items
             }
             foreach (int i in itemIndexes)
             {
-                int delta = item.MaxStack - _items[i].Count;
+                int delta = Math.Min(item.Count, item.MaxStack - _items[i].Count);
                 _items[i].Count += delta;
                 item.Count -= delta;
                 if (item.Count == 0)
-                    return true;
+                    return;
             }
             if (nullIndexes.Count > 0)
             {
-                _items[nullIndexes[0]] = item;
-                return true;
+                _items[nullIndexes[0]] = item.Clone();
+                item.Count = 0;
             }
-            return false;
         }
 
         public override string ToString()
@@ -104,5 +114,27 @@ namespace Items
         }
 
         #endregion Public
+
+        #region Private
+
+        private void StackItems()
+        {
+            for (int i = 0; i < _items.Length - 1; i++)
+            {
+                if (_items[i] == null)
+                    continue;
+                for (int j = i + 1; j < _items.Length; j++)
+                {
+                    InsertAt(j, _items[i]);
+                    if (_items[i].Count == 0)
+                    {
+                        _items[i] = null;
+                        break;
+                    }
+                }
+            }
+        }
+
+        #endregion Private
     }
 }
