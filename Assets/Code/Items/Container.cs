@@ -21,7 +21,7 @@ namespace Items
 
         #region Constructors
 
-        public Container(int size, string @lock)
+        public Container(int size, string @lock = "")
         {
             _lock = @lock;
             _items = new Item[size];

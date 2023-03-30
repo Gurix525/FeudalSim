@@ -5,7 +5,7 @@ public class Test : MonoBehaviour
 {
     private void Start()
     {
-        Container chest = new(4, string.Empty);
+        Container chest = new(4);
         Item stone = Item.Create("Stone");
         Item stone2 = stone.Clone();
         Item wood = Item.Create("Wood");
