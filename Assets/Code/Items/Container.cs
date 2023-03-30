@@ -5,11 +5,21 @@ namespace Items
 {
     public class Container
     {
+        #region Fields
+
         private string _lock;
         private Item[] _items;
 
+        #endregion Fields
+
+        #region Properties
+
         public int Size => _items.Length;
         public bool IsLocked => _lock != string.Empty;
+
+        #endregion Properties
+
+        #region Constructors
 
         public Container(int size, string @lock)
         {
@@ -17,7 +27,26 @@ namespace Items
             _items = new Item[size];
         }
 
-        public bool InsertAtIndex(Item item, int index)
+        #endregion Constructors
+
+        #region Public
+
+        public Item ExtractAt(int index, int count = 0)
+        {
+            if (_items[index] == null)
+                return null;
+            Item output;
+            int delta = count == 0
+                ? _items[index].Count
+                : Math.Min(count, _items[index].Count);
+            output = _items[index].Clone(delta);
+            _items[index].Count -= delta;
+            if (_items[index].Count == 0)
+                _items[index] = null;
+            return output;
+        }
+
+        public bool InsertAt(Item item, int index)
         {
             if (_items[index].Name == item.Name && _items[index].Count < item.MaxStack)
             {
@@ -70,8 +99,10 @@ namespace Items
         {
             string output = string.Empty;
             foreach (var item in _items)
-                output += item + "\n";
+                output += item != null ? item + "\n" : "null\n";
             return output;
         }
+
+        #endregion Public
     }
 }

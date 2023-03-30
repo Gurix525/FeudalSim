@@ -72,8 +72,8 @@ Material:
     - _StoneNormalStrength: 0.7
     - _StoneNormalTiling: 0.05
     m_Colors:
-    - _DirtColor1: {r: 0.3773585, g: 0.35513264, b: 0.33997864, a: 0}
-    - _DirtColor2: {r: 0.3018868, g: 0.23215424, b: 0.15806337, a: 0}
+    - _DirtColor1: {r: 0.41568628, g: 0.29803923, b: 0.22745098, a: 0}
+    - _DirtColor2: {r: 0.34901962, g: 0.3019608, b: 0.25882354, a: 0}
     - _DryColor: {r: 1, g: 0.9001926, b: 0.2216981, a: 0}
     - _FarmColor1: {r: 0.3584906, g: 0.19084616, b: 0.021982923, a: 0}
     - _FarmColor2: {r: 0.2924528, g: 0.1296236, b: 0.0013794977, a: 0}
