@@ -15,7 +15,7 @@ namespace Items
 
         #region Constructors
 
-        public ItemModel(string name, int maxStack, string description = "", Dictionary<string, float> stats = null)
+        public ItemModel(string name, int maxStack = 10, string description = "", Dictionary<string, float> stats = null)
         {
             Name = name;
             Description = description;

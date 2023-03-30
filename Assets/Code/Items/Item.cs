@@ -10,6 +10,14 @@ namespace Items
         private ItemModel _model;
         private Dictionary<string, float> _stats;
 
+        private static Dictionary<string, ItemModel> _itemModels = new()
+        {
+            { "Stone", new("Stone") },
+            { "Wood", new("Wood") },
+            { "Sword", new("Sword", 1) },
+            { "Axe", new("Axe", 1) }
+        };
+
         #endregion Fields
 
         #region Properties
@@ -24,7 +32,7 @@ namespace Items
 
         #region Constructors
 
-        public Item(ItemModel model, int count, Dictionary<string, float> stats = null)
+        private Item(ItemModel model, int count = 1, Dictionary<string, float> stats = null)
         {
             if (count > model.MaxStack)
                 throw new ArgumentOutOfRangeException(
@@ -46,6 +54,14 @@ namespace Items
         public override string ToString()
         {
             return $"{Name}: {Count}";
+        }
+
+        public static Item Create(
+            string name,
+            int count = 1,
+            Dictionary<string, float> stats = null)
+        {
+            return new(_itemModels[name], count, stats);
         }
 
         #endregion Public
