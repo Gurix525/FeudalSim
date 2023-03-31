@@ -27,11 +27,15 @@ namespace Items
         public void ShowContainer(CallbackContext context)
         {
             if (!EventSystem.current.IsPointerOverGameObject())
+            {
                 _window.SetActive(true);
+                PlayerController.MainEscape.AddListener(ActionType.Started, HideContainer);
+            }
         }
 
         public void HideContainer(CallbackContext context)
         {
+            PlayerController.MainEscape.RemoveListener(ActionType.Started, HideContainer);
             _window.SetActive(false);
         }
 
