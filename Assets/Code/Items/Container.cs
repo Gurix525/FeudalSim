@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine.Events;
 
 namespace Items
 {
@@ -18,6 +19,7 @@ namespace Items
         public int Size => _items.Length;
         public bool IsLocked => _lock != string.Empty;
         public Item this[int index] => _items[index];
+        public UnityEvent CollectionUpdated { get; } = new();
 
         #endregion Properties
 
@@ -41,6 +43,7 @@ namespace Items
                 _items[index] = otherItem;
             if (thisItem != null)
                 otherContainer.InsertAt(otherIndex, thisItem);
+            CollectionUpdated.Invoke();
         }
 
         public void Sort(bool hasToStack = true)
@@ -55,6 +58,7 @@ namespace Items
             Array.Clear(_items, 0, _items.Length);
             for (int i = 0; i < sortedItems.Length; i++)
                 _items[i] = sortedItems[i];
+            CollectionUpdated.Invoke();
         }
 
         public Item ExtractAt(int index, int count = 0)
@@ -69,6 +73,7 @@ namespace Items
             _items[index].Count -= delta;
             if (_items[index].Count == 0)
                 _items[index] = null;
+            CollectionUpdated.Invoke();
             return output;
         }
 
@@ -85,6 +90,7 @@ namespace Items
                 _items[index].Count += delta;
                 item.Count -= delta;
             }
+            CollectionUpdated.Invoke();
         }
 
         public void Insert(Item item)
@@ -106,6 +112,7 @@ namespace Items
                 int delta = Math.Min(item.Count, item.MaxStack - _items[i].Count);
                 _items[i].Count += delta;
                 item.Count -= delta;
+                CollectionUpdated.Invoke();
                 if (item.Count == 0)
                     return;
             }
@@ -114,6 +121,7 @@ namespace Items
                 _items[nullIndexes[0]] = item.Clone();
                 item.Count = 0;
             }
+            CollectionUpdated.Invoke();
         }
 
         public override string ToString()
