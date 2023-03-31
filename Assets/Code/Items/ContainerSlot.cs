@@ -1,9 +1,9 @@
 using Input;
-using Items;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using Controls;
 using static UnityEngine.InputSystem.InputAction;
+using TMPro;
+using UnityEngine.UI;
 
 namespace Items
 {
@@ -11,6 +11,9 @@ namespace Items
     {
         #region Fields
 
+        [SerializeField] private TextMeshProUGUI _text;
+
+        private Image _image;
         private int _slotIndex;
         private Container _container;
 
@@ -22,6 +25,9 @@ namespace Items
         {
             _slotIndex = slotIndex;
             _container = container;
+            _image = GetComponent<Image>();
+            _container.CollectionUpdated.AddListener(OnCollectionUpdated);
+            OnCollectionUpdated();
         }
 
         public void OnPointerEnter(PointerEventData eventData)
@@ -36,12 +42,37 @@ namespace Items
 
         #endregion Public
 
+        #region Unity
+
+        private void OnEnable()
+        {
+            if (_container != null)
+                _container.CollectionUpdated.AddListener(OnCollectionUpdated);
+        }
+
+        private void OnDisable()
+        {
+            _container.CollectionUpdated.RemoveListener(OnCollectionUpdated);
+        }
+
+        #endregion Unity
+
         #region Private
 
         private void OnMainUse(CallbackContext context)
         {
             _container.ExchangeItem(_slotIndex, Controls.Cursor.Container, 0);
             Debug.Log(Controls.Cursor.Container[0]);
+        }
+
+        private void OnCollectionUpdated()
+        {
+            if (_container[_slotIndex] == null)
+                _text.text = string.Empty;
+            else if (_container[_slotIndex].MaxStack == 1)
+                _text.text = string.Empty;
+            else
+                _text.text = _container[_slotIndex].Count.ToString();
         }
 
         #endregion Private
