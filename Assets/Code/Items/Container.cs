@@ -17,6 +17,7 @@ namespace Items
 
         public int Size => _items.Length;
         public bool IsLocked => _lock != string.Empty;
+        public Item this[int index] => _items[index];
 
         #endregion Properties
 
@@ -31,6 +32,16 @@ namespace Items
         #endregion Constructors
 
         #region Public
+
+        public void ExchangeItem(int index, Container otherContainer, int otherIndex)
+        {
+            Item thisItem = ExtractAt(index);
+            Item otherItem = otherContainer.ExtractAt(otherIndex);
+            if (otherItem != null)
+                _items[index] = otherItem;
+            if (thisItem != null)
+                otherContainer.InsertAt(otherIndex, thisItem);
+        }
 
         public void Sort(bool hasToStack = true)
         {

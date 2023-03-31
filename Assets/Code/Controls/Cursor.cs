@@ -7,7 +7,7 @@ namespace Controls
     {
         private static Vector2Int? _cellPosition;
 
-        private static Container _container = new(1);
+        public static Container Container { get; } = new(1);
 
         public static Vector2Int? CellPosition
         {

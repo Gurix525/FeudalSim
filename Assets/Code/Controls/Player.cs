@@ -39,7 +39,7 @@ namespace Controls
 
         private void OnDisable()
         {
-            PlayerController.MainJump.ClearStartedEvent();
+            PlayerController.MainJump.RemoveListener(ActionType.Started, Jump);
         }
 
         #endregion Unity

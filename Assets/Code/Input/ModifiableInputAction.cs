@@ -26,7 +26,7 @@ namespace Input
         public void ClearAllEvents()
         {
             PlayerController.Initialize();
-            ClearCanceledEvent();
+            ClearStartedEvent();
             ClearPerformedEvent();
             ClearCanceledEvent();
         }
@@ -74,6 +74,27 @@ namespace Input
             }
         }
 
+        public void RemoveListener(ActionType actionType, Action<CallbackContext> callback)
+        {
+            switch (actionType)
+            {
+                case ActionType.Started:
+                    _startedCallbacks.Remove(callback);
+                    RemoveStartedCallback(callback);
+                    break;
+
+                case ActionType.Performed:
+                    _performedCallbacks.Remove(callback);
+                    RemovePerformedCallback(callback);
+                    break;
+
+                case ActionType.Canceled:
+                    _canceledCallbacks.Remove(callback);
+                    RemovePerformedCallback(callback);
+                    break;
+            }
+        }
+
         public TValue ReadValue<TValue>()
             where TValue : struct
         {
@@ -104,6 +125,21 @@ namespace Input
         private void AddCanceledCallback(Action<CallbackContext> callback)
         {
             Action.canceled += callback;
+        }
+
+        private void RemoveStartedCallback(Action<CallbackContext> callback)
+        {
+            Action.started -= callback;
+        }
+
+        private void RemovePerformedCallback(Action<CallbackContext> callback)
+        {
+            Action.performed -= callback;
+        }
+
+        private void RemoveCanceledCallback(Action<CallbackContext> callback)
+        {
+            Action.canceled -= callback;
         }
 
         #endregion Private

@@ -1,12 +1,20 @@
 using Input;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 namespace Controls
 {
     public class CursorPositionFinder : MonoBehaviour
     {
+        #region Unity
+
         private void OnMouseOver()
         {
+            if (EventSystem.current.IsPointerOverGameObject())
+            {
+                Cursor.CellPosition = null;
+                return;
+            }
             Ray ray = Camera.main
                 .ScreenPointToRay(PlayerController.MainPoint.ReadValue<Vector2>());
             Physics.Raycast(ray, out RaycastHit hit);
@@ -17,5 +25,7 @@ namespace Controls
         {
             Cursor.CellPosition = null;
         }
+
+        #endregion Unity
     }
 }

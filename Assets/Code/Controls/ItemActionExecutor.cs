@@ -21,8 +21,8 @@ namespace Controls
 
         private void OnDisable()
         {
-            PlayerController.MainUse.ClearStartedEvent();
-            PlayerController.MainChange.ClearStartedEvent();
+            PlayerController.MainUse.RemoveListener(ActionType.Started, Execute);
+            PlayerController.MainChange.RemoveListener(ActionType.Started, ChangeMode);
         }
 
         private void Execute(CallbackContext context)
