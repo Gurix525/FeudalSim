@@ -2,9 +2,13 @@ using System;
 using Misc;
 using UnityEngine;
 using UnityEngine.UI;
+using Input;
+using static UnityEngine.InputSystem.InputAction;
+using UnityEngine.EventSystems;
 
 namespace Items
 {
+    [RequireComponent(typeof(Outline))]
     public class ContainerHandler : MonoBehaviour
     {
         #region Fields
@@ -14,17 +18,19 @@ namespace Items
         private Container _container;
         private GameObject _window;
         private GameObject[] _slots;
+        private Outline _outline;
 
         #endregion Fields
 
         #region Public
 
-        public void ShowContainer()
+        public void ShowContainer(CallbackContext context)
         {
-            _window.SetActive(true);
+            if (!EventSystem.current.IsPointerOverGameObject())
+                _window.SetActive(true);
         }
 
-        public void HideContainer()
+        public void HideContainer(CallbackContext context)
         {
             _window.SetActive(false);
         }
@@ -36,6 +42,8 @@ namespace Items
         private void Start()
         {
             _container = new(_size, _lock);
+            _outline = GetComponent<Outline>();
+            _outline.OutlineColor = new(0F, 0F, 0F, 0F);
             _window = Instantiate(
                 Prefabs.GetPrefab("ContainerWindow"),
                 References.GetReference("Canvas").transform);
@@ -44,7 +52,7 @@ namespace Items
             windowTransform.sizeDelta = new(newSize, newSize);
             var windowGridLayout = _window.GetComponent<GridLayoutGroup>();
             windowGridLayout.constraintCount = (int)Math.Sqrt(_size);
-            //_window.SetActive(false);
+            _window.SetActive(false);
             _slots = new GameObject[_size];
             for (int i = 0; i < _size; i++)
             {
@@ -57,11 +65,28 @@ namespace Items
             StartTest();
         }
 
+        private void OnMouseEnter()
+        {
+            PlayerController.MainRightClick.AddListener(ActionType.Started, ShowContainer);
+        }
+
+        private void OnMouseOver()
+        {
+            if (!EventSystem.current.IsPointerOverGameObject())
+                _outline.OutlineColor = new(0.8F, 0.8F, 1F, 1F);
+        }
+
+        private void OnMouseExit()
+        {
+            PlayerController.MainRightClick.RemoveListener(ActionType.Started, ShowContainer);
+            _outline.OutlineColor = new(0F, 0F, 0F, 0F);
+        }
+
         private void StartTest()
         {
             Debug.Log("TESTOWA METODA");
             _container.Insert(Item.Create("Stone", 7));
-            _container.Insert(Item.Create("Wood", 7));
+            _container.Insert(Item.Create("Wood", 5));
             _container.Insert(Item.Create("Sword", 1));
             _container.Insert(Item.Create("Axe", 1));
         }
