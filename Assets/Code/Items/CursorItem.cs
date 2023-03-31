@@ -26,10 +26,15 @@ public class CursorItem : MonoBehaviour
     private void OnCollectionUpdated()
     {
         if (_container[0] == null)
+        {
             _text.text = string.Empty;
-        else if (_container[0].MaxStack == 1)
+            _image.sprite = null;
+            return;
+        }
+        if (_container[0].MaxStack == 1)
             _text.text = string.Empty;
         else
             _text.text = _container[0].Count.ToString();
+        _image.sprite = _container[0].Sprite;
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using UnityEngine;
 
 namespace Items
 {
@@ -9,6 +10,7 @@ namespace Items
         public string Name { get; }
         public string Description { get; }
         public int MaxStack { get; }
+        public Sprite Sprite { get; }
         public Dictionary<string, float> Stats { get; }
 
         #endregion Properties
@@ -21,6 +23,7 @@ namespace Items
             Description = description;
             MaxStack = maxStack;
             Stats = stats;
+            Sprite = Sprites.GetSprite(name);
         }
 
         #endregion Constructors
