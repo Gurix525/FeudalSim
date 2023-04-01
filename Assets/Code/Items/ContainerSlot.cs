@@ -12,8 +12,8 @@ namespace Items
         #region Fields
 
         [SerializeField] private TextMeshProUGUI _text;
+        [SerializeField] private Image _image;
 
-        private Image _image;
         private int _slotIndex;
         private Container _container;
 
@@ -25,7 +25,6 @@ namespace Items
         {
             _slotIndex = slotIndex;
             _container = container;
-            _image = GetComponent<Image>();
             _container.CollectionUpdated.AddListener(OnCollectionUpdated);
             OnCollectionUpdated();
         }
@@ -62,7 +61,6 @@ namespace Items
         private void OnMainUse(CallbackContext context)
         {
             _container.ExchangeItem(_slotIndex, Controls.Cursor.Container, 0);
-            Debug.Log(Controls.Cursor.Container[0]);
         }
 
         private void OnCollectionUpdated()
@@ -70,7 +68,7 @@ namespace Items
             if (_container[_slotIndex] == null)
             {
                 _text.text = string.Empty;
-                _image.sprite = null;
+                _image.enabled = false;
                 return;
             }
             if (_container[_slotIndex].MaxStack == 1)
@@ -78,6 +76,7 @@ namespace Items
             else
                 _text.text = _container[_slotIndex].Count.ToString();
             _image.sprite = _container[_slotIndex].Sprite;
+            _image.enabled = true;
         }
 
         #endregion Private

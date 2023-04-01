@@ -28,7 +28,7 @@ public class CursorItem : MonoBehaviour
         if (_container[0] == null)
         {
             _text.text = string.Empty;
-            _image.sprite = null;
+            _image.enabled = false;
             return;
         }
         if (_container[0].MaxStack == 1)
@@ -36,5 +36,6 @@ public class CursorItem : MonoBehaviour
         else
             _text.text = _container[0].Count.ToString();
         _image.sprite = _container[0].Sprite;
+        _image.enabled = true;
     }
 }

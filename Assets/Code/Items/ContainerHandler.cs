@@ -19,27 +19,13 @@ namespace Items
         private GameObject _window;
         private GameObject[] _slots;
         private Outline _outline;
+        private RectTransform _windowTransform;
+
+        private bool _isOutlineActive = false;
+
+        private static Vector2 _offset = new(0F, 160F);
 
         #endregion Fields
-
-        #region Public
-
-        public void ShowContainer(CallbackContext context)
-        {
-            if (!EventSystem.current.IsPointerOverGameObject())
-            {
-                _window.SetActive(true);
-                PlayerController.MainEscape.AddListener(ActionType.Started, HideContainer);
-            }
-        }
-
-        public void HideContainer(CallbackContext context)
-        {
-            PlayerController.MainEscape.RemoveListener(ActionType.Started, HideContainer);
-            _window.SetActive(false);
-        }
-
-        #endregion Public
 
         #region Unity
 
@@ -47,13 +33,15 @@ namespace Items
         {
             _container = new(_size, _lock);
             _outline = GetComponent<Outline>();
+            _outline.OutlineMode = Outline.Mode.OutlineVisible;
             _outline.OutlineColor = new(0F, 0F, 0F, 0F);
+            _outline.OutlineWidth = 1F;
             _window = Instantiate(
                 Prefabs.GetPrefab("ContainerWindow"),
-                References.GetReference("Canvas").transform);
-            var windowTransform = _window.GetComponent<RectTransform>();
-            float newSize = windowTransform.sizeDelta.x * (float)Math.Sqrt(_size) - 8F;
-            windowTransform.sizeDelta = new(newSize, newSize);
+                References.GetReference("DefaultCanvas").transform);
+            _windowTransform = _window.GetComponent<RectTransform>();
+            float newSize = _windowTransform.sizeDelta.x * (float)Math.Sqrt(_size) - 8F;
+            _windowTransform.sizeDelta = new(newSize, newSize);
             var windowGridLayout = _window.GetComponent<GridLayoutGroup>();
             windowGridLayout.constraintCount = (int)Math.Sqrt(_size);
             _window.SetActive(false);
@@ -69,21 +57,36 @@ namespace Items
             StartTest();
         }
 
+        private void Update()
+        {
+            if (_window.activeInHierarchy)
+                _windowTransform.position =
+                    (Vector2)Camera.main.WorldToScreenPoint(transform.position)
+                    + _offset;
+        }
+
         private void OnMouseEnter()
         {
-            PlayerController.MainRightClick.AddListener(ActionType.Started, ShowContainer);
+            PlayerController.MainRightClick.AddListener(ActionType.Started, SwitchContainer);
         }
 
         private void OnMouseOver()
         {
             if (!EventSystem.current.IsPointerOverGameObject())
-                _outline.OutlineColor = new(0.8F, 0.8F, 1F, 1F);
+            {
+                if (!_isOutlineActive)
+                {
+                    _outline.OutlineColor = new(1F, 3F, 2F, 1F);
+                    _isOutlineActive = true;
+                }
+            }
         }
 
         private void OnMouseExit()
         {
-            PlayerController.MainRightClick.RemoveListener(ActionType.Started, ShowContainer);
+            PlayerController.MainRightClick.RemoveListener(ActionType.Started, SwitchContainer);
             _outline.OutlineColor = new(0F, 0F, 0F, 0F);
+            _isOutlineActive = false;
         }
 
         private void StartTest()
@@ -96,5 +99,32 @@ namespace Items
         }
 
         #endregion Unity
+
+        #region Private
+
+        private void SwitchContainer(CallbackContext context)
+        {
+            if (_window.activeInHierarchy)
+                HideContainer(new());
+            else
+                ShowContainer(new());
+        }
+
+        private void ShowContainer(CallbackContext context)
+        {
+            if (!EventSystem.current.IsPointerOverGameObject())
+            {
+                _window.SetActive(true);
+                PlayerController.MainEscape.AddListener(ActionType.Started, HideContainer);
+            }
+        }
+
+        private void HideContainer(CallbackContext context)
+        {
+            PlayerController.MainEscape.RemoveListener(ActionType.Started, HideContainer);
+            _window.SetActive(false);
+        }
+
+        #endregion Private
     }
 }
