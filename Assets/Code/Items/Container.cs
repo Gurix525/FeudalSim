@@ -35,12 +35,21 @@ namespace Items
 
         #region Public
 
-        public void ExchangeItem(int index, Container otherContainer, int otherIndex)
+        public void ExchangeItem(int thisIndex, Container otherContainer, int otherIndex)
         {
-            Item thisItem = ExtractAt(index);
+            Item thisItem = ExtractAt(thisIndex);
             Item otherItem = otherContainer.ExtractAt(otherIndex);
+            if (IsPossibleToSupply(thisItem, otherItem))
+            {
+                _items[thisIndex] = thisItem;
+                InsertAt(thisIndex, otherItem);
+                if (otherItem.Count != 0)
+                    otherContainer.InsertAt(otherIndex, otherItem);
+                CollectionUpdated.Invoke();
+                return;
+            }
             if (otherItem != null)
-                _items[index] = otherItem;
+                _items[thisIndex] = otherItem;
             if (thisItem != null)
                 otherContainer.InsertAt(otherIndex, thisItem);
             CollectionUpdated.Invoke();
@@ -152,6 +161,14 @@ namespace Items
                     }
                 }
             }
+        }
+
+        private static bool IsPossibleToSupply(Item thisItem, Item otherItem)
+        {
+            return thisItem != null
+                && otherItem != null
+                && thisItem.Name == otherItem.Name
+                && thisItem.Count < thisItem.MaxStack;
         }
 
         #endregion Private
