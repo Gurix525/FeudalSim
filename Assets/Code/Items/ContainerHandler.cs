@@ -23,8 +23,6 @@ namespace Items
 
         private bool _isOutlineActive = false;
 
-        private static Vector2 _offset = new(0F, 160F);
-
         #endregion Fields
 
         #region Unity
@@ -44,7 +42,7 @@ namespace Items
             _windowTransform.sizeDelta = new(newSize, newSize);
             var windowGridLayout = _window.GetComponent<GridLayoutGroup>();
             windowGridLayout.constraintCount = (int)Math.Sqrt(_size);
-            _window.GetComponent<ContainerWindow>().Initialize(_container);
+            _window.GetComponent<ContainerWindow>().Initialize(_container, this);
             _window.SetActive(false);
             _slots = new GameObject[_size];
             for (int i = 0; i < _size; i++)
@@ -56,14 +54,6 @@ namespace Items
                 containerSlot.Initialize(i, _container);
             }
             StartTest();
-        }
-
-        private void Update()
-        {
-            if (_window.activeInHierarchy)
-                _windowTransform.position =
-                    (Vector2)Camera.main.WorldToScreenPoint(transform.position)
-                    + _offset;
         }
 
         private void OnMouseEnter()
@@ -88,6 +78,11 @@ namespace Items
             PlayerController.MainRightClick.RemoveListener(ActionType.Started, SwitchContainer);
             _outline.OutlineColor = new(0F, 0F, 0F, 0F);
             _isOutlineActive = false;
+        }
+
+        private void OnDestroy()
+        {
+            Destroy(_window);
         }
 
         private void StartTest()
