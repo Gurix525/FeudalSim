@@ -94,8 +94,6 @@ namespace Items
             Debug.Log("TESTOWA METODA");
             _container.Insert(Item.Create("Stone", 7));
             _container.Insert(Item.Create("Wood", 5));
-            _container.Insert(Item.Create("Sword", 1));
-            _container.Insert(Item.Create("Axe", 1));
         }
 
         #endregion Unity

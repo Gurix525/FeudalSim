@@ -4,6 +4,7 @@ using UnityEngine.EventSystems;
 using static UnityEngine.InputSystem.InputAction;
 using TMPro;
 using UnityEngine.UI;
+using System;
 
 namespace Items
 {
@@ -32,11 +33,13 @@ namespace Items
         public void OnPointerEnter(PointerEventData eventData)
         {
             PlayerController.MainUse.AddListener(ActionType.Started, OnMainUse);
+            PlayerController.MainRightClick.AddListener(ActionType.Performed, OnMainRightClick);
         }
 
         public void OnPointerExit(PointerEventData eventData)
         {
             PlayerController.MainUse.RemoveListener(ActionType.Started, OnMainUse);
+            PlayerController.MainRightClick.RemoveListener(ActionType.Performed, OnMainRightClick);
         }
 
         #endregion Public
@@ -60,7 +63,12 @@ namespace Items
 
         private void OnMainUse(CallbackContext context)
         {
-            _container.ExchangeItem(_slotIndex, Controls.Cursor.Container, 0);
+            _container.HandleLeftClick(_slotIndex);
+        }
+
+        private void OnMainRightClick(CallbackContext obj)
+        {
+            _container.HandleRightClick(_slotIndex);
         }
 
         private void OnCollectionUpdated()

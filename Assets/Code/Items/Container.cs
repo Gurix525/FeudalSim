@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Controls;
 using UnityEngine.Events;
 
 namespace Items
@@ -35,24 +36,58 @@ namespace Items
 
         #region Public
 
-        public void ExchangeItem(int thisIndex, Container otherContainer, int otherIndex)
+        public void HandleLeftClick(int slotIndex)
         {
-            Item thisItem = ExtractAt(thisIndex);
-            Item otherItem = otherContainer.ExtractAt(otherIndex);
-            if (IsPossibleToSupply(thisItem, otherItem))
+            Item thisItem = ExtractAt(slotIndex);
+            Item cursorItem = Cursor.Container.ExtractAt(0);
+            if (IsPossibleToInsert(thisItem, cursorItem))
             {
-                _items[thisIndex] = thisItem;
-                InsertAt(thisIndex, otherItem);
-                if (otherItem.Count != 0)
-                    otherContainer.InsertAt(otherIndex, otherItem);
+                _items[slotIndex] = thisItem;
+                InsertAt(slotIndex, cursorItem);
+                if (cursorItem.Count != 0)
+                    Cursor.Container.InsertAt(0, cursorItem);
                 CollectionUpdated.Invoke();
                 return;
             }
-            if (otherItem != null)
-                _items[thisIndex] = otherItem;
+            if (cursorItem != null)
+                _items[slotIndex] = cursorItem;
             if (thisItem != null)
-                otherContainer.InsertAt(otherIndex, thisItem);
+                Cursor.Container.InsertAt(0, thisItem);
             CollectionUpdated.Invoke();
+        }
+
+        public void HandleRightClick(int slotIndex)
+        {
+            Item thisItem = ExtractAt(slotIndex);
+            Item cursorItem = Cursor.Container.ExtractAt(0);
+            if (thisItem == null && cursorItem == null)
+                return;
+            if (thisItem != null && cursorItem == null)
+            {
+                int delta = thisItem.Count / 2 + thisItem.Count % 2;
+                thisItem.Count -= delta;
+                Cursor.Container.InsertAt(0, thisItem.Clone(delta));
+                if (thisItem.Count == 0)
+                    thisItem = null;
+                InsertAt(slotIndex, thisItem);
+                CollectionUpdated.Invoke();
+                return;
+            }
+            if (thisItem == null || (thisItem.Name == cursorItem.Name && thisItem.Count < thisItem.MaxStack))
+            {
+                var change = cursorItem.Clone(1);
+                cursorItem.Count -= 1;
+                if (cursorItem.Count == 0)
+                    cursorItem = null;
+                InsertAt(slotIndex, thisItem);
+                InsertAt(slotIndex, change);
+                Cursor.Container.InsertAt(0, cursorItem);
+                CollectionUpdated.Invoke();
+                return;
+            }
+            InsertAt(slotIndex, thisItem);
+            Cursor.Container.InsertAt(0, cursorItem);
+            HandleLeftClick(slotIndex);
         }
 
         public void Sort(bool hasToStack = true)
@@ -88,6 +123,8 @@ namespace Items
 
         public void InsertAt(int index, Item item)
         {
+            if (item == null)
+                return;
             if (_items[index] == null)
             {
                 _items[index] = item.Clone();
@@ -95,7 +132,7 @@ namespace Items
             }
             else if (_items[index].Name == item.Name && _items[index].Count < item.MaxStack)
             {
-                int delta = item.MaxStack - _items[index].Count;
+                int delta = Math.Min(item.MaxStack - _items[index].Count, item.Count);
                 _items[index].Count += delta;
                 item.Count -= delta;
             }
@@ -163,11 +200,11 @@ namespace Items
             }
         }
 
-        private static bool IsPossibleToSupply(Item thisItem, Item otherItem)
+        private static bool IsPossibleToInsert(Item thisItem, Item otherItem)
         {
-            return thisItem != null
-                && otherItem != null
-                && thisItem.Name == otherItem.Name
+            if (thisItem == null || otherItem == null)
+                return false;
+            return thisItem.Name == otherItem.Name
                 && thisItem.Count < thisItem.MaxStack;
         }
 
