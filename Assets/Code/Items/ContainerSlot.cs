@@ -33,13 +33,13 @@ namespace Items
         public void OnPointerEnter(PointerEventData eventData)
         {
             PlayerController.MainUse.AddListener(ActionType.Started, OnMainUse);
-            PlayerController.MainRightClick.AddListener(ActionType.Performed, OnMainRightClick);
+            PlayerController.MainRightClick.AddListener(ActionType.Started, OnMainRightClick);
         }
 
         public void OnPointerExit(PointerEventData eventData)
         {
             PlayerController.MainUse.RemoveListener(ActionType.Started, OnMainUse);
-            PlayerController.MainRightClick.RemoveListener(ActionType.Performed, OnMainRightClick);
+            PlayerController.MainRightClick.RemoveListener(ActionType.Started, OnMainRightClick);
         }
 
         #endregion Public

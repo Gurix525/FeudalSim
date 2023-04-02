@@ -44,6 +44,7 @@ namespace Items
             _windowTransform.sizeDelta = new(newSize, newSize);
             var windowGridLayout = _window.GetComponent<GridLayoutGroup>();
             windowGridLayout.constraintCount = (int)Math.Sqrt(_size);
+            _window.GetComponent<ContainerWindow>().Initialize(_container);
             _window.SetActive(false);
             _slots = new GameObject[_size];
             for (int i = 0; i < _size; i++)
