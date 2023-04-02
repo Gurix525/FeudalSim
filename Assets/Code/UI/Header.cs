@@ -1,15 +1,13 @@
-using System;
 using Input;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.InputSystem;
 using static UnityEngine.InputSystem.InputAction;
 
-namespace Items
+namespace UI
 {
     public class Header : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     {
-        [SerializeField] private ContainerWindow _window;
+        [SerializeField] private Window _window;
         private bool _isDragging = false;
         private Vector2 _initialMousePosition;
 

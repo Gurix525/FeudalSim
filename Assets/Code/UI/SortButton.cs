@@ -1,9 +1,10 @@
 using Input;
+using Items;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using static UnityEngine.InputSystem.InputAction;
 
-namespace Items
+namespace UI
 {
     public class SortButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     {

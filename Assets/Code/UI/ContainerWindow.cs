@@ -1,18 +1,15 @@
+using Items;
 using UnityEditor.PackageManager.UI;
 using UnityEngine;
 
-namespace Items
+namespace UI
 {
-    public class ContainerWindow : MonoBehaviour
+    public class ContainerWindow : Window
     {
         [SerializeField] private SortButton _sortButton;
 
         private Container _container;
         private ContainerHandler _containerHandler;
-        private RectTransform _rectTransform;
-        public Vector2 CurrentOffset { get; set; }
-
-        private static Vector2 _originalOffset = new(0F, 160F);
 
         public void Initialize(Container container, ContainerHandler containerHandler)
         {

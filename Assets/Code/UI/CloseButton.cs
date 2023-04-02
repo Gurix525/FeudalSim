@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using static UnityEngine.InputSystem.InputAction;
 
-namespace Items
+namespace UI
 {
     public class CloseButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     {
