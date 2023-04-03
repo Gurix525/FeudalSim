@@ -1,7 +1,9 @@
 using System.Linq;
 using UnityEngine;
+using World;
+using Terrain = World.Terrain;
 
-namespace World
+namespace Controls
 {
     public class CursorCellHighlight : MonoBehaviour
     {
@@ -12,6 +14,8 @@ namespace World
         private MeshRenderer _renderer;
         private Mesh _mesh;
         private Vector2 _lastPosition;
+
+        public static bool IsHighlightEnabled { get; set; } = false;
 
         private void Awake()
         {
@@ -30,7 +34,7 @@ namespace World
 
         private void Update()
         {
-            if (Controls.Cursor.IsAboveTerrain)
+            if (Cursor.IsAboveTerrain && IsHighlightEnabled)
             {
                 _highlight.SetActive(true);
                 UpdateHighlight();
@@ -67,7 +71,7 @@ namespace World
         private void UpdateHighlight()
         {
             _material.renderQueue = 3001;
-            Vector2 cursorPosition = (Vector2)Controls.Cursor.CellPosition;
+            Vector2 cursorPosition = (Vector2)Cursor.CellPosition;
             if (cursorPosition == _lastPosition)
                 return;
             _lastPosition = cursorPosition;
