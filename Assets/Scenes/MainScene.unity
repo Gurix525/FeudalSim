@@ -1317,6 +1317,7 @@ GameObject:
   - component: {fileID: 1207663842}
   - component: {fileID: 1207663844}
   - component: {fileID: 1207663845}
+  - component: {fileID: 1207663846}
   m_Layer: 0
   m_Name: Terrain
   m_TagString: Untagged
@@ -1379,6 +1380,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _material: {fileID: 2100000, guid: 6f8fc34d36c020c4d81f55174a0e8bf7, type: 2}
+--- !u!114 &1207663846
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1207663837}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 887fda373ef1ac244933067a2fb5d198, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _mesh: {fileID: -5495902117074765545, guid: f6602afddef2e554cbb6be14fc36a759, type: 3}
+  _notBlockedMaterial: {fileID: 2100000, guid: 6b0899f2cfd830a41b90fccbfe666a74, type: 2}
+  _blockedMaterial: {fileID: 2100000, guid: 73f5f5a550a38a44cae22c75b36b914b, type: 2}
 --- !u!1 &1273028625
 GameObject:
   m_ObjectHideFlags: 0

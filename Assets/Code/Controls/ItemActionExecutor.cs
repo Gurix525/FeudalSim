@@ -13,6 +13,9 @@ namespace Controls
         private float _delta = -1F;
         private int _mode = 0;
 
+        private static bool _isShovelActive = false;
+        private static bool _isBuildingActive = true;
+
         private void OnEnable()
         {
             PlayerController.MainUse.AddListener(ActionType.Started, Execute);
@@ -27,21 +30,28 @@ namespace Controls
 
         private void Execute(CallbackContext context)
         {
-            switch (_mode)
-            {
-                case 0:
-                case 1:
-                    ModifyTerrainHeight();
-                    break;
+            if (_isBuildingActive)
+                switch (_mode)
+                {
+                    case 0:
+                        break;
+                }
+            if (_isShovelActive)
+                switch (_mode)
+                {
+                    case 0:
+                    case 1:
+                        ModifyTerrainHeight();
+                        break;
 
-                case 2:
-                    Pathen();
-                    break;
+                    case 2:
+                        Pathen();
+                        break;
 
-                default:
-                    Plow();
-                    break;
-            }
+                    default:
+                        Plow();
+                        break;
+                }
         }
 
         private void ChangeMode(CallbackContext context)
