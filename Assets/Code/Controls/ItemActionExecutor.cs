@@ -8,10 +8,12 @@ namespace Controls
 {
     public class ItemActionExecutor : MonoBehaviour
     {
+        [SerializeField] private Mesh[] _meshes;
         [SerializeField] private TextMeshProUGUI _modeText;
 
         private float _delta = -1F;
-        private int _mode = 0;
+        private BuildingMode _buildingMode = BuildingMode.Floor;
+        private ShovelMode _shovelMode = ShovelMode.Digging;
 
         private static bool _isShovelActive = false;
         private static bool _isBuildingActive = true;
@@ -31,20 +33,20 @@ namespace Controls
         private void Execute(CallbackContext context)
         {
             if (_isBuildingActive)
-                switch (_mode)
+                switch (_buildingMode)
                 {
-                    case 0:
+                    default:
                         break;
                 }
             if (_isShovelActive)
-                switch (_mode)
+                switch (_shovelMode)
                 {
-                    case 0:
-                    case 1:
+                    case ShovelMode.Digging:
+                    case ShovelMode.Rising:
                         ModifyTerrainHeight();
                         break;
 
-                    case 2:
+                    case ShovelMode.Pathing:
                         Pathen();
                         break;
 
@@ -57,16 +59,23 @@ namespace Controls
         private void ChangeMode(CallbackContext context)
         {
             _delta *= -1F;
-            _mode++;
-            if (_mode == 4)
-                _mode = 0;
-            _modeText.text = _mode switch
+            _buildingMode = (int)(_buildingMode + 1) > 4 ? 0 : _buildingMode + 1;
+            _shovelMode = (int)(_shovelMode + 1) > 3 ? 0 : _shovelMode + 1;
+            _modeText.text = _shovelMode switch
             {
-                0 => $"Tryb: kopanie",
-                1 => $"Tryb: wznoszenie",
-                2 => $"Tryb: ścieżkowanie",
+                ShovelMode.Digging => $"Tryb: kopanie",
+                ShovelMode.Rising => $"Tryb: wznoszenie",
+                ShovelMode.Pathing => $"Tryb: ścieżkowanie",
                 _ => $"Tryb: oranie"
             };
+            CursorMeshHighlight.SetMesh(_buildingMode switch
+            {
+                BuildingMode.Floor => _meshes[0],
+                BuildingMode.BigFloor => _meshes[1],
+                BuildingMode.ShortWall => _meshes[2],
+                BuildingMode.Wall => _meshes[3],
+                _ => _meshes[4]
+            });
         }
 
         private void Plow()
