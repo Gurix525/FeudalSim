@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 6350624242092471644}
   - component: {fileID: 8038406969446955769}
   - component: {fileID: 5218229156805348915}
-  - component: {fileID: 8862513093859163872}
+  - component: {fileID: 536501916306594646}
   m_Layer: 0
   m_Name: ShortWall
   m_TagString: Untagged
@@ -41,7 +41,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6010655915011190758}
-  m_Mesh: {fileID: -5495902117074765545, guid: 8a2188314845b19478fafa8a665b25a0, type: 3}
+  m_Mesh: {fileID: -5174688665618457908, guid: 8a2188314845b19478fafa8a665b25a0, type: 3}
 --- !u!23 &5218229156805348915
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -84,7 +84,7 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &8862513093859163872
+--- !u!65 &536501916306594646
 BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -96,4 +96,4 @@ BoxCollider:
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 1.2, y: 1.1, z: 0.19999999}
-  m_Center: {x: 0, y: 0.55, z: 0}
+  m_Center: {x: 0.5, y: 0.55, z: 0}

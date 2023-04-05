@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 2135725980718893409}
   - component: {fileID: 3029872393282488004}
   - component: {fileID: 1002248461666316814}
-  - component: {fileID: 4750846066862274019}
+  - component: {fileID: 4992147482494100491}
   m_Layer: 0
   m_Name: BigFloor
   m_TagString: Untagged
@@ -41,7 +41,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1650657062644011995}
-  m_Mesh: {fileID: -5495902117074765545, guid: 6dda876d4fef4b246b4669765447cacb, type: 3}
+  m_Mesh: {fileID: 4332125777541583200, guid: 6dda876d4fef4b246b4669765447cacb, type: 3}
 --- !u!23 &1002248461666316814
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -84,7 +84,7 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &4750846066862274019
+--- !u!65 &4992147482494100491
 BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -95,5 +95,5 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1.9999999, y: 0.10000014, z: 2}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 2, y: 0.10000014, z: 2}
+  m_Center: {x: 1, y: 0, z: 1}

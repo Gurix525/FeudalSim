@@ -8,7 +8,13 @@ namespace Controls
 {
     public class Builder : MonoBehaviour
     {
+        #region Fields
+
         private BuildingMode _buildingMode = BuildingMode.BigWall;
+
+        #endregion Fields
+
+        #region Unity
 
         private void OnEnable()
         {
@@ -40,9 +46,15 @@ namespace Controls
             PlayerController.MainQuickMenu.RemoveListener(ActionType.Started, ChangeMode);
         }
 
+        #endregion Unity
+
+        #region Private
+
         private void ChangeMode(CallbackContext context)
         {
             _buildingMode = (int)(_buildingMode + 1) > 4 ? 0 : _buildingMode + 1;
         }
+
+        #endregion Private
     }
 }

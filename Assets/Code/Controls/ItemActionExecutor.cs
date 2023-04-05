@@ -12,11 +12,9 @@ namespace Controls
         [SerializeField] private TextMeshProUGUI _modeText;
 
         private float _delta = -1F;
-        private BuildingMode _buildingMode = BuildingMode.Floor;
         private ShovelMode _shovelMode = ShovelMode.Digging;
 
         private static bool _isShovelActive = false;
-        private static bool _isBuildingActive = true;
 
         private void OnEnable()
         {
@@ -32,12 +30,6 @@ namespace Controls
 
         private void Execute(CallbackContext context)
         {
-            if (_isBuildingActive)
-                switch (_buildingMode)
-                {
-                    default:
-                        break;
-                }
             if (_isShovelActive)
                 switch (_shovelMode)
                 {
@@ -59,7 +51,6 @@ namespace Controls
         private void ChangeMode(CallbackContext context)
         {
             _delta *= -1F;
-            _buildingMode = (int)(_buildingMode + 1) > 4 ? 0 : _buildingMode + 1;
             _shovelMode = (int)(_shovelMode + 1) > 3 ? 0 : _shovelMode + 1;
             _modeText.text = _shovelMode switch
             {

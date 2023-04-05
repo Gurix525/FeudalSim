@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 7121825722266787852}
   - component: {fileID: 6159258906506604457}
   - component: {fileID: 8259287386394745699}
-  - component: {fileID: 5468261029811093591}
+  - component: {fileID: 4075322831412530862}
   m_Layer: 0
   m_Name: BigWall
   m_TagString: Untagged
@@ -41,7 +41,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7610553880199559862}
-  m_Mesh: {fileID: -5495902117074765545, guid: fec6614c62152c6468c0cea93685ab2a, type: 3}
+  m_Mesh: {fileID: 8075065236519737422, guid: fec6614c62152c6468c0cea93685ab2a, type: 3}
 --- !u!23 &8259287386394745699
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -84,7 +84,7 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &5468261029811093591
+--- !u!65 &4075322831412530862
 BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -95,5 +95,5 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 2.2, y: 2.1, z: 0.19999999}
-  m_Center: {x: 0, y: 1.05, z: 0}
+  m_Size: {x: 2.1999998, y: 2.1, z: 0.19999999}
+  m_Center: {x: 0.99999994, y: 1.05, z: 0}
