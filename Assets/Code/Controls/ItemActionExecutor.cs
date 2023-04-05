@@ -68,14 +68,6 @@ namespace Controls
                 ShovelMode.Pathing => $"Tryb: ścieżkowanie",
                 _ => $"Tryb: oranie"
             };
-            CursorMeshHighlight.SetMesh(_buildingMode switch
-            {
-                BuildingMode.Floor => _meshes[0],
-                BuildingMode.BigFloor => _meshes[1],
-                BuildingMode.ShortWall => _meshes[2],
-                BuildingMode.Wall => _meshes[3],
-                _ => _meshes[4]
-            });
         }
 
         private void Plow()

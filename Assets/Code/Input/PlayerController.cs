@@ -29,6 +29,7 @@ namespace Input
         public static ModifiableInputAction MainRightClick { get; set; } = new();
         public static ModifiableInputAction MainEscape { get; set; } = new();
         public static ModifiableInputAction MainMouseDelta { get; set; } = new();
+        public static ModifiableInputAction MainQuickMenu { get; set; } = new();
 
         #endregion Properties
 
@@ -58,6 +59,7 @@ namespace Input
             MainRightClick.Action = Main.FindAction("RightClick");
             MainEscape.Action = Main.FindAction("Escape");
             MainMouseDelta.Action = Main.FindAction("MouseDelta");
+            MainQuickMenu.Action = Main.FindAction("QuickMenu");
         }
 
         #endregion Public

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Misc;
 using UnityEngine;
 
 namespace Items
@@ -13,8 +14,8 @@ namespace Items
 
         private static Dictionary<string, ItemModel> _itemModels = new()
         {
-            { "Stone", new("Stone") },
-            { "Wood", new("Wood") },
+            { "Stone", new("Stone", isEligibleForBuilding:true) },
+            { "Wood", new("Wood", isEligibleForBuilding:true) },
             { "Sword", new("Sword", 1) },
             { "Axe", new("Axe", 1) }
         };
@@ -29,6 +30,8 @@ namespace Items
         public int MaxStack => _model.MaxStack;
         public Sprite Sprite => _model.Sprite;
         public Dictionary<string, float> Stats => _stats ?? _model.Stats;
+        public bool IsEligibleForBuilding => _model.IsEligibleForBuilding;
+        public Mesh[] BuildingMeshes => _model.BuildingMeshes;
 
         #endregion Properties
 

@@ -15,9 +15,10 @@ public class CursorMeshHighlight : MonoBehaviour
     public static CursorMeshHighlight Instance { get; private set; }
     public static bool IsBlocked { get; set; } = false;
 
-    public static void SetMesh(Mesh mesh)
+    public static void TrySetMesh(Mesh mesh)
     {
-        Instance._mesh = mesh;
+        if (Instance._mesh != mesh)
+            Instance._mesh = mesh;
     }
 
     private void Awake()
@@ -39,9 +40,13 @@ public class CursorMeshHighlight : MonoBehaviour
             _renderer.material = _blockedMaterial;
         if (Cursor.IsAboveTerrain && _mesh != null)
         {
+            _renderer.enabled = true;
+            _renderer.material.renderQueue = 3001;
             var cellPosition = Cursor.CellPosition.Value;
             _highlight.transform.position = new(
                 cellPosition.x + 0.5F, Terrain.GetHeight(cellPosition), cellPosition.y + 0.5F);
         }
+        else
+            _renderer.enabled = false;
     }
 }

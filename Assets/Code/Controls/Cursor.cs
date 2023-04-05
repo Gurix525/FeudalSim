@@ -1,4 +1,5 @@
 ﻿using Items;
+using Misc;
 using UnityEngine;
 
 namespace Controls
@@ -8,6 +9,8 @@ namespace Controls
         private static Vector2Int? _cellPosition;
 
         public static Container Container { get; } = new(1);
+
+        public static Item Item => Container[0];
 
         public static Vector2Int? CellPosition
         {
