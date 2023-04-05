@@ -4,28 +4,19 @@ using UnityEngine.EventSystems;
 
 namespace Controls
 {
-    public class CursorPositionFinder : MonoBehaviour
+    public class CursorExactPositionFinder : MonoBehaviour
     {
-        #region Unity
-
-        private void OnMouseOver()
+        private void Update()
         {
             if (EventSystem.current.IsPointerOverGameObject())
             {
-                Cursor.CellPosition = null;
+                Cursor.ExactPosition = null;
                 return;
             }
             Ray ray = Camera.main
                 .ScreenPointToRay(PlayerController.MainPoint.ReadValue<Vector2>());
             Physics.Raycast(ray, out RaycastHit hit);
-            Cursor.CellPosition = new Vector2Int(Mathf.FloorToInt(hit.point.x), Mathf.FloorToInt(hit.point.z));
+            Cursor.ExactPosition = hit.point;
         }
-
-        private void OnMouseExit()
-        {
-            Cursor.CellPosition = null;
-        }
-
-        #endregion Unity
     }
 }

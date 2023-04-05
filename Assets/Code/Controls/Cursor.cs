@@ -14,13 +14,15 @@ namespace Controls
 
         public static Vector2Int? CellPosition
         {
-            get => _cellPosition ?? null;
+            get => _cellPosition;
             set
             {
                 _cellPosition = value;
                 IsAboveTerrain = _cellPosition != null ? true : false;
             }
         }
+
+        public static Vector3? ExactPosition { get; set; }
 
         public static bool IsAboveTerrain { get; private set; } = false;
     }

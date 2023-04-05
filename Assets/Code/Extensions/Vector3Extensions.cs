@@ -13,5 +13,10 @@ namespace Extensions
         {
             return new(Mathf.Floor(v.x), Mathf.Floor(v.y), Mathf.Floor(v.z));
         }
+
+        public static Vector3 Round(this Vector3 v)
+        {
+            return new(Mathf.Round(v.x), Mathf.Round(v.y), Mathf.Round(v.z));
+        }
     }
 }

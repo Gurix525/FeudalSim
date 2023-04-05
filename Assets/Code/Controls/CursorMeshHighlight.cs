@@ -1,3 +1,4 @@
+using Extensions;
 using UnityEngine;
 using Cursor = Controls.Cursor;
 using Terrain = World.Terrain;
@@ -12,6 +13,8 @@ public class CursorMeshHighlight : MonoBehaviour
     private MeshFilter _filter;
     private MeshRenderer _renderer;
 
+    private static float _meshRotation = 0F;
+
     public static CursorMeshHighlight Instance { get; private set; }
     public static bool IsBlocked { get; set; } = false;
 
@@ -19,6 +22,11 @@ public class CursorMeshHighlight : MonoBehaviour
     {
         if (Instance._mesh != mesh)
             Instance._mesh = mesh;
+    }
+
+    public static void SetMeshRotation(float rotation)
+    {
+        _meshRotation = rotation;
     }
 
     private void Awake()
@@ -38,13 +46,18 @@ public class CursorMeshHighlight : MonoBehaviour
             _renderer.material = _notBlockedMaterial;
         else if (_renderer.material != _blockedMaterial && IsBlocked)
             _renderer.material = _blockedMaterial;
-        if (Cursor.IsAboveTerrain && _mesh != null)
+        if (_mesh != null && Cursor.ExactPosition != null)
         {
             _renderer.enabled = true;
             _renderer.material.renderQueue = 3001;
-            var cellPosition = Cursor.CellPosition.Value;
-            _highlight.transform.position = new(
-                cellPosition.x + 0.5F, Terrain.GetHeight(cellPosition), cellPosition.y + 0.5F);
+            var position = Cursor.ExactPosition.Value;
+            var calibratedPosition = new Vector3(
+                Mathf.Floor(position.x),
+                Mathf.Round(position.y),
+                Mathf.Floor(position.z));
+            _highlight.transform.SetPositionAndRotation(
+                calibratedPosition,
+                Quaternion.Euler(0, _meshRotation, 0));
         }
         else
             _renderer.enabled = false;

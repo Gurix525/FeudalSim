@@ -1730,6 +1730,11 @@ MonoBehaviour:
   _prefabs:
   - {fileID: 170168854038582551, guid: 60eca68ac5657c9428d07dd74ece222a, type: 3}
   - {fileID: 1894618486631771088, guid: 2687b9a111684344f8d56f187d1fc4e7, type: 3}
+  - {fileID: 5108515809283952895, guid: 11b0914533233e249bc7f6f967a325b0, type: 3}
+  - {fileID: 1650657062644011995, guid: 9c3240cd1ce12664cb7e3ae77e3be058, type: 3}
+  - {fileID: 6010655915011190758, guid: 861f9c8e1bdc38148a3ef1858b1cb91e, type: 3}
+  - {fileID: 3493690842628040796, guid: dd1cd04d674ce174b85dd5efccd6ce24, type: 3}
+  - {fileID: 7610553880199559862, guid: a68af5839d456ac42b86377e24fe3cc5, type: 3}
 --- !u!4 &1612806887
 Transform:
   m_ObjectHideFlags: 0

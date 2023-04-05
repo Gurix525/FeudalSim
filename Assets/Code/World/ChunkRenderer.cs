@@ -9,7 +9,7 @@ namespace World
     [RequireComponent(typeof(MeshRenderer))]
     [RequireComponent(typeof(MeshFilter))]
     [RequireComponent(typeof(MeshCollider))]
-    [RequireComponent(typeof(CursorPositionFinder))]
+    [RequireComponent(typeof(CursorCellPositionFinder))]
     public class ChunkRenderer : MonoBehaviour
     {
         public Vector2Int Position { get; private set; }
