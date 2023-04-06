@@ -71,6 +71,7 @@ namespace Controls
         private void ChangeMode(CallbackContext context)
         {
             _buildingMode = (int)(_buildingMode + 1) > 4 ? 0 : _buildingMode + 1;
+            CursorMeshHighlight.SetBuildingMode(_buildingMode);
             ResetRotationIfModeIsFloor();
         }
 

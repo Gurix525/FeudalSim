@@ -1,3 +1,4 @@
+using Controls;
 using Extensions;
 using UnityEngine;
 using Cursor = Controls.Cursor;
@@ -12,16 +13,26 @@ public class CursorMeshHighlight : MonoBehaviour
     private GameObject _highlight;
     private MeshFilter _filter;
     private MeshRenderer _renderer;
+    private BuildingMode _buildingMode = BuildingMode.BigWall;
+    private Vector3 _previousPosition = Vector3.zero;
 
     private static float _meshRotation;
 
-    public static CursorMeshHighlight Instance { get; private set; }
     public static bool IsBlocked { get; set; } = false;
+    private static CursorMeshHighlight _instance { get; set; }
 
     public static void TrySetMesh(Mesh mesh)
     {
-        if (Instance._mesh != mesh)
-            Instance._mesh = mesh;
+        if (_instance._mesh != mesh)
+        {
+            _instance._mesh = mesh;
+            _instance._previousPosition = Vector3.zero;
+        }
+    }
+
+    public static void SetBuildingMode(BuildingMode buildingMode)
+    {
+        _instance._buildingMode = buildingMode;
     }
 
     public static void SetMeshRotation(float rotation)
@@ -31,7 +42,7 @@ public class CursorMeshHighlight : MonoBehaviour
 
     private void Awake()
     {
-        Instance = this;
+        _instance = this;
         _highlight = new GameObject("MeshHighlight");
         _filter = _highlight.AddComponent<MeshFilter>();
         _renderer = _highlight.AddComponent<MeshRenderer>();
@@ -58,6 +69,18 @@ public class CursorMeshHighlight : MonoBehaviour
             _highlight.transform.SetPositionAndRotation(
                 calibratedPosition,
                 Quaternion.Euler(0, _meshRotation, 0));
+            if (calibratedPosition != _previousPosition)
+            {
+                _previousPosition = calibratedPosition;
+                bool isBuildingPossible = Terrain.IsBuildingPossible(
+                    calibratedPosition.ToVector3Int(),
+                    _buildingMode,
+                    _meshRotation);
+                if (isBuildingPossible)
+                    IsBlocked = false;
+                else
+                    IsBlocked = true;
+            }
         }
         else
             _renderer.enabled = false;
