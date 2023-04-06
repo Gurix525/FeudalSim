@@ -56,6 +56,17 @@ namespace World
                 heights.Remove(height);
         }
 
+        public bool IsBuildingPossible(BuildingMarkType markType, int height)
+        {
+            List<int> heights = markType switch
+            {
+                BuildingMarkType.Floor => FloorHeights,
+                BuildingMarkType.HorizontalWall => HorizontalWallHeights,
+                _ => VerticalWallHeights,
+            };
+            return !heights.Contains(height);
+        }
+
         public void RecalculateSteepness()
         {
             float min = Mathf.Min(

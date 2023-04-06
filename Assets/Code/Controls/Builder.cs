@@ -86,19 +86,21 @@ namespace Controls
                 return;
             if (!Cursor.Item.IsEligibleForBuilding)
                 return;
-            GameObject prefab = BuildingPrefabs[(int)_buildingMode];
-            GameObject building = Instantiate(prefab);
             var position = Cursor.ExactPosition.Value;
             var calibratedPosition = new Vector3(
                 Mathf.Floor(position.x),
                 Mathf.Round(position.y),
-                Mathf.Floor(position.z));
+                Mathf.Floor(position.z)).ToVector3Int();
+            if (!Terrain.IsBuildingPossible(calibratedPosition, _buildingMode, _meshRotation))
+                return;
+            GameObject prefab = BuildingPrefabs[(int)_buildingMode];
+            GameObject building = Instantiate(prefab);
             building.transform.SetPositionAndRotation(
                 calibratedPosition,
                 Quaternion.Euler(0, _meshRotation, 0));
             building.GetComponent<MeshRenderer>().material = Cursor.Item.Material;
             building.GetComponent<Building>().SetBackingItem(Cursor.Item.Clone());
-            Terrain.SetBuildingMark(calibratedPosition.ToVector3Int(), _buildingMode, _meshRotation, true);
+            Terrain.SetBuildingMark(calibratedPosition, _buildingMode, _meshRotation, true);
         }
 
         private void ResetRotationIfModeIsFloor()

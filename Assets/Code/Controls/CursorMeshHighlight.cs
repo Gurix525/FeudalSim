@@ -13,7 +13,7 @@ public class CursorMeshHighlight : MonoBehaviour
     private MeshFilter _filter;
     private MeshRenderer _renderer;
 
-    private static float _meshRotation = 0F;
+    private static float _meshRotation;
 
     public static CursorMeshHighlight Instance { get; private set; }
     public static bool IsBlocked { get; set; } = false;

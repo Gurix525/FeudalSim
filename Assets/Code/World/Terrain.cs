@@ -130,6 +130,9 @@ namespace World
             float rotation,
             bool state)
         {
+            BuildingMarkType wallMarkType = rotation == 0
+                    ? BuildingMarkType.HorizontalWall
+                    : BuildingMarkType.VerticalWall;
             if (buildingMode == BuildingMode.Floor)
                 GetCell(new Vector2Int(startPosition.x, startPosition.z))
                     .SetBuildingMark(BuildingMarkType.Floor, startPosition.y, state);
@@ -142,37 +145,81 @@ namespace World
             if (buildingMode == BuildingMode.ShortWall)
             {
                 var cell = GetCell(new Vector2Int(startPosition.x, startPosition.z));
-                BuildingMarkType markType = rotation == 0
-                    ? BuildingMarkType.HorizontalWall
-                    : BuildingMarkType.VerticalWall;
-                cell.SetBuildingMark(markType, startPosition.y, state);
+                cell.SetBuildingMark(wallMarkType, startPosition.y, state);
             }
             if (buildingMode == BuildingMode.Wall)
             {
-                BuildingMarkType markType = rotation == 0
-                    ? BuildingMarkType.HorizontalWall
-                    : BuildingMarkType.VerticalWall;
                 var cell = GetCell(new Vector2Int(startPosition.x, startPosition.z));
                 for (int i = 0; i < 2; i++)
                 {
-                    cell.SetBuildingMark(markType, startPosition.y + i, state);
+                    cell.SetBuildingMark(wallMarkType, startPosition.y + i, state);
                 }
             }
             if (buildingMode == BuildingMode.BigWall)
             {
-                BuildingMarkType markType = rotation == 0
-                    ? BuildingMarkType.HorizontalWall
-                    : BuildingMarkType.VerticalWall;
                 var firstCell = GetCell(new Vector2Int(startPosition.x, startPosition.z));
                 Vector2Int shift = rotation == 0F ? new(1, 0) : new(0, 1);
                 var secondCell = GetCell(new Vector2Int(startPosition.x, startPosition.z) + shift);
                 for (int i = 0; i < 2; i++)
                 {
-                    firstCell.SetBuildingMark(markType, startPosition.y + i, state);
-                    secondCell.SetBuildingMark(markType, startPosition.y + i, state);
+                    firstCell.SetBuildingMark(wallMarkType, startPosition.y + i, state);
+                    secondCell.SetBuildingMark(wallMarkType, startPosition.y + i, state);
                 }
             }
             GrassInstancer.MarkToReload();
+        }
+
+        public static bool IsBuildingPossible(
+            Vector3Int startPosition,
+            BuildingMode buildingMode,
+            float rotation)
+        {
+            BuildingMarkType wallMarkType = rotation == 0
+                    ? BuildingMarkType.HorizontalWall
+                    : BuildingMarkType.VerticalWall;
+            if (buildingMode == BuildingMode.Floor)
+                return GetCell(new Vector2Int(startPosition.x, startPosition.z))
+                    .IsBuildingPossible(BuildingMarkType.Floor, startPosition.y);
+            if (buildingMode == BuildingMode.BigFloor)
+            {
+                int blockedCellsCount = 0;
+                Cell[] cells = Get4Neighbours(new Vector2Int(startPosition.x, startPosition.z));
+                foreach (var cell in cells)
+                    if (!cell.IsBuildingPossible(BuildingMarkType.Floor, startPosition.y))
+                        blockedCellsCount++;
+                return blockedCellsCount == 0;
+            }
+            if (buildingMode == BuildingMode.ShortWall)
+            {
+                return GetCell(new Vector2Int(startPosition.x, startPosition.z))
+                    .IsBuildingPossible(wallMarkType, startPosition.y);
+            }
+            if (buildingMode == BuildingMode.Wall)
+            {
+                int blockedCellsCount = 0;
+                var cell = GetCell(new Vector2Int(startPosition.x, startPosition.z));
+                for (int i = 0; i < 2; i++)
+                {
+                    if (!cell.IsBuildingPossible(wallMarkType, startPosition.y + i))
+                        blockedCellsCount++;
+                }
+                return blockedCellsCount == 0;
+            }
+            if (buildingMode == BuildingMode.BigWall)
+            {
+                int blockedCellsCount = 0;
+                var firstCell = GetCell(new Vector2Int(startPosition.x, startPosition.z));
+                Vector2Int shift = rotation == 0F ? new(1, 0) : new(0, 1);
+                var secondCell = GetCell(new Vector2Int(startPosition.x, startPosition.z) + shift);
+                for (int i = 0; i < 2; i++)
+                {
+                    if (!firstCell.IsBuildingPossible(wallMarkType, startPosition.y + i)
+                        || !secondCell.IsBuildingPossible(wallMarkType, startPosition.y + i))
+                        blockedCellsCount++;
+                }
+                return blockedCellsCount == 0;
+            }
+            return false;
         }
 
         #endregion Public
