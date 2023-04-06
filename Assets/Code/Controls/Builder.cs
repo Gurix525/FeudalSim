@@ -1,3 +1,4 @@
+using Buildings;
 using Input;
 using Misc;
 using UnityEngine;
@@ -94,6 +95,8 @@ namespace Controls
             building.transform.SetPositionAndRotation(
                 calibratedPosition,
                 Quaternion.Euler(0, _meshRotation, 0));
+            building.GetComponent<MeshRenderer>().material = Cursor.Item.Material;
+            building.GetComponent<Building>().SetBackingItem(Cursor.Item.Clone());
         }
 
         private void ResetRotationIfModeIsFloor()

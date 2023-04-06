@@ -1136,7 +1136,7 @@ CharacterController:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Height: 2
+  m_Height: 1.8
   m_Radius: 0.5
   m_SlopeLimit: 45
   m_StepOffset: 0.3
@@ -1704,10 +1704,12 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1612806887}
+  - component: {fileID: 1612806891}
   - component: {fileID: 1612806886}
   - component: {fileID: 1612806888}
   - component: {fileID: 1612806889}
   - component: {fileID: 1612806890}
+  - component: {fileID: 1612806892}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -1799,6 +1801,33 @@ MonoBehaviour:
   - {fileID: -5174688665618457908, guid: 8a2188314845b19478fafa8a665b25a0, type: 3}
   - {fileID: 8733429697405204941, guid: da478cb91c3d7b2418208c7cf3c24af4, type: 3}
   - {fileID: 8075065236519737422, guid: fec6614c62152c6468c0cea93685ab2a, type: 3}
+--- !u!114 &1612806891
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1612806885}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a03acc905eb1f3d4bb818a3882b9df3d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1612806892
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1612806885}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3c1cfd12559e1ae409e1802df1de8aa6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _materials:
+  - {fileID: 2100000, guid: 773d09efdda517040b92a54c7a8d11b1, type: 2}
+  - {fileID: 2100000, guid: 0e6414a118a855e47a245ef059275cb0, type: 2}
 --- !u!1 &1638003107
 GameObject:
   m_ObjectHideFlags: 0

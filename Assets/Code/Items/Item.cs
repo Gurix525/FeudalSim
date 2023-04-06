@@ -31,6 +31,7 @@ namespace Items
         public Sprite Sprite => _model.Sprite;
         public Dictionary<string, float> Stats => _stats ?? _model.Stats;
         public bool IsEligibleForBuilding => _model.IsEligibleForBuilding;
+        public Material Material => _model.Material;
         public Mesh[] BuildingMeshes => _model.BuildingMeshes;
 
         #endregion Properties

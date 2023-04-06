@@ -9,6 +9,7 @@ namespace Items
         #region Properties
 
         private Mesh[] _buildingMeshes;
+        private Material _material;
 
         public string Name { get; }
         public string Description { get; }
@@ -16,6 +17,7 @@ namespace Items
         public Sprite Sprite { get; }
         public Dictionary<string, float> Stats { get; }
         public bool IsEligibleForBuilding { get; }
+        public Material Material => _material ??= Materials.GetMaterial(Name) ?? Materials.DefaultMaterial;
 
         public Mesh[] BuildingMeshes =>
             _buildingMeshes ??=
