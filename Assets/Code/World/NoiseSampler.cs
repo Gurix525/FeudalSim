@@ -28,11 +28,11 @@ namespace World
             return GetNoise(position.x, position.z, min, max, detailScale);
         }
 
-        public static float GetHeight(int x, int z)
+        public static int GetHeight(int x, int z)
         {
             float mediumNoise = GetMediumNoise(x, z);
             float largeNoise = GetLargeNoise(x, z);
-            return Mathf.Round(Mathf.Round(Mathf.Round(mediumNoise * largeNoise * 2F) / 2F) / 4F) + 3F;
+            return Mathf.RoundToInt(Mathf.Round(Mathf.Round(mediumNoise * largeNoise * 2F) / 2F) / 4F) + 3;
         }
 
         private static float GetMediumNoise(int x, int z)

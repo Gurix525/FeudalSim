@@ -61,8 +61,7 @@ namespace World
                 for (int x = _currentPlayerPosition.x - 49; x < _currentPlayerPosition.x + 50; x++)
                 {
                     Cell cell = Terrain.GetCell(new Vector2Int(x, z));
-                    if (cell.Steepness > 0.4F
-                        || cell.Color != new Color(0F, 0F, 0F, 0F))
+                    if (!cell.HasGrass)
                     {
                         index += 2;
                         continue;

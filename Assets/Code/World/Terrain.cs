@@ -2,16 +2,23 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using Controls;
 
 namespace World
 {
     public static class Terrain
     {
+        #region Properties
+
         public static Dictionary<Vector2Int, Chunk> Chunks { get; } = new();
+
+        #endregion Properties
+
+        #region Public
 
         public static void ModifyHeight(
             Vector2Int cellPosition,
-            float deltaHeight,
+            int deltaHeight,
             bool hasToSetNeighbours = true,
             bool hasToReload = true,
             bool hasToChangeColor = true)
@@ -54,7 +61,7 @@ namespace World
             }
         }
 
-        internal static void ChangeColor(
+        public static void ChangeColor(
             Vector2Int cellPosition,
             Color color,
             bool hasToSetNeighbours = true,
@@ -75,6 +82,107 @@ namespace World
                 GrassInstancer.MarkToReload();
             }
         }
+
+        public static Cell GetCell(Vector2Int cellPosition)
+        {
+            return GetCell(new Vector2(cellPosition.x, cellPosition.y));
+        }
+
+        public static Cell GetCell(Vector3 inputPosition)
+        {
+            return GetCell(new Vector2(inputPosition.x, inputPosition.z));
+        }
+
+        public static Cell GetCell(Vector2 inputPosition)
+        {
+            Vector2Int chunkPosition = Vector2Int.zero;
+            Vector2Int verticePosition = GetVerticeCoordinates(inputPosition);
+            try
+            {
+                chunkPosition = GetChunkCoordinates(inputPosition);
+            }
+            catch (ArgumentOutOfRangeException e)
+            {
+                Debug.LogError(e.Message);
+                return null;
+            }
+            return Chunks[chunkPosition][verticePosition];
+        }
+
+        public static float GetHeight(Vector2 inputPosition)
+        {
+            return GetCell(inputPosition).Height;
+        }
+
+        public static float GetSteepness(Vector2 inputPosition)
+        {
+            return GetCell(inputPosition).Steepness;
+        }
+
+        public static Color GetColor(Vector2 inputPosition)
+        {
+            return GetCell(inputPosition).Color;
+        }
+
+        public static void MarkBuilding(
+            Vector3Int startPosition,
+            BuildingMode buildingMode,
+            float rotation)
+        {
+            if (buildingMode == BuildingMode.Floor)
+                GetCell(new Vector2Int(startPosition.x, startPosition.z))
+                    .FloorHeights.Add(startPosition.y);
+            if (buildingMode == BuildingMode.BigFloor)
+            {
+                Cell[] cells = Get4Neighbours(new Vector2Int(startPosition.x, startPosition.z));
+                foreach (var cell in cells)
+                    cell.FloorHeights.Add(startPosition.y);
+            }
+            if (buildingMode == BuildingMode.ShortWall)
+            {
+                var cell = GetCell(new Vector2Int(startPosition.x, startPosition.z));
+                if (rotation == 0)
+                    cell.HorizontalWallHeights.Add(startPosition.y);
+                else
+                    cell.VerticalWallHeights.Add(startPosition.y);
+            }
+            if (buildingMode == BuildingMode.Wall)
+            {
+                var cell = GetCell(new Vector2Int(startPosition.x, startPosition.z));
+                for (int i = 0; i < 2; i++)
+                {
+                    if (rotation == 0)
+                        cell.HorizontalWallHeights.Add(startPosition.y + i);
+                    else
+                        cell.VerticalWallHeights.Add(startPosition.y + i);
+                }
+            }
+            if (buildingMode == BuildingMode.BigWall)
+            {
+                var firstCell = GetCell(new Vector2Int(startPosition.x, startPosition.z));
+                Vector2Int shift = rotation == 0F ? new(1, 0) : new(0, 1);
+                var secondCell = GetCell(new Vector2Int(startPosition.x, startPosition.z) + shift);
+                for (int i = 0; i < 2; i++)
+                {
+                    if (rotation == 0)
+                    {
+                        firstCell.HorizontalWallHeights.Add(startPosition.y + i);
+                        secondCell.HorizontalWallHeights.Add(startPosition.y + i);
+                    }
+                    else
+                    {
+                        firstCell.VerticalWallHeights.Add(startPosition.y + i);
+                        secondCell.VerticalWallHeights.Add(startPosition.y + i);
+                    }
+                }
+            }
+
+            GrassInstancer.MarkToReload();
+        }
+
+        #endregion Public
+
+        #region Private
 
         private static Vector2Int[] GetChunksToReload(Vector2Int cellPosition)
         {
@@ -122,47 +230,6 @@ namespace World
             return cells;
         }
 
-        public static Cell GetCell(Vector2Int cellPosition)
-        {
-            return GetCell(new Vector2(cellPosition.x, cellPosition.y));
-        }
-
-        public static Cell GetCell(Vector3 inputPosition)
-        {
-            return GetCell(new Vector2(inputPosition.x, inputPosition.z));
-        }
-
-        public static Cell GetCell(Vector2 inputPosition)
-        {
-            Vector2Int chunkPosition = Vector2Int.zero;
-            Vector2Int verticePosition = GetVerticeCoordinates(inputPosition);
-            try
-            {
-                chunkPosition = GetChunkCoordinates(inputPosition);
-            }
-            catch (ArgumentOutOfRangeException e)
-            {
-                Debug.LogError(e.Message);
-                return null;
-            }
-            return Chunks[chunkPosition][verticePosition];
-        }
-
-        public static float GetHeight(Vector2 inputPosition)
-        {
-            return GetCell(inputPosition).Height;
-        }
-
-        public static float GetSteepness(Vector2 inputPosition)
-        {
-            return GetCell(inputPosition).Steepness;
-        }
-
-        public static Color GetColor(Vector2 inputPosition)
-        {
-            return GetCell(inputPosition).Color;
-        }
-
         private static Vector2Int GetChunkCoordinates(Vector2 inputPosition)
         {
             Vector2Int position = new(
@@ -188,5 +255,7 @@ namespace World
                     ? 100 - Mathf.Abs(inputPosition.y % 100)
                     : inputPosition.y % 100));
         }
+
+        #endregion Private
     }
 }

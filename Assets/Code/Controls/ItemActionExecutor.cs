@@ -11,7 +11,7 @@ namespace Controls
         [SerializeField] private Mesh[] _meshes;
         [SerializeField] private TextMeshProUGUI _modeText;
 
-        private float _delta = -1F;
+        private int _delta = -1;
         private ShovelMode _shovelMode = ShovelMode.Digging;
 
         private static bool _isShovelActive = false;
@@ -50,7 +50,7 @@ namespace Controls
 
         private void ChangeMode(CallbackContext context)
         {
-            _delta *= -1F;
+            _delta *= -1;
             _shovelMode = (int)(_shovelMode + 1) > 3 ? 0 : _shovelMode + 1;
             _modeText.text = _shovelMode switch
             {

@@ -1,4 +1,5 @@
 using Buildings;
+using Extensions;
 using Input;
 using Misc;
 using UnityEngine;
@@ -97,6 +98,7 @@ namespace Controls
                 Quaternion.Euler(0, _meshRotation, 0));
             building.GetComponent<MeshRenderer>().material = Cursor.Item.Material;
             building.GetComponent<Building>().SetBackingItem(Cursor.Item.Clone());
+            Terrain.MarkBuilding(calibratedPosition.ToVector3Int(), _buildingMode, _meshRotation);
         }
 
         private void ResetRotationIfModeIsFloor()

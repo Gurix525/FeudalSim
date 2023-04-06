@@ -1,18 +1,34 @@
 ﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace World
 {
     public class Cell
     {
+        #region Properties
+
         public Vector2Int Position { get; private set; }
-        public float Height { get; private set; }
+        public int Height { get; private set; }
         public float Steepness { get; private set; }
         public Color Color { get; private set; }
 
+        public List<int> FloorHeights { get; } = new();
+        public List<int> HorizontalWallHeights { get; } = new();
+        public List<int> VerticalWallHeights { get; } = new();
+
+        public bool HasGrass => !(
+            Steepness > 0.4F
+            || Color != new Color(0F, 0F, 0F, 0F)
+            || FloorHeights.Contains(Height));
+
+        #endregion Properties
+
+        #region Constructors
+
         public Cell(
             Vector2Int position,
-            float height,
+            int height,
             float steepness = 0F,
             Color color = new())
         {
@@ -21,6 +37,10 @@ namespace World
             Steepness = steepness;
             Color = color;
         }
+
+        #endregion Constructors
+
+        #region Public
 
         public void RecalculateSteepness()
         {
@@ -37,12 +57,12 @@ namespace World
             Steepness = max - min;
         }
 
-        public void ModifyHeight(float deltaHeight)
+        public void ModifyHeight(int deltaHeight)
         {
             Height += deltaHeight;
         }
 
-        public void SetHeight(float height)
+        public void SetHeight(int height)
         {
             Height = height;
         }
@@ -61,5 +81,7 @@ namespace World
         {
             return $"{Position}";
         }
+
+        #endregion Public
     }
 }

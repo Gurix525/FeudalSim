@@ -18,5 +18,10 @@ namespace Extensions
         {
             return new(Mathf.Round(v.x), Mathf.Round(v.y), Mathf.Round(v.z));
         }
+
+        public static Vector3Int ToVector3Int(this Vector3 v)
+        {
+            return new(Mathf.RoundToInt(v.x), Mathf.RoundToInt(v.y), Mathf.RoundToInt(v.z));
+        }
     }
 }
