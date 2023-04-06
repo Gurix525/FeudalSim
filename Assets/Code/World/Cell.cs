@@ -42,6 +42,20 @@ namespace World
 
         #region Public
 
+        public void SetBuildingMark(BuildingMarkType markType, int height, bool isAdding)
+        {
+            List<int> heights = markType switch
+            {
+                BuildingMarkType.Floor => FloorHeights,
+                BuildingMarkType.HorizontalWall => HorizontalWallHeights,
+                _ => VerticalWallHeights,
+            };
+            if (isAdding)
+                heights.Add(height);
+            else
+                heights.Remove(height);
+        }
+
         public void RecalculateSteepness()
         {
             float min = Mathf.Min(
