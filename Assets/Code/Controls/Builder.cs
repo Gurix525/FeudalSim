@@ -110,7 +110,7 @@ namespace Controls
                 calibratedPosition,
                 Quaternion.Euler(0, _meshRotation, 0));
             building.GetComponent<MeshRenderer>().material = Cursor.Item.Material;
-            building.GetComponent<Building>().SetBackingItem(Cursor.Item.Clone());
+            building.GetComponent<Building>().SetBackingItem(Cursor.Container.ExtractAt(0, RequiredItemCount));
             Terrain.SetBuildingMark(calibratedPosition, _buildingMode, _meshRotation, true);
         }
 
