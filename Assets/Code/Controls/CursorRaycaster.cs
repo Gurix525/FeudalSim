@@ -4,19 +4,23 @@ using UnityEngine.EventSystems;
 
 namespace Controls
 {
-    public class CursorExactPositionFinder : MonoBehaviour
+    public class CursorRaycaster : MonoBehaviour
     {
+        private static RaycastHit? _hit = null;
+
+        public static RaycastHit? Hit => _hit;
+
         private void Update()
         {
             if (EventSystem.current.IsPointerOverGameObject())
             {
-                Cursor.ExactPosition = null;
+                _hit = null;
                 return;
             }
             Ray ray = Camera.main
                 .ScreenPointToRay(PlayerController.MainPoint.ReadValue<Vector2>());
             Physics.Raycast(ray, out RaycastHit hit);
-            Cursor.ExactPosition = hit.point;
+            _hit = hit;
         }
     }
 }

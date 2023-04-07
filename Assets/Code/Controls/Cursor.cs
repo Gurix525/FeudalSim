@@ -22,8 +22,8 @@ namespace Controls
             }
         }
 
-        public static Vector3? ExactPosition { get; set; }
-
         public static bool IsAboveTerrain { get; private set; } = false;
+
+        public static RaycastHit? RaycastHit => CursorRaycaster.Hit;
     }
 }

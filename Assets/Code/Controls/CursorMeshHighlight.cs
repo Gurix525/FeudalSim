@@ -1,6 +1,7 @@
 using Controls;
 using Extensions;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using Cursor = Controls.Cursor;
 using Terrain = World.Terrain;
 
@@ -57,11 +58,11 @@ public class CursorMeshHighlight : MonoBehaviour
             _renderer.material = _notBlockedMaterial;
         else if (_renderer.material != _blockedMaterial && IsBlocked)
             _renderer.material = _blockedMaterial;
-        if (_mesh != null && Cursor.ExactPosition != null)
+        if (_mesh != null && Cursor.RaycastHit != null)
         {
             _renderer.enabled = true;
             _renderer.material.renderQueue = 3001;
-            var position = Cursor.ExactPosition.Value;
+            var position = Cursor.RaycastHit.Value.point;
             var calibratedPosition = new Vector3(
                 Mathf.Floor(position.x),
                 Mathf.Round(position.y),

@@ -3,6 +3,7 @@ using Extensions;
 using Input;
 using Misc;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using static UnityEngine.InputSystem.InputAction;
 using Terrain = World.Terrain;
 
@@ -83,11 +84,11 @@ namespace Controls
 
         private void Build(CallbackContext context)
         {
-            if (Cursor.Item == null || Cursor.ExactPosition == null)
+            if (Cursor.Item == null || Cursor.RaycastHit == null)
                 return;
             if (!Cursor.Item.IsEligibleForBuilding)
                 return;
-            var position = Cursor.ExactPosition.Value;
+            var position = Cursor.RaycastHit.Value.point;
             var calibratedPosition = new Vector3(
                 Mathf.Floor(position.x),
                 Mathf.Round(position.y),

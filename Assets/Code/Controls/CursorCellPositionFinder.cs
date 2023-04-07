@@ -10,15 +10,14 @@ namespace Controls
 
         private void OnMouseOver()
         {
-            if (EventSystem.current.IsPointerOverGameObject())
+            if (Cursor.RaycastHit == null)
             {
                 Cursor.CellPosition = null;
                 return;
             }
-            Ray ray = Camera.main
-                .ScreenPointToRay(PlayerController.MainPoint.ReadValue<Vector2>());
-            Physics.Raycast(ray, out RaycastHit hit);
-            Cursor.CellPosition = new Vector2Int(Mathf.FloorToInt(hit.point.x), Mathf.FloorToInt(hit.point.z));
+            Cursor.CellPosition = new Vector2Int(
+                Mathf.FloorToInt(Cursor.RaycastHit.Value.point.x),
+                Mathf.FloorToInt(Cursor.RaycastHit.Value.point.z));
         }
 
         private void OnMouseExit()
