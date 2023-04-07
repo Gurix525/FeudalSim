@@ -64,6 +64,8 @@ namespace World
                 BuildingMarkType.HorizontalWall => HorizontalWallHeights,
                 _ => VerticalWallHeights,
             };
+            if (height < Height)
+                return false;
             return !heights.Contains(height);
         }
 

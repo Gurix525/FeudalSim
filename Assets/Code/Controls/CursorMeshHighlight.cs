@@ -7,6 +7,8 @@ using Terrain = World.Terrain;
 
 public class CursorMeshHighlight : MonoBehaviour
 {
+    #region Fields
+
     [SerializeField] private Mesh _mesh;
     [SerializeField] private Material _notBlockedMaterial;
     [SerializeField] private Material _blockedMaterial;
@@ -16,11 +18,31 @@ public class CursorMeshHighlight : MonoBehaviour
     private MeshRenderer _renderer;
     private BuildingMode _buildingMode = BuildingMode.BigWall;
     private Vector3 _previousPosition = Vector3.zero;
+    private Mesh _previousMesh = null;
+    private Material _previosMaterial = null;
 
     private static float _meshRotation;
 
+    #endregion Fields
+
+    #region Properties
+
     public static bool IsBlocked { get; set; } = false;
+
     private static CursorMeshHighlight _instance { get; set; }
+
+    private int RequiredItemCount => _buildingMode switch
+    {
+        BuildingMode.BigFloor => 4,
+        BuildingMode.ShortWall => 1,
+        BuildingMode.Wall => 2,
+        BuildingMode.BigWall => 4,
+        _ => 1
+    };
+
+    #endregion Properties
+
+    #region Public
 
     public static void TrySetMesh(Mesh mesh)
     {
@@ -41,6 +63,10 @@ public class CursorMeshHighlight : MonoBehaviour
         _meshRotation = rotation;
     }
 
+    #endregion Public
+
+    #region Unity
+
     private void Awake()
     {
         _instance = this;
@@ -52,12 +78,21 @@ public class CursorMeshHighlight : MonoBehaviour
 
     private void Update()
     {
-        if (_mesh != _filter.mesh)
+        if (_mesh != _previousMesh)
+        {
             _filter.mesh = _mesh;
-        if (_renderer.material != _notBlockedMaterial && !IsBlocked)
+            _previousMesh = _mesh;
+        }
+        if (_previosMaterial != _notBlockedMaterial && !IsBlocked && Cursor.Item != null ? Cursor.Item.Count >= RequiredItemCount : false)
+        {
             _renderer.material = _notBlockedMaterial;
-        else if (_renderer.material != _blockedMaterial && IsBlocked)
+            _previosMaterial = _notBlockedMaterial;
+        }
+        else if (_previosMaterial != _blockedMaterial && (IsBlocked || (Cursor.Item != null ? Cursor.Item.Count < RequiredItemCount : false)))
+        {
             _renderer.material = _blockedMaterial;
+            _previosMaterial = _blockedMaterial;
+        }
         if (_mesh != null && Cursor.RaycastHit != null)
         {
             _renderer.enabled = true;
@@ -86,4 +121,6 @@ public class CursorMeshHighlight : MonoBehaviour
         else
             _renderer.enabled = false;
     }
+
+    #endregion Unity
 }

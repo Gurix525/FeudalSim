@@ -26,6 +26,15 @@ namespace Controls
             Prefabs.GetPrefab("BigWall")
         };
 
+        private int RequiredItemCount => _buildingMode switch
+        {
+            BuildingMode.BigFloor => 4,
+            BuildingMode.ShortWall => 1,
+            BuildingMode.Wall => 2,
+            BuildingMode.BigWall => 4,
+            _ => 1
+        };
+
         #endregion Fields
 
         #region Unity
@@ -86,7 +95,7 @@ namespace Controls
         {
             if (Cursor.Item == null || Cursor.RaycastHit == null)
                 return;
-            if (!Cursor.Item.IsEligibleForBuilding)
+            if (!Cursor.Item.IsEligibleForBuilding || Cursor.Item.Count < RequiredItemCount)
                 return;
             var position = Cursor.RaycastHit.Value.point;
             var calibratedPosition = new Vector3(

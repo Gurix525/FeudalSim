@@ -134,17 +134,21 @@ namespace World
                     ? BuildingMarkType.HorizontalWall
                     : BuildingMarkType.VerticalWall;
             if (buildingMode == BuildingMode.Floor)
-                GetCell(new Vector2Int(startPosition.x, startPosition.z))
-                    .SetBuildingMark(BuildingMarkType.Floor, startPosition.y, state);
+            {
+                Cell cell = GetCell(new Vector2Int(startPosition.x, startPosition.z));
+                cell.SetBuildingMark(BuildingMarkType.Floor, startPosition.y, state);
+            }
             if (buildingMode == BuildingMode.BigFloor)
             {
                 Cell[] cells = Get4Neighbours(new Vector2Int(startPosition.x, startPosition.z));
                 foreach (var cell in cells)
+                {
                     cell.SetBuildingMark(BuildingMarkType.Floor, startPosition.y, state);
+                }
             }
             if (buildingMode == BuildingMode.ShortWall)
             {
-                var cell = GetCell(new Vector2Int(startPosition.x, startPosition.z));
+                Cell cell = GetCell(new Vector2Int(startPosition.x, startPosition.z));
                 cell.SetBuildingMark(wallMarkType, startPosition.y, state);
             }
             if (buildingMode == BuildingMode.Wall)
