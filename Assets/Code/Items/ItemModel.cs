@@ -49,7 +49,7 @@ namespace Items
             Stats = stats;
             Sprite = Sprites.GetSprite(name);
             IsEligibleForBuilding = isEligibleForBuilding;
-            Action = action;
+            Action = action != null ? action : new NoAction();
         }
 
         #endregion Constructors

@@ -2,6 +2,10 @@
 {
     public abstract class ItemAction
     {
-        public abstract void Execute();
+        public virtual void Execute()
+        { }
+
+        public virtual void Update()
+        { }
     }
 }

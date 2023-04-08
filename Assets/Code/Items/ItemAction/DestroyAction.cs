@@ -16,5 +16,10 @@ namespace Items
                 return;
             GameObject.Destroy(building.gameObject);
         }
+
+        public override void Update()
+        {
+            base.Update();
+        }
     }
 }
