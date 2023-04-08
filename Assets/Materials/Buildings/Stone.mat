@@ -101,6 +101,7 @@ Material:
     - _Cutoff: 0.5
     - _DetailAlbedoMapScale: 1
     - _DetailNormalMapScale: 1
+    - _Displacement: 1
     - _DstBlend: 0
     - _EnvironmentReflections: 1
     - _GlossMapScale: 0
@@ -122,7 +123,7 @@ Material:
     - _ZWrite: 1
     m_Colors:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
-    - _Color: {r: 0.5188679, g: 0.37527898, b: 0.19335172, a: 1}
+    - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _Color1: {r: 0.7, g: 0.7, b: 0.7, a: 1}
     - _Color2: {r: 0.8, g: 0.8, b: 0.8, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}

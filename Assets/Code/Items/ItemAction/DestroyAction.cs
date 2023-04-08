@@ -17,9 +17,14 @@ namespace Items
             GameObject.Destroy(building.gameObject);
         }
 
-        public override void Update()
+        public override void OnMouseEnter(Component component)
         {
-            base.Update();
+            (component as Building)?.ChangeColor(new(1F, 0.75F, 0.75F));
+        }
+
+        public override void OnMouseExit(Component component)
+        {
+            (component as Building)?.ResetColor();
         }
     }
 }

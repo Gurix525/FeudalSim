@@ -66,6 +66,7 @@ namespace Controls
                 });
                 CursorMeshHighlight.SetMeshRotation(_meshRotation);
             }
+            else CursorMeshHighlight.TrySetMesh(null);
         }
 
         private void OnDisable()
