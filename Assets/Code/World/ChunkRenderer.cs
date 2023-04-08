@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Linq;
 using System.Threading.Tasks;
@@ -13,6 +14,7 @@ namespace World
     public class ChunkRenderer : MonoBehaviour
     {
         public Vector2Int Position { get; private set; }
+        public Transform Buildings { get; private set; }
 
         private MeshFilter _meshFilter;
         private MeshCollider _meshCollider;
@@ -31,7 +33,14 @@ namespace World
             _isInitialized = true;
             _meshFilter = GetComponent<MeshFilter>();
             _meshCollider = GetComponent<MeshCollider>();
+            CreateChildren();
             InitializeMesh();
+        }
+
+        private void CreateChildren()
+        {
+            Buildings = new GameObject("Buildings").transform;
+            Buildings.transform.parent = transform;
         }
 
         private void InitializeMesh()

@@ -19,7 +19,7 @@ namespace World
         private void ActivateChunk()
         {
             Vector2Int currentChunkPos = new((int)Mathf.Floor(transform.position.x / 100F), (int)Mathf.Floor(transform.position.z / 100F));
-            if (TerrainRenderer.Instance.ActiveChunk.Position != currentChunkPos)
+            if (TerrainRenderer.ActiveChunk.Position != currentChunkPos)
             {
                 _timeSinceLastActivation = 0F;
                 StartCoroutine(TerrainRenderer.SetActiveChunk(currentChunkPos));

@@ -4,6 +4,7 @@ using Input;
 using Misc;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using World;
 using static UnityEngine.InputSystem.InputAction;
 using Terrain = World.Terrain;
 
@@ -13,7 +14,7 @@ namespace Controls
     {
         #region Fields
 
-        private BuildingMode _buildingMode = BuildingMode.BigWall;
+        private BuildingMode _buildingMode = BuildingMode.Floor;
         private float _meshRotation = 0F;
         private GameObject[] _buildingPrefabs;
 
@@ -105,7 +106,7 @@ namespace Controls
             if (!Terrain.IsBuildingPossible(calibratedPosition, _buildingMode, _meshRotation))
                 return;
             GameObject prefab = BuildingPrefabs[(int)_buildingMode];
-            GameObject building = Instantiate(prefab);
+            GameObject building = Instantiate(prefab, TerrainRenderer.GetChunkRenderer(calibratedPosition).Buildings);
             building.transform.SetPositionAndRotation(
                 calibratedPosition,
                 Quaternion.Euler(0, _meshRotation, 0));

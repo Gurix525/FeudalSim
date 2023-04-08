@@ -16,7 +16,7 @@ public class CursorMeshHighlight : MonoBehaviour
     private GameObject _highlight;
     private MeshFilter _filter;
     private MeshRenderer _renderer;
-    private BuildingMode _buildingMode = BuildingMode.BigWall;
+    private BuildingMode _buildingMode = BuildingMode.Floor;
     private Vector3 _previousPosition = Vector3.zero;
     private Mesh _previousMesh = null;
     private Material _previosMaterial = null;

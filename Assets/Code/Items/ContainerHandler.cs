@@ -14,7 +14,7 @@ namespace Items
     {
         #region Fields
 
-        private int _size = 4;
+        private int _size = 9;
         private string _lock = string.Empty;
         private Container _container;
         private GameObject _window;
@@ -89,8 +89,14 @@ namespace Items
         private void StartTest()
         {
             Debug.Log("TESTOWA METODA");
-            _container.Insert(Item.Create("Stone", 7));
-            _container.Insert(Item.Create("Wood", 5));
+            _container.Insert(Item.Create("Stone", 10));
+            _container.Insert(Item.Create("Stone", 10));
+            _container.Insert(Item.Create("Stone", 10));
+            _container.Insert(Item.Create("Wood", 20));
+            _container.Insert(Item.Create("Wood", 20));
+            _container.Insert(Item.Create("Wood", 20));
+            _container.Insert(Item.Create("Wood", 20));
+            _container.Insert(Item.Create("Axe"));
         }
 
         #endregion Unity

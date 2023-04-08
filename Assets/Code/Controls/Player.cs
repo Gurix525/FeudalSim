@@ -29,6 +29,7 @@ namespace Controls
         private void OnEnable()
         {
             PlayerController.MainJump.AddListener(ActionType.Started, Jump);
+            PlayerController.MainUse.AddListener(ActionType.Started, UseItem);
         }
 
         private void Update()
@@ -40,11 +41,20 @@ namespace Controls
         private void OnDisable()
         {
             PlayerController.MainJump.RemoveListener(ActionType.Started, Jump);
+            PlayerController.MainUse.RemoveListener(ActionType.Started, UseItem);
         }
 
         #endregion Unity
 
         #region Private
+
+        private void UseItem(CallbackContext context)
+        {
+            if (Cursor.Item == null)
+                return;
+            if (Cursor.Item.Action != null)
+                Cursor.Item.Action.Execute();
+        }
 
         private void UpdateVerticalSpeed()
         {

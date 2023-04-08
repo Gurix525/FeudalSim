@@ -18,6 +18,7 @@ namespace Items
         public Dictionary<string, float> Stats { get; }
         public bool IsEligibleForBuilding { get; }
         public Material Material => _material ??= Materials.GetMaterial(Name) ?? Materials.DefaultMaterial;
+        public ItemAction Action { get; }
 
         public Mesh[] BuildingMeshes =>
             _buildingMeshes ??=
@@ -39,6 +40,7 @@ namespace Items
             int maxStack = 10,
             string description = "",
             Dictionary<string, float> stats = null,
+            ItemAction action = null,
             bool isEligibleForBuilding = false)
         {
             Name = name;
@@ -47,6 +49,7 @@ namespace Items
             Stats = stats;
             Sprite = Sprites.GetSprite(name);
             IsEligibleForBuilding = isEligibleForBuilding;
+            Action = action;
         }
 
         #endregion Constructors

@@ -15,9 +15,9 @@ namespace Items
         private static Dictionary<string, ItemModel> _itemModels = new()
         {
             { "Stone", new("Stone", isEligibleForBuilding:true) },
-            { "Wood", new("Wood", isEligibleForBuilding:true) },
+            { "Wood", new("Wood", 20, isEligibleForBuilding:true) },
             { "Sword", new("Sword", 1) },
-            { "Axe", new("Axe", 1) }
+            { "Axe", new("Axe", 1, action: new DestroyAction()) }
         };
 
         #endregion Fields
@@ -33,6 +33,7 @@ namespace Items
         public bool IsEligibleForBuilding => _model.IsEligibleForBuilding;
         public Material Material => _model.Material;
         public Mesh[] BuildingMeshes => _model.BuildingMeshes;
+        public ItemAction Action => _model.Action;
 
         #endregion Properties
 

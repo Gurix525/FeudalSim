@@ -8,9 +8,15 @@ namespace World
 {
     public class TerrainRenderer : MonoBehaviour
     {
-        public Chunk ActiveChunk { get; private set; }
+        private Chunk _activeChunk;
 
-        public static TerrainRenderer Instance { get; private set; }
+        public static Chunk ActiveChunk
+        {
+            get => _instance._activeChunk;
+            set => _instance._activeChunk = value;
+        }
+
+        private static TerrainRenderer _instance { get; set; }
         public static UnityEvent<Vector2> TerrainUpdating { get; private set; } = new();
 
         [SerializeField] private Material _material;
@@ -22,42 +28,52 @@ namespace World
             LoadingImage.Enable();
             yield return null;
             GenerateChunks(position);
-            Instance.ActiveChunk = Terrain.Chunks[position];
+            ActiveChunk = Terrain.Chunks[position];
             Reload();
             LoadingImage.Disable();
         }
 
         public static void ReloadChunk(Vector2Int position)
         {
-            Instance._chunks[position].GenerateMesh();
-            TerrainUpdating.Invoke(Instance.ActiveChunk.Position);
+            _instance._chunks[position].GenerateMesh();
+            TerrainUpdating.Invoke(ActiveChunk.Position);
         }
 
         public static void Reload()
         {
-            foreach (var chunk in Instance._chunks)
+            foreach (var chunk in _instance._chunks)
             {
-                if (Vector2Int.Distance(chunk.Value.Position, Instance.ActiveChunk.Position) < 2F)
+                if (Vector2Int.Distance(chunk.Value.Position, ActiveChunk.Position) < 2F)
                 {
                     chunk.Value.gameObject.SetActive(true);
                 }
                 else
                     chunk.Value.gameObject.SetActive(false);
             }
-            TerrainUpdating.Invoke(Instance.ActiveChunk.Position);
+            TerrainUpdating.Invoke(ActiveChunk.Position);
             RecalculateActiveChunkBorderSteepness();
+        }
+
+        public static ChunkRenderer GetChunkRenderer(Vector2Int position)
+        {
+            return _instance._chunks[Terrain.GetChunkCoordinates(position)];
+        }
+
+        public static ChunkRenderer GetChunkRenderer(Vector3 position)
+        {
+            return GetChunkRenderer(new Vector2Int((int)position.x, (int)position.z));
         }
 
         private void Awake()
         {
-            Instance = this;
+            _instance = this;
             GenerateChunks(Vector2Int.zero);
             Reload();
         }
 
         private static void RecalculateActiveChunkBorderSteepness()
         {
-            Terrain.Chunks[Instance.ActiveChunk.Position].RecalculateBorderSteepness();
+            Terrain.Chunks[ActiveChunk.Position].RecalculateBorderSteepness();
         }
 
         private static void GenerateChunks(Vector2Int activePosition)
@@ -70,22 +86,22 @@ namespace World
 
             for (int z = activePosition.y - 1; z <= activePosition.y + 1; z++)
                 for (int x = activePosition.x - 1; x <= activePosition.x + 1; x++)
-                    if (!Instance._chunks.ContainsKey(new(x, z)))
+                    if (!_instance._chunks.ContainsKey(new(x, z)))
                         GenerateChunk(x, z);
 
-            Instance.ActiveChunk ??= Terrain.Chunks[activePosition];
+            ActiveChunk ??= Terrain.Chunks[activePosition];
         }
 
         private static void GenerateChunk(int x, int z)
         {
             GameObject chunk = new GameObject();
-            chunk.transform.parent = Instance.transform;
+            chunk.transform.parent = _instance.transform;
             chunk.gameObject.name = new Vector2Int(x, z).ToString();
             chunk.AddComponent<ChunkRenderer>();
-            chunk.GetComponent<MeshRenderer>().material = Instance._material;
+            chunk.GetComponent<MeshRenderer>().material = _instance._material;
             var chunkRenderer = chunk.GetComponent<ChunkRenderer>();
             chunkRenderer.SetPosition(new(x, z));
-            Instance._chunks.Add(new(x, z), chunkRenderer);
+            _instance._chunks.Add(new(x, z), chunkRenderer);
             chunkRenderer.GenerateMesh();
         }
     }

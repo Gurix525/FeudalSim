@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 using Controls;
+using UnityEngine.UIElements;
 
 namespace World
 {
@@ -226,6 +227,25 @@ namespace World
             return false;
         }
 
+        public static Vector2Int GetChunkCoordinates(Vector2 inputPosition)
+        {
+            Vector2Int position = new(
+                (int)Mathf.Floor(inputPosition.x),
+                (int)Mathf.Floor(inputPosition.y));
+            return GetChunkCoordinates(position);
+        }
+
+        public static Vector2Int GetChunkCoordinates(Vector2Int inputPosition)
+        {
+            Vector2Int chunkPosition = new(
+                (int)Mathf.Floor(inputPosition.x / 100F),
+                (int)Mathf.Floor(inputPosition.y / 100F));
+            if (!Chunks.ContainsKey(chunkPosition))
+                throw new ArgumentOutOfRangeException(
+                    "Given position data doesn't exist.");
+            return chunkPosition;
+        }
+
         #endregion Public
 
         #region Private
@@ -274,21 +294,6 @@ namespace World
                     cells[index++] = GetCell(new Vector2Int(x, z));
                 }
             return cells;
-        }
-
-        private static Vector2Int GetChunkCoordinates(Vector2 inputPosition)
-        {
-            Vector2Int position = new(
-                (int)Mathf.Floor(inputPosition.x),
-                (int)Mathf.Floor(inputPosition.y));
-
-            Vector2Int chunkPosition = new(
-                (int)Mathf.Floor(position.x / 100F),
-                (int)Mathf.Floor(position.y / 100F));
-            if (!Chunks.ContainsKey(chunkPosition))
-                throw new ArgumentOutOfRangeException(
-                    "Given position data doesn't exist.");
-            return chunkPosition;
         }
 
         private static Vector2Int GetVerticeCoordinates(Vector2 inputPosition)
