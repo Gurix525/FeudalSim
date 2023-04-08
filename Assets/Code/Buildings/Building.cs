@@ -1,8 +1,10 @@
 using Controls;
+using Extensions;
 using Items;
 using UnityEngine;
 using static UnityEngine.InputSystem.InputAction;
 using Cursor = Controls.Cursor;
+using Terrain = World.Terrain;
 
 namespace Buildings
 {
@@ -68,6 +70,15 @@ namespace Buildings
         {
             OnMouseExit();
             OnMouseEnter();
+        }
+
+        private void OnDestroy()
+        {
+            Terrain.SetBuildingMark(
+                transform.position.ToVector3Int(),
+                _buildingMode,
+                transform.rotation.y,
+                false);
         }
     }
 }
