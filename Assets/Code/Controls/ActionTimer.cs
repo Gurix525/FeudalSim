@@ -3,6 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Input;
 using UnityEngine;
+using UnityEngine.Events;
 using static UnityEngine.InputSystem.InputAction;
 
 namespace Controls
@@ -11,10 +12,11 @@ namespace Controls
     {
         private static CancellationTokenSource _tokenSource = new();
 
-        public static float CompletionRatio { get; private set; }
+        public static UnityEvent<float> TimerSet { get; } = new();
 
         public static async Task Start(Action action, float requiredTime)
         {
+            TimerSet.Invoke(requiredTime);
             _tokenSource = new();
             PlayerController.MainUse.AddListener(ActionType.Canceled, CancelTask);
             var task = RunTimer(requiredTime);
@@ -23,12 +25,14 @@ namespace Controls
                 if (_tokenSource.IsCancellationRequested)
                 {
                     PlayerController.MainUse.RemoveListener(ActionType.Canceled, CancelTask);
+                    TimerSet.Invoke(0F);
                     return;
                 }
                 if (task.IsCompleted)
                 {
                     action();
                     PlayerController.MainUse.RemoveListener(ActionType.Canceled, CancelTask);
+                    TimerSet.Invoke(0F);
                     return;
                 }
                 await Task.Yield();
