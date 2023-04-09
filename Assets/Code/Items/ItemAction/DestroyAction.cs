@@ -2,19 +2,22 @@
 using Controls;
 using Cursor = Controls.Cursor;
 using Buildings;
+using System.Threading.Tasks;
 
 namespace Items
 {
     public class DestroyAction : ItemAction
     {
+        private Building _buildingToDestroy = null;
+
         public override void Execute()
         {
             if (Cursor.RaycastHit == null)
                 return;
-            var building = Cursor.RaycastHit.Value.transform.GetComponent<Building>();
-            if (building == null)
+            _buildingToDestroy = Cursor.RaycastHit.Value.transform.GetComponent<Building>();
+            if (_buildingToDestroy == null)
                 return;
-            GameObject.Destroy(building.gameObject);
+            _ = ActionTimer.Start(FinishExecution, 1F);
         }
 
         public override void OnMouseEnter(Component component)
@@ -25,6 +28,16 @@ namespace Items
         public override void OnMouseExit(Component component)
         {
             (component as Building)?.ResetColor();
+        }
+
+        private void FinishExecution()
+        {
+            if (Cursor.RaycastHit == null)
+                return;
+            Building buildingToDestroy = Cursor.RaycastHit.Value.transform.GetComponent<Building>();
+            if (buildingToDestroy == null)
+                buildingToDestroy = _buildingToDestroy;
+            GameObject.Destroy(buildingToDestroy.gameObject);
         }
     }
 }
