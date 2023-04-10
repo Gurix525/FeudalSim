@@ -13,6 +13,9 @@ namespace Items
         public virtual void OnMouseEnter(Component component)
         { }
 
+        public virtual void OnMouseOver(Component component)
+        { }
+
         public virtual void OnMouseExit(Component component)
         { }
     }

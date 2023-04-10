@@ -59,6 +59,12 @@ namespace Buildings
             Cursor.Container.CollectionUpdated.AddListener(ResetItemAction);
         }
 
+        private void OnMouseOver()
+        {
+            if (Cursor.Item != null)
+                Cursor.Item.Action.OnMouseOver(this);
+        }
+
         private void OnMouseExit()
         {
             if (Cursor.Item != null)

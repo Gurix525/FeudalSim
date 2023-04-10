@@ -3,16 +3,21 @@ using Controls;
 using Cursor = Controls.Cursor;
 using Buildings;
 using System.Threading.Tasks;
+using Input;
+using UnityEngine.InputSystem;
+using System;
+using static UnityEngine.InputSystem.InputAction;
 
 namespace Items
 {
     public class DestroyAction : ItemAction
     {
         private Building _buildingToDestroy = null;
+        private bool _isWaitingForAnotherBuilding = false;
 
         public override void Execute()
         {
-            if (Cursor.RaycastHit == null)
+            if (Cursor.CurrentRaycastHit == null)
                 return;
             _buildingToDestroy = Cursor.RaycastHit.Value.transform.GetComponent<Building>();
             if (_buildingToDestroy == null)
@@ -23,6 +28,16 @@ namespace Items
         public override void OnMouseEnter(Component component)
         {
             (component as Building)?.ChangeColor(new(1F, 0.75F, 0.75F));
+        }
+
+        public override void OnMouseOver(Component component)
+        {
+            _buildingToDestroy = component as Building;
+            if (_buildingToDestroy != null && _isWaitingForAnotherBuilding)
+            {
+                DisableWaiting(new());
+                Execute();
+            }
         }
 
         public override void OnMouseExit(Component component)
@@ -38,6 +53,14 @@ namespace Items
             if (buildingToDestroy == null)
                 buildingToDestroy = _buildingToDestroy;
             GameObject.Destroy(buildingToDestroy.gameObject);
+            _isWaitingForAnotherBuilding = true;
+            PlayerController.MainUse.AddListener(ActionType.Canceled, DisableWaiting);
+        }
+
+        private void DisableWaiting(CallbackContext context)
+        {
+            _isWaitingForAnotherBuilding = false;
+            PlayerController.MainUse.RemoveListener(ActionType.Canceled, DisableWaiting);
         }
     }
 }

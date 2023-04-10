@@ -6,21 +6,27 @@ namespace Controls
 {
     public class CursorRaycaster : MonoBehaviour
     {
-        private static RaycastHit? _hit = null;
+        public static RaycastHit? Hit { get; private set; } = null;
 
-        public static RaycastHit? Hit => _hit;
+        public static RaycastHit? CurrentHit => GetRaycastHit();
 
         private void Update()
         {
+            GetRaycastHit();
+        }
+
+        private static RaycastHit? GetRaycastHit()
+        {
             if (EventSystem.current.IsPointerOverGameObject())
             {
-                _hit = null;
-                return;
+                Hit = null;
+                return null;
             }
             Ray ray = Camera.main
                 .ScreenPointToRay(PlayerController.MainPoint.ReadValue<Vector2>());
             Physics.Raycast(ray, out RaycastHit hit);
-            _hit = hit;
+            Hit = hit;
+            return hit;
         }
     }
 }

@@ -24,6 +24,16 @@ namespace Controls
 
         public static bool IsAboveTerrain { get; private set; } = false;
 
+        /// <summary>
+        /// Do użycia w normalnych warunkach, jeśli potrzeba rzucić raycast
+        /// w danej chwili to użyć CurrentRaycastHit
+        /// </summary>
         public static RaycastHit? RaycastHit => CursorRaycaster.Hit;
+
+        /// <summary>
+        /// Do użycia jeśli RaycastHit przekazuje nieaktualną wartość
+        /// (np. kiedy event OnMouseEnter potrzebuje aktualnego hita)
+        /// </summary>
+        public static RaycastHit? CurrentRaycastHit => CursorRaycaster.CurrentHit;
     }
 }
