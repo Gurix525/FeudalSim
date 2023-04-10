@@ -22,7 +22,11 @@ public class TimerCircle : MonoBehaviour
     {
         _currentTime += Time.deltaTime;
         if (_requiredTime == 0F)
-            _image.fillAmount = 0F;
+            _image.fillAmount = _image.fillAmount > 0.003F
+                ? _image.fillAmount * 3F / 4F
+                : 0F;
+        else if (_image.fillAmount > _currentTime / _requiredTime)
+            _image.fillAmount -= (_image.fillAmount - (_currentTime / _requiredTime)) / 4F;
         else
             _image.fillAmount = _currentTime / _requiredTime;
     }
