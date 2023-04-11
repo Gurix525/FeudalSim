@@ -19,12 +19,16 @@ namespace Controls
             TimerSet.Invoke(requiredTime);
             _tokenSource = new();
             PlayerController.MainUse.AddListener(ActionType.Canceled, CancelTask);
+            PlayerController.MainQuickMenu.AddListener(ActionType.Started, CancelTask);
+            PlayerController.MainChange.AddListener(ActionType.Started, CancelTask);
             var task = RunTimer(requiredTime);
             while (true)
             {
                 if (_tokenSource.IsCancellationRequested)
                 {
                     PlayerController.MainUse.RemoveListener(ActionType.Canceled, CancelTask);
+                    PlayerController.MainQuickMenu.RemoveListener(ActionType.Started, CancelTask);
+                    PlayerController.MainChange.RemoveListener(ActionType.Started, CancelTask);
                     TimerSet.Invoke(0F);
                     return;
                 }
@@ -32,6 +36,8 @@ namespace Controls
                 {
                     action();
                     PlayerController.MainUse.RemoveListener(ActionType.Canceled, CancelTask);
+                    PlayerController.MainQuickMenu.RemoveListener(ActionType.Started, CancelTask);
+                    PlayerController.MainChange.RemoveListener(ActionType.Started, CancelTask);
                     TimerSet.Invoke(0F);
                     return;
                 }

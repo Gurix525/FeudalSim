@@ -20,6 +20,7 @@ namespace Items
         private float _meshRotation = 0F;
         private GameObject[] _buildingPrefabs;
         private Vector3Int _calibratedPosition;
+        private bool _isWaitingForAnotherBuilding = false;
 
         #endregion Fields
 
@@ -58,7 +59,7 @@ namespace Items
 
         public override void Execute()
         {
-            if (Cursor.RaycastHit == null)
+            if (Cursor.CurrentRaycastHit == null)
                 return;
             if (Cursor.Item.Count < RequiredItemCount)
                 return;
@@ -69,6 +70,10 @@ namespace Items
                 Mathf.Floor(position.z)).ToVector3Int();
             if (!Terrain.IsBuildingPossible(_calibratedPosition, _buildingMode, _meshRotation))
                 return;
+            if (_isWaitingForAnotherBuilding)
+            {
+                DisableWaiting(new());
+            }
             _ = ActionTimer.Start(FinishExecution, 1F);
         }
 
@@ -83,6 +88,10 @@ namespace Items
                 _ => Cursor.Item.BuildingMeshes[4]
             });
             CursorMeshHighlight.SetMeshRotation(_meshRotation);
+            if (_isWaitingForAnotherBuilding)
+            {
+                Execute();
+            }
         }
 
         #endregion Public
@@ -91,6 +100,17 @@ namespace Items
 
         private void FinishExecution()
         {
+            if (Cursor.CurrentRaycastHit == null)
+                return;
+            if (Cursor.Item.Count < RequiredItemCount)
+                return;
+            var position = Cursor.RaycastHit.Value.point;
+            _calibratedPosition = new Vector3(
+                Mathf.Floor(position.x),
+                Mathf.Round(position.y),
+                Mathf.Floor(position.z)).ToVector3Int();
+            if (!Terrain.IsBuildingPossible(_calibratedPosition, _buildingMode, _meshRotation))
+                return;
             GameObject prefab = BuildingPrefabs[(int)_buildingMode];
             GameObject building = GameObject.Instantiate(
                 prefab, TerrainRenderer.GetChunkRenderer(_calibratedPosition).Buildings);
@@ -101,6 +121,8 @@ namespace Items
             building.GetComponent<Building>().
                 Initialize(Cursor.Container.ExtractAt(0, RequiredItemCount), _buildingMode);
             Terrain.SetBuildingMark(_calibratedPosition, _buildingMode, _meshRotation, true);
+            _isWaitingForAnotherBuilding = true;
+            PlayerController.MainUse.AddListener(ActionType.Canceled, DisableWaiting);
         }
 
         private void ChangeMode(CallbackContext context)
@@ -138,6 +160,12 @@ namespace Items
             }
             PlayerController.MainQuickMenu.AddListener(ActionType.Started, ChangeMode);
             PlayerController.MainChange.AddListener(ActionType.Started, ChangeRotation);
+        }
+
+        private void DisableWaiting(CallbackContext context)
+        {
+            _isWaitingForAnotherBuilding = false;
+            PlayerController.MainUse.RemoveListener(ActionType.Canceled, DisableWaiting);
         }
 
         #endregion Private
