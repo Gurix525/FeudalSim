@@ -14,10 +14,10 @@ namespace Items
 
         private static Dictionary<string, ItemModel> _itemModels = new()
         {
-            { "Stone", new("Stone", isEligibleForBuilding:true) },
-            { "Wood", new("Wood", 20, isEligibleForBuilding:true) },
+            { "Stone", new("Stone", actions: new ItemAction[] {new BuildAction()})},
+            { "Wood", new("Wood", 20, actions: new ItemAction[] {new BuildAction()}) },
             { "Sword", new("Sword", 1) },
-            { "Axe", new("Axe", 1, action: new DestroyAction()) }
+            { "Axe", new("Axe", 1, actions: new ItemAction[] {new DestroyAction()}) }
         };
 
         #endregion Fields
@@ -30,7 +30,6 @@ namespace Items
         public int MaxStack => _model.MaxStack;
         public Sprite Sprite => _model.Sprite;
         public Dictionary<string, float> Stats => _stats ?? _model.Stats;
-        public bool IsEligibleForBuilding => _model.IsEligibleForBuilding;
         public Material Material => _model.Material;
         public Mesh[] BuildingMeshes => _model.BuildingMeshes;
         public ItemAction Action => _model.Action;

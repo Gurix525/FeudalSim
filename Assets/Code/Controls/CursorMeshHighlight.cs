@@ -78,6 +78,10 @@ public class CursorMeshHighlight : MonoBehaviour
 
     private void Update()
     {
+        if (Cursor.Item == null)
+        {
+            TrySetMesh(null);
+        }
         if (_mesh != _previousMesh)
         {
             _filter.mesh = _mesh;

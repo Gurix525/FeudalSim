@@ -12,8 +12,14 @@ namespace Items
 {
     public class DestroyAction : ItemAction
     {
+        #region Fields
+
         private Building _buildingToDestroy = null;
         private bool _isWaitingForAnotherBuilding = false;
+
+        #endregion Fields
+
+        #region Public
 
         public override void Execute()
         {
@@ -45,6 +51,10 @@ namespace Items
             (component as Building)?.ResetColor();
         }
 
+        #endregion Public
+
+        #region Private
+
         private void FinishExecution()
         {
             if (Cursor.RaycastHit == null)
@@ -62,5 +72,7 @@ namespace Items
             _isWaitingForAnotherBuilding = false;
             PlayerController.MainUse.RemoveListener(ActionType.Canceled, DisableWaiting);
         }
+
+        #endregion Private
     }
 }

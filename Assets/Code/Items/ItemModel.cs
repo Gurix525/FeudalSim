@@ -10,15 +10,16 @@ namespace Items
 
         private Mesh[] _buildingMeshes;
         private Material _material;
+        private ItemAction _currentAction;
+        private ItemAction[] _actions;
 
         public string Name { get; }
         public string Description { get; }
         public int MaxStack { get; }
         public Sprite Sprite { get; }
         public Dictionary<string, float> Stats { get; }
-        public bool IsEligibleForBuilding { get; }
         public Material Material => _material ??= Materials.GetMaterial(Name) ?? Materials.DefaultMaterial;
-        public ItemAction Action { get; }
+        public ItemAction Action => _currentAction;
 
         public Mesh[] BuildingMeshes =>
             _buildingMeshes ??=
@@ -40,16 +41,23 @@ namespace Items
             int maxStack = 10,
             string description = "",
             Dictionary<string, float> stats = null,
-            ItemAction action = null,
-            bool isEligibleForBuilding = false)
+            ItemAction[] actions = null)
         {
             Name = name;
             Description = description;
             MaxStack = maxStack;
             Stats = stats;
             Sprite = Sprites.GetSprite(name);
-            IsEligibleForBuilding = isEligibleForBuilding;
-            Action = action != null ? action : new NoAction();
+            if (actions == null)
+            {
+                _actions = new ItemAction[] { new NoAction() };
+                _currentAction = _actions[0];
+            }
+            else
+            {
+                _actions = actions;
+                _currentAction = _actions[0];
+            }
         }
 
         #endregion Constructors
