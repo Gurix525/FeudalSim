@@ -17,7 +17,8 @@ namespace Items
             { "Stone", new("Stone", actions: new ItemAction[] {new BuildAction()})},
             { "Wood", new("Wood", 20, actions: new ItemAction[] {new BuildAction()}) },
             { "Sword", new("Sword", 1) },
-            { "Axe", new("Axe", 1, actions: new ItemAction[] {new DestroyAction()}) }
+            { "Axe", new("Axe", 1, actions: new ItemAction[] {new DestroyAction()}) },
+            { "Shovel", new("Shovel", 1, actions: new ItemAction[] {new ShovelAction()}) }
         };
 
         #endregion Fields

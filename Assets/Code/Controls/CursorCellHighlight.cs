@@ -1,4 +1,5 @@
 using System.Linq;
+using Items;
 using UnityEngine;
 using World;
 using Terrain = World.Terrain;
@@ -14,8 +15,6 @@ namespace Controls
         private MeshRenderer _renderer;
         private Mesh _mesh;
         private Vector2 _lastPosition;
-
-        public static bool IsHighlightEnabled { get; set; } = false;
 
         private void Awake()
         {
@@ -34,10 +33,13 @@ namespace Controls
 
         private void Update()
         {
-            if (Cursor.IsAboveTerrain && IsHighlightEnabled)
+            if (Cursor.IsAboveTerrain && Cursor.Item != null)
             {
-                _highlight.SetActive(true);
-                UpdateHighlight();
+                if (Cursor.Item.Action is ShovelAction)
+                {
+                    _highlight.SetActive(true);
+                    UpdateHighlight();
+                }
             }
             else
                 _highlight.SetActive(false);

@@ -1110,7 +1110,6 @@ GameObject:
   - component: {fileID: 770188194}
   - component: {fileID: 770188200}
   - component: {fileID: 770188201}
-  - component: {fileID: 770188203}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -1257,25 +1256,6 @@ CharacterController:
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &770188203
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 770188193}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ef2f515e3e197744f8dfd7312fef26ef, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _meshes:
-  - {fileID: -629719859055844128, guid: f6602afddef2e554cbb6be14fc36a759, type: 3}
-  - {fileID: 4332125777541583200, guid: 6dda876d4fef4b246b4669765447cacb, type: 3}
-  - {fileID: -5174688665618457908, guid: 8a2188314845b19478fafa8a665b25a0, type: 3}
-  - {fileID: 8733429697405204941, guid: da478cb91c3d7b2418208c7cf3c24af4, type: 3}
-  - {fileID: 8075065236519737422, guid: fec6614c62152c6468c0cea93685ab2a, type: 3}
-  _modeText: {fileID: 392065866}
 --- !u!1 &832575517
 GameObject:
   m_ObjectHideFlags: 0
@@ -1886,6 +1866,7 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 0672eaccebede0543bb2617fc32b4fe0, type: 3}
   - {fileID: 21300000, guid: 5e549ac891633a148841564d068abe7f, type: 3}
   - {fileID: 21300000, guid: d8c5802b8e2a82e48b44736a4efe7659, type: 3}
+  - {fileID: 21300000, guid: ab26878f227bc3647b4c0130eabf8081, type: 3}
 --- !u!114 &1612806890
 MonoBehaviour:
   m_ObjectHideFlags: 0
