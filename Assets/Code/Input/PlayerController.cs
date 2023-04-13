@@ -22,22 +22,22 @@ namespace Input
         public static InputActionMap QuickMenu { get; private set; }
 
         // Main
-        public static ModifiableInputAction MainMove { get; set; } = new();
+        public static ModifiableInputAction MainMove { get; } = new();
 
-        public static ModifiableInputAction MainRun { get; set; } = new();
-        public static ModifiableInputAction MainJump { get; set; } = new();
-        public static ModifiableInputAction MainUse { get; set; } = new();
-        public static ModifiableInputAction MainPoint { get; set; } = new();
-        public static ModifiableInputAction MainChange { get; set; } = new();
-        public static ModifiableInputAction MainRightClick { get; set; } = new();
-        public static ModifiableInputAction MainEscape { get; set; } = new();
-        public static ModifiableInputAction MainMouseDelta { get; set; } = new();
-        public static ModifiableInputAction MainQuickMenu { get; set; } = new();
+        public static ModifiableInputAction MainRun { get; } = new();
+        public static ModifiableInputAction MainJump { get; } = new();
+        public static ModifiableInputAction MainUse { get; } = new();
+        public static ModifiableInputAction MainPoint { get; } = new();
+        public static ModifiableInputAction MainChange { get; } = new();
+        public static ModifiableInputAction MainRightClick { get; } = new();
+        public static ModifiableInputAction MainEscape { get; } = new();
+        public static ModifiableInputAction MainMouseDelta { get; } = new();
+        public static ModifiableInputAction MainQuickMenu { get; } = new();
 
         // QuickMenu
-        public static ModifiableInputAction QuickMenuQuickMenu { get; set; } = new();
+        public static ModifiableInputAction QuickMenuQuickMenu { get; } = new();
 
-        public static ModifiableInputAction QuickMenuMouseDelta { get; set; } = new();
+        public static ModifiableInputAction QuickMenuMouseDelta { get; } = new();
 
         #endregion Properties
 

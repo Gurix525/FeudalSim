@@ -28,6 +28,7 @@ namespace Items
         public int Count { get; set; }
         public string Name => _model.Name;
         public string Description => _model.Description;
+        public ItemModel Model => _model;
         public int MaxStack => _model.MaxStack;
         public Sprite Sprite => _model.Sprite;
         public Dictionary<string, float> Stats => _stats ?? _model.Stats;

@@ -57,6 +57,13 @@ namespace Items
 
         #region Public
 
+        public void SetBuildingMode(int modeNumber)
+        {
+            _buildingMode = (BuildingMode)modeNumber;
+            CursorMeshHighlight.SetBuildingMode(_buildingMode);
+            ResetRotationIfModeIsFloor();
+        }
+
         public override void Execute()
         {
             if (Cursor.CurrentRaycastHit == null)
@@ -125,13 +132,6 @@ namespace Items
             PlayerController.MainUse.AddListener(ActionType.Canceled, DisableWaiting);
         }
 
-        private void ChangeMode(CallbackContext context)
-        {
-            _buildingMode = (int)(_buildingMode + 1) > 4 ? 0 : _buildingMode + 1;
-            CursorMeshHighlight.SetBuildingMode(_buildingMode);
-            ResetRotationIfModeIsFloor();
-        }
-
         private void ChangeRotation(CallbackContext context)
         {
             _meshRotation = _meshRotation == 0F ? -90F : 0F;
@@ -148,17 +148,14 @@ namespace Items
         {
             if (Cursor.Item == null)
             {
-                PlayerController.MainQuickMenu.RemoveListener(ActionType.Started, ChangeMode);
                 PlayerController.MainChange.RemoveListener(ActionType.Started, ChangeRotation);
                 return;
             }
             if (Cursor.Item.Action != this)
             {
-                PlayerController.MainQuickMenu.RemoveListener(ActionType.Started, ChangeMode);
                 PlayerController.MainChange.RemoveListener(ActionType.Started, ChangeRotation);
                 return;
             }
-            PlayerController.MainQuickMenu.AddListener(ActionType.Started, ChangeMode);
             PlayerController.MainChange.AddListener(ActionType.Started, ChangeRotation);
         }
 

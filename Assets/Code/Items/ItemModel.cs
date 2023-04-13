@@ -1,7 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Misc;
+using UI;
 using UnityEngine;
+using Cursor = Controls.Cursor;
 
 namespace Items
 {
@@ -25,7 +27,26 @@ namespace Items
         public Dictionary<string, float> Stats { get; }
         public Material Material => _material ??= Materials.GetMaterial(Name) ?? Materials.DefaultMaterial;
         public ItemAction Action => _currentAction;
-        public ItemAction[] Actions => _actions;
+
+        public ItemAction[] Actions
+        {
+            get
+            {
+                List<ItemAction> actions = new();
+                foreach (var action in _actions)
+                {
+                    if (action is BuildAction)
+                        for (int i = 0; i < 5; i++)
+                            actions.Add(action);
+                    else if (action is ShovelAction)
+                        for (int i = 0; i < 4; i++)
+                            actions.Add(action);
+                    else
+                        actions.Add(action);
+                }
+                return actions.ToArray();
+            }
+        }
 
         public Mesh[] BuildingMeshes =>
             _buildingMeshes ??=
@@ -67,8 +88,26 @@ namespace Items
                 _actions = newActions.ToArray();
                 _currentAction = _actions[1];
             }
+            QuickMenu.Closed.AddListener(ChangeAction);
         }
 
         #endregion Constructors
+
+        #region Private
+
+        private void ChangeAction(ItemAction action, int slotNumber)
+        {
+            if (Cursor.Item == null)
+                return;
+            if (Cursor.Item.Model != this)
+                return;
+            _currentAction = action;
+            (_currentAction as BuildAction)?.SetBuildingMode(
+                slotNumber - _actions.ToList().FindIndex(action => action is BuildAction));
+            (_currentAction as ShovelAction)?.SetShovelMode(
+                slotNumber - _actions.ToList().FindIndex(action => action is ShovelAction));
+        }
+
+        #endregion Private
     }
 }

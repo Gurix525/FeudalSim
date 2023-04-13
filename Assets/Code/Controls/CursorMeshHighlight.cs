@@ -1,5 +1,6 @@
 using Controls;
 using Extensions;
+using Items;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using Cursor = Controls.Cursor;
@@ -79,6 +80,10 @@ public class CursorMeshHighlight : MonoBehaviour
     private void Update()
     {
         if (Cursor.Item == null)
+        {
+            TrySetMesh(null);
+        }
+        else if (Cursor.Item.Action is not BuildAction)
         {
             TrySetMesh(null);
         }

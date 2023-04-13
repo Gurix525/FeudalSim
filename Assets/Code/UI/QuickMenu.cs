@@ -8,6 +8,7 @@ using UnityEngine.UI;
 using System.Linq;
 using static UnityEngine.InputSystem.InputAction;
 using Cursor = Controls.Cursor;
+using UnityEngine.Events;
 
 namespace UI
 {
@@ -23,8 +24,15 @@ namespace UI
         private QuickMenuSlot[] _slots;
         private Queue<Vector2> _mouseDeltas = new();
         private int _resetCounter;
+        private int? _slotNumber;
 
         #endregion Fields
+
+        #region Properties
+
+        public static UnityEvent<ItemAction, int> Closed { get; } = new();
+
+        #endregion Properties
 
         #region Unity
 
@@ -64,6 +72,7 @@ namespace UI
                 else
                     _slots[i].Background.color = Color.white;
             }
+            _slotNumber = slotNumber;
         }
 
         private void OnEnable()
@@ -86,7 +95,6 @@ namespace UI
                 return;
             UnityEngine.Cursor.visible = false;
             _quickMenu.SetActive(true);
-            //_cursorReplacement.SetActive(true);
             Initialize();
             PlayerController.Main.Disable();
             PlayerController.QuickMenuQuickMenu.AddListener(ActionType.Canceled, CloseQuickMenu);
@@ -94,11 +102,13 @@ namespace UI
 
         private void CloseQuickMenu(CallbackContext obj)
         {
+            if (_slotNumber != null)
+                Closed.Invoke(_slots[_slotNumber.Value].Action, _slotNumber.Value);
             UnityEngine.Cursor.visible = true;
             _quickMenu.SetActive(false);
-            //_cursorReplacement.SetActive(false);
             _mouseDeltas.Clear();
             ClearSlots();
+            _slotNumber = null;
             PlayerController.Main.Enable();
             PlayerController.QuickMenuQuickMenu.RemoveListener(ActionType.Canceled, CloseQuickMenu);
         }
@@ -116,25 +126,16 @@ namespace UI
         {
             _item.sprite = Cursor.Item.Sprite;
             ItemAction[] actions = Cursor.Item.Actions;
-            int actionCount = 0;
-            foreach (var action in actions)
-            {
-                if (action is BuildAction)
-                    actionCount += 5;
-                else if (action is ShovelAction)
-                    actionCount += 4;
-                else
-                    actionCount++;
-            }
-            QuickMenuSlot[] slots = new QuickMenuSlot[actionCount];
-            for (int i = 0; i < actionCount; i++)
+            QuickMenuSlot[] slots = new QuickMenuSlot[actions.Length];
+            for (int i = 0; i < actions.Length; i++)
             {
                 slots[i] = GameObject.Instantiate(_slotPrefab, _quickMenu.transform)
                     .GetComponent<QuickMenuSlot>();
-                slots[i].Background.fillAmount = 0.99F / actionCount;
-                slots[i].transform.rotation = Quaternion.Euler(0F, 0F, i * (-1F / actionCount * 360F));
+                slots[i].Action = actions[i];
+                slots[i].Background.fillAmount = 0.99F / actions.Length;
+                slots[i].transform.rotation = Quaternion.Euler(0F, 0F, i * (-1F / actions.Length * 360F));
                 slots[i].ItemImage.transform.localPosition = new Vector3(0F, -250F, 0F)
-                    .RotateAroundPivot(Vector3.zero, -0.5F / actionCount * 360F);
+                    .RotateAroundPivot(Vector3.zero, -0.5F / actions.Length * 360F);
                 slots[i].ItemImage.transform.rotation = Quaternion.identity;
             }
             _slots = slots;

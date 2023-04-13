@@ -9,13 +9,20 @@ namespace Items
 {
     public class ShovelAction : ItemAction
     {
+        #region Fields
+
         private int _delta = -1;
         private ShovelMode _shovelMode = ShovelMode.Digging;
         private bool _isWaitingForAnotherCell = false;
 
-        public ShovelAction()
+        #endregion Fields
+
+        #region Public
+
+        public void SetShovelMode(int modeNumber)
         {
-            Cursor.Container.CollectionUpdated.AddListener(OnCursorCollectionUpdated);
+            _shovelMode = (ShovelMode)modeNumber;
+            _delta = modeNumber == 0 ? -1 : 1;
         }
 
         public override void Execute()
@@ -36,6 +43,10 @@ namespace Items
             }
         }
 
+        #endregion Public
+
+        #region Private
+
         private void FinishExecution()
         {
             switch (_shovelMode)
@@ -55,34 +66,6 @@ namespace Items
             }
             _isWaitingForAnotherCell = true;
             PlayerController.MainUse.AddListener(ActionType.Canceled, DisableWaiting);
-        }
-
-        private void OnCursorCollectionUpdated()
-        {
-            if (Cursor.Item == null)
-            {
-                PlayerController.MainQuickMenu.RemoveListener(ActionType.Started, ChangeMode);
-                return;
-            }
-            if (Cursor.Item.Action != this)
-            {
-                PlayerController.MainQuickMenu.RemoveListener(ActionType.Started, ChangeMode);
-                return;
-            }
-            PlayerController.MainQuickMenu.AddListener(ActionType.Started, ChangeMode);
-        }
-
-        private void ChangeMode(CallbackContext context)
-        {
-            _delta *= -1;
-            _shovelMode = (int)(_shovelMode + 1) > 3 ? 0 : _shovelMode + 1;
-            //_modeText.text = _shovelMode switch
-            //{
-            //    ShovelMode.Digging => $"Tryb: kopanie",
-            //    ShovelMode.Rising => $"Tryb: wznoszenie",
-            //    ShovelMode.Pathing => $"Tryb: ścieżkowanie",
-            //    _ => $"Tryb: oranie"
-            //};
         }
 
         private void Plow()
@@ -108,5 +91,7 @@ namespace Items
             _isWaitingForAnotherCell = false;
             PlayerController.MainUse.RemoveListener(ActionType.Canceled, DisableWaiting);
         }
+
+        #endregion Private
     }
 }
