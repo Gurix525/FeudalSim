@@ -53,6 +53,15 @@ namespace Items
 
         #endregion Public
 
+        #region Protected
+
+        protected override Sprite GetSprite()
+        {
+            return Sprites.GetSprite("DestroyAction");
+        }
+
+        #endregion Protected
+
         #region Private
 
         private void FinishExecution()

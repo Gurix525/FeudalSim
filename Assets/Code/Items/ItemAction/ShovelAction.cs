@@ -92,6 +92,18 @@ namespace Items
             PlayerController.MainUse.RemoveListener(ActionType.Canceled, DisableWaiting);
         }
 
+        protected override Sprite GetSprite()
+        {
+            return Sprites.GetSprite(_shovelMode switch
+            {
+                ShovelMode.Digging => "ShovelActionDigging",
+                ShovelMode.Rising => "ShovelActionRising",
+                ShovelMode.Pathing => "ShovelActionPathing",
+                ShovelMode.Plowing => "ShovelActionPlowing",
+                _ => "Placeholder",
+            });
+        }
+
         #endregion Private
     }
 }

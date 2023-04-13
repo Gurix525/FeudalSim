@@ -137,6 +137,7 @@ namespace UI
                 slots[i].ItemImage.transform.localPosition = new Vector3(0F, -250F, 0F)
                     .RotateAroundPivot(Vector3.zero, -0.5F / actions.Length * 360F);
                 slots[i].ItemImage.transform.rotation = Quaternion.identity;
+                slots[i].ItemImage.sprite = actions[i].Sprite;
             }
             _slots = slots;
         }

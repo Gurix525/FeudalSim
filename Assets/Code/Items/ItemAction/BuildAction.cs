@@ -103,6 +103,23 @@ namespace Items
 
         #endregion Public
 
+        #region Protected
+
+        protected override Sprite GetSprite()
+        {
+            return Sprites.GetSprite(_buildingMode switch
+            {
+                BuildingMode.Floor => "BuildActionFloor",
+                BuildingMode.BigFloor => "BuildActionBigFloor",
+                BuildingMode.ShortWall => "BuildActionShortWall",
+                BuildingMode.Wall => "BuildActionWall",
+                BuildingMode.BigWall => "BuildActionBigWall",
+                _ => "Placeholder",
+            });
+        }
+
+        #endregion Protected
+
         #region Private
 
         private void FinishExecution()

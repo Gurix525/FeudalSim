@@ -4,6 +4,8 @@ namespace Items
 {
     public abstract class ItemAction
     {
+        public Sprite Sprite => GetSprite();
+
         public virtual void Execute()
         { }
 
@@ -18,5 +20,7 @@ namespace Items
 
         public virtual void OnMouseExit(Component component)
         { }
+
+        protected abstract Sprite GetSprite();
     }
 }
