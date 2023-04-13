@@ -34,6 +34,7 @@ namespace Items
         public Material Material => _model.Material;
         public Mesh[] BuildingMeshes => _model.BuildingMeshes;
         public ItemAction Action => _model.Action;
+        public ItemAction[] Actions => _model.Actions;
 
         #endregion Properties
 

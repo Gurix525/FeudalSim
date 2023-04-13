@@ -4,7 +4,7 @@ namespace Extensions
 {
     public static class Vector3Extensions
     {
-        public static Vector3 GetAverage(this Vector3 a, Vector3 b)
+        public static Vector3 Average(this Vector3 a, Vector3 b)
         {
             return new((a.x + b.x) / 2F, (a.y + b.y) / 2F, (a.z + b.z) / 2F);
         }
@@ -22,6 +22,42 @@ namespace Extensions
         public static Vector3Int ToVector3Int(this Vector3 v)
         {
             return new(Mathf.RoundToInt(v.x), Mathf.RoundToInt(v.y), Mathf.RoundToInt(v.z));
+        }
+
+        public static Vector3 RotateAroundPivot(
+            this Vector3 point,
+            Vector3 pivot,
+            Vector3 angles)
+        {
+            return Quaternion.Euler(angles) * (point - pivot) + pivot;
+        }
+
+        public static Vector3 RotateAroundPivot(
+            this Vector3 point,
+            Vector2 pivot,
+            Vector3 angles)
+        {
+            return Quaternion
+                .Euler(angles) * (point - (Vector3)pivot) + (Vector3)pivot;
+        }
+
+        public static Vector3 RotateAroundPivot(
+            this Vector3 point,
+            Vector3 pivot,
+            float zAngles)
+        {
+            return Quaternion
+                .Euler(new(0, 0, zAngles)) * (point - pivot) + pivot;
+        }
+
+        public static Vector3 RotateAroundPivot(
+            this Vector3 point,
+            Vector2 pivot,
+            float zAngles)
+        {
+            return Quaternion
+                .Euler(new(0, 0, zAngles)) * (point - (Vector3)pivot)
+                + (Vector3)pivot;
         }
     }
 }

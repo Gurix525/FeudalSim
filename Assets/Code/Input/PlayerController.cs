@@ -19,8 +19,11 @@ namespace Input
         public static PlayerInput PlayerInput { get; private set; }
 
         public static InputActionMap Main { get; private set; }
+        public static InputActionMap QuickMenu { get; private set; }
 
+        // Main
         public static ModifiableInputAction MainMove { get; set; } = new();
+
         public static ModifiableInputAction MainRun { get; set; } = new();
         public static ModifiableInputAction MainJump { get; set; } = new();
         public static ModifiableInputAction MainUse { get; set; } = new();
@@ -31,9 +34,19 @@ namespace Input
         public static ModifiableInputAction MainMouseDelta { get; set; } = new();
         public static ModifiableInputAction MainQuickMenu { get; set; } = new();
 
+        // QuickMenu
+        public static ModifiableInputAction QuickMenuQuickMenu { get; set; } = new();
+
+        public static ModifiableInputAction QuickMenuMouseDelta { get; set; } = new();
+
         #endregion Properties
 
         #region Public
+
+        public static void SwitchCurrentActionMap(string name)
+        {
+            PlayerInput.SwitchCurrentActionMap(name);
+        }
 
         public static void Initialize()
         {
@@ -43,13 +56,14 @@ namespace Input
 
             PlayerInput = FindObjectOfType<PlayerController>()._playerInput;
 
-            //PlayerInput.SwitchCurrentActionMap("Steering");
-            //ActionMapSteering = PlayerInput.currentActionMap;
-            //PlayerInput.SwitchCurrentActionMap("Building");
-            //ActionMapBuilding = PlayerInput.currentActionMap;
+            // ActionMaps initialization
+            PlayerInput.SwitchCurrentActionMap("QuickMenu");
+            QuickMenu = PlayerInput.currentActionMap;
             PlayerInput.SwitchCurrentActionMap("Main");
             Main = PlayerInput.currentActionMap;
+            QuickMenu.Enable();
 
+            // Main
             MainMove.Action = Main.FindAction("Move");
             MainRun.Action = Main.FindAction("Run");
             MainJump.Action = Main.FindAction("Jump");
@@ -60,6 +74,10 @@ namespace Input
             MainEscape.Action = Main.FindAction("Escape");
             MainMouseDelta.Action = Main.FindAction("MouseDelta");
             MainQuickMenu.Action = Main.FindAction("QuickMenu");
+
+            // QuickMenu
+            QuickMenuQuickMenu.Action = QuickMenu.FindAction("QuickMenu");
+            QuickMenuMouseDelta.Action = QuickMenu.FindAction("MouseDelta");
         }
 
         #endregion Public

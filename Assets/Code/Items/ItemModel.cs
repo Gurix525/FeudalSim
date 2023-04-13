@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Misc;
 using UnityEngine;
 
@@ -6,12 +7,16 @@ namespace Items
 {
     public class ItemModel
     {
-        #region Properties
+        #region Fields
 
         private Mesh[] _buildingMeshes;
         private Material _material;
         private ItemAction _currentAction;
         private ItemAction[] _actions;
+
+        #endregion Fields
+
+        #region Properties
 
         public string Name { get; }
         public string Description { get; }
@@ -20,6 +25,7 @@ namespace Items
         public Dictionary<string, float> Stats { get; }
         public Material Material => _material ??= Materials.GetMaterial(Name) ?? Materials.DefaultMaterial;
         public ItemAction Action => _currentAction;
+        public ItemAction[] Actions => _actions;
 
         public Mesh[] BuildingMeshes =>
             _buildingMeshes ??=
@@ -50,13 +56,16 @@ namespace Items
             Sprite = Sprites.GetSprite(name);
             if (actions == null)
             {
-                _actions = new ItemAction[] { new NoAction() };
+                _actions = new ItemAction[] { new PutAction(), new NoAction() };
                 _currentAction = _actions[0];
             }
             else
             {
-                _actions = actions;
-                _currentAction = _actions[0];
+                var newActions = actions.ToList();
+                newActions.Insert(0, new PutAction());
+                newActions.Add(new NoAction());
+                _actions = newActions.ToArray();
+                _currentAction = _actions[1];
             }
         }
 

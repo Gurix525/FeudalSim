@@ -252,6 +252,54 @@
                     "isPartOfComposite": false
                 }
             ]
+        },
+        {
+            "name": "QuickMenu",
+            "id": "28836959-70a3-4f86-bd79-d010c284d862",
+            "actions": [
+                {
+                    "name": "QuickMenu",
+                    "type": "Button",
+                    "id": "96b5d34b-d78b-4c60-923a-889ceea8c28a",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "MouseDelta",
+                    "type": "Value",
+                    "id": "cf4e3c49-1dac-42ea-bf75-10a31969f2d9",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "33bcf686-74cc-4252-ae40-7acb54c858fd",
+                    "path": "<Keyboard>/q",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "QuickMenu",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "9d41a1c9-a34f-4614-940c-9a7f19dc7b89",
+                    "path": "<Mouse>/delta",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "MouseDelta",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
         }
     ],
     "controlSchemes": []
