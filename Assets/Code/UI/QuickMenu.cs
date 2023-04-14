@@ -132,7 +132,11 @@ namespace UI
                 slots[i] = GameObject.Instantiate(_slotPrefab, _quickMenu.transform)
                     .GetComponent<QuickMenuSlot>();
                 slots[i].Action = actions[i];
-                slots[i].Background.fillAmount = 0.99F / actions.Length;
+                (slots[i].Action as BuildAction)?.SetBuildingMode(
+                    i - actions.ToList().FindIndex(action => action is BuildAction));
+                (slots[i].Action as ShovelAction)?.SetShovelMode(
+                    i - actions.ToList().FindIndex(action => action is ShovelAction));
+                slots[i].Background.fillAmount = 1F / actions.Length;
                 slots[i].transform.rotation = Quaternion.Euler(0F, 0F, i * (-1F / actions.Length * 360F));
                 slots[i].ItemImage.transform.localPosition = new Vector3(0F, -250F, 0F)
                     .RotateAroundPivot(Vector3.zero, -0.5F / actions.Length * 360F);

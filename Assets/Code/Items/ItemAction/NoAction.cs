@@ -6,7 +6,7 @@ namespace Items
     {
         protected override Sprite GetSprite()
         {
-            return Sprites.GetSprite("NoAction");
+            return Resources.Load<Sprite>("Sprites/Actions/NoAction");
         }
     }
 }

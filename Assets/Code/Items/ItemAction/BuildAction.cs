@@ -60,6 +60,15 @@ namespace Items
         public void SetBuildingMode(int modeNumber)
         {
             _buildingMode = (BuildingMode)modeNumber;
+            if (Cursor.Item == null)
+                return;
+            if (Cursor.Item.Action != this)
+                return;
+            ReloadCursorMeshHighlight();
+        }
+
+        public void ReloadCursorMeshHighlight()
+        {
             CursorMeshHighlight.SetBuildingMode(_buildingMode);
             ResetRotationIfModeIsFloor();
         }
@@ -107,7 +116,7 @@ namespace Items
 
         protected override Sprite GetSprite()
         {
-            return Sprites.GetSprite(_buildingMode switch
+            return Resources.Load<Sprite>("Sprites/Actions/" + _buildingMode switch
             {
                 BuildingMode.Floor => "BuildActionFloor",
                 BuildingMode.BigFloor => "BuildActionBigFloor",

@@ -37,10 +37,10 @@ namespace Items
                 {
                     if (action is BuildAction)
                         for (int i = 0; i < 5; i++)
-                            actions.Add(action);
+                            actions.Add(new BuildAction());
                     else if (action is ShovelAction)
                         for (int i = 0; i < 4; i++)
-                            actions.Add(action);
+                            actions.Add(new ShovelAction());
                     else
                         actions.Add(action);
                 }
@@ -74,7 +74,7 @@ namespace Items
             Description = description;
             MaxStack = maxStack;
             Stats = stats;
-            Sprite = Sprites.GetSprite(name);
+            Sprite = Resources.Load<Sprite>("Sprites/Items/" + name);
             if (actions == null)
             {
                 _actions = new ItemAction[] { new PutAction(), new NoAction() };
@@ -102,10 +102,7 @@ namespace Items
             if (Cursor.Item.Model != this)
                 return;
             _currentAction = action;
-            (_currentAction as BuildAction)?.SetBuildingMode(
-                slotNumber - _actions.ToList().FindIndex(action => action is BuildAction));
-            (_currentAction as ShovelAction)?.SetShovelMode(
-                slotNumber - _actions.ToList().FindIndex(action => action is ShovelAction));
+            (_currentAction as BuildAction)?.ReloadCursorMeshHighlight();
         }
 
         #endregion Private

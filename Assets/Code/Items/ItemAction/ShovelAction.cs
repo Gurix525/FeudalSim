@@ -94,7 +94,7 @@ namespace Items
 
         protected override Sprite GetSprite()
         {
-            return Sprites.GetSprite(_shovelMode switch
+            return Resources.Load<Sprite>("Sprites/Actions/" + _shovelMode switch
             {
                 ShovelMode.Digging => "ShovelActionDigging",
                 ShovelMode.Rising => "ShovelActionRising",

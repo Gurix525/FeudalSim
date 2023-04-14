@@ -57,7 +57,7 @@ namespace Items
 
         protected override Sprite GetSprite()
         {
-            return Sprites.GetSprite("DestroyAction");
+            return Resources.Load<Sprite>("Sprites/Actions/DestroyAction");
         }
 
         #endregion Protected
