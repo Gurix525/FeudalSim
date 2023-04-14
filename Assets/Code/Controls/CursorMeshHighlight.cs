@@ -45,7 +45,7 @@ public class CursorMeshHighlight : MonoBehaviour
 
     #region Public
 
-    public static void TrySetMesh(Mesh mesh)
+    public static void SetMesh(Mesh mesh)
     {
         if (_instance._mesh != mesh)
         {
@@ -81,11 +81,11 @@ public class CursorMeshHighlight : MonoBehaviour
     {
         if (Cursor.Item == null)
         {
-            TrySetMesh(null);
+            SetMesh(null);
         }
         else if (Cursor.Item.Action is not BuildAction)
         {
-            TrySetMesh(null);
+            SetMesh(null);
         }
         if (_mesh != _previousMesh)
         {

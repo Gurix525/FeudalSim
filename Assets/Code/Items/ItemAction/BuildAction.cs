@@ -95,7 +95,7 @@ namespace Items
 
         public override void Update()
         {
-            CursorMeshHighlight.TrySetMesh(_buildingMode switch
+            CursorMeshHighlight.SetMesh(_buildingMode switch
             {
                 BuildingMode.Floor => Cursor.Item.BuildingMeshes[0],
                 BuildingMode.BigFloor => Cursor.Item.BuildingMeshes[1],

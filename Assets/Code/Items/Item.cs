@@ -34,6 +34,7 @@ namespace Items
         public Dictionary<string, float> Stats => _stats ?? _model.Stats;
         public Material Material => _model.Material;
         public Mesh[] BuildingMeshes => _model.BuildingMeshes;
+        public Mesh Mesh => _model.Mesh;
         public ItemAction Action => _model.Action;
         public ItemAction[] Actions => _model.Actions;
 

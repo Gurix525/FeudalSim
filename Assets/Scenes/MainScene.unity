@@ -123,6 +123,75 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1001 &3756608
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 2736805260374512310, guid: 25d45dfe68df95145a01f5899dee013e,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 11
+      objectReference: {fileID: 0}
+    - target: {fileID: 2736805260374512310, guid: 25d45dfe68df95145a01f5899dee013e,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2736805260374512310, guid: 25d45dfe68df95145a01f5899dee013e,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2736805260374512310, guid: 25d45dfe68df95145a01f5899dee013e,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2736805260374512310, guid: 25d45dfe68df95145a01f5899dee013e,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2736805260374512310, guid: 25d45dfe68df95145a01f5899dee013e,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2736805260374512310, guid: 25d45dfe68df95145a01f5899dee013e,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2736805260374512310, guid: 25d45dfe68df95145a01f5899dee013e,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2736805260374512310, guid: 25d45dfe68df95145a01f5899dee013e,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2736805260374512310, guid: 25d45dfe68df95145a01f5899dee013e,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2736805260374512310, guid: 25d45dfe68df95145a01f5899dee013e,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6934019012683409245, guid: 25d45dfe68df95145a01f5899dee013e,
+        type: 3}
+      propertyPath: m_Name
+      value: ItemHighlight
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 25d45dfe68df95145a01f5899dee013e, type: 3}
 --- !u!1 &106463906
 GameObject:
   m_ObjectHideFlags: 0
@@ -794,6 +863,12 @@ MonoBehaviour:
   m_ShadowLayerMask: 1
   m_LightCookieSize: {x: 1, y: 1}
   m_LightCookieOffset: {x: 0, y: 0}
+--- !u!1 &478077016 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6934019012683409245, guid: 25d45dfe68df95145a01f5899dee013e,
+    type: 3}
+  m_PrefabInstance: {fileID: 3756608}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &508407978
 GameObject:
   m_ObjectHideFlags: 0
@@ -1586,6 +1661,7 @@ GameObject:
   - component: {fileID: 1207663844}
   - component: {fileID: 1207663845}
   - component: {fileID: 1207663846}
+  - component: {fileID: 1207663847}
   m_Layer: 0
   m_Name: Terrain
   m_TagString: Untagged
@@ -1661,6 +1737,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _mesh: {fileID: -5495902117074765545, guid: f6602afddef2e554cbb6be14fc36a759, type: 3}
+  _notBlockedMaterial: {fileID: 2100000, guid: 6b0899f2cfd830a41b90fccbfe666a74, type: 2}
+  _blockedMaterial: {fileID: 2100000, guid: 73f5f5a550a38a44cae22c75b36b914b, type: 2}
+--- !u!114 &1207663847
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1207663837}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e42eaba6403cf2b46b0cf3eb3060914f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _highlight: {fileID: 478077016}
+  _mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
   _notBlockedMaterial: {fileID: 2100000, guid: 6b0899f2cfd830a41b90fccbfe666a74, type: 2}
   _blockedMaterial: {fileID: 2100000, guid: 73f5f5a550a38a44cae22c75b36b914b, type: 2}
 --- !u!1 &1222375874

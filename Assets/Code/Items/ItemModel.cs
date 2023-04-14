@@ -12,6 +12,7 @@ namespace Items
         #region Fields
 
         private Mesh[] _buildingMeshes;
+        private Mesh _mesh;
         private Material _material;
         private ItemAction _currentAction;
         private ItemAction[] _actions;
@@ -52,12 +53,20 @@ namespace Items
             _buildingMeshes ??=
                 new Mesh[5]
                 {
-                    Meshes.GetMesh(Name + "Floor") ?? Meshes.GetMesh("Floor"),
-                    Meshes.GetMesh(Name + "BigFloor") ?? Meshes.GetMesh("BigFloor"),
-                    Meshes.GetMesh(Name + "ShortWall") ?? Meshes.GetMesh("ShortWall"),
-                    Meshes.GetMesh(Name + "Wall") ?? Meshes.GetMesh("Wall"),
-                    Meshes.GetMesh(Name + "BigWall") ?? Meshes.GetMesh("BigWall")
+                    Resources.Load<Mesh>("Meshes/Buildings/" + Name + "Floor")
+                        ?? Resources.Load<Mesh>("Meshes/Buildings/Floor"),
+                    Resources.Load<Mesh>("Meshes/Buildings/" + Name + "BigFloor")
+                        ?? Resources.Load<Mesh>("Meshes/Buildings/BigFloor"),
+                    Resources.Load<Mesh>("Meshes/Buildings/" + Name + "ShortWall")
+                        ?? Resources.Load<Mesh>("Meshes/Buildings/ShortWall"),
+                    Resources.Load<Mesh>("Meshes/Buildings/" + Name + "Wall")
+                        ?? Resources.Load<Mesh>("Meshes/Buildings/Wall"),
+                    Resources.Load<Mesh>("Meshes/Buildings/" + Name + "BigWall")
+                        ?? Resources.Load<Mesh>("Meshes/Buildings/BigWall")
                 };
+
+        public Mesh Mesh =>
+            _mesh ??= Resources.Load<Mesh>("Meshes/Items/" + Name);
 
         #endregion Properties
 
