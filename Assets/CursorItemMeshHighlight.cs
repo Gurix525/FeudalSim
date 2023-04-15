@@ -1,6 +1,4 @@
-using Extensions;
 using Items;
-using UnityEditor.TerrainTools;
 using UnityEngine;
 
 namespace Controls
@@ -29,7 +27,10 @@ namespace Controls
 
         #region Properties
 
-        private static CursorItemMeshHighlight _instance { get; set; }
+        public static Vector3 Position => Instance._highlight.transform.position;
+        public static Quaternion Rotation => Instance._highlight.transform.rotation;
+
+        private static CursorItemMeshHighlight Instance { get; set; }
 
         public static bool IsBlocked { get; set; } = false;
 
@@ -39,11 +40,13 @@ namespace Controls
 
         public static void SetMesh(Mesh mesh)
         {
-            if (_instance._mesh != mesh)
+            if (Instance._mesh != mesh)
             {
-                _instance._mesh = mesh;
-                _instance._previousPosition = Vector3.zero;
+                Instance._mesh = mesh;
+                Instance._previousPosition = Vector3.zero;
             }
+            if (mesh == null)
+                Instance._renderer.enabled = false;
         }
 
         public static void SetMeshRotation(float rotation)
@@ -57,7 +60,7 @@ namespace Controls
 
         private void Awake()
         {
-            _instance = this;
+            Instance = this;
             _filter = _highlight.GetComponent<MeshFilter>();
             _renderer = _highlight.GetComponent<MeshRenderer>();
             _collider = _highlight.GetComponent<MeshCollider>();
@@ -78,7 +81,6 @@ namespace Controls
                 SetMesh(null);
                 return;
             }
-            IsBlocked = _collisionCounter.IsColliding;
             if (_mesh != _previousMesh)
             {
                 _filter.mesh = _mesh;
@@ -100,15 +102,13 @@ namespace Controls
                 _renderer.enabled = true;
                 _renderer.material.renderQueue = 3001;
                 var position = Cursor.RaycastHit.Value.point;
+                var normal = Cursor.RaycastHit.Value.normal;
+                var rotation = Quaternion.FromToRotation(Vector3.up, normal)
+                    * Quaternion.Euler(0F, _meshRotation, 0F);
                 _highlight.transform.SetPositionAndRotation(
                     position,
-                    Quaternion.Euler(0, _meshRotation, 0));
-                if (position != _previousPosition)
-                {
-                    _previousPosition = position;
-                    bool isBuildingPossible = true;
-                    IsBlocked = !isBuildingPossible;
-                }
+                    rotation);
+                IsBlocked = _collisionCounter.IsColliding || normal.y < 0.71F;
             }
             else
                 _renderer.enabled = false;

@@ -103,7 +103,10 @@ namespace UI
         private void CloseQuickMenu(CallbackContext obj)
         {
             if (_slotNumber != null)
+            {
                 Closed.Invoke(_slots[_slotNumber.Value].Action, _slotNumber.Value);
+                Cursor.Container.CollectionUpdated.Invoke();
+            }
             UnityEngine.Cursor.visible = true;
             _quickMenu.SetActive(false);
             _mouseDeltas.Clear();

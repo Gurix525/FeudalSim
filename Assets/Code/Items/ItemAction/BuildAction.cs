@@ -17,7 +17,7 @@ namespace Items
         #region Fields
 
         private BuildingMode _buildingMode = BuildingMode.Floor;
-        private float _meshRotation = 0F;
+        private float _meshRotation;
         private GameObject[] _buildingPrefabs;
         private Vector3Int _calibratedPosition;
         private bool _isWaitingForAnotherBuilding = false;

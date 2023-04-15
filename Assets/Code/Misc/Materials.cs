@@ -7,18 +7,18 @@ namespace Misc
     {
         [SerializeField] private Material[] _materials;
 
-        private static Materials _instance;
+        private static Materials Instance;
 
-        public static Material DefaultMaterial => _instance._materials[0];
+        public static Material DefaultMaterial => Instance._materials[0];
 
         private void Awake()
         {
-            _instance = this;
+            Instance = this;
         }
 
         public static Material GetMaterial(string name)
         {
-            return _instance._materials.ToList().Find(sprite => sprite.name == name);
+            return Instance._materials.ToList().Find(sprite => sprite.name == name);
         }
     }
 }

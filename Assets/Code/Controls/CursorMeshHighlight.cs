@@ -30,7 +30,7 @@ public class CursorMeshHighlight : MonoBehaviour
 
     public static bool IsBlocked { get; set; } = false;
 
-    private static CursorMeshHighlight _instance { get; set; }
+    private static CursorMeshHighlight Instance { get; set; }
 
     private int RequiredItemCount => _buildingMode switch
     {
@@ -47,16 +47,16 @@ public class CursorMeshHighlight : MonoBehaviour
 
     public static void SetMesh(Mesh mesh)
     {
-        if (_instance._mesh != mesh)
+        if (Instance._mesh != mesh)
         {
-            _instance._mesh = mesh;
-            _instance._previousPosition = Vector3.zero;
+            Instance._mesh = mesh;
+            Instance._previousPosition = Vector3.zero;
         }
     }
 
     public static void SetBuildingMode(BuildingMode buildingMode)
     {
-        _instance._buildingMode = buildingMode;
+        Instance._buildingMode = buildingMode;
     }
 
     public static void SetMeshRotation(float rotation)
@@ -70,7 +70,7 @@ public class CursorMeshHighlight : MonoBehaviour
 
     private void Awake()
     {
-        _instance = this;
+        Instance = this;
         _highlight = new GameObject("MeshHighlight");
         _filter = _highlight.AddComponent<MeshFilter>();
         _renderer = _highlight.AddComponent<MeshRenderer>();
