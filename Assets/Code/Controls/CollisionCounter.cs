@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace Controls
@@ -18,6 +19,7 @@ namespace Controls
 
         private void FixedUpdate()
         {
+            _colliders = _colliders.Where(collider => collider != null).ToList();
             bool isColliding = false;
             foreach (var other in _colliders)
             {

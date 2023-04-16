@@ -22,19 +22,19 @@ namespace Items
         {
             if (Cursor.RaycastHit != null)
             {
-                (component as OutlineHandler)?.EnableOutline();
+                (component as ItemHandler)?.EnableOutline();
                 _clickable = component as IClickable;
             }
             else
             {
-                (component as OutlineHandler)?.DisableOutline();
+                (component as ItemHandler)?.DisableOutline();
                 _clickable = null;
             }
         }
 
         public override void OnMouseExit(Component component)
         {
-            (component as OutlineHandler)?.DisableOutline();
+            (component as ItemHandler)?.DisableOutline();
             _clickable = null;
         }
 

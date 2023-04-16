@@ -26,6 +26,8 @@ namespace Items
 
         public void Click()
         {
+            if (Item == null)
+                return;
             if (Cursor.Item == null)
             {
                 Cursor.Container.InsertAt(0, Container.ExtractAt(0));
@@ -35,7 +37,9 @@ namespace Items
             if (Cursor.Item.Name == Item.Name)
             {
                 int delta = Mathf.Min(Item.Count, Item.MaxStack - Cursor.Item.Count);
-                Container.InsertAt(0, Container.ExtractAt(0, delta));
+                if (delta == 0)
+                    return;
+                Cursor.Container.InsertAt(0, Container.ExtractAt(0, delta));
                 if (Item == null)
                     Destroy(gameObject);
             }
