@@ -25,7 +25,7 @@ namespace Items
             _delta = modeNumber == 0 ? -1 : 1;
         }
 
-        public override void Execute()
+        public override void OnLeftMouseButton()
         {
             if (Cursor.CellPosition != null)
             {
@@ -39,7 +39,7 @@ namespace Items
         {
             if (_isWaitingForAnotherCell)
             {
-                Execute();
+                OnLeftMouseButton();
             }
         }
 

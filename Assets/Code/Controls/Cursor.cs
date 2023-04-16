@@ -6,8 +6,6 @@ namespace Controls
 {
     public static class Cursor
     {
-        private static NoAction _noAction = new();
-
         private static Vector2Int? _cellPosition;
 
         public static Container Container { get; } = new(1);
@@ -26,7 +24,7 @@ namespace Controls
 
         public static bool IsAboveTerrain { get; private set; } = false;
 
-        public static ItemAction Action => Item?.Action ?? _noAction;
+        public static ItemAction Action => Item?.Action ?? ItemAction.NoAction;
 
         /// <summary>
         /// Do użycia w normalnych warunkach, jeśli potrzeba rzucić raycast

@@ -8,14 +8,25 @@ namespace Items
 {
     public class NoAction : ItemAction
     {
+        #region Fields
+
+        private ILeftClickHandler _leftClickable;
+        private IRightClickHandler _rightclickable;
+
+        #endregion Fields
+
         #region Public
 
-        private IClickable _clickable;
-
-        public override void Execute()
+        public override void OnLeftMouseButton()
         {
-            if (_clickable != null)
-                _clickable.Click();
+            if (_leftClickable != null)
+                _leftClickable.OnLeftMouseButton();
+        }
+
+        public override void OnRightMouseButton()
+        {
+            if (_rightclickable != null)
+                _rightclickable.OnRightMouseButton();
         }
 
         public override void OnMouseOver(Component component)
@@ -23,19 +34,20 @@ namespace Items
             if (Cursor.RaycastHit != null)
             {
                 (component as ItemHandler)?.EnableOutline();
-                _clickable = component as IClickable;
+                _leftClickable = component as ILeftClickHandler;
+                _rightclickable = component as IRightClickHandler;
             }
             else
             {
                 (component as ItemHandler)?.DisableOutline();
-                _clickable = null;
+                _leftClickable = null;
             }
         }
 
         public override void OnMouseExit(Component component)
         {
             (component as ItemHandler)?.DisableOutline();
-            _clickable = null;
+            _leftClickable = null;
         }
 
         #endregion Public

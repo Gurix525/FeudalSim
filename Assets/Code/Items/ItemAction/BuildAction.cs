@@ -71,7 +71,7 @@ namespace Items
             ResetRotationIfModeIsFloor();
         }
 
-        public override void Execute()
+        public override void OnLeftMouseButton()
         {
             if (Cursor.CurrentRaycastHit == null)
                 return;
@@ -104,7 +104,7 @@ namespace Items
             CursorMeshHighlight.SetMeshRotation(_meshRotation);
             if (_isWaitingForAnotherBuilding)
             {
-                Execute();
+                OnLeftMouseButton();
             }
         }
 

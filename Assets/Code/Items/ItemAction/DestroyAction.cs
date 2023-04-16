@@ -21,7 +21,7 @@ namespace Items
 
         #region Public
 
-        public override void Execute()
+        public override void OnLeftMouseButton()
         {
             if (Cursor.CurrentRaycastHit == null)
                 return;
@@ -42,7 +42,7 @@ namespace Items
             if (_buildingToDestroy != null && _isWaitingForAnotherBuilding)
             {
                 DisableWaiting(new());
-                Execute();
+                OnLeftMouseButton();
             }
         }
 

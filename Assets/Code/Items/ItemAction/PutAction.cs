@@ -15,7 +15,7 @@ namespace Items
         #region Fields
 
         private float _meshRotation;
-        private bool _isStackMode = false;
+        private bool _isControlMode = false;
 
         #endregion Fields
 
@@ -30,8 +30,13 @@ namespace Items
 
         #region Public
 
-        public override void Execute()
+        public override void OnLeftMouseButton()
         {
+            if (_isControlMode)
+            {
+                NoAction.OnLeftMouseButton();
+                return;
+            }
             if (Cursor.CurrentRaycastHit == null)
                 return;
             if (CursorItemMeshHighlight.IsBlocked)
@@ -44,7 +49,32 @@ namespace Items
                         Terrain.GetChunkCoordinates(
                             CursorItemMeshHighlight.Position)).transform)
                 .GetComponent<ItemHandler>();
-            itemHandler.Container.InsertAt(0, Cursor.Container.ExtractAt(0, _isStackMode ? 0 : 1));
+            itemHandler.Container.InsertAt(0, Cursor.Container.ExtractAt(0));
+            itemHandler.transform.SetPositionAndRotation(
+                CursorItemMeshHighlight.Position,
+                CursorItemMeshHighlight.Rotation);
+        }
+
+        public override void OnRightMouseButton()
+        {
+            if (_isControlMode)
+            {
+                NoAction.OnRightMouseButton();
+                return;
+            }
+            if (Cursor.CurrentRaycastHit == null)
+                return;
+            if (CursorItemMeshHighlight.IsBlocked)
+                return;
+            GameObject prefab = Resources.Load<GameObject>("Prefabs/Items/" + Cursor.Item.Name);
+            if (prefab == null)
+                return;
+            ItemHandler itemHandler = GameObject
+                .Instantiate(prefab, TerrainRenderer.GetChunkRenderer(
+                    Terrain.GetChunkCoordinates(
+                        CursorItemMeshHighlight.Position)).transform)
+                .GetComponent<ItemHandler>();
+            itemHandler.Container.InsertAt(0, Cursor.Container.ExtractAt(0, 1));
             itemHandler.transform.SetPositionAndRotation(
                 CursorItemMeshHighlight.Position,
                 CursorItemMeshHighlight.Rotation);
@@ -79,24 +109,24 @@ namespace Items
             if (Cursor.Action != this)
             {
                 PlayerController.MainChange.RemoveListener(ActionType.Started, ChangeRotation);
-                PlayerController.MainControl.RemoveListener(ActionType.Started, EnableStackMode);
-                PlayerController.MainControl.RemoveListener(ActionType.Canceled, DisableStackMode);
+                PlayerController.MainControl.RemoveListener(ActionType.Started, EnableControlMode);
+                PlayerController.MainControl.RemoveListener(ActionType.Canceled, DisableControlMode);
                 CursorItemMeshHighlight.SetMesh(null);
                 return;
             }
             PlayerController.MainChange.AddListener(ActionType.Started, ChangeRotation);
-            PlayerController.MainControl.AddListener(ActionType.Started, EnableStackMode);
-            PlayerController.MainControl.AddListener(ActionType.Canceled, DisableStackMode);
+            PlayerController.MainControl.AddListener(ActionType.Started, EnableControlMode);
+            PlayerController.MainControl.AddListener(ActionType.Canceled, DisableControlMode);
         }
 
-        private void DisableStackMode(CallbackContext context)
+        private void DisableControlMode(CallbackContext context)
         {
-            _isStackMode = false;
+            _isControlMode = false;
         }
 
-        private void EnableStackMode(CallbackContext context)
+        private void EnableControlMode(CallbackContext context)
         {
-            _isStackMode = true;
+            _isControlMode = true;
         }
 
         #endregion Private

@@ -4,9 +4,14 @@ namespace Items
 {
     public abstract class ItemAction
     {
+        public static NoAction NoAction { get; } = new();
+
         public Sprite Sprite => GetSprite();
 
-        public virtual void Execute()
+        public virtual void OnLeftMouseButton()
+        { }
+
+        public virtual void OnRightMouseButton()
         { }
 
         public virtual void Update()

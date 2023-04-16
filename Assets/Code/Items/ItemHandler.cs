@@ -2,15 +2,20 @@ using Misc;
 using Cursor = Controls.Cursor;
 using UnityEngine;
 using Controls;
+using Input;
+using UnityEngine.InputSystem;
+using System;
+using static UnityEngine.InputSystem.InputAction;
 
 namespace Items
 {
     [RequireComponent(typeof(OutlineHandler))]
-    public class ItemHandler : MonoBehaviour, IClickable
+    public class ItemHandler : MonoBehaviour, ILeftClickHandler, IRightClickHandler
     {
         #region Fields
 
         private OutlineHandler _outlineHandler;
+        private bool _isStackMode = false;
 
         #endregion Fields
 
@@ -24,7 +29,7 @@ namespace Items
 
         #region Public
 
-        public void Click()
+        public void OnLeftMouseButton()
         {
             if (Item == null)
                 return;
@@ -45,6 +50,28 @@ namespace Items
             }
         }
 
+        public void OnRightMouseButton()
+        {
+            if (Item == null)
+                return;
+            if (Cursor.Item == null)
+            {
+                Cursor.Container.InsertAt(0, Container.ExtractAt(0, 1));
+                if (Item == null)
+                    Destroy(gameObject);
+                return;
+            }
+            if (Cursor.Item.Name == Item.Name)
+            {
+                if (Cursor.Item.Count < Item.MaxStack)
+                {
+                    Cursor.Container.InsertAt(0, Container.ExtractAt(0, 1));
+                    if (Item == null)
+                        Destroy(gameObject);
+                }
+            }
+        }
+
         public void EnableOutline()
         {
             _outlineHandler.EnableOutline();
@@ -62,7 +89,18 @@ namespace Items
         private void Awake()
         {
             _outlineHandler = GetComponent<OutlineHandler>();
+        }
+
+        private void OnEnable()
+        {
             Container.CollectionUpdated.AddListener(OnCollectionUpdated);
+            PlayerController.MainControl.AddListener(ActionType.Started, EnableStackMode);
+        }
+
+        private void OnDisable()
+        {
+            Container.CollectionUpdated.RemoveListener(OnCollectionUpdated);
+            PlayerController.MainControl.RemoveListener(ActionType.Started, EnableStackMode);
         }
 
         private void OnMouseOver()
@@ -83,6 +121,20 @@ namespace Items
         {
             if (Container[0] == null)
                 Destroy(gameObject);
+        }
+
+        private void EnableStackMode(CallbackContext context)
+        {
+            _isStackMode = true;
+            PlayerController.MainControl.AddListener(ActionType.Canceled, DisableStackMode);
+            PlayerController.MainControl.RemoveListener(ActionType.Started, EnableStackMode);
+        }
+
+        private void DisableStackMode(CallbackContext context)
+        {
+            _isStackMode = false;
+            PlayerController.MainControl.RemoveListener(ActionType.Canceled, DisableStackMode);
+            PlayerController.MainControl.AddListener(ActionType.Started, EnableStackMode);
         }
 
         #endregion Private

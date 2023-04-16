@@ -29,7 +29,8 @@ namespace Controls
         private void OnEnable()
         {
             PlayerController.MainJump.AddListener(ActionType.Started, Jump);
-            PlayerController.MainUse.AddListener(ActionType.Started, UseItem);
+            PlayerController.MainUse.AddListener(ActionType.Started, OnLeftMouseButton);
+            PlayerController.MainRightClick.AddListener(ActionType.Started, OnRightMouseButton);
         }
 
         private void Update()
@@ -42,16 +43,22 @@ namespace Controls
         private void OnDisable()
         {
             PlayerController.MainJump.RemoveListener(ActionType.Started, Jump);
-            PlayerController.MainUse.RemoveListener(ActionType.Started, UseItem);
+            PlayerController.MainUse.RemoveListener(ActionType.Started, OnLeftMouseButton);
+            PlayerController.MainRightClick.RemoveListener(ActionType.Started, OnRightMouseButton);
         }
 
         #endregion Unity
 
         #region Private
 
-        private void UseItem(CallbackContext context)
+        private void OnLeftMouseButton(CallbackContext context)
         {
-            Cursor.Action.Execute();
+            Cursor.Action.OnLeftMouseButton();
+        }
+
+        private void OnRightMouseButton(CallbackContext context)
+        {
+            Cursor.Action.OnRightMouseButton();
         }
 
         private void UpdateVerticalSpeed()
