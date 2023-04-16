@@ -54,21 +54,18 @@ namespace Buildings
 
         private void OnMouseEnter()
         {
-            if (Cursor.Item != null)
-                Cursor.Item.Action.OnMouseEnter(this);
+            Cursor.Action.OnMouseEnter(this);
             Cursor.Container.CollectionUpdated.AddListener(ResetItemAction);
         }
 
         private void OnMouseOver()
         {
-            if (Cursor.Item != null)
-                Cursor.Item.Action.OnMouseOver(this);
+            Cursor.Action.OnMouseOver(this);
         }
 
         private void OnMouseExit()
         {
-            if (Cursor.Item != null)
-                Cursor.Item.Action.OnMouseExit(this);
+            Cursor.Action.OnMouseExit(this);
             Cursor.Container.CollectionUpdated.RemoveListener(ResetItemAction);
         }
 

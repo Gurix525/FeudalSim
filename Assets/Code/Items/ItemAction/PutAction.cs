@@ -44,7 +44,7 @@ namespace Items
                         Terrain.GetChunkCoordinates(
                             CursorItemMeshHighlight.Position)).transform)
                 .GetComponent<ItemHandler>();
-            itemHandler.Item = Cursor.Container.ExtractAt(0, _isStackMode ? 0 : 1);
+            itemHandler.Container.InsertAt(0, Cursor.Container.ExtractAt(0, _isStackMode ? 0 : 1));
             itemHandler.transform.SetPositionAndRotation(
                 CursorItemMeshHighlight.Position,
                 CursorItemMeshHighlight.Rotation);
@@ -76,15 +76,7 @@ namespace Items
 
         private void OnCursorCollectionUpdated()
         {
-            if (Cursor.Item == null)
-            {
-                PlayerController.MainChange.RemoveListener(ActionType.Started, ChangeRotation);
-                PlayerController.MainControl.RemoveListener(ActionType.Started, EnableStackMode);
-                PlayerController.MainControl.RemoveListener(ActionType.Canceled, DisableStackMode);
-                CursorItemMeshHighlight.SetMesh(null);
-                return;
-            }
-            if (Cursor.Item.Action != this)
+            if (Cursor.Action != this)
             {
                 PlayerController.MainChange.RemoveListener(ActionType.Started, ChangeRotation);
                 PlayerController.MainControl.RemoveListener(ActionType.Started, EnableStackMode);

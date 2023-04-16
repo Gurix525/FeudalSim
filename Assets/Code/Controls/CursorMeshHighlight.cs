@@ -79,11 +79,7 @@ public class CursorMeshHighlight : MonoBehaviour
 
     private void Update()
     {
-        if (Cursor.Item == null)
-        {
-            SetMesh(null);
-        }
-        else if (Cursor.Item.Action is not BuildAction)
+        if (Cursor.Action is not BuildAction)
         {
             SetMesh(null);
         }

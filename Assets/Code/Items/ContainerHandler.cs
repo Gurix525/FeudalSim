@@ -9,7 +9,6 @@ using UI;
 
 namespace Items
 {
-    [RequireComponent(typeof(Outline))]
     public class ContainerHandler : MonoBehaviour
     {
         #region Fields
@@ -19,10 +18,7 @@ namespace Items
         private Container _container;
         private GameObject _window;
         private GameObject[] _slots;
-        private Outline _outline;
         private RectTransform _windowTransform;
-
-        private bool _isOutlineActive = false;
 
         #endregion Fields
 
@@ -31,10 +27,6 @@ namespace Items
         private void Start()
         {
             _container = new(_size, _lock);
-            _outline = GetComponent<Outline>();
-            _outline.OutlineMode = Outline.Mode.OutlineVisible;
-            _outline.OutlineColor = new(0F, 0F, 0F, 0F);
-            _outline.OutlineWidth = 1F;
             _window = Instantiate(
                 Prefabs.GetPrefab("ContainerWindow"),
                 References.GetReference("DefaultCanvas").transform);
@@ -59,26 +51,12 @@ namespace Items
 
         private void OnMouseEnter()
         {
-            PlayerController.MainRightClick.AddListener(ActionType.Started, SwitchContainer);
-        }
-
-        private void OnMouseOver()
-        {
-            if (!EventSystem.current.IsPointerOverGameObject())
-            {
-                if (!_isOutlineActive)
-                {
-                    _outline.OutlineColor = new(1F, 3F, 2F, 1F);
-                    _isOutlineActive = true;
-                }
-            }
+            PlayerController.MainRightClick.AddListener(ActionType.Started, SwitchContainerState);
         }
 
         private void OnMouseExit()
         {
-            PlayerController.MainRightClick.RemoveListener(ActionType.Started, SwitchContainer);
-            _outline.OutlineColor = new(0F, 0F, 0F, 0F);
-            _isOutlineActive = false;
+            PlayerController.MainRightClick.RemoveListener(ActionType.Started, SwitchContainerState);
         }
 
         private void OnDestroy()
@@ -103,7 +81,7 @@ namespace Items
 
         #region Private
 
-        private void SwitchContainer(CallbackContext context)
+        private void SwitchContainerState(CallbackContext context)
         {
             if (_window.activeInHierarchy)
                 HideContainer(new());

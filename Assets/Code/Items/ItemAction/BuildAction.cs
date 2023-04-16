@@ -60,9 +60,7 @@ namespace Items
         public void SetBuildingMode(int modeNumber)
         {
             _buildingMode = (BuildingMode)modeNumber;
-            if (Cursor.Item == null)
-                return;
-            if (Cursor.Item.Action != this)
+            if (Cursor.Action != this)
                 return;
             ReloadCursorMeshHighlight();
         }
@@ -172,12 +170,7 @@ namespace Items
 
         private void OnCursorCollectionUpdated()
         {
-            if (Cursor.Item == null)
-            {
-                PlayerController.MainChange.RemoveListener(ActionType.Started, ChangeRotation);
-                return;
-            }
-            if (Cursor.Item.Action != this)
+            if (Cursor.Action != this)
             {
                 PlayerController.MainChange.RemoveListener(ActionType.Started, ChangeRotation);
                 return;

@@ -36,8 +36,7 @@ namespace Controls
         {
             Move();
             UpdateVerticalSpeed();
-            if (Cursor.Item != null)
-                Cursor.Item.Action.Update();
+            Cursor.Action.Update();
         }
 
         private void OnDisable()
@@ -52,9 +51,7 @@ namespace Controls
 
         private void UseItem(CallbackContext context)
         {
-            if (Cursor.Item == null)
-                return;
-            Cursor.Item.Action.Execute();
+            Cursor.Action.Execute();
         }
 
         private void UpdateVerticalSpeed()

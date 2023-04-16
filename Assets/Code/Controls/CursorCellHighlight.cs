@@ -33,9 +33,9 @@ namespace Controls
 
         private void Update()
         {
-            if (Cursor.IsAboveTerrain && Cursor.Item != null)
+            if (Cursor.IsAboveTerrain)
             {
-                if (Cursor.Item.Action is ShovelAction)
+                if (Cursor.Action is ShovelAction)
                 {
                     _highlight.SetActive(true);
                     UpdateHighlight();

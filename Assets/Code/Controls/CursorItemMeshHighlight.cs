@@ -71,12 +71,7 @@ namespace Controls
 
         private void FixedUpdate()
         {
-            if (Cursor.Item == null)
-            {
-                SetMesh(null);
-                return;
-            }
-            if (Cursor.Item.Action is not PutAction)
+            if (Cursor.Action is not PutAction)
             {
                 SetMesh(null);
                 return;
