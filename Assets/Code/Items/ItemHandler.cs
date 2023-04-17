@@ -10,12 +10,11 @@ using static UnityEngine.InputSystem.InputAction;
 namespace Items
 {
     [RequireComponent(typeof(OutlineHandler))]
-    public class ItemHandler : MonoBehaviour, ILeftClickHandler, IRightClickHandler
+    public class ItemHandler : MonoBehaviour, ILeftClickHandler, IRightClickHandler, INoActionOutline
     {
         #region Fields
 
         private OutlineHandler _outlineHandler;
-        private bool _isStackMode = false;
 
         #endregion Fields
 
@@ -94,13 +93,11 @@ namespace Items
         private void OnEnable()
         {
             Container.CollectionUpdated.AddListener(OnCollectionUpdated);
-            PlayerController.MainControl.AddListener(ActionType.Started, EnableStackMode);
         }
 
         private void OnDisable()
         {
             Container.CollectionUpdated.RemoveListener(OnCollectionUpdated);
-            PlayerController.MainControl.RemoveListener(ActionType.Started, EnableStackMode);
         }
 
         private void OnMouseOver()
@@ -121,20 +118,6 @@ namespace Items
         {
             if (Container[0] == null)
                 Destroy(gameObject);
-        }
-
-        private void EnableStackMode(CallbackContext context)
-        {
-            _isStackMode = true;
-            PlayerController.MainControl.AddListener(ActionType.Canceled, DisableStackMode);
-            PlayerController.MainControl.RemoveListener(ActionType.Started, EnableStackMode);
-        }
-
-        private void DisableStackMode(CallbackContext context)
-        {
-            _isStackMode = false;
-            PlayerController.MainControl.RemoveListener(ActionType.Canceled, DisableStackMode);
-            PlayerController.MainControl.AddListener(ActionType.Started, EnableStackMode);
         }
 
         #endregion Private

@@ -33,20 +33,20 @@ namespace Items
         {
             if (Cursor.RaycastHit != null)
             {
-                (component as ItemHandler)?.EnableOutline();
+                (component as INoActionOutline)?.EnableOutline();
                 _leftClickable = component as ILeftClickHandler;
                 _rightclickable = component as IRightClickHandler;
             }
             else
             {
-                (component as ItemHandler)?.DisableOutline();
+                (component as INoActionOutline)?.DisableOutline();
                 _leftClickable = null;
             }
         }
 
         public override void OnMouseExit(Component component)
         {
-            (component as ItemHandler)?.DisableOutline();
+            base.OnMouseExit(component);
             _leftClickable = null;
         }
 

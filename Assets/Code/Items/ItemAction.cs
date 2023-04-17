@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using Controls;
+using Misc;
+using UnityEngine;
 
 namespace Items
 {
@@ -24,7 +26,9 @@ namespace Items
         { }
 
         public virtual void OnMouseExit(Component component)
-        { }
+        {
+            (component as INoActionOutline)?.DisableOutline();
+        }
 
         protected abstract Sprite GetSprite();
     }

@@ -6,10 +6,13 @@ using Input;
 using static UnityEngine.InputSystem.InputAction;
 using UnityEngine.EventSystems;
 using UI;
+using Controls;
+using Cursor = Controls.Cursor;
 
 namespace Items
 {
-    public class ContainerHandler : MonoBehaviour
+    [RequireComponent(typeof(OutlineHandler))]
+    public class ContainerHandler : MonoBehaviour, IRightClickHandler, INoActionOutline
     {
         #region Fields
 
@@ -19,10 +22,35 @@ namespace Items
         private GameObject _window;
         private GameObject[] _slots;
         private RectTransform _windowTransform;
+        private OutlineHandler _outlineHandler;
 
         #endregion Fields
 
+        #region Public
+
+        public void OnRightMouseButton()
+        {
+            SwitchContainerState();
+        }
+
+        public void EnableOutline()
+        {
+            _outlineHandler.EnableOutline();
+        }
+
+        public void DisableOutline()
+        {
+            _outlineHandler.DisableOutline();
+        }
+
+        #endregion Public
+
         #region Unity
+
+        private void Awake()
+        {
+            _outlineHandler = GetComponent<OutlineHandler>();
+        }
 
         private void Start()
         {
@@ -49,14 +77,14 @@ namespace Items
             StartTest();
         }
 
-        private void OnMouseEnter()
+        private void OnMouseOver()
         {
-            PlayerController.MainRightClick.AddListener(ActionType.Started, SwitchContainerState);
+            Cursor.Action.OnMouseOver(this);
         }
 
         private void OnMouseExit()
         {
-            PlayerController.MainRightClick.RemoveListener(ActionType.Started, SwitchContainerState);
+            Cursor.Action.OnMouseExit(this);
         }
 
         private void OnDestroy()
@@ -81,26 +109,28 @@ namespace Items
 
         #region Private
 
-        private void SwitchContainerState(CallbackContext context)
+        private void SwitchContainerState()
         {
             if (_window.activeInHierarchy)
                 HideContainer(new());
             else
-                ShowContainer(new());
+                ShowContainer();
         }
 
-        private void ShowContainer(CallbackContext context)
+        private void ShowContainer()
         {
             if (!EventSystem.current.IsPointerOverGameObject())
             {
                 _window.SetActive(true);
                 PlayerController.MainEscape.AddListener(ActionType.Started, HideContainer);
+                PlayerController.MainTab.AddListener(ActionType.Started, HideContainer);
             }
         }
 
         private void HideContainer(CallbackContext context)
         {
             PlayerController.MainEscape.RemoveListener(ActionType.Started, HideContainer);
+            PlayerController.MainTab.RemoveListener(ActionType.Started, HideContainer);
             _window.SetActive(false);
         }
 

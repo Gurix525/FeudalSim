@@ -15,7 +15,6 @@ namespace Items
         #region Fields
 
         private float _meshRotation;
-        private bool _isControlMode = false;
 
         #endregion Fields
 
@@ -32,11 +31,6 @@ namespace Items
 
         public override void OnLeftMouseButton()
         {
-            if (_isControlMode)
-            {
-                NoAction.OnLeftMouseButton();
-                return;
-            }
             if (Cursor.CurrentRaycastHit == null)
                 return;
             if (CursorItemMeshHighlight.IsBlocked)
@@ -57,11 +51,6 @@ namespace Items
 
         public override void OnRightMouseButton()
         {
-            if (_isControlMode)
-            {
-                NoAction.OnRightMouseButton();
-                return;
-            }
             if (Cursor.CurrentRaycastHit == null)
                 return;
             if (CursorItemMeshHighlight.IsBlocked)
@@ -109,24 +98,10 @@ namespace Items
             if (Cursor.Action != this)
             {
                 PlayerController.MainChange.RemoveListener(ActionType.Started, ChangeRotation);
-                PlayerController.MainControl.RemoveListener(ActionType.Started, EnableControlMode);
-                PlayerController.MainControl.RemoveListener(ActionType.Canceled, DisableControlMode);
                 CursorItemMeshHighlight.SetMesh(null);
                 return;
             }
             PlayerController.MainChange.AddListener(ActionType.Started, ChangeRotation);
-            PlayerController.MainControl.AddListener(ActionType.Started, EnableControlMode);
-            PlayerController.MainControl.AddListener(ActionType.Canceled, DisableControlMode);
-        }
-
-        private void DisableControlMode(CallbackContext context)
-        {
-            _isControlMode = false;
-        }
-
-        private void EnableControlMode(CallbackContext context)
-        {
-            _isControlMode = true;
         }
 
         #endregion Private
