@@ -1,12 +1,15 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Controls;
+using UnityEngine;
 using UnityEngine.Events;
+using Cursor = Controls.Cursor;
 
 namespace Items
 {
-    public class Container
+    public class Container : IEnumerable<Item>
     {
         #region Fields
 
@@ -19,6 +22,7 @@ namespace Items
 
         public int Size => _items.Length;
         public bool IsLocked => _lock != string.Empty;
+        public bool IsArmor { get; set; }
         public Item this[int index] => _items[index];
         public UnityEvent CollectionUpdated { get; } = new();
 
@@ -26,18 +30,42 @@ namespace Items
 
         #region Constructors
 
-        public Container(int size, string @lock = "")
+        public Container(int size, string @lock = "", bool isArmor = false)
         {
             _lock = @lock;
             _items = new Item[size];
+            IsArmor = isArmor;
         }
 
         #endregion Constructors
 
         #region Public
 
-        public void HandleLeftClick(int slotIndex)
+        public void ChangeSize(int newSize)
         {
+            if (_items.Length == newSize)
+                return;
+            if (_items.Length < newSize)
+            {
+                var list = _items.ToList();
+                while (list.Count < newSize)
+                    list.Add(null);
+                _items = list.ToArray();
+            }
+            if (_items.Length > newSize)
+            {
+                List<Item> list = new();
+                for (int i = 0; i < newSize; i++)
+                    list.Add(_items[i]);
+                _items = list.ToArray();
+                Debug.Log("Dodać upuszczanie itemów");
+            }
+        }
+
+        public void OnLeftMouseButton(int slotIndex)
+        {
+            if (!IsArmorMatchingSlot(Cursor.Item, slotIndex))
+                return;
             Item thisItem = ExtractAt(slotIndex);
             Item cursorItem = Cursor.Container.ExtractAt(0);
             if (IsPossibleToInsert(thisItem, cursorItem))
@@ -56,8 +84,10 @@ namespace Items
             CollectionUpdated.Invoke();
         }
 
-        public void HandleRightClick(int slotIndex)
+        public void OnRightMouseButton(int slotIndex)
         {
+            if (!IsArmorMatchingSlot(Cursor.Item, slotIndex))
+                return;
             Item thisItem = ExtractAt(slotIndex);
             Item cursorItem = Cursor.Container.ExtractAt(0);
             if (thisItem == null && cursorItem == null)
@@ -87,7 +117,7 @@ namespace Items
             }
             InsertAt(slotIndex, thisItem);
             Cursor.Container.InsertAt(0, cursorItem);
-            HandleLeftClick(slotIndex);
+            OnLeftMouseButton(slotIndex);
         }
 
         public void Sort(bool hasToStack = true)
@@ -178,9 +208,37 @@ namespace Items
             return output;
         }
 
+        public IEnumerator<Item> GetEnumerator()
+        {
+            return ((IEnumerable<Item>)_items).GetEnumerator();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
+        }
+
         #endregion Public
 
         #region Private
+
+        private bool IsArmorMatchingSlot(Item cursorItem, int slotIndex)
+        {
+            if (!IsArmor || cursorItem == null)
+                return true;
+            if (!cursorItem.Stats.TryGetValue("ArmorType", out string type))
+                return false;
+            string requiredType = slotIndex switch
+            {
+                0 => "Head",
+                1 => "Torso",
+                2 => "Legs",
+                _ => "Feet"
+            };
+            if (type == requiredType)
+                return true;
+            return false;
+        }
 
         private void StackItems()
         {

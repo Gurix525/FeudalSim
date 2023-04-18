@@ -23,6 +23,7 @@ namespace Items
         private GameObject[] _slots;
         private RectTransform _windowTransform;
         private OutlineHandler _outlineHandler;
+        private bool _isPointerOverGameObject;
 
         #endregion Fields
 
@@ -79,6 +80,7 @@ namespace Items
 
         private void OnMouseOver()
         {
+            _isPointerOverGameObject = EventSystem.current.IsPointerOverGameObject();
             Cursor.Action.OnMouseOver(this);
         }
 
@@ -119,7 +121,7 @@ namespace Items
 
         private void ShowContainer()
         {
-            if (!EventSystem.current.IsPointerOverGameObject())
+            if (!_isPointerOverGameObject)
             {
                 _window.SetActive(true);
                 PlayerController.MainEscape.AddListener(ActionType.Started, HideContainer);

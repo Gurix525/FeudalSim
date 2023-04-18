@@ -25,7 +25,7 @@ namespace Items
         public string Description { get; }
         public int MaxStack { get; }
         public Sprite Sprite { get; }
-        public Dictionary<string, float> Stats { get; }
+        public Dictionary<string, string> Stats { get; }
         public Material Material => _material ??= Materials.GetMaterial(Name) ?? Materials.DefaultMaterial;
         public ItemAction Action => _currentAction;
 
@@ -76,13 +76,13 @@ namespace Items
             string name,
             int maxStack = 10,
             string description = "",
-            Dictionary<string, float> stats = null,
+            Dictionary<string, string> stats = null,
             ItemAction[] actions = null)
         {
             Name = name;
             Description = description;
             MaxStack = maxStack;
-            Stats = stats;
+            Stats = stats ?? new();
             Sprite = Resources.Load<Sprite>("Sprites/Items/" + name);
             if (actions == null)
             {

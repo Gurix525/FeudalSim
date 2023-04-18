@@ -41,6 +41,7 @@ namespace Items
             {
                 (component as INoActionOutline)?.DisableOutline();
                 _leftClickable = null;
+                _rightclickable = null;
             }
         }
 
@@ -48,6 +49,7 @@ namespace Items
         {
             base.OnMouseExit(component);
             _leftClickable = null;
+            _rightclickable = null;
         }
 
         #endregion Public

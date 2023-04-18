@@ -6,18 +6,21 @@ namespace Controls
 {
     public class CursorRaycaster : MonoBehaviour
     {
+        private static bool _isPointerOverGameObject = false;
+
         public static RaycastHit? Hit { get; private set; } = null;
 
         public static RaycastHit? CurrentHit => GetRaycastHit();
 
         private void Update()
         {
+            _isPointerOverGameObject = EventSystem.current.IsPointerOverGameObject();
             GetRaycastHit();
         }
 
         private static RaycastHit? GetRaycastHit()
         {
-            if (EventSystem.current.IsPointerOverGameObject())
+            if (_isPointerOverGameObject)
             {
                 Hit = null;
                 return null;

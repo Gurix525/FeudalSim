@@ -4,9 +4,9 @@ using UnityEngine.EventSystems;
 using static UnityEngine.InputSystem.InputAction;
 using TMPro;
 using UnityEngine.UI;
-using System;
+using Items;
 
-namespace Items
+namespace UI
 {
     public class ContainerSlot : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     {
@@ -30,16 +30,21 @@ namespace Items
             OnCollectionUpdated();
         }
 
+        public void Clear()
+        {
+            _container.CollectionUpdated.RemoveListener(OnCollectionUpdated);
+        }
+
         public void OnPointerEnter(PointerEventData eventData)
         {
-            PlayerController.MainUse.AddListener(ActionType.Started, OnMainUse);
-            PlayerController.MainRightClick.AddListener(ActionType.Started, OnMainRightClick);
+            PlayerController.MainUse.AddListener(ActionType.Started, OnLeftMouseButton);
+            PlayerController.MainRightClick.AddListener(ActionType.Started, OnRightMouseButton);
         }
 
         public void OnPointerExit(PointerEventData eventData)
         {
-            PlayerController.MainUse.RemoveListener(ActionType.Started, OnMainUse);
-            PlayerController.MainRightClick.RemoveListener(ActionType.Started, OnMainRightClick);
+            PlayerController.MainUse.RemoveListener(ActionType.Started, OnLeftMouseButton);
+            PlayerController.MainRightClick.RemoveListener(ActionType.Started, OnRightMouseButton);
         }
 
         #endregion Public
@@ -61,14 +66,14 @@ namespace Items
 
         #region Private
 
-        private void OnMainUse(CallbackContext context)
+        private void OnLeftMouseButton(CallbackContext context)
         {
-            _container.HandleLeftClick(_slotIndex);
+            _container.OnLeftMouseButton(_slotIndex);
         }
 
-        private void OnMainRightClick(CallbackContext obj)
+        private void OnRightMouseButton(CallbackContext context)
         {
-            _container.HandleRightClick(_slotIndex);
+            _container.OnRightMouseButton(_slotIndex);
         }
 
         private void OnCollectionUpdated()

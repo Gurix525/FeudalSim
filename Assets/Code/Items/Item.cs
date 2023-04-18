@@ -10,13 +10,13 @@ namespace Items
         #region Fields
 
         private ItemModel _model;
-        private Dictionary<string, float> _stats;
+        private Dictionary<string, string> _stats;
 
         private static Dictionary<string, ItemModel> _itemModels = new()
         {
             { "Stone", new("Stone", actions: new ItemAction[] {new BuildAction()})},
             { "Wood", new("Wood", 20, actions: new ItemAction[] {new BuildAction()}) },
-            { "Sword", new("Sword", 1) },
+            { "Sword", new("Sword", 1, stats: new(){ { "ArmorType", "Head" }, { "InventorySlots", "3"} }) },
             { "Axe", new("Axe", 1, actions: new ItemAction[] {new DestroyAction()}) },
             { "Shovel", new("Shovel", 1, actions: new ItemAction[] {new ShovelAction()}) }
         };
@@ -31,7 +31,7 @@ namespace Items
         public ItemModel Model => _model;
         public int MaxStack => _model.MaxStack;
         public Sprite Sprite => _model.Sprite;
-        public Dictionary<string, float> Stats => _stats ?? _model.Stats;
+        public Dictionary<string, string> Stats => _stats ?? _model.Stats;
         public Material Material => _model.Material;
         public Mesh[] BuildingMeshes => _model.BuildingMeshes;
         public Mesh Mesh => _model.Mesh;
@@ -42,7 +42,7 @@ namespace Items
 
         #region Constructors
 
-        private Item(ItemModel model, int count = 1, Dictionary<string, float> stats = null)
+        private Item(ItemModel model, int count = 1, Dictionary<string, string> stats = null)
         {
             if (count > model.MaxStack)
                 throw new ArgumentOutOfRangeException(
@@ -69,7 +69,7 @@ namespace Items
         public static Item Create(
             string name,
             int count = 1,
-            Dictionary<string, float> stats = null)
+            Dictionary<string, string> stats = null)
         {
             return new(_itemModels[name], count, stats);
         }
