@@ -10,11 +10,37 @@ namespace Buildings
 {
     public class Building : MonoBehaviour
     {
+        #region Fields
+
         private MeshRenderer _renderer;
         private Item _backingItem;
         private BuildingMode _buildingMode;
         private Color _originalColor;
         private Color _previousColor;
+
+        #endregion Fields
+
+        #region Public
+
+        public Item ExtractItem()
+        {
+            var output = _backingItem.Clone();
+            _backingItem = null;
+            return output;
+        }
+
+        public void AssignItem(Item item)
+        {
+            _backingItem = item;
+        }
+
+        public void DropItem()
+        {
+            if (_backingItem == null)
+                return;
+            _backingItem.Drop(transform.position);
+            _backingItem = null;
+        }
 
         public void Initialize(Item item, BuildingMode buildingMode)
         {
@@ -52,6 +78,10 @@ namespace Buildings
             }
         }
 
+        #endregion Public
+
+        #region Unity
+
         private void OnMouseEnter()
         {
             Cursor.Action.OnMouseEnter(this);
@@ -69,6 +99,10 @@ namespace Buildings
             Cursor.Container.CollectionUpdated.RemoveListener(ResetItemAction);
         }
 
+        #endregion Unity
+
+        #region Private
+
         private void ResetItemAction()
         {
             OnMouseExit();
@@ -77,11 +111,14 @@ namespace Buildings
 
         private void OnDestroy()
         {
+            DropItem();
             Terrain.SetBuildingMark(
                 transform.position.ToVector3Int(),
                 _buildingMode,
                 transform.rotation.y,
                 false);
         }
+
+        #endregion Private
     }
 }

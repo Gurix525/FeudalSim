@@ -40,9 +40,25 @@ namespace Items
             }
         }
 
+        private static Equipment Instance { get; set; }
+
         #endregion Properties
 
+        #region Public
+
+        public static void Insert(Item item)
+        {
+            Instance._inventoryContainer.Insert(item);
+        }
+
+        #endregion Public
+
         #region Unity
+
+        private void Awake()
+        {
+            Instance = this;
+        }
 
         private void Start()
         {
@@ -82,7 +98,7 @@ namespace Items
 
         private void OnArmorCollectionUpdated()
         {
-            _inventoryContainer.ChangeSize(InventorySlotCount);
+            _inventoryContainer.ChangeSize(InventorySlotCount, transform.position);
             for (int i = 0; i < _inventorySlots.Length; i++)
             {
                 _inventorySlots[i].GetComponent<ContainerSlot>().Clear();

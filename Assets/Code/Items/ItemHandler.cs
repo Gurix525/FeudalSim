@@ -41,9 +41,13 @@ namespace Items
             if (Cursor.Item.Name == Item.Name)
             {
                 int delta = Mathf.Min(Item.Count, Item.MaxStack - Cursor.Item.Count);
-                if (delta == 0)
-                    return;
-                Cursor.Container.InsertAt(0, Container.ExtractAt(0, delta));
+                if (delta != 0)
+                    Cursor.Container.InsertAt(0, Container.ExtractAt(0, delta));
+                if (Cursor.IsNoActionActive)
+                    Equipment.Insert(Item);
+                if (Item != null)
+                    if (Item.Count == 0)
+                        Container[0] = null;
                 if (Item == null)
                     Destroy(gameObject);
             }
@@ -65,9 +69,16 @@ namespace Items
                 if (Cursor.Item.Count < Item.MaxStack)
                 {
                     Cursor.Container.InsertAt(0, Container.ExtractAt(0, 1));
-                    if (Item == null)
-                        Destroy(gameObject);
                 }
+                else
+                {
+                    var item = Container.ExtractAt(0, 1);
+                    Equipment.Insert(item);
+                    if (item.Count > 0)
+                        Container.InsertAt(0, item);
+                }
+                if (Item == null)
+                    Destroy(gameObject);
             }
         }
 

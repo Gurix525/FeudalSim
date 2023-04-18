@@ -5,7 +5,9 @@ using System.Linq;
 using Controls;
 using UnityEngine;
 using UnityEngine.Events;
+using World;
 using Cursor = Controls.Cursor;
+using Terrain = World.Terrain;
 
 namespace Items
 {
@@ -23,7 +25,19 @@ namespace Items
         public int Size => _items.Length;
         public bool IsLocked => _lock != string.Empty;
         public bool IsArmor { get; set; }
-        public Item this[int index] => _items[index];
+
+        public Item this[int index]
+        {
+            get
+            {
+                return _items[index];
+            }
+            set
+            {
+                _items[index] = value;
+            }
+        }
+
         public UnityEvent CollectionUpdated { get; } = new();
 
         #endregion Properties
@@ -41,7 +55,7 @@ namespace Items
 
         #region Public
 
-        public void ChangeSize(int newSize)
+        public void ChangeSize(int newSize, Vector3 dropPosition)
         {
             if (_items.Length == newSize)
                 return;
@@ -57,9 +71,20 @@ namespace Items
                 List<Item> list = new();
                 for (int i = 0; i < newSize; i++)
                     list.Add(_items[i]);
+                for (int i = newSize - 1; i < _items.Length; i++)
+                {
+                    DropAt(i, dropPosition);
+                }
                 _items = list.ToArray();
-                Debug.Log("Dodać upuszczanie itemów");
             }
+        }
+
+        public void DropAt(int index, Vector3 dropPosition, int count = 0)
+        {
+            Item dropItem = ExtractAt(index, count);
+            if (dropItem == null)
+                return;
+            dropItem.Drop(dropPosition);
         }
 
         public void OnLeftMouseButton(int slotIndex)
@@ -171,6 +196,8 @@ namespace Items
 
         public void Insert(Item item)
         {
+            if (item == null)
+                return;
             List<int> itemIndexes = new();
             List<int> nullIndexes = new();
             for (int i = 0; i < _items.Length; i++)

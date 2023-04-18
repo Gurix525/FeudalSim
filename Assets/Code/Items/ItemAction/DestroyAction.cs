@@ -71,6 +71,10 @@ namespace Items
             Building buildingToDestroy = Cursor.RaycastHit.Value.transform.GetComponent<Building>();
             if (buildingToDestroy == null)
                 buildingToDestroy = _buildingToDestroy;
+            var extractedItem = buildingToDestroy.ExtractItem();
+            Equipment.Insert(extractedItem);
+            if (extractedItem.Count > 0)
+                buildingToDestroy.AssignItem(extractedItem);
             GameObject.Destroy(buildingToDestroy.gameObject);
             _isWaitingForAnotherBuilding = true;
             PlayerController.MainUse.AddListener(ActionType.Canceled, DisableWaiting);

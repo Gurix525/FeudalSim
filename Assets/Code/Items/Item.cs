@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using Misc;
 using UnityEngine;
+using World;
+using Terrain = World.Terrain;
 
 namespace Items
 {
@@ -55,6 +57,22 @@ namespace Items
         #endregion Constructors
 
         #region Public
+
+        public void Drop(Vector3 dropPosition)
+        {
+            GameObject prefab = Resources.Load<GameObject>("Prefabs/Items/" + Name);
+            if (prefab == null)
+                return;
+            ItemHandler itemHandler = GameObject
+                .Instantiate(prefab, TerrainRenderer.GetChunkRenderer(
+                        Terrain.GetChunkCoordinates(
+                            dropPosition)).transform)
+                .GetComponent<ItemHandler>();
+            itemHandler.Container.InsertAt(0, this);
+            itemHandler.transform.SetPositionAndRotation(
+                dropPosition,
+                Quaternion.identity);
+        }
 
         public Item Clone(int count = 0)
         {
