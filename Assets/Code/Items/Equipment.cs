@@ -40,6 +40,8 @@ namespace Items
             }
         }
 
+        public static Container InventoryContainer => Instance._inventoryContainer;
+
         private static Equipment Instance { get; set; }
 
         #endregion Properties
