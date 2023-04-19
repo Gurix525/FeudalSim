@@ -38,7 +38,7 @@ namespace UI
 
         private void Awake()
         {
-            _slotPrefab = Prefabs.GetPrefab("QuickMenuSlot");
+            _slotPrefab = Resources.Load<GameObject>("Prefabs/UI/QuickMenuSlot");
         }
 
         private void Update()

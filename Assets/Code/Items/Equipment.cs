@@ -69,7 +69,7 @@ namespace Items
             for (int i = 0; i < 4; i++)
             {
                 _armorSlots[i] = Instantiate(
-                    Prefabs.GetPrefab("ContainerSlot"),
+                    Resources.Load<GameObject>("Prefabs/UI/ContainerSlot"),
                     _armorWindow.transform);
                 var containerSlot = _armorSlots[i].GetComponent<ContainerSlot>();
                 containerSlot.Initialize(i, _armorContainer);
@@ -113,7 +113,7 @@ namespace Items
             for (int i = 0; i < InventorySlotCount; i++)
             {
                 _inventorySlots[i] = Instantiate(
-                    Prefabs.GetPrefab("ContainerSlot"),
+                    Resources.Load<GameObject>("Prefabs/UI/ContainerSlot"),
                     _inventoryWindow.transform);
                 var containerSlot = _inventorySlots[i].GetComponent<ContainerSlot>();
                 containerSlot.Initialize(i, _inventoryContainer);

@@ -57,7 +57,7 @@ namespace Items
         {
             _container = new(_size, _lock);
             _window = Instantiate(
-                Prefabs.GetPrefab("ContainerWindow"),
+                Resources.Load<GameObject>("Prefabs/UI/ContainerWindow"),
                 References.GetReference("DefaultCanvas").transform);
             _windowTransform = _window.GetComponent<RectTransform>();
             float newSize = _windowTransform.sizeDelta.x * (float)Math.Sqrt(_size) - 8F;
@@ -70,7 +70,7 @@ namespace Items
             for (int i = 0; i < _size; i++)
             {
                 _slots[i] = Instantiate(
-                    Prefabs.GetPrefab("ContainerSlot"),
+                    Resources.Load<GameObject>("Prefabs/UI/ContainerSlot"),
                     _window.transform);
                 var containerSlot = _slots[i].GetComponent<ContainerSlot>();
                 containerSlot.Initialize(i, _container);

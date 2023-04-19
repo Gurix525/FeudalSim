@@ -28,11 +28,11 @@ namespace Items
 
         private GameObject[] BuildingPrefabs => _buildingPrefabs ??= new GameObject[5]
         {
-            Prefabs.GetPrefab("Floor"),
-            Prefabs.GetPrefab("BigFloor"),
-            Prefabs.GetPrefab("ShortWall"),
-            Prefabs.GetPrefab("Wall"),
-            Prefabs.GetPrefab("BigWall")
+            Resources.Load<GameObject>("Prefabs/Buildings/Floor"),
+            Resources.Load<GameObject>("Prefabs/Buildings/BigFloor"),
+            Resources.Load<GameObject>("Prefabs/Buildings/ShortWall"),
+            Resources.Load<GameObject>("Prefabs/Buildings/Wall"),
+            Resources.Load<GameObject>("Prefabs/Buildings/BigWall")
         };
 
         private int RequiredItemCount => _buildingMode switch
