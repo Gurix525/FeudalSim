@@ -2,7 +2,6 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Input;
-using UnityEngine;
 using UnityEngine.Events;
 using static UnityEngine.InputSystem.InputAction;
 

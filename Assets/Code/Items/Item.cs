@@ -1,8 +1,9 @@
 using System;
 using System.Collections.Generic;
-using Misc;
+using Extensions;
 using UnityEngine;
 using World;
+using Random = System.Random;
 using Terrain = World.Terrain;
 
 namespace Items
@@ -68,9 +69,10 @@ namespace Items
                         Terrain.GetChunkCoordinates(
                             dropPosition)).transform)
                 .GetComponent<ItemHandler>();
+            ScatterItem(itemHandler);
             itemHandler.Container.InsertAt(0, this);
             itemHandler.transform.SetPositionAndRotation(
-                dropPosition,
+                dropPosition + GetRandomScatterOffset(),
                 Quaternion.identity);
         }
 
@@ -93,5 +95,23 @@ namespace Items
         }
 
         #endregion Public
+
+        #region Private
+
+        private void ScatterItem(ItemHandler itemHandler)
+        {
+            _ = itemHandler.ScatterItem();
+        }
+
+        private Vector3 GetRandomScatterOffset()
+        {
+            Random random = new Random();
+            float x = ((float)random.NextDouble()).Remap(0F, 1F, -0.2F, 0.2F);
+            float y = ((float)random.NextDouble()).Remap(0F, 1F, 0.1F, 0.2F);
+            float z = ((float)random.NextDouble()).Remap(0F, 1F, -0.2F, 0.2F);
+            return new Vector3(x, y, z);
+        }
+
+        #endregion Private
     }
 }

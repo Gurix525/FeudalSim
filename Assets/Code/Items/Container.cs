@@ -71,7 +71,7 @@ namespace Items
                 List<Item> list = new();
                 for (int i = 0; i < newSize; i++)
                     list.Add(_items[i]);
-                for (int i = newSize - 1; i < _items.Length; i++)
+                for (int i = newSize; i < _items.Length; i++)
                 {
                     DropAt(i, dropPosition);
                 }

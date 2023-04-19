@@ -2,10 +2,7 @@ using Misc;
 using Cursor = Controls.Cursor;
 using UnityEngine;
 using Controls;
-using Input;
-using UnityEngine.InputSystem;
-using System;
-using static UnityEngine.InputSystem.InputAction;
+using System.Threading.Tasks;
 
 namespace Items
 {
@@ -27,6 +24,20 @@ namespace Items
         #endregion Properties
 
         #region Public
+
+        public async Task ScatterItem()
+        {
+            var meshCollider = GetComponent<MeshCollider>();
+            meshCollider.convex = true;
+            var rigidbody = gameObject.AddComponent<Rigidbody>();
+            while (!rigidbody.IsSleeping())
+            {
+                await Task.Yield();
+            }
+            rigidbody.isKinematic = true;
+            Destroy(rigidbody);
+            meshCollider.convex = false;
+        }
 
         public void OnLeftMouseButton()
         {
