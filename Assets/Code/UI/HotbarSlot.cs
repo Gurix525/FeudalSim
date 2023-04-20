@@ -14,6 +14,7 @@ namespace UI
 
         [SerializeField] private TextMeshProUGUI _text;
         [SerializeField] private Image _image;
+        [SerializeField] private TextMeshProUGUI _slotNumberText;
 
         private HotbarWindow _window;
         private int _slotIndex;
@@ -33,6 +34,7 @@ namespace UI
         {
             _window = window;
             _slotIndex = slotIndex;
+            _slotNumberText.text = _slotIndex.ToString();
             _container = container;
             _container.CollectionUpdated.AddListener(OnCollectionUpdated);
             OnCollectionUpdated();
