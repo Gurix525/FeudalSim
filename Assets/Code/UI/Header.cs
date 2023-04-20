@@ -31,6 +31,11 @@ namespace UI
             }
         }
 
+        private void OnDisable()
+        {
+            OnPointerExit(null);
+        }
+
         private void StartDraggingWindow(CallbackContext context)
         {
             _isDragging = true;

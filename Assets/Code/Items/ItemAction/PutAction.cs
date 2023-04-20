@@ -43,7 +43,14 @@ namespace Items
                         Terrain.GetChunkCoordinates(
                             CursorItemMeshHighlight.Position)).transform)
                 .GetComponent<ItemHandler>();
-            itemHandler.Container.InsertAt(0, Cursor.Container.ExtractAt(0));
+            Item inputItem = Cursor.Container.ExtractAt(0, 0);
+            if (inputItem == null)
+            {
+                inputItem = Cursor.Item.Clone(0);
+                Cursor.Item.Count = 0;
+                Equipment.ClearEmptyItems();
+            }
+            itemHandler.Container.InsertAt(0, inputItem);
             itemHandler.transform.SetPositionAndRotation(
                 CursorItemMeshHighlight.Position,
                 CursorItemMeshHighlight.Rotation);
@@ -63,7 +70,14 @@ namespace Items
                     Terrain.GetChunkCoordinates(
                         CursorItemMeshHighlight.Position)).transform)
                 .GetComponent<ItemHandler>();
-            itemHandler.Container.InsertAt(0, Cursor.Container.ExtractAt(0, 1));
+            Item inputItem = Cursor.Container.ExtractAt(0, 1);
+            if (inputItem == null)
+            {
+                inputItem = Cursor.Item.Clone(1);
+                Cursor.Item.Count--;
+                Equipment.ClearEmptyItems();
+            }
+            itemHandler.Container.InsertAt(0, inputItem);
             itemHandler.transform.SetPositionAndRotation(
                 CursorItemMeshHighlight.Position,
                 CursorItemMeshHighlight.Rotation);

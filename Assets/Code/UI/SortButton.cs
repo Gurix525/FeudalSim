@@ -25,6 +25,11 @@ namespace UI
             PlayerController.MainUse.RemoveListener(ActionType.Started, Sort);
         }
 
+        private void OnDisable()
+        {
+            OnPointerExit(null);
+        }
+
         private void Sort(CallbackContext context)
         {
             _container.Sort();

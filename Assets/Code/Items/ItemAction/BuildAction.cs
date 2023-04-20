@@ -149,8 +149,15 @@ namespace Items
                 _calibratedPosition,
                 Quaternion.Euler(0, _meshRotation, 0));
             building.GetComponent<MeshRenderer>().material = Cursor.Item.Material;
+            Item inputItem = Cursor.Container.ExtractAt(0, RequiredItemCount);
+            if (inputItem == null)
+            {
+                inputItem = Cursor.Item.Clone(RequiredItemCount);
+                Cursor.Item.Count -= RequiredItemCount;
+                Equipment.ClearEmptyItems();
+            }
             building.GetComponent<Building>().
-                Initialize(Cursor.Container.ExtractAt(0, RequiredItemCount), _buildingMode);
+                Initialize(inputItem, _buildingMode);
             Terrain.SetBuildingMark(_calibratedPosition, _buildingMode, _meshRotation, true);
             _isWaitingForAnotherBuilding = true;
             PlayerController.MainUse.AddListener(ActionType.Canceled, DisableWaiting);

@@ -8,22 +8,30 @@ using Items;
 
 namespace UI
 {
-    public class HotbarSlot : MonoBehaviour
+    public class HotbarSlot : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     {
         #region Fields
 
         [SerializeField] private TextMeshProUGUI _text;
         [SerializeField] private Image _image;
 
+        private HotbarWindow _window;
         private int _slotIndex;
         private Container _container;
 
         #endregion Fields
 
+        #region Properties
+
+        public Item Item => _container[_slotIndex];
+
+        #endregion Properties
+
         #region Public
 
-        public void Initialize(int slotIndex, Container container)
+        public void Initialize(int slotIndex, Container container, HotbarWindow window)
         {
+            _window = window;
             _slotIndex = slotIndex;
             _container = container;
             _container.CollectionUpdated.AddListener(OnCollectionUpdated);
@@ -60,6 +68,7 @@ namespace UI
         private void OnDisable()
         {
             _container.CollectionUpdated.RemoveListener(OnCollectionUpdated);
+            OnPointerExit(null);
         }
 
         #endregion Unity
@@ -68,12 +77,12 @@ namespace UI
 
         private void OnLeftMouseButton(CallbackContext context)
         {
-            //_container.OnLeftMouseButton(_slotIndex);
+            _window.SetSlotIndex(_slotIndex);
         }
 
         private void OnRightMouseButton(CallbackContext context)
         {
-            //_container.OnRightMouseButton(_slotIndex);
+            _window.SetSlotIndex(_slotIndex);
         }
 
         private void OnCollectionUpdated()

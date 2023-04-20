@@ -12,7 +12,9 @@ namespace Controls
 
         public static Container Container { get; } = new(1);
 
-        public static Item Item => Container[0];
+        public static Item HotbarItem { private get; set; }
+
+        public static Item Item => Container[0] ?? HotbarItem;
 
         public static Vector2Int? CellPosition
         {

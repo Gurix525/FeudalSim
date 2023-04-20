@@ -60,6 +60,7 @@ namespace UI
         private void OnDisable()
         {
             _container.CollectionUpdated.RemoveListener(OnCollectionUpdated);
+            OnPointerExit(null);
         }
 
         #endregion Unity

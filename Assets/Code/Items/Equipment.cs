@@ -1,10 +1,10 @@
+using System;
 using Input;
 using Misc;
 using UI;
 using UnityEngine;
 using static UnityEngine.InputSystem.InputAction;
-using UnityEngine.EventSystems;
-using System;
+using Cursor = Controls.Cursor;
 
 namespace Items
 {
@@ -51,6 +51,21 @@ namespace Items
         public static void Insert(Item item)
         {
             Instance._inventoryContainer.Insert(item);
+        }
+
+        public static void ClearEmptyItems()
+        {
+            for (int i = 0; i < Instance._inventoryContainer.Size; i++)
+            {
+                if (Instance._inventoryContainer[i] != null)
+                {
+                    if (Instance._inventoryContainer[i].Count == 0)
+                    {
+                        Instance._inventoryContainer[i] = null;
+                    }
+                }
+            }
+            Instance._inventoryContainer.CollectionUpdated.Invoke();
         }
 
         #endregion Public

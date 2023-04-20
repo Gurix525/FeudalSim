@@ -1,6 +1,8 @@
-﻿using Controls;
+﻿using System;
+using Controls;
 using Misc;
 using UnityEngine;
+using Cursor = Controls.Cursor;
 
 namespace Items
 {
@@ -9,6 +11,16 @@ namespace Items
         public static NoAction NoAction { get; } = new();
 
         public Sprite Sprite => GetSprite();
+
+        public ItemAction()
+        {
+            Cursor.Container.CollectionUpdated.AddListener(OnCursorCollecionUpdated);
+        }
+
+        ~ItemAction()
+        {
+            Cursor.Container.CollectionUpdated.RemoveListener(OnCursorCollecionUpdated);
+        }
 
         public virtual void OnLeftMouseButton()
         { }
@@ -31,5 +43,10 @@ namespace Items
         }
 
         protected abstract Sprite GetSprite();
+
+        private void OnCursorCollecionUpdated()
+        {
+            OnMouseExit(null);
+        }
     }
 }
