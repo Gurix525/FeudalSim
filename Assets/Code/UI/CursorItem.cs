@@ -32,7 +32,7 @@ namespace UI
                 return;
             }
             _image.rectTransform.localScale = Cursor.IsItemFromHotbar
-                ? Vector2.one * 2 / 3 : Vector2.one;
+                ? Vector2.one / 2 : Vector2.one;
             if (Cursor.Item.MaxStack == 1)
                 _text.text = string.Empty;
             else
