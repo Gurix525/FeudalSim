@@ -2,6 +2,7 @@ using System.Collections;
 using Input;
 using Items;
 using UnityEngine;
+using UnityEngine.Events;
 using static UnityEngine.InputSystem.InputAction;
 using Cursor = Controls.Cursor;
 
@@ -12,16 +13,23 @@ namespace UI
         #region Fields
 
         private HotbarSlot[] _slots;
-        private int _selectedSlotIndex;
+        public int SelectedSlotIndex { get; private set; }
 
         #endregion Fields
+
+        #region Properties
+
+        public UnityEvent<int> SelectedSlotIndexUpdated { get; } = new();
+
+        #endregion Properties
 
         #region Public
 
         public void SetSlotIndex(int slotIndex)
         {
-            _selectedSlotIndex = slotIndex;
+            SelectedSlotIndex = slotIndex;
             SendHotbarItemToCursor();
+            SelectedSlotIndexUpdated.Invoke(slotIndex);
         }
 
         #endregion Public
@@ -58,14 +66,15 @@ namespace UI
 
         private void SendHotbarItemToCursor()
         {
-            Cursor.HotbarItem = _slots[_selectedSlotIndex].Item;
+            Cursor.HotbarItem = _slots[SelectedSlotIndex].Item;
             Cursor.Container.CollectionUpdated.Invoke();
         }
 
         private void SetSlotIndexFromKeyboard(CallbackContext context)
         {
-            _selectedSlotIndex = (int)context.ReadValue<float>() - 1;
+            SelectedSlotIndex = (int)context.ReadValue<float>() - 1;
             SendHotbarItemToCursor();
+            SelectedSlotIndexUpdated.Invoke(SelectedSlotIndex);
         }
 
         private IEnumerator DelayOnEnable()

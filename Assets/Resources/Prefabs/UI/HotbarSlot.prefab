@@ -138,6 +138,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9d37529826a31744a8a47b6eb9e2308b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _background: {fileID: 4966446964190356860}
   _text: {fileID: 655298240320360186}
   _image: {fileID: 1267745886554958595}
   _slotNumberText: {fileID: 4548811007533327836}

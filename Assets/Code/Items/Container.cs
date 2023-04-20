@@ -89,7 +89,7 @@ namespace Items
 
         public void OnLeftMouseButton(int slotIndex)
         {
-            if (!IsArmorMatchingSlot(Cursor.Item, slotIndex))
+            if (!IsArmorMatchingSlot(Cursor.Container[0], slotIndex))
                 return;
             Item thisItem = ExtractAt(slotIndex);
             Item cursorItem = Cursor.Container.ExtractAt(0);
@@ -111,7 +111,7 @@ namespace Items
 
         public void OnRightMouseButton(int slotIndex)
         {
-            if (!IsArmorMatchingSlot(Cursor.Item, slotIndex))
+            if (!IsArmorMatchingSlot(Cursor.Container[0], slotIndex))
                 return;
             Item thisItem = ExtractAt(slotIndex);
             Item cursorItem = Cursor.Container.ExtractAt(0);

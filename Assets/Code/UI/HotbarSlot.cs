@@ -5,6 +5,7 @@ using static UnityEngine.InputSystem.InputAction;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using Items;
+using System;
 
 namespace UI
 {
@@ -12,6 +13,7 @@ namespace UI
     {
         #region Fields
 
+        [SerializeField] private Image _background;
         [SerializeField] private TextMeshProUGUI _text;
         [SerializeField] private Image _image;
         [SerializeField] private TextMeshProUGUI _slotNumberText;
@@ -24,7 +26,8 @@ namespace UI
 
         #region Properties
 
-        public Item Item => _container[_slotIndex];
+        public Item Item => _slotIndex < _container.Size
+            ? _container[_slotIndex] : null;
 
         #endregion Properties
 
@@ -34,9 +37,11 @@ namespace UI
         {
             _window = window;
             _slotIndex = slotIndex;
-            _slotNumberText.text = _slotIndex.ToString();
+            _slotNumberText.text = (_slotIndex + 1).ToString();
             _container = container;
             _container.CollectionUpdated.AddListener(OnCollectionUpdated);
+            _window.SelectedSlotIndexUpdated.AddListener(OnSelectedSlotIndexUpdated);
+            _window.SetSlotIndex(0);
             OnCollectionUpdated();
         }
 
@@ -65,11 +70,14 @@ namespace UI
         {
             if (_container != null)
                 _container.CollectionUpdated.AddListener(OnCollectionUpdated);
+            if (_window != null)
+                _window.SelectedSlotIndexUpdated.AddListener(OnSelectedSlotIndexUpdated);
         }
 
         private void OnDisable()
         {
             _container.CollectionUpdated.RemoveListener(OnCollectionUpdated);
+            _window.SelectedSlotIndexUpdated.RemoveListener(OnSelectedSlotIndexUpdated);
             OnPointerExit(null);
         }
 
@@ -107,6 +115,24 @@ namespace UI
                 _text.text = _container[_slotIndex].Count.ToString();
             _image.sprite = _container[_slotIndex].Sprite;
             _image.enabled = true;
+        }
+
+        private void OnSelectedSlotIndexUpdated(int slotIndex)
+        {
+            if (_slotIndex == slotIndex)
+                MarkSlotActive();
+            else
+                MarkSlotInactive();
+        }
+
+        private void MarkSlotActive()
+        {
+            _background.color = new Color(0.8773585F, 0.5344518F, 0.3517711F);
+        }
+
+        private void MarkSlotInactive()
+        {
+            _background.color = new Color(0.9529412F, 0.8705882F, 0.7882353F);
         }
 
         #endregion Private

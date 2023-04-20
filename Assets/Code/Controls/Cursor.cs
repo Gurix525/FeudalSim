@@ -26,6 +26,8 @@ namespace Controls
             }
         }
 
+        public static bool IsItemFromHotbar => Container[0] == null && HotbarItem != null;
+
         public static bool IsAboveTerrain { get; private set; } = false;
 
         public static ItemAction Action => IsNoActionActive
