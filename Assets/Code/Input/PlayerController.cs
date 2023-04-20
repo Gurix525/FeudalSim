@@ -35,7 +35,14 @@ namespace Input
         public static ModifiableInputAction MainQuickMenu { get; } = new();
         public static ModifiableInputAction MainControl { get; } = new();
         public static ModifiableInputAction MainTab { get; } = new();
-        public static ModifiableInputAction MainHotaber { get; } = new();
+        public static ModifiableInputAction MainHotbar1 { get; } = new();
+        public static ModifiableInputAction MainHotbar2 { get; } = new();
+        public static ModifiableInputAction MainHotbar3 { get; } = new();
+        public static ModifiableInputAction MainHotbar4 { get; } = new();
+        public static ModifiableInputAction MainHotbar5 { get; } = new();
+        public static ModifiableInputAction MainHotbar6 { get; } = new();
+        public static ModifiableInputAction MainHotbar7 { get; } = new();
+        public static ModifiableInputAction MainHotbar8 { get; } = new();
 
         // QuickMenu
         public static ModifiableInputAction QuickMenuQuickMenu { get; } = new();
@@ -79,7 +86,14 @@ namespace Input
             MainQuickMenu.Action = Main.FindAction("QuickMenu");
             MainControl.Action = Main.FindAction("Control");
             MainTab.Action = Main.FindAction("Tab");
-            MainHotaber.Action = Main.FindAction("Hotbar");
+            MainHotbar1.Action = Main.FindAction("Hotbar1");
+            MainHotbar2.Action = Main.FindAction("Hotbar2");
+            MainHotbar3.Action = Main.FindAction("Hotbar3");
+            MainHotbar4.Action = Main.FindAction("Hotbar4");
+            MainHotbar5.Action = Main.FindAction("Hotbar5");
+            MainHotbar6.Action = Main.FindAction("Hotbar6");
+            MainHotbar7.Action = Main.FindAction("Hotbar7");
+            MainHotbar8.Action = Main.FindAction("Hotbar8");
 
             // QuickMenu
             QuickMenuQuickMenu.Action = QuickMenu.FindAction("QuickMenu");
