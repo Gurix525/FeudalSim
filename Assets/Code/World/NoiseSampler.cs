@@ -28,6 +28,23 @@ namespace World
             return (float)random.NextDouble() + 0.3F > remapped ? 0 : 1;
         }
 
+        public static float GetBouldersNoise(float x, float z)
+        {
+            x += 100;
+            z += 100;
+            float bigPools = GetNoise(x, z, detailScale: 0.02F) * 1F;
+            float smallPools1 = GetNoise(x, z, detailScale: 0.03F) * 2F;
+            float smallPools2 = GetNoise(x, z, detailScale: 0.1F) * 5F;
+            float smallPools3 = GetNoise(x, z, detailScale: 0.2F) * 2F;
+
+            float sum = bigPools + smallPools1 + smallPools2 + smallPools3;
+            float maxStrength = 1F + 2F + 5F + 2F;
+            float remapped = sum.Remap(0F, maxStrength, 0F, 1F);
+
+            System.Random random = new();
+            return (float)random.NextDouble() + 0.25F > remapped ? 0 : 1;
+        }
+
         public static float GetNoise(float x, float y, float min = 0F, float max = 1F, float detailScale = 1F)
         {
             return OpenSimplex2S.Noise3_ImproveXZ(

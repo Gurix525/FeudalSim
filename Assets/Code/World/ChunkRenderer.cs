@@ -16,6 +16,7 @@ namespace World
         public Vector2Int Position { get; private set; }
         public Transform Buildings { get; private set; }
         public Transform ItemHandlers { get; private set; }
+        public Transform Trees { get; private set; }
         public Transform Boulders { get; private set; }
 
         private MeshFilter _meshFilter;
@@ -37,16 +38,56 @@ namespace World
             _meshCollider = GetComponent<MeshCollider>();
             CreateChildren();
             InitializeMesh();
+            SpawnTrees();
+            SpawnBoulders();
+        }
+
+        private void SpawnBoulders()
+        {
+            var boulderPrefab = Resources.Load<GameObject>("Prefabs/Nature/Boulder");
+            for (int z = 0; z < 100; z++)
+                for (int x = 0; x < 100; x++)
+                {
+                    Vector2 position = new Vector2(Position.x * 100 + x, Position.y * 100 + z);
+                    float noise = NoiseSampler.GetBouldersNoise(position.x, position.y);
+                    if (noise == 1F)
+                    {
+                        float height = Terrain.GetHeight(position);
+                        Instantiate(boulderPrefab, new Vector3(position.x, height, position.y), Quaternion.identity, Boulders);
+                    }
+                }
+        }
+
+        private void SpawnTrees()
+        {
+            var treePrefab = Resources.Load<GameObject>("Prefabs/Nature/Tree");
+            for (int z = 0; z < 100; z++)
+                for (int x = 0; x < 100; x++)
+                {
+                    Vector2 position = new Vector2(Position.x * 100 + x, Position.y * 100 + z);
+                    float noise = NoiseSampler.GetTreesNoise(position.x, position.y);
+                    if (noise == 1F)
+                    {
+                        float height = Terrain.GetHeight(position);
+                        if (height >= -1 && height <= 6)
+                            Instantiate(treePrefab, new Vector3(position.x, height, position.y), Quaternion.identity, Trees);
+                    }
+                }
         }
 
         private void CreateChildren()
         {
             Buildings = new GameObject("Buildings").transform;
             Buildings.transform.parent = transform;
+
             ItemHandlers = new GameObject("ItemHandlers").transform;
             ItemHandlers.transform.parent = transform;
+
             Boulders = new GameObject("Boulders").transform;
             Boulders.transform.parent = transform;
+
+            Trees = new GameObject("Trees").transform;
+            Trees.transform.parent = transform;
         }
 
         private void InitializeMesh()
