@@ -41,7 +41,7 @@ namespace Items
             ItemHandler itemHandler = GameObject
                 .Instantiate(prefab, TerrainRenderer.GetChunkRenderer(
                         Terrain.GetChunkCoordinates(
-                            CursorItemMeshHighlight.Position)).transform)
+                            CursorItemMeshHighlight.Position)).ItemHandlers)
                 .GetComponent<ItemHandler>();
             Item inputItem = Cursor.Container.ExtractAt(0, 0);
             if (inputItem == null)
@@ -68,7 +68,7 @@ namespace Items
             ItemHandler itemHandler = GameObject
                 .Instantiate(prefab, TerrainRenderer.GetChunkRenderer(
                     Terrain.GetChunkCoordinates(
-                        CursorItemMeshHighlight.Position)).transform)
+                        CursorItemMeshHighlight.Position)).ItemHandlers)
                 .GetComponent<ItemHandler>();
             Item inputItem = Cursor.Container.ExtractAt(0, 1);
             if (inputItem == null)

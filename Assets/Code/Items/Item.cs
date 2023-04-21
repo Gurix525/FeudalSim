@@ -67,7 +67,7 @@ namespace Items
             ItemHandler itemHandler = GameObject
                 .Instantiate(prefab, TerrainRenderer.GetChunkRenderer(
                         Terrain.GetChunkCoordinates(
-                            dropPosition)).transform)
+                            dropPosition)).ItemHandlers)
                 .GetComponent<ItemHandler>();
             ScatterItem(itemHandler);
             itemHandler.Container.InsertAt(0, this);

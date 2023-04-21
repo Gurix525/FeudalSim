@@ -15,6 +15,7 @@ namespace World
     {
         public Vector2Int Position { get; private set; }
         public Transform Buildings { get; private set; }
+        public Transform ItemHandlers { get; private set; }
 
         private MeshFilter _meshFilter;
         private MeshCollider _meshCollider;
@@ -41,6 +42,8 @@ namespace World
         {
             Buildings = new GameObject("Buildings").transform;
             Buildings.transform.parent = transform;
+            ItemHandlers = new GameObject("ItemHandlers").transform;
+            ItemHandlers.transform.parent = transform;
         }
 
         private void InitializeMesh()
