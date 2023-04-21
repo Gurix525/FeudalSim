@@ -13,6 +13,21 @@ namespace World
 
         private static int _seedHashCode = _seed.GetHashCode();
 
+        public static float GetTreesNoise(float x, float z)
+        {
+            float bigPools = GetNoise(x, z, detailScale: 0.03F) * 1F;
+            float smallPools1 = GetNoise(x, z, detailScale: 0.02F) * 1.84F;
+            float smallPools2 = GetNoise(x, z, detailScale: 0.2F) * 4.85F;
+            float smallPools3 = GetNoise(x, z, detailScale: 1F) * 1F;
+
+            float sum = bigPools + smallPools1 + smallPools2 + smallPools3;
+            float maxStrength = 1F + 1.84F + 4.85F + 1F;
+            float remapped = sum.Remap(0F, maxStrength, 0F, 1F);
+
+            System.Random random = new();
+            return (float)random.NextDouble() + 0.3F > remapped ? 0 : 1;
+        }
+
         public static float GetNoise(float x, float y, float min = 0F, float max = 1F, float detailScale = 1F)
         {
             return OpenSimplex2S.Noise3_ImproveXZ(
