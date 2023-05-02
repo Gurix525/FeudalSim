@@ -54,14 +54,14 @@ namespace Items
                 int delta = Mathf.Min(Item.Count, Item.MaxStack - Cursor.Item.Count);
                 if (delta != 0)
                     Cursor.Container.InsertAt(0, Container.ExtractAt(0, delta));
-                if (Cursor.IsNoActionActive)
-                    Equipment.Insert(Item);
-                if (Item != null)
-                    if (Item.Count == 0)
-                        Container[0] = null;
-                if (Item == null)
-                    Destroy(gameObject);
             }
+            if (Cursor.IsNoActionActive)
+                Equipment.Insert(Item);
+            if (Item != null)
+                if (Item.Count == 0)
+                    Container[0] = null;
+            if (Item == null)
+                Destroy(gameObject);
         }
 
         public void OnRightMouseButton()
@@ -88,6 +88,21 @@ namespace Items
                     if (item.Count > 0)
                         Container.InsertAt(0, item);
                 }
+                if (Item == null)
+                    Destroy(gameObject);
+                return;
+            }
+            if (Cursor.IsNoActionActive)
+            {
+                var item = Container.ExtractAt(0, 1);
+                if (item == null)
+                    return;
+                Equipment.Insert(item);
+                if (item.Count > 0)
+                    Container.InsertAt(0, item);
+                if (Item != null)
+                    if (Item.Count == 0)
+                        Container[0] = null;
                 if (Item == null)
                     Destroy(gameObject);
             }
