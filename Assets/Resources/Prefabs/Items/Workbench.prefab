@@ -31,7 +31,7 @@ Transform:
   m_GameObject: {fileID: 313258140160856351}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.9, y: 0.9, z: 0.9}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -100,7 +100,7 @@ MeshCollider:
   serializedVersion: 4
   m_Convex: 0
   m_CookingOptions: 30
-  m_Mesh: {fileID: -5495902117074765545, guid: b8d5476d5a091f94c8ff3d4ab5145473, type: 3}
+  m_Mesh: {fileID: -5495902117074765545, guid: 481c58654f6ffc246a0c34ecf24c2c6a, type: 3}
 --- !u!114 &-2294031622950833874
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -10,7 +10,7 @@ namespace World
         [SerializeField] private Mesh _mesh;
         [SerializeField] private Material _material;
 
-        private Matrix4x4[][] _batches = new Matrix4x4[20][];
+        private Matrix4x4[][] _batches = new Matrix4x4[10][];
 
         private float _timeSinceLastActivation = 0F;
         private Vector3 _lastPosition = Vector3.zero;
@@ -54,7 +54,7 @@ namespace World
 
         private Task InstantiateGrass()
         {
-            Matrix4x4[] positions = new Matrix4x4[20000];
+            Matrix4x4[] positions = new Matrix4x4[10000];
 
             int index = 0;
             for (int z = _currentPlayerPosition.y - 49; z < _currentPlayerPosition.y + 50; z++)
@@ -63,7 +63,7 @@ namespace World
                     Cell cell = Terrain.GetCell(new Vector2Int(x, z));
                     if (!cell.HasGrass)
                     {
-                        index += 2;
+                        index += 1;
                         continue;
                     }
                     Vector3 position = new(
@@ -75,7 +75,7 @@ namespace World
                     float noise3 = (noise2 * 3) % 1F;
                     float noise4 = (noise3 * 4) % 1F;
                     positions[index] = Matrix4x4.TRS(
-                        position + new Vector3(0.1F, 0F, 0.1F) * noise,
+                        position + new Vector3(0.5F, 0F, 0.5F) + new Vector3(0.1F, 0F, 0.1F) * noise,
                         Quaternion.Euler(new(-90F, noise * 180F, 0F)),
                         new Vector3(
                             noise2.Remap(0F, 1F, 1.5F, 2F),
@@ -83,22 +83,22 @@ namespace World
                             noise4.Remap(0F, 1F, 0.5F, 1F)));
                     index++;
 
-                    Vector3 position2 = position + new Vector3(0.5F, 0F, 0.5F);
-                    float noise5 = NoiseSampler.GetNoise(position2, -1F, 1F, 1000F);
-                    float noise6 = Mathf.Abs((noise5 * 2) % 1F);
-                    float noise7 = (noise6 * 3) % 1F;
-                    float noise8 = (noise7 * 4) % 1F;
-                    positions[index] = Matrix4x4.TRS(
-                        position + new Vector3(0.5F, 0F, 0.5F) + new Vector3(0.1F, 0F, 0.1F) * noise + new Vector3(0.5F, 0F, 0.5F),
-                        Quaternion.Euler(new(-90F, noise * 180F, 0F)),
-                        new Vector3(
-                            noise2.Remap(0F, 1F, 1.5F, 2F),
-                            noise3.Remap(0F, 1F, 1.5F, 2F),
-                            noise4.Remap(0F, 1F, 0.5F, 1F)));
-                    index++;
+                    //Vector3 position2 = position + new Vector3(0.5F, 0F, 0.5F);
+                    //float noise5 = NoiseSampler.GetNoise(position2, -1F, 1F, 1000F);
+                    //float noise6 = Mathf.Abs((noise5 * 2) % 1F);
+                    //float noise7 = (noise6 * 3) % 1F;
+                    //float noise8 = (noise7 * 4) % 1F;
+                    //positions[index] = Matrix4x4.TRS(
+                    //    position + new Vector3(0.5F, 0F, 0.5F) + new Vector3(0.1F, 0F, 0.1F) * noise + new Vector3(0.5F, 0F, 0.5F),
+                    //    Quaternion.Euler(new(-90F, noise * 180F, 0F)),
+                    //    new Vector3(
+                    //        noise2.Remap(0F, 1F, 1.5F, 2F),
+                    //        noise3.Remap(0F, 1F, 1.5F, 2F),
+                    //        noise4.Remap(0F, 1F, 0.5F, 1F)));
+                    //index++;
                 }
 
-            for (int i = 0; i < 20000; i++)
+            for (int i = 0; i < 10000; i++)
             {
                 _batches[i / 1000][i % 1000] = positions[i];
             }

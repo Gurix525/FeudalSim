@@ -53,6 +53,7 @@ namespace UI
 
         private void OnEnable()
         {
+            OnCollectionUpdated();
             if (_container != null)
                 _container.CollectionUpdated.AddListener(OnCollectionUpdated);
         }
