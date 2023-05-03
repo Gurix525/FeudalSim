@@ -21,7 +21,8 @@ namespace Items
             { "Wood", new("Wood", 20, actions: new ItemAction[] {new BuildAction()}) },
             { "Sword", new("Sword", 1, stats: new(){ { "ArmorType", "Head" }, { "InventorySlots", "3"} }) },
             { "Axe", new("Axe", 1, actions: new ItemAction[] {new DestroyAction()}) },
-            { "Shovel", new("Shovel", 1, actions: new ItemAction[] {new ShovelAction()}) }
+            { "Shovel", new("Shovel", 1, actions: new ItemAction[] {new ShovelAction()}) },
+            { "Workbench", new("Workbench", 1)}
         };
 
         #endregion Fields
