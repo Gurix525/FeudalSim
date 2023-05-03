@@ -114,6 +114,15 @@
                     "initialStateCheck": false
                 },
                 {
+                    "name": "Alt",
+                    "type": "Button",
+                    "id": "024dc7d8-32c3-42c2-bfef-9e85b19fe00b",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
                     "name": "Hotbar1",
                     "type": "Button",
                     "id": "23c62c16-bd7e-43a1-9112-6c73f2217117",
@@ -448,6 +457,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "Hotbar8",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "2fe7db4c-bd27-407c-95d9-e2a07001e23d",
+                    "path": "<Keyboard>/leftAlt",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Alt",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

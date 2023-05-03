@@ -96,7 +96,7 @@ namespace Controls
             {
                 _renderer.enabled = true;
                 _renderer.material.renderQueue = 3001;
-                var position = Cursor.RaycastHit.Value.point;
+                var position = Cursor.GetAlignedPosition();
                 var normal = Cursor.RaycastHit.Value.normal;
                 var rotation = Quaternion.FromToRotation(Vector3.up, normal)
                     * Quaternion.Euler(0F, _meshRotation, 0F);

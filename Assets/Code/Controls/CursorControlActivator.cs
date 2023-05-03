@@ -1,7 +1,5 @@
-using System;
 using Input;
 using UnityEngine;
-using UnityEngine.InputSystem;
 using static UnityEngine.InputSystem.InputAction;
 
 namespace Controls

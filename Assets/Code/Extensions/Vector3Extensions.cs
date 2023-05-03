@@ -14,9 +14,12 @@ namespace Extensions
             return new(Mathf.Floor(v.x), Mathf.Floor(v.y), Mathf.Floor(v.z));
         }
 
-        public static Vector3 Round(this Vector3 v)
+        public static Vector3 Round(this Vector3 v, float accuracy = 1F)
         {
-            return new(Mathf.Round(v.x), Mathf.Round(v.y), Mathf.Round(v.z));
+            return new(
+                Mathf.Round(v.x / accuracy) * accuracy,
+                Mathf.Round(v.y / accuracy) * accuracy,
+                Mathf.Round(v.z / accuracy) * accuracy);
         }
 
         public static Vector3Int ToVector3Int(this Vector3 v)
