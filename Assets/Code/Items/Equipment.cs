@@ -40,6 +40,8 @@ namespace Items
             }
         }
 
+        public static bool IsVisible => Instance._inventoryWindow.activeInHierarchy;
+
         public static Container InventoryContainer => Instance._inventoryContainer;
 
         private static Equipment Instance { get; set; }

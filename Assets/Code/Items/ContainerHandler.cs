@@ -131,6 +131,9 @@ namespace Items
 
         private void HideContainer(CallbackContext context)
         {
+            if (context.action.ToString() == "Main/Tab[/Keyboard/tab]"
+                && Equipment.IsVisible)
+                return;
             PlayerController.MainEscape.RemoveListener(ActionType.Started, HideContainer);
             PlayerController.MainTab.RemoveListener(ActionType.Started, HideContainer);
             _window.SetActive(false);
