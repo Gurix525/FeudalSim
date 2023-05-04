@@ -1,3 +1,4 @@
+using Controls;
 using UnityEngine;
 using Cursor = Controls.Cursor;
 
@@ -10,7 +11,9 @@ namespace Misc
 
         public void EnableOutline()
         {
-            _outline.enabled = true;
+            if (Vector3.Distance(Player.Position, transform.position)
+                <= CursorRaycaster.MaxCursorDistanceFromPlayer)
+                _outline.enabled = true;
         }
 
         public void DisableOutline()

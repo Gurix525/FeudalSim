@@ -78,6 +78,13 @@ namespace Items
             StartTest();
         }
 
+        private void FixedUpdate()
+        {
+            if (Vector3.Distance(Player.Position, transform.position)
+                > CursorRaycaster.MaxCursorDistanceFromPlayer)
+                HideContainer(new());
+        }
+
         private void OnMouseOver()
         {
             _isPointerOverGameObject = EventSystem.current.IsPointerOverGameObject();
@@ -131,9 +138,10 @@ namespace Items
 
         private void HideContainer(CallbackContext context)
         {
-            if (context.action.ToString() == "Main/Tab[/Keyboard/tab]"
-                && Equipment.IsVisible)
-                return;
+            if (context.action != null)
+                if (context.action.ToString() == "Main/Tab[/Keyboard/tab]"
+                    && Equipment.IsVisible)
+                    return;
             PlayerController.MainEscape.RemoveListener(ActionType.Started, HideContainer);
             PlayerController.MainTab.RemoveListener(ActionType.Started, HideContainer);
             _window.SetActive(false);

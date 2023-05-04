@@ -612,7 +612,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _target: {fileID: 770188198}
   _offset: {x: 0, y: 20, z: -12.5}
-  _lerpTime: 0.2
+  _lerpTime: 0.15
 --- !u!1 &392065864
 GameObject:
   m_ObjectHideFlags: 0
@@ -1752,7 +1752,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _highlight: {fileID: 478077016}
-  _mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
+  _mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 3}
   _notBlockedMaterial: {fileID: 2100000, guid: 6b0899f2cfd830a41b90fccbfe666a74, type: 2}
   _blockedMaterial: {fileID: 2100000, guid: 73f5f5a550a38a44cae22c75b36b914b, type: 2}
 --- !u!1 &1222375874

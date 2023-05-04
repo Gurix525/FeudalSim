@@ -44,9 +44,13 @@ namespace Controls
 
         private void Update()
         {
+            Cursor.Action.Update();
+        }
+
+        private void FixedUpdate()
+        {
             Move();
             UpdateVerticalSpeed();
-            Cursor.Action.Update();
         }
 
         private void OnDisable()
@@ -86,7 +90,7 @@ namespace Controls
             _controller.Move(
                 new Vector3(direction.x, _verticalSpeed, direction.y)
                 * actualSpeed
-                * Time.deltaTime);
+                * Time.fixedDeltaTime);
         }
 
         private void Jump(CallbackContext context)

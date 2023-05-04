@@ -6,20 +6,13 @@ namespace Controls
 {
     public class CursorRaycaster : MonoBehaviour
     {
-        [SerializeField] private float _maxCursorDistanceFromPlayer = 5F;
-
         private static bool _isPointerOverGameObject = false;
+
+        public static float MaxCursorDistanceFromPlayer { get; } = 5F;
 
         public static RaycastHit? Hit { get; private set; } = null;
 
         public static RaycastHit? CurrentHit => GetRaycastHit();
-
-        private static CursorRaycaster Instance { get; set; }
-
-        private void Awake()
-        {
-            Instance = this;
-        }
 
         private void Update()
         {
@@ -37,7 +30,7 @@ namespace Controls
             Ray ray = Camera.main
                 .ScreenPointToRay(PlayerController.MainPoint.ReadValue<Vector2>());
             Physics.Raycast(ray, out RaycastHit hit);
-            if (Vector3.Distance(hit.point, Player.Position) > Instance._maxCursorDistanceFromPlayer)
+            if (Vector3.Distance(hit.collider.transform.position, Player.Position) > MaxCursorDistanceFromPlayer)
             {
                 Hit = null;
                 return null;
