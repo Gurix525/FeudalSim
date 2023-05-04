@@ -19,10 +19,19 @@ namespace Controls
 
         #endregion Fields
 
+        #region Properties
+
+        public static Vector3 Position => Instance.transform.position;
+
+        private static Player Instance { get; set; }
+
+        #endregion Properties
+
         #region Unity
 
         private void Awake()
         {
+            Instance = this;
             _controller = GetComponent<CharacterController>();
         }
 
