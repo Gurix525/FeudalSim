@@ -8,7 +8,7 @@ namespace Controls
     {
         private static bool _isPointerOverGameObject = false;
 
-        public static float MaxCursorDistanceFromPlayer { get; } = 5F;
+        public static float MaxCursorDistanceFromPlayer { get; } = 4F;
 
         public static RaycastHit? Hit { get; private set; } = null;
 
@@ -30,7 +30,8 @@ namespace Controls
             Ray ray = Camera.main
                 .ScreenPointToRay(PlayerController.MainPoint.ReadValue<Vector2>());
             Physics.Raycast(ray, out RaycastHit hit);
-            if (Vector3.Distance(hit.collider.transform.position, Player.Position) > MaxCursorDistanceFromPlayer)
+            if (Vector3.Distance(hit.point, Player.Position) > MaxCursorDistanceFromPlayer
+                && Vector3.Distance(hit.collider.transform.position, Player.Position) > MaxCursorDistanceFromPlayer)
             {
                 Hit = null;
                 return null;
