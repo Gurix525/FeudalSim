@@ -39,7 +39,7 @@ namespace Items
 
         public virtual void OnMouseExit(Component component)
         {
-            (component as INoActionOutline)?.DisableOutline();
+            (component as IOutline)?.DisableOutline();
         }
 
         protected abstract Sprite GetSprite();

@@ -1,6 +1,6 @@
 ﻿namespace Misc
 {
-    public interface INoActionOutline
+    public interface IOutline
     {
         public void EnableOutline();
 
