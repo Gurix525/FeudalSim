@@ -22,6 +22,7 @@ namespace Items
             { "Plank", new("Plank", 20, actions: new ItemAction[] {new BuildAction()}) },
             { "Sword", new("Sword", 1, stats: new(){ { "ArmorType", "Head" }, { "InventorySlots", "3"} }) },
             { "Axe", new("Axe", 1, actions: new ItemAction[] {new AxeAction(),  new DestroyAction()}) },
+            { "Pickaxe", new("Pickaxe", 1, actions: new ItemAction[] {new PickaxeAction() }) },
             { "Shovel", new("Shovel", 1, actions: new ItemAction[] {new ShovelAction()}) },
             { "Workbench", new("Workbench", 1)}
         };

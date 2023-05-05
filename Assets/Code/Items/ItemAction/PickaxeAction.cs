@@ -5,7 +5,7 @@ using Misc;
 
 namespace Items
 {
-    public class AxeAction : ItemAction
+    public class PickaxeAction : ItemAction
     {
         #region Fields
 
@@ -25,12 +25,12 @@ namespace Items
         {
             if (Cursor.RaycastHit != null)
             {
-                (component as IAxeActionOutline)?.EnableOutline();
+                (component as IPickaxeActionOutline)?.EnableOutline();
                 _leftClickable = component as ILeftClickHandler;
             }
             else
             {
-                (component as IAxeActionOutline)?.DisableOutline();
+                (component as IPickaxeActionOutline)?.DisableOutline();
                 _leftClickable = null;
             }
         }
@@ -47,7 +47,7 @@ namespace Items
 
         protected override Sprite GetSprite()
         {
-            return Resources.Load<Sprite>("Sprites/Actions/AxeAction");
+            return Resources.Load<Sprite>("Sprites/Actions/PickaxeAction");
         }
 
         #endregion Protected
