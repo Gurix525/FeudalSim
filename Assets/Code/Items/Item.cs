@@ -19,7 +19,7 @@ namespace Items
         {
             { "Stone", new("Stone", actions: new ItemAction[] {new BuildAction()})},
             { "Wood", new("Wood", 20, actions: new ItemAction[] {new BuildAction()}) },
-            { "Planks", new("Planks", 20, actions: new ItemAction[] {new BuildAction()}) },
+            { "Plank", new("Plank", 20, actions: new ItemAction[] {new BuildAction()}) },
             { "Sword", new("Sword", 1, stats: new(){ { "ArmorType", "Head" }, { "InventorySlots", "3"} }) },
             { "Axe", new("Axe", 1, actions: new ItemAction[] {new AxeAction(),  new DestroyAction()}) },
             { "Shovel", new("Shovel", 1, actions: new ItemAction[] {new ShovelAction()}) },
@@ -49,11 +49,9 @@ namespace Items
 
         private Item(ItemModel model, int count = 1, Dictionary<string, string> stats = null)
         {
-            if (count > model.MaxStack)
-                throw new ArgumentOutOfRangeException(
-                    "Count przemiotu nie może być większe niż MaxStack");
             _model = model;
-            Count = count;
+            count = count > model.MaxStack ? model.MaxStack : count;
+            Count = count == 0 ? model.MaxStack : count;
             _stats = stats;
         }
 

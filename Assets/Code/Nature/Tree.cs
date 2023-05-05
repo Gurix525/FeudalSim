@@ -1,4 +1,5 @@
 using Controls;
+using Items;
 using Misc;
 using UnityEngine;
 using Cursor = Controls.Cursor;
@@ -28,7 +29,11 @@ namespace Nature
 
         public void OnLeftMouseButton()
         {
-            throw new System.NotImplementedException();
+            Item wood = Item.Create("Wood", 0);
+            Equipment.Insert(wood);
+            if (wood.Count > 0)
+                wood.Drop(Player.Position);
+            Destroy(gameObject);
         }
 
         #endregion Public
