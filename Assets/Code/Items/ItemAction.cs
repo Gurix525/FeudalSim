@@ -8,6 +8,9 @@ namespace Items
 {
     public abstract class ItemAction
     {
+        protected ILeftClickHandler _leftClickable;
+        protected IRightClickHandler _rightclickable;
+
         public static NoAction NoAction { get; } = new();
 
         public Sprite Sprite => GetSprite();

@@ -8,13 +8,6 @@ namespace Items
 {
     public class NoAction : ItemAction
     {
-        #region Fields
-
-        private ILeftClickHandler _leftClickable;
-        private IRightClickHandler _rightclickable;
-
-        #endregion Fields
-
         #region Public
 
         public override void OnLeftMouseButton()

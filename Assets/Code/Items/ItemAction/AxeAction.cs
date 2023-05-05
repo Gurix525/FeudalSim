@@ -1,18 +1,13 @@
 ﻿using UnityEngine;
 using Controls;
 using Cursor = Controls.Cursor;
+using Tree = Nature.Tree;
 using Misc;
 
 namespace Items
 {
     public class AxeAction : ItemAction
     {
-        #region Fields
-
-        private ILeftClickHandler _leftClickable;
-
-        #endregion Fields
-
         #region Public
 
         public override void OnLeftMouseButton()
@@ -26,7 +21,7 @@ namespace Items
             if (Cursor.RaycastHit != null)
             {
                 (component as IAxeActionOutline)?.EnableOutline();
-                _leftClickable = component as ILeftClickHandler;
+                _leftClickable = component as Tree;
             }
             else
             {

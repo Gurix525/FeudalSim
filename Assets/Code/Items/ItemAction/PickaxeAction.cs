@@ -2,17 +2,12 @@
 using Controls;
 using Cursor = Controls.Cursor;
 using Misc;
+using Nature;
 
 namespace Items
 {
     public class PickaxeAction : ItemAction
     {
-        #region Fields
-
-        private ILeftClickHandler _leftClickable;
-
-        #endregion Fields
-
         #region Public
 
         public override void OnLeftMouseButton()
@@ -26,7 +21,7 @@ namespace Items
             if (Cursor.RaycastHit != null)
             {
                 (component as IPickaxeActionOutline)?.EnableOutline();
-                _leftClickable = component as ILeftClickHandler;
+                _leftClickable = component as Boulder;
             }
             else
             {
