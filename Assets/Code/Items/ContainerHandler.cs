@@ -107,7 +107,7 @@ namespace Items
             _container.Insert(Item.Create("Stone", 10));
             _container.Insert(Item.Create("Stone", 10));
             _container.Insert(Item.Create("Wood", 20));
-            _container.Insert(Item.Create("Wood", 20));
+            _container.Insert(Item.Create("Pickaxe"));
             _container.Insert(Item.Create("Sword"));
             _container.Insert(Item.Create("Axe"));
             _container.Insert(Item.Create("Shovel"));
