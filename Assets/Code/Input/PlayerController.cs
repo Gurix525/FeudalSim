@@ -26,7 +26,7 @@ namespace Input
 
         public static ModifiableInputAction MainRun { get; } = new();
         public static ModifiableInputAction MainJump { get; } = new();
-        public static ModifiableInputAction MainUse { get; } = new();
+        public static ModifiableInputAction MainLeftClick { get; } = new();
         public static ModifiableInputAction MainPoint { get; } = new();
         public static ModifiableInputAction MainChange { get; } = new();
         public static ModifiableInputAction MainRightClick { get; } = new();
@@ -78,7 +78,7 @@ namespace Input
             MainMove.Action = Main.FindAction("Move");
             MainRun.Action = Main.FindAction("Run");
             MainJump.Action = Main.FindAction("Jump");
-            MainUse.Action = Main.FindAction("Use");
+            MainLeftClick.Action = Main.FindAction("LeftClick");
             MainPoint.Action = Main.FindAction("Point");
             MainChange.Action = Main.FindAction("Change");
             MainRightClick.Action = Main.FindAction("RightClick");

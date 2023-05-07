@@ -13,12 +13,12 @@ namespace UI
 
         public void OnPointerEnter(PointerEventData eventData)
         {
-            PlayerController.MainUse.AddListener(ActionType.Started, StartDraggingWindow);
+            PlayerController.MainLeftClick.AddListener(ActionType.Started, StartDraggingWindow);
         }
 
         public void OnPointerExit(PointerEventData eventData)
         {
-            PlayerController.MainUse.RemoveListener(ActionType.Started, StartDraggingWindow);
+            PlayerController.MainLeftClick.RemoveListener(ActionType.Started, StartDraggingWindow);
         }
 
         private void Update()
@@ -40,13 +40,13 @@ namespace UI
         {
             _isDragging = true;
             _initialMousePosition = PlayerController.MainPoint.ReadValue<Vector2>();
-            PlayerController.MainUse.AddListener(ActionType.Canceled, StopDraggingWindow);
+            PlayerController.MainLeftClick.AddListener(ActionType.Canceled, StopDraggingWindow);
         }
 
         private void StopDraggingWindow(CallbackContext obj)
         {
             _isDragging = false;
-            PlayerController.MainUse.RemoveListener(ActionType.Canceled, StopDraggingWindow);
+            PlayerController.MainLeftClick.RemoveListener(ActionType.Canceled, StopDraggingWindow);
         }
     }
 }

@@ -17,12 +17,12 @@ namespace UI
 
         public void OnPointerEnter(PointerEventData eventData)
         {
-            PlayerController.MainUse.AddListener(ActionType.Started, Sort);
+            PlayerController.MainLeftClick.AddListener(ActionType.Started, Sort);
         }
 
         public void OnPointerExit(PointerEventData eventData)
         {
-            PlayerController.MainUse.RemoveListener(ActionType.Started, Sort);
+            PlayerController.MainLeftClick.RemoveListener(ActionType.Started, Sort);
         }
 
         private void OnDisable()

@@ -17,7 +17,7 @@ namespace Controls
         {
             TimerSet.Invoke(requiredTime);
             _tokenSource = new();
-            PlayerController.MainUse.AddListener(ActionType.Canceled, CancelTask);
+            PlayerController.MainLeftClick.AddListener(ActionType.Canceled, CancelTask);
             PlayerController.MainQuickMenu.AddListener(ActionType.Started, CancelTask);
             PlayerController.MainChange.AddListener(ActionType.Started, CancelTask);
             var task = RunTimer(requiredTime);
@@ -25,7 +25,7 @@ namespace Controls
             {
                 if (_tokenSource.IsCancellationRequested)
                 {
-                    PlayerController.MainUse.RemoveListener(ActionType.Canceled, CancelTask);
+                    PlayerController.MainLeftClick.RemoveListener(ActionType.Canceled, CancelTask);
                     PlayerController.MainQuickMenu.RemoveListener(ActionType.Started, CancelTask);
                     PlayerController.MainChange.RemoveListener(ActionType.Started, CancelTask);
                     TimerSet.Invoke(0F);
@@ -34,7 +34,7 @@ namespace Controls
                 if (task.IsCompleted)
                 {
                     action();
-                    PlayerController.MainUse.RemoveListener(ActionType.Canceled, CancelTask);
+                    PlayerController.MainLeftClick.RemoveListener(ActionType.Canceled, CancelTask);
                     PlayerController.MainQuickMenu.RemoveListener(ActionType.Started, CancelTask);
                     PlayerController.MainChange.RemoveListener(ActionType.Started, CancelTask);
                     TimerSet.Invoke(0F);
@@ -47,7 +47,7 @@ namespace Controls
         private static void CancelTask(CallbackContext context)
         {
             _tokenSource.Cancel();
-            PlayerController.MainUse.RemoveListener(ActionType.Canceled, CancelTask);
+            PlayerController.MainLeftClick.RemoveListener(ActionType.Canceled, CancelTask);
         }
 
         private static async Task RunTimer(float requiredTime)

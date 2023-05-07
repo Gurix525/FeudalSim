@@ -77,13 +77,13 @@ namespace Items
                 buildingToDestroy.AssignItem(extractedItem);
             GameObject.Destroy(buildingToDestroy.gameObject);
             _isWaitingForAnotherBuilding = true;
-            PlayerController.MainUse.AddListener(ActionType.Canceled, DisableWaiting);
+            PlayerController.MainLeftClick.AddListener(ActionType.Canceled, DisableWaiting);
         }
 
         private void DisableWaiting(CallbackContext context)
         {
             _isWaitingForAnotherBuilding = false;
-            PlayerController.MainUse.RemoveListener(ActionType.Canceled, DisableWaiting);
+            PlayerController.MainLeftClick.RemoveListener(ActionType.Canceled, DisableWaiting);
         }
 
         #endregion Private

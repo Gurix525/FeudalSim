@@ -11,18 +11,18 @@ namespace UI
 
         public void OnPointerEnter(PointerEventData eventData)
         {
-            PlayerController.MainUse.AddListener(ActionType.Started, CloseWindow);
+            PlayerController.MainLeftClick.AddListener(ActionType.Started, CloseWindow);
         }
 
         public void OnPointerExit(PointerEventData eventData)
         {
-            PlayerController.MainUse.RemoveListener(ActionType.Started, CloseWindow);
+            PlayerController.MainLeftClick.RemoveListener(ActionType.Started, CloseWindow);
         }
 
         private void CloseWindow(CallbackContext context)
         {
             _windowToClose.SetActive(false);
-            PlayerController.MainUse.RemoveListener(ActionType.Started, CloseWindow);
+            PlayerController.MainLeftClick.RemoveListener(ActionType.Started, CloseWindow);
         }
     }
 }

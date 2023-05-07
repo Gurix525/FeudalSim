@@ -38,7 +38,7 @@ namespace Controls
         private void OnEnable()
         {
             PlayerController.MainJump.AddListener(ActionType.Started, Jump);
-            PlayerController.MainUse.AddListener(ActionType.Started, OnLeftMouseButton);
+            PlayerController.MainLeftClick.AddListener(ActionType.Started, OnLeftMouseButton);
             PlayerController.MainRightClick.AddListener(ActionType.Started, OnRightMouseButton);
         }
 
@@ -56,7 +56,7 @@ namespace Controls
         private void OnDisable()
         {
             PlayerController.MainJump.RemoveListener(ActionType.Started, Jump);
-            PlayerController.MainUse.RemoveListener(ActionType.Started, OnLeftMouseButton);
+            PlayerController.MainLeftClick.RemoveListener(ActionType.Started, OnLeftMouseButton);
             PlayerController.MainRightClick.RemoveListener(ActionType.Started, OnRightMouseButton);
         }
 

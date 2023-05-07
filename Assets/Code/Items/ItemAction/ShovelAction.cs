@@ -65,7 +65,7 @@ namespace Items
                     break;
             }
             _isWaitingForAnotherCell = true;
-            PlayerController.MainUse.AddListener(ActionType.Canceled, DisableWaiting);
+            PlayerController.MainLeftClick.AddListener(ActionType.Canceled, DisableWaiting);
         }
 
         private void Plow()
@@ -89,7 +89,7 @@ namespace Items
         private void DisableWaiting(CallbackContext context)
         {
             _isWaitingForAnotherCell = false;
-            PlayerController.MainUse.RemoveListener(ActionType.Canceled, DisableWaiting);
+            PlayerController.MainLeftClick.RemoveListener(ActionType.Canceled, DisableWaiting);
         }
 
         protected override Sprite GetSprite()
