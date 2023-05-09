@@ -76,6 +76,7 @@ namespace Input
 
         public void RemoveListener(ActionType actionType, Action<CallbackContext> callback)
         {
+            PlayerController.Initialize();
             switch (actionType)
             {
                 case ActionType.Started:
@@ -90,7 +91,7 @@ namespace Input
 
                 case ActionType.Canceled:
                     _canceledCallbacks.Remove(callback);
-                    RemovePerformedCallback(callback);
+                    RemoveCanceledCallback(callback);
                     break;
             }
         }
