@@ -18,6 +18,8 @@ namespace World
 
         private void ActivateChunk()
         {
+            if (TerrainRenderer.ActiveChunk == null)
+                return;
             Vector2Int currentChunkPos = new((int)Mathf.Floor(transform.position.x / 100F), (int)Mathf.Floor(transform.position.z / 100F));
             if (TerrainRenderer.ActiveChunk.Position != currentChunkPos)
             {

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Misc;
 using UnityEngine;
 using UnityEngine.Events;
@@ -8,7 +9,17 @@ namespace World
 {
     public class TerrainRenderer : MonoBehaviour
     {
+        #region Fields
+
+        [SerializeField] private Material _material;
+
         private Chunk _activeChunk;
+        private Dictionary<Vector2Int, ChunkRenderer> _chunks = new();
+        private static TerrainRenderer _instance;
+
+        #endregion Fields
+
+        #region Properties
 
         public static Chunk ActiveChunk
         {
@@ -16,12 +27,14 @@ namespace World
             set => Instance._activeChunk = value;
         }
 
-        private static TerrainRenderer Instance { get; set; }
+        private static TerrainRenderer Instance =>
+            _instance ??= FindObjectOfType<TerrainRenderer>();
+
         public static UnityEvent<Vector2> TerrainUpdating { get; private set; } = new();
 
-        [SerializeField] private Material _material;
+        #endregion Properties
 
-        private Dictionary<Vector2Int, ChunkRenderer> _chunks = new();
+        #region Public
 
         public static IEnumerator SetActiveChunk(Vector2Int position)
         {
@@ -31,6 +44,13 @@ namespace World
             ActiveChunk = Terrain.Chunks[position];
             Reload();
             LoadingImage.Disable();
+        }
+
+        public static void GenerateWorld()
+        {
+            GenerateChunks(Vector2Int.zero);
+            Reload();
+            GrassInstancer.MarkToReload();
         }
 
         public static void ReloadChunk(Vector2Int position)
@@ -64,12 +84,9 @@ namespace World
             return GetChunkRenderer(new Vector2Int((int)position.x, (int)position.z));
         }
 
-        private void Awake()
-        {
-            Instance = this;
-            GenerateChunks(Vector2Int.zero);
-            Reload();
-        }
+        #endregion Public
+
+        #region Private
 
         private static void RecalculateActiveChunkBorderSteepness()
         {
@@ -104,5 +121,7 @@ namespace World
             Instance._chunks.Add(new(x, z), chunkRenderer);
             chunkRenderer.GenerateMesh();
         }
+
+        #endregion Private
     }
 }

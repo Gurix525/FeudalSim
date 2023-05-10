@@ -101,9 +101,8 @@ namespace World
             {
                 chunkPosition = GetChunkCoordinates(inputPosition);
             }
-            catch (ArgumentOutOfRangeException e)
+            catch (ArgumentOutOfRangeException)
             {
-                Debug.LogError(e.Message);
                 return null;
             }
             return Chunks[chunkPosition][verticePosition];
