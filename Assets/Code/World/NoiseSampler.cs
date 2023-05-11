@@ -9,9 +9,13 @@ namespace World
         private static readonly float _frequencyFactor = 2F;
         private static readonly float _amplitudeFactor = 2F;
         private static readonly int _octaves = 4;
-        private static readonly string _seed = "42";
 
-        private static int _seedHashCode = _seed.GetHashCode();
+        public static long Seed { get; set; } // 42 for testing
+
+        public static void SetSeed(long seed)
+        {
+            Seed = seed;
+        }
 
         public static float GetTreesNoise(float x, float z)
         {
@@ -48,9 +52,9 @@ namespace World
         public static float GetNoise(float x, float y, float min = 0F, float max = 1F, float detailScale = 1F)
         {
             return OpenSimplex2S.Noise3_ImproveXZ(
-                _seedHashCode,
+                Seed,
                 x * detailScale,
-                _seedHashCode,
+                Seed,
                 y * detailScale)
                 .Remap(0F, 1F, min, max);
         }
@@ -74,9 +78,9 @@ namespace World
             for (int i = 0; i < _octaves; i++)
             {
                 result += OpenSimplex2S.Noise3_ImproveXZ(
-                    _seedHashCode,
+                    Seed,
                     x * _detailScale * Mathf.Pow(_frequencyFactor, i) + ((i + 1) * 42),
-                    _seedHashCode,
+                    Seed,
                     z * _detailScale * Mathf.Pow(_frequencyFactor, i) + ((i + 1) * 42))
                     / Mathf.Pow(_amplitudeFactor, i);
                 resultDivider += 1F / Mathf.Pow(_amplitudeFactor, i);
@@ -89,10 +93,10 @@ namespace World
         private static float GetLargeNoise(int x, int z)
         {
             float result = OpenSimplex2S.Noise3_ImproveXZ(
-                _seedHashCode,
-                x * _detailScale / _frequencyFactor * 2 + _seed.GetHashCode() * 100,
-                _seedHashCode,
-                z * _detailScale / _frequencyFactor * 2 + _seed.GetHashCode() * 100);
+                Seed,
+                x * _detailScale / _frequencyFactor * 2 + Seed.GetHashCode() * 100,
+                Seed,
+                z * _detailScale / _frequencyFactor * 2 + Seed.GetHashCode() * 100);
             float remapped = result.Remap(0F, 1F, 0F, 10F);
             return Mathf.Round(remapped);
         }

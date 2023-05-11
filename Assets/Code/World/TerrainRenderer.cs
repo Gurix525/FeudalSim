@@ -50,7 +50,6 @@ namespace World
         {
             GenerateChunks(Vector2Int.zero);
             Reload();
-            GrassInstancer.MarkToReload();
         }
 
         public static void ReloadChunk(Vector2Int position)

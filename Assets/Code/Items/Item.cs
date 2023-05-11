@@ -107,9 +107,9 @@ namespace Items
         private Vector3 GetRandomScatterOffset()
         {
             Random random = new Random();
-            float x = ((float)random.NextDouble()).Remap(0F, 1F, -0.2F, 0.2F);
+            float x = ((float)random.NextDouble()).Remap(0F, 1F, -0.3F, 0.3F);
             float y = ((float)random.NextDouble()).Remap(0F, 1F, 0.1F, 0.2F);
-            float z = ((float)random.NextDouble()).Remap(0F, 1F, -0.2F, 0.2F);
+            float z = ((float)random.NextDouble()).Remap(0F, 1F, -0.3F, 0.3F);
             return new Vector3(x, y, z);
         }
 
