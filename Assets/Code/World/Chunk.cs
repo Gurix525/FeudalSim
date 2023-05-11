@@ -13,18 +13,18 @@ namespace World
         public int X => Position.x;
         public int Z => Position.y;
 
-        public Vector3[] Vertices => _cells.Values
+        public Dictionary<Vector2Int, Cell> Cells { get; private set; } = new();
+
+        public Vector3[] Vertices => Cells.Values
             .Select(cell => new Vector3(
                 cell.Position.x,
                 cell.Height,
                 cell.Position.y))
             .ToArray();
 
-        public Color[] Colors => _cells.Values
+        public Color[] Colors => Cells.Values
             .Select(cell => cell.Color)
             .ToArray();
-
-        private Dictionary<Vector2Int, Cell> _cells = new();
 
         #endregion Properties
 
@@ -32,12 +32,12 @@ namespace World
 
         public Cell this[int x, int z]
         {
-            get => _cells[new(x, z)];
+            get => Cells[new(x, z)];
         }
 
         public Cell this[Vector2Int inputPosition]
         {
-            get => _cells[inputPosition];
+            get => Cells[inputPosition];
         }
 
         public Chunk(Vector2Int position)
@@ -55,7 +55,7 @@ namespace World
         {
             for (int z = 0; z < 100; z++)
                 for (int x = 0; x < 100; x++)
-                    _cells.Add(
+                    Cells.Add(
                         new(x, z),
                         new Cell(
                             new Vector2Int(
@@ -111,40 +111,40 @@ namespace World
                     if (x < 99 && z < 99)
                     {
                         min = Mathf.Min(
-                            _cells[new(x, z)].Height,
-                            _cells[new(x + 1, z)].Height,
-                            _cells[new(x, z + 1)].Height,
-                            _cells[new(x + 1, z + 1)].Height);
+                            Cells[new(x, z)].Height,
+                            Cells[new(x + 1, z)].Height,
+                            Cells[new(x, z + 1)].Height,
+                            Cells[new(x + 1, z + 1)].Height);
                         max = Mathf.Max(
-                            _cells[new(x, z)].Height,
-                            _cells[new(x + 1, z)].Height,
-                            _cells[new(x, z + 1)].Height,
-                            _cells[new(x + 1, z + 1)].Height);
+                            Cells[new(x, z)].Height,
+                            Cells[new(x + 1, z)].Height,
+                            Cells[new(x, z + 1)].Height,
+                            Cells[new(x + 1, z + 1)].Height);
                     }
                     else if (x < 99 && z == 99)
                     {
                         min = Mathf.Min(
-                            _cells[new(x, z)].Height,
-                            _cells[new(x + 1, z)].Height);
+                            Cells[new(x, z)].Height,
+                            Cells[new(x + 1, z)].Height);
                         max = Mathf.Max(
-                            _cells[new(x, z)].Height,
-                            _cells[new(x + 1, z)].Height);
+                            Cells[new(x, z)].Height,
+                            Cells[new(x + 1, z)].Height);
                     }
                     else if (x == 99 && z < 99)
                     {
                         min = Mathf.Min(
-                            _cells[new(x, z)].Height,
-                            _cells[new(x, z + 1)].Height);
+                            Cells[new(x, z)].Height,
+                            Cells[new(x, z + 1)].Height);
                         max = Mathf.Max(
-                            _cells[new(x, z)].Height,
-                            _cells[new(x, z + 1)].Height);
+                            Cells[new(x, z)].Height,
+                            Cells[new(x, z + 1)].Height);
                     }
                     else
                     {
                         min = 0;
                         max = 0;
                     }
-                    _cells[new(x, z)].SetSteepness(Mathf.Round((max - min) * 2F) / 2F);
+                    Cells[new(x, z)].SetSteepness(Mathf.Round((max - min) * 2F) / 2F);
                 }
         }
 

@@ -1,6 +1,8 @@
 using System;
 using System.IO;
+using System.Linq;
 using Input;
+using Saves;
 using UnityEngine;
 using World;
 using static UnityEngine.InputSystem.InputAction;
@@ -8,7 +10,7 @@ using static UnityEngine.InputSystem.InputAction;
 public class GameSaver : MonoBehaviour
 {
     private string _allSavesPath;
-    private string _savePath = string.Empty;
+    private string _worldPath = string.Empty;
 
     private void Awake()
     {
@@ -31,26 +33,44 @@ public class GameSaver : MonoBehaviour
     private void SaveGame(CallbackContext context)
     {
         Directory.CreateDirectory(_allSavesPath);
-        _savePath = Path.Combine(_allSavesPath, "A");
-        Directory.CreateDirectory(_savePath);
+        _worldPath = Path.Combine(_allSavesPath, "A");
+        Directory.CreateDirectory(_worldPath);
         SaveWorldInfo();
         SavePlayerInfo();
+        SaveChunksInfo();
     }
 
     private void SaveWorldInfo()
     {
-        string worldInfoPath = Path.Combine(_savePath, "World.txt");
-        string dataToWrite = "A";
-        dataToWrite += $"\n{NoiseSampler.Seed}";
-        File.WriteAllText(worldInfoPath, dataToWrite);
+        string worldInfoPath = Path.Combine(_worldPath, "World.txt");
+        WorldInfo worldInfo = new();
+        string json = JsonUtility.ToJson(worldInfo);
+        File.WriteAllText(worldInfoPath, json);
     }
 
     private void SavePlayerInfo()
     {
-        string playerInfoPath = Path.Combine(_savePath, "Player.txt");
-        Saves.PlayerInfo playerInfo = new();
+        string playerInfoPath = Path.Combine(_worldPath, "Player.txt");
+        PlayerInfo playerInfo = new();
         string json = JsonUtility.ToJson(playerInfo);
         File.WriteAllText(playerInfoPath, json);
+    }
+
+    private void SaveChunksInfo()
+    {
+        string allChunksPath = Path.Combine(_worldPath, "Chunks");
+        Directory.CreateDirectory(allChunksPath);
+
+        //foreach (Chunk chunk in World.Terrain.Chunks.Values)
+        //{
+        //    string chunkPath = Path.Combine(allChunksPath, chunk.Position.ToString() + ".txt");
+        //    string json = JsonUtility.ToJson(new ChunkInfo(chunk));
+        //    File.WriteAllText(chunkPath, json);
+        //}
+        Chunk chunk = World.Terrain.Chunks.Values.Last();
+        string chunkPath = Path.Combine(allChunksPath, chunk.Position.ToString() + ".txt");
+        string json = JsonUtility.ToJson(new ChunkInfo(chunk));
+        File.WriteAllText(chunkPath, json);
     }
 
     #endregion Private
