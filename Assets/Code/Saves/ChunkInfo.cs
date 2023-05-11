@@ -10,16 +10,23 @@ namespace Saves
     {
         public Vector2Int Position;
         public CellInfo[] Cells;
+        public int[] Heights;
 
         public ChunkInfo(Chunk chunk)
         {
-            CellInfo[] cells = new CellInfo[10000];
+            CellInfo[] cellInfos = new CellInfo[10000];
+            int[] heights = new int[10000];
             Position = chunk.Position;
+            Cell[] cells = chunk.Cells.Values.ToArray();
             for (int i = 0; i < 10000; i++)
             {
-                cells[i] = new(chunk.Cells.Values.ToArray()[i]);
+                Cell cell = cells[i];
+                cellInfos[i] = new(cell);
+                heights[i] = cell.Height;
             }
-            Cells = cells;
+
+            Cells = cellInfos;
+            Heights = heights;
         }
     }
 }

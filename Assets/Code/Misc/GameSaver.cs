@@ -61,16 +61,16 @@ public class GameSaver : MonoBehaviour
         string allChunksPath = Path.Combine(_worldPath, "Chunks");
         Directory.CreateDirectory(allChunksPath);
 
-        //foreach (Chunk chunk in World.Terrain.Chunks.Values)
-        //{
-        //    string chunkPath = Path.Combine(allChunksPath, chunk.Position.ToString() + ".txt");
-        //    string json = JsonUtility.ToJson(new ChunkInfo(chunk));
-        //    File.WriteAllText(chunkPath, json);
-        //}
-        Chunk chunk = World.Terrain.Chunks.Values.Last();
-        string chunkPath = Path.Combine(allChunksPath, chunk.Position.ToString() + ".txt");
-        string json = JsonUtility.ToJson(new ChunkInfo(chunk));
-        File.WriteAllText(chunkPath, json);
+        foreach (Chunk chunk in World.Terrain.Chunks.Values)
+        {
+            string chunkPath = Path.Combine(allChunksPath, chunk.Position.ToString() + ".txt");
+            string json = JsonUtility.ToJson(new ChunkInfo(chunk));
+            File.WriteAllText(chunkPath, json);
+        }
+        //Chunk chunk = World.Terrain.Chunks.Values.Last();
+        //string chunkPath = Path.Combine(allChunksPath, chunk.Position.ToString() + ".txt");
+        //string json = JsonUtility.ToJson(new ChunkInfo(chunk));
+        //File.WriteAllText(chunkPath, json);
     }
 
     #endregion Private
