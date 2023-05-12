@@ -30,21 +30,18 @@ namespace Saves
                 Cell cell = cells[i];
                 Heights[i] = cell.Height;
                 Colors[i] = cell.Color;
-                FloorHeights[i] = String.Join(
+                FloorHeights[i] = string.Join(
                     ',',
                     cell.FloorHeights
-                    .Select(x => x.ToString())
-                    .ToArray());
-                HorizontalWallHeights[i] = String.Join(
+                    .Select(x => x.ToString()));
+                HorizontalWallHeights[i] = string.Join(
                     ',',
                     cell.HorizontalWallHeights
-                    .Select(x => x.ToString())
-                    .ToArray());
-                VerticalWallHeights[i] = String.Join(
+                    .Select(x => x.ToString()));
+                VerticalWallHeights[i] = string.Join(
                     ',',
                     cell.VerticalWallHeights
-                    .Select(x => x.ToString())
-                    .ToArray());
+                    .Select(x => x.ToString()));
             }
         }
     }

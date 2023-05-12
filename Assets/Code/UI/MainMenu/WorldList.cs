@@ -1,4 +1,6 @@
 using System.IO;
+using System.Linq;
+using System.Text.RegularExpressions;
 using UnityEngine;
 
 namespace UI
@@ -9,13 +11,13 @@ namespace UI
         {
             DirectoryInfo savesFolder = Directory.CreateDirectory(
                 Path.Combine(Application.persistentDataPath, "Saves"));
-            foreach (var directory in savesFolder.GetDirectories())
+            foreach (var zip in savesFolder.GetFiles()
+                .Where(x => x.Name.EndsWith(".zip")))
             {
                 GameObject worldButton = Instantiate(
                     Resources.Load<GameObject>("Prefabs/UI/WorldButton"),
                     transform);
-                worldButton.GetComponent<WorldButton>().NameText.text = directory.Name;
-                Debug.Log("Tutaj wpisac nawzwe zeby sie dopowiedni ladowal");
+                worldButton.GetComponent<WorldButton>().NameText.text = zip.Name[..^4];
             }
         }
     }

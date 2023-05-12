@@ -1,6 +1,8 @@
 using System;
 using System.IO;
+using System.IO.Compression;
 using System.Linq;
+using System.Threading.Tasks;
 using Input;
 using Saves;
 using UnityEngine;
@@ -9,8 +11,14 @@ using static UnityEngine.InputSystem.InputAction;
 
 public class GameSaver : MonoBehaviour
 {
+    #region Fields
+
     private string _allSavesPath;
     private string _worldPath = string.Empty;
+
+    #endregion Fields
+
+    #region Unity
 
     private void Awake()
     {
@@ -28,6 +36,8 @@ public class GameSaver : MonoBehaviour
         PlayerController.MainSave.RemoveListener(ActionType.Started, SaveGame);
     }
 
+    #endregion Unity
+
     #region Private
 
     private void SaveGame(CallbackContext context)
@@ -38,6 +48,8 @@ public class GameSaver : MonoBehaviour
         SaveWorldInfo();
         SavePlayerInfo();
         SaveChunksInfo();
+        ZipFile.CreateFromDirectory(_worldPath, _worldPath + ".zip");
+        Directory.Delete(_worldPath, true);
     }
 
     private void SaveWorldInfo()
@@ -67,10 +79,6 @@ public class GameSaver : MonoBehaviour
             string json = JsonUtility.ToJson(new ChunkInfo(chunk));
             File.WriteAllText(chunkPath, json);
         }
-        //Chunk chunk = World.Terrain.Chunks.Values.Last();
-        //string chunkPath = Path.Combine(allChunksPath, chunk.Position.ToString() + ".txt");
-        //string json = JsonUtility.ToJson(new ChunkInfo(chunk));
-        //File.WriteAllText(chunkPath, json);
     }
 
     #endregion Private
