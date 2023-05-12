@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using Buildings;
+using Items;
 using UnityEngine;
 using World;
 
@@ -9,6 +10,8 @@ namespace Saves
     [Serializable]
     public class ChunkInfo
     {
+        #region Fields
+
         public Vector2Int Position;
         public int[] Heights;
         public Color[] Colors;
@@ -16,6 +19,11 @@ namespace Saves
         public string[] HorizontalWallHeights;
         public string[] VerticalWallHeights;
         public BuildingInfo[] Buildings;
+        public ItemHandlerInfo[] ItemHandlers;
+
+        #endregion Fields
+
+        #region Contructors
 
         public ChunkInfo(Chunk chunk)
         {
@@ -25,7 +33,19 @@ namespace Saves
             FloorHeights = new string[10000];
             HorizontalWallHeights = new string[10000];
             VerticalWallHeights = new string[10000];
+            SetTerrainInfo(chunk);
 
+            ChunkRenderer chunkRenderer = TerrainRenderer.GetChunkRenderer(chunk);
+            SetBuildingsInfo(chunkRenderer);
+            SetItemHandlersInfo(chunkRenderer);
+        }
+
+        #endregion Contructors
+
+        #region Private
+
+        private void SetTerrainInfo(Chunk chunk)
+        {
             Cell[] cells = chunk.Cells.Values.ToArray();
             for (int i = 0; i < 10000; i++)
             {
@@ -45,11 +65,24 @@ namespace Saves
                     cell.VerticalWallHeights
                     .Select(x => x.ToString()));
             }
-
-            Buildings = TerrainRenderer.GetChunkRenderer(chunk).Buildings
-                .GetComponentsInChildren<Building>()
-                .Select(building => new BuildingInfo(building))
-                .ToArray();
         }
+
+        private void SetBuildingsInfo(ChunkRenderer chunkRenderer)
+        {
+            Buildings = chunkRenderer.Buildings
+                            .GetComponentsInChildren<Building>()
+                            .Select(building => new BuildingInfo(building))
+                            .ToArray();
+        }
+
+        private void SetItemHandlersInfo(ChunkRenderer chunkRenderer)
+        {
+            ItemHandlers = chunkRenderer.ItemHandlers
+                            .GetComponentsInChildren<ItemHandler>()
+                            .Select(handler => new ItemHandlerInfo(handler))
+                            .ToArray();
+        }
+
+        #endregion Private
     }
 }

@@ -6,17 +6,13 @@ using UnityEngine;
 namespace Saves
 {
     [Serializable]
-    public class BuildingInfo
+    public class BuildingInfo : GameObjectInfo
     {
-        public Vector3 Position;
-        public Quaternion Rotation;
         public ItemInfo BackingItem;
         public BuildingMode BuildingMode;
 
-        public BuildingInfo(Building building)
+        public BuildingInfo(Building building) : base(building)
         {
-            Position = building.transform.position;
-            Rotation = building.transform.rotation;
             BackingItem = new(building.BackingItem);
             BuildingMode = building.BuildingMode;
         }

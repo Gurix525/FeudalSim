@@ -23,8 +23,10 @@ namespace Items
         #region Properties
 
         public int Size => _items.Length;
+        public string Lock => _lock;
         public bool IsLocked => _lock != string.Empty;
         public bool IsArmor { get; set; }
+        public IEnumerable<Item> Items => _items;
 
         public Item this[int index]
         {
