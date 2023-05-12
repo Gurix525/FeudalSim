@@ -11,6 +11,16 @@ namespace Saves
 
         public WorldInfo()
         {
+        }
+
+        public WorldInfo(bool hasToInitialize)
+        {
+            if (hasToInitialize)
+                Initialize();
+        }
+
+        public void Initialize()
+        {
             Name = "A";
             Seed = NoiseSampler.Seed;
         }

@@ -25,9 +25,22 @@ namespace Saves
 
         #endregion Fields
 
-        #region Contructors
+        #region Constructors
+
+        public ChunkInfo()
+        {
+        }
 
         public ChunkInfo(Chunk chunk)
+        {
+            Initialize(chunk);
+        }
+
+        #endregion Constructors
+
+        #region Public
+
+        public void Initialize(Chunk chunk)
         {
             Position = chunk.Position;
             Heights = new int[10000];
@@ -44,7 +57,7 @@ namespace Saves
             SetBouldersInfo(chunkRenderer);
         }
 
-        #endregion Contructors
+        #endregion Public
 
         #region Private
 

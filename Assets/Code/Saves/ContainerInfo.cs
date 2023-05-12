@@ -11,7 +11,16 @@ namespace Saves
         public string Lock;
         public ItemInfo[] Items;
 
+        public ContainerInfo()
+        {
+        }
+
         public ContainerInfo(Container container)
+        {
+            Initialize(container);
+        }
+
+        public void Initialize(Container container)
         {
             Size = container.Size;
             Lock = container.Lock;

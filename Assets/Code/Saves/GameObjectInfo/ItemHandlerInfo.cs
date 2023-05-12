@@ -9,9 +9,18 @@ namespace Saves
     {
         public ContainerInfo Container;
 
-        public ItemHandlerInfo(ItemHandler handler) : base(handler)
+        public ItemHandlerInfo()
         {
-            Container = new(handler.Container);
+        }
+
+        public ItemHandlerInfo(ItemHandler itemHandler) : base(itemHandler)
+        {
+            Initialize(itemHandler);
+        }
+
+        public void Initialize(ItemHandler itemHandler)
+        {
+            Container = new(itemHandler.Container);
         }
     }
 }

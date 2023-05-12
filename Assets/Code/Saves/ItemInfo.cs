@@ -12,7 +12,16 @@ namespace Saves
         public string[] StatValues;
         public int Count;
 
+        public ItemInfo()
+        {
+        }
+
         public ItemInfo(Item item)
+        {
+            Initialize(item);
+        }
+
+        public void Initialize(Item item)
         {
             Model = item.Model.Name;
             Count = item.Count;

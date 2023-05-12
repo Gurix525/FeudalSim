@@ -11,6 +11,16 @@ namespace Saves
 
         public PlayerInfo()
         {
+        }
+
+        public PlayerInfo(bool hasToInitialize)
+        {
+            if (hasToInitialize)
+                Initialize();
+        }
+
+        public void Initialize()
+        {
             Position = References.GetReference("Player").transform.position;
         }
     }

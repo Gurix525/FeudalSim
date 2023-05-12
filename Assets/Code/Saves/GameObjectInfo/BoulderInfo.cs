@@ -6,8 +6,18 @@ namespace Saves
     [Serializable]
     public class BoulderInfo : GameObjectInfo
     {
-        public BoulderInfo(Nature.Boulder tree) : base(tree)
+        public BoulderInfo()
         {
+        }
+
+        public BoulderInfo(Nature.Boulder boulder) : base(boulder)
+        {
+            Initialize(boulder);
+        }
+
+        public void Initialize(Nature.Boulder boulder)
+        {
+            base.Initialize(boulder);
         }
     }
 }
