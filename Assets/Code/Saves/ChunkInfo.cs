@@ -20,6 +20,8 @@ namespace Saves
         public string[] VerticalWallHeights;
         public BuildingInfo[] Buildings;
         public ItemHandlerInfo[] ItemHandlers;
+        public TreeInfo[] Trees;
+        public BoulderInfo[] Boulders;
 
         #endregion Fields
 
@@ -38,6 +40,8 @@ namespace Saves
             ChunkRenderer chunkRenderer = TerrainRenderer.GetChunkRenderer(chunk);
             SetBuildingsInfo(chunkRenderer);
             SetItemHandlersInfo(chunkRenderer);
+            SetTreesInfo(chunkRenderer);
+            SetBouldersInfo(chunkRenderer);
         }
 
         #endregion Contructors
@@ -80,6 +84,22 @@ namespace Saves
             ItemHandlers = chunkRenderer.ItemHandlers
                             .GetComponentsInChildren<ItemHandler>()
                             .Select(handler => new ItemHandlerInfo(handler))
+                            .ToArray();
+        }
+
+        private void SetTreesInfo(ChunkRenderer chunkRenderer)
+        {
+            Trees = chunkRenderer.Trees
+                            .GetComponentsInChildren<Nature.Tree>()
+                            .Select(tree => new TreeInfo(tree))
+                            .ToArray();
+        }
+
+        private void SetBouldersInfo(ChunkRenderer chunkRenderer)
+        {
+            Boulders = chunkRenderer.Boulders
+                            .GetComponentsInChildren<Nature.Boulder>()
+                            .Select(boulder => new BoulderInfo(boulder))
                             .ToArray();
         }
 
