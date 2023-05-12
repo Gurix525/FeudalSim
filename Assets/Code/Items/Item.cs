@@ -37,12 +37,24 @@ namespace Items
         public ItemModel Model => _model;
         public int MaxStack => _model.MaxStack;
         public Sprite Sprite => _model.Sprite;
-        public Dictionary<string, string> Stats => _stats ?? _model.Stats;
         public Material Material => _model.Material;
         public Mesh[] BuildingMeshes => _model.BuildingMeshes;
         public Mesh Mesh => _model.Mesh;
         public ItemAction Action => _model.Action;
         public ItemAction[] Actions => _model.Actions;
+        public bool HasSpecificStats => _stats != null;
+
+        public Dictionary<string, string> Stats
+        {
+            get
+            {
+                return _stats ?? _model.Stats;
+            }
+            set
+            {
+                _stats = value;
+            }
+        }
 
         #endregion Properties
 

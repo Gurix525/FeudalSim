@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using Buildings;
 using UnityEngine;
 using World;
 
@@ -14,6 +15,7 @@ namespace Saves
         public string[] FloorHeights;
         public string[] HorizontalWallHeights;
         public string[] VerticalWallHeights;
+        public BuildingInfo[] Buildings;
 
         public ChunkInfo(Chunk chunk)
         {
@@ -43,6 +45,11 @@ namespace Saves
                     cell.VerticalWallHeights
                     .Select(x => x.ToString()));
             }
+
+            Buildings = TerrainRenderer.GetChunkRenderer(chunk).Buildings
+                .GetComponentsInChildren<Building>()
+                .Select(building => new BuildingInfo(building))
+                .ToArray();
         }
     }
 }

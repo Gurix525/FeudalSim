@@ -83,6 +83,11 @@ namespace World
             return GetChunkRenderer(new Vector2Int((int)position.x, (int)position.z));
         }
 
+        public static ChunkRenderer GetChunkRenderer(Chunk chunk)
+        {
+            return GetChunkRenderer(chunk.Position);
+        }
+
         #endregion Public
 
         #region Private

@@ -20,6 +20,14 @@ namespace Buildings
 
         #endregion Fields
 
+        #region Properties
+
+        public Item BackingItem => _backingItem;
+
+        public BuildingMode BuildingMode => _buildingMode;
+
+        #endregion Properties
+
         #region Public
 
         public Item ExtractItem()
