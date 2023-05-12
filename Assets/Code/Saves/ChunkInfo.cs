@@ -11,18 +11,18 @@ namespace Saves
         public Vector2Int Position;
         public int[] Heights;
         public Color[] Colors;
-        public int[][] FloorHeights;
-        public int[][] HorizontalWallHeights;
-        public int[][] VerticalWallHeights;
+        public string[] FloorHeights;
+        public string[] HorizontalWallHeights;
+        public string[] VerticalWallHeights;
 
         public ChunkInfo(Chunk chunk)
         {
             Position = chunk.Position;
             Heights = new int[10000];
             Colors = new Color[10000];
-            FloorHeights = new int[10000][];
-            HorizontalWallHeights = new int[10000][];
-            VerticalWallHeights = new int[10000][];
+            FloorHeights = new string[10000];
+            HorizontalWallHeights = new string[10000];
+            VerticalWallHeights = new string[10000];
 
             Cell[] cells = chunk.Cells.Values.ToArray();
             for (int i = 0; i < 10000; i++)
@@ -30,9 +30,21 @@ namespace Saves
                 Cell cell = cells[i];
                 Heights[i] = cell.Height;
                 Colors[i] = cell.Color;
-                FloorHeights[i] = cell.FloorHeights.ToArray();
-                HorizontalWallHeights[i] = cell.HorizontalWallHeights.ToArray();
-                VerticalWallHeights[i] = cell.VerticalWallHeights.ToArray();
+                FloorHeights[i] = String.Join(
+                    ',',
+                    cell.FloorHeights
+                    .Select(x => x.ToString())
+                    .ToArray());
+                HorizontalWallHeights[i] = String.Join(
+                    ',',
+                    cell.HorizontalWallHeights
+                    .Select(x => x.ToString())
+                    .ToArray());
+                VerticalWallHeights[i] = String.Join(
+                    ',',
+                    cell.VerticalWallHeights
+                    .Select(x => x.ToString())
+                    .ToArray());
             }
         }
     }
