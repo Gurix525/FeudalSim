@@ -56,7 +56,6 @@ namespace UI
             try
             {
                 _isToBeUpdated = false;
-                Debug.Log("chuj");
                 foreach (Transform child in transform)
                     Destroy(child.gameObject);
                 foreach (var zip in _savesFolder.GetFiles()
