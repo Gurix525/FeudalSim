@@ -14,6 +14,7 @@ namespace Saves
 
         public Vector2Int Position;
         public int[] Heights;
+        public float[] Steepnesses;
         public Color[] Colors;
         public string[] FloorHeights;
         public string[] HorizontalWallHeights;
@@ -44,6 +45,7 @@ namespace Saves
         {
             Position = chunk.Position;
             Heights = new int[10000];
+            Steepnesses = new float[10000];
             Colors = new Color[10000];
             FloorHeights = new string[10000];
             HorizontalWallHeights = new string[10000];
@@ -68,6 +70,7 @@ namespace Saves
             {
                 Cell cell = cells[i];
                 Heights[i] = cell.Height;
+                Steepnesses[i] = cell.Steepness;
                 Colors[i] = cell.Color;
                 FloorHeights[i] = string.Join(
                     ',',

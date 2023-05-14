@@ -55,6 +55,7 @@ namespace Buildings
             _backingItem = item;
             _buildingMode = buildingMode;
             _renderer = GetComponent<MeshRenderer>();
+            _renderer.material = _backingItem.Material;
             _renderer.material.SetFloat("_Displacement", buildingMode switch
             {
                 BuildingMode.Floor => 0F,

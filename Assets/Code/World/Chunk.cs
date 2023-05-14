@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Saves;
 using UnityEngine;
 
 namespace World
@@ -28,6 +29,40 @@ namespace World
 
         #endregion Properties
 
+        #region Constructors
+
+        public Chunk(Vector2Int position)
+        {
+            Position = position;
+            GenerateCells();
+            CalculateSteepness();
+        }
+
+        public Chunk(ChunkInfo chunkInfo)
+        {
+            Position = chunkInfo.Position;
+            LoadHeights(chunkInfo);
+            int index = 0;
+            foreach (Cell cell in Cells.Values)
+            {
+                cell.Color = chunkInfo.Colors[index];
+                cell.Steepness = chunkInfo.Steepnesses[index];
+                cell.FloorHeights = chunkInfo.FloorHeights[index]
+                    .Split(',', StringSplitOptions.RemoveEmptyEntries)
+                    .Select(number => int.Parse(number)).ToList();
+                cell.HorizontalWallHeights = chunkInfo.HorizontalWallHeights[index]
+                    .Split(',', StringSplitOptions.RemoveEmptyEntries)
+                    .Select(number => int.Parse(number)).ToList();
+                cell.VerticalWallHeights = chunkInfo.VerticalWallHeights[index]
+                    .Split(',', StringSplitOptions.RemoveEmptyEntries)
+                    .Select(number => int.Parse(number)).ToList();
+                index++;
+            }
+            CalculateSteepness();
+        }
+
+        #endregion Constructors
+
         #region Public
 
         public Cell this[int x, int z]
@@ -38,13 +73,6 @@ namespace World
         public Cell this[Vector2Int inputPosition]
         {
             get => Cells[inputPosition];
-        }
-
-        public Chunk(Vector2Int position)
-        {
-            Position = position;
-            GenerateCells();
-            CalculateSteepness();
         }
 
         #endregion Public
@@ -67,6 +95,19 @@ namespace World
                             ));
         }
 
+        private void LoadHeights(ChunkInfo chunkInfo)
+        {
+            for (int z = 0; z < 100; z++)
+                for (int x = 0; x < 100; x++)
+                    Cells.Add(
+                        new(x, z),
+                        new Cell(
+                            new Vector2Int(
+                                Position.x * 100 + x,
+                                Position.y * 100 + z),
+                            chunkInfo.Heights[z * 100 + x]));
+        }
+
         public void RecalculateBorderSteepness()
         {
             for (int x = Position.x * 100; x < Position.x * 100 + 100; x++)
@@ -82,7 +123,7 @@ namespace World
                     Terrain.GetHeight(new(x, Position.y * 100 + 100)),
                     Terrain.GetHeight(new(x + 1, Position.y * 100 + 100)));
                 Terrain.GetCell(new Vector2(x, Position.y * 100 + 99))
-                    .SetSteepness(Mathf.Round((max - min) * 2F) / 2F);
+                    .Steepness = Mathf.Round((max - min) * 2F) / 2F;
             }
             for (int z = Position.y * 100; z < Position.y * 100 + 100; z++)
             {
@@ -97,7 +138,7 @@ namespace World
                     Terrain.GetHeight(new(Position.x * 100 + 100, z)),
                     Terrain.GetHeight(new(Position.x * 100 + 100, z + 1)));
                 Terrain.GetCell(new Vector2(Position.x * 100 + 99, z))
-                    .SetSteepness(Mathf.Round((max - min) * 2F) / 2F);
+                    .Steepness = Mathf.Round((max - min) * 2F) / 2F;
             }
         }
 
@@ -144,7 +185,7 @@ namespace World
                         min = 0;
                         max = 0;
                     }
-                    Cells[new(x, z)].SetSteepness(Mathf.Round((max - min) * 2F) / 2F);
+                    Cells[new(x, z)].Steepness = Mathf.Round((max - min) * 2F) / 2F;
                 }
         }
 

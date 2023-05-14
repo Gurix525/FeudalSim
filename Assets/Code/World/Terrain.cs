@@ -51,7 +51,7 @@ namespace World
             if (hasToChangeColor)
             {
                 foreach (var neighbour in neighbours)
-                    neighbour.SetColor(Color.red);
+                    neighbour.Color = Color.red;
             }
             if (hasToReload)
             {
@@ -71,10 +71,10 @@ namespace World
             {
                 Cell[] neighbours = Get4Neighbours(cellPosition);
                 foreach (var neighbour in neighbours)
-                    neighbour.SetColor(color);
+                    neighbour.Color = color;
             }
             else
-                GetCell(cellPosition).SetColor(color);
+                GetCell(cellPosition).Color = color;
             if (hasToReload)
             {
                 foreach (var chunk in GetChunksToReload(cellPosition))

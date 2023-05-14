@@ -10,12 +10,12 @@ namespace World
 
         public Vector2Int Position { get; private set; }
         public int Height { get; private set; }
-        public float Steepness { get; private set; }
-        public Color Color { get; private set; }
+        public float Steepness { get; set; }
+        public Color Color { get; set; }
 
-        public List<int> FloorHeights { get; } = new();
-        public List<int> HorizontalWallHeights { get; } = new();
-        public List<int> VerticalWallHeights { get; } = new();
+        public List<int> FloorHeights { get; set; } = new();
+        public List<int> HorizontalWallHeights { get; set; } = new();
+        public List<int> VerticalWallHeights { get; set; } = new();
 
         public bool HasGrass => !(
             Steepness > 0.4F
@@ -87,21 +87,6 @@ namespace World
         public void ModifyHeight(int deltaHeight)
         {
             Height += deltaHeight;
-        }
-
-        public void SetHeight(int height)
-        {
-            Height = height;
-        }
-
-        public void SetSteepness(float steepness)
-        {
-            Steepness = steepness;
-        }
-
-        public void SetColor(Color red)
-        {
-            Color = red;
         }
 
         public override string ToString()

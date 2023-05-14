@@ -9,6 +9,8 @@ namespace Saves
     {
         public ContainerInfo Container;
 
+        public Item Item => (Item)Container.Items[0];
+
         public ItemHandlerInfo()
         {
         }

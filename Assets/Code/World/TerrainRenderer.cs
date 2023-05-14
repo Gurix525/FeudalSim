@@ -46,9 +46,9 @@ namespace World
             LoadingImage.Disable();
         }
 
-        public static void GenerateWorld()
+        public static void GenerateWorld(Vector2Int startChunkPosition)
         {
-            GenerateChunks(Vector2Int.zero);
+            GenerateChunks(startChunkPosition);
             Reload();
         }
 
@@ -103,7 +103,7 @@ namespace World
             for (int z = activePosition.y - 1 - mod; z <= activePosition.y + 2 + mod; z++)
                 for (int x = activePosition.x - 1 - mod; x <= activePosition.x + 2 + mod; x++)
                     if (!Terrain.Chunks.ContainsKey(new(x, z)))
-                        Terrain.Chunks.Add(new(x, z), new(new(x, z)));
+                        Terrain.Chunks.Add(new(x, z), new(new Vector2Int(x, z)));
 
             for (int z = activePosition.y - 1; z <= activePosition.y + 1; z++)
                 for (int x = activePosition.x - 1; x <= activePosition.x + 1; x++)

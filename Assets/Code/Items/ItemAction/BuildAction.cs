@@ -148,7 +148,6 @@ namespace Items
             building.transform.SetPositionAndRotation(
                 _calibratedPosition,
                 Quaternion.Euler(0, _meshRotation, 0));
-            building.GetComponent<MeshRenderer>().material = Cursor.Item.Material;
             Item inputItem = Cursor.Container.ExtractAt(0, RequiredItemCount);
             if (inputItem == null)
             {
