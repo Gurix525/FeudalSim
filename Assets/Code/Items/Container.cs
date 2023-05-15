@@ -57,6 +57,12 @@ namespace Items
 
         #region Public
 
+        public void SetItems(Item[] items)
+        {
+            _items = items;
+            CollectionUpdated.Invoke();
+        }
+
         public void ChangeSize(int newSize, Vector3 dropPosition)
         {
             if (_items.Length == newSize)

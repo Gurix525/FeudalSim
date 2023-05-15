@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using Input;
 using Misc;
 using UI;
@@ -41,8 +42,8 @@ namespace Items
         }
 
         public static bool IsVisible => Instance._inventoryWindow.activeInHierarchy;
-
         public static Container InventoryContainer => Instance._inventoryContainer;
+        public static Container ArmorContainer => Instance._armorContainer;
 
         private static Equipment Instance { get; set; }
 
@@ -68,6 +69,17 @@ namespace Items
                 }
             }
             Instance._inventoryContainer.CollectionUpdated.Invoke();
+        }
+
+        public static void SetInventoryContainer(Container container)
+        {
+            Instance._inventoryContainer.SetItems(container.Items.ToArray());
+        }
+
+        public static void SetArmorContainer(Container container)
+        {
+            Instance._armorContainer.SetItems(container.Items.ToArray());
+            container.IsArmor = true;
         }
 
         #endregion Public

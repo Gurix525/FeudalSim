@@ -1,4 +1,5 @@
 ﻿using System;
+using Items;
 using Misc;
 using UnityEngine;
 
@@ -8,6 +9,8 @@ namespace Saves
     public class PlayerInfo
     {
         public Vector3 Position;
+        public ContainerInfo InventoryContainer;
+        public ContainerInfo ArmorContainer;
 
         public PlayerInfo()
         {
@@ -22,6 +25,8 @@ namespace Saves
         public void Initialize()
         {
             Position = References.GetReference("Player").transform.position;
+            InventoryContainer = new(Equipment.InventoryContainer);
+            ArmorContainer = new(Equipment.ArmorContainer);
         }
     }
 }

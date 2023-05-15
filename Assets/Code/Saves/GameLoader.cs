@@ -67,6 +67,7 @@ namespace Saves
             catch (Exception e)
             {
                 Debug.LogError(e.Message);
+                Debug.Log(e.StackTrace);
             }
         }
 
@@ -89,6 +90,8 @@ namespace Saves
             player.SetActive(false);
             player.transform.position = playerInfo.Position;
             player.SetActive(true);
+            Equipment.SetInventoryContainer((Container)playerInfo.InventoryContainer);
+            Equipment.SetArmorContainer((Container)playerInfo.ArmorContainer);
             return playerInfo;
         }
 

@@ -104,7 +104,9 @@ namespace Items
             int count = 1,
             Dictionary<string, string> stats = null)
         {
-            return new(_itemModels[name], count, stats);
+            if (!_itemModels.TryGetValue(name, out ItemModel itemModel))
+                return null;
+            return new(itemModel, count, stats);
         }
 
         #endregion Public

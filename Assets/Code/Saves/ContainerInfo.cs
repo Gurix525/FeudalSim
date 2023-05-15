@@ -28,5 +28,12 @@ namespace Saves
                 .Select(item => item != null ? new ItemInfo(item) : null)
                 .ToArray();
         }
+
+        public static explicit operator Container(ContainerInfo containerInfo)
+        {
+            Container container = new(containerInfo.Size, containerInfo.Lock);
+            container.SetItems(containerInfo.Items.Select(item => (Item)item).ToArray());
+            return container;
+        }
     }
 }
