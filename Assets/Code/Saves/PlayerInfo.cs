@@ -7,7 +7,7 @@ namespace Saves
     [Serializable]
     public class PlayerInfo
     {
-        public Vector2 Position;
+        public Vector3 Position;
 
         public PlayerInfo()
         {

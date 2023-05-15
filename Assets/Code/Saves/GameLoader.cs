@@ -55,8 +55,8 @@ namespace Saves
             try
             {
                 ZipFile.ExtractToDirectory(_savePath + ".zip", _savePath);
-                LoadWorldInfo();
-                var playerinfo = LoadPlayerInfo();
+                LoadWorld();
+                var playerinfo = LoadPlayer();
                 ChunkInfo[] chunkInfos = LoadChunks();
                 TerrainRenderer.GenerateWorld(Terrain.GetChunkCoordinates(
                     playerinfo.Position));
@@ -74,18 +74,21 @@ namespace Saves
 
         #region Private
 
-        private void LoadWorldInfo()
+        private void LoadWorld()
         {
             WorldInfo worldInfo = JsonUtility.FromJson<WorldInfo>(
                 File.ReadAllText(Path.Combine(_savePath, "World.txt")));
             NoiseSampler.SetSeed(worldInfo.Seed);
         }
 
-        private PlayerInfo LoadPlayerInfo()
+        private PlayerInfo LoadPlayer()
         {
             PlayerInfo playerInfo = JsonUtility.FromJson<PlayerInfo>(
                 File.ReadAllText(Path.Combine(_savePath, "Player.txt")));
-            References.GetReference("Player").transform.position = playerInfo.Position;
+            var player = References.GetReference("Player");
+            player.SetActive(false);
+            player.transform.position = playerInfo.Position;
+            player.SetActive(true);
             return playerInfo;
         }
 

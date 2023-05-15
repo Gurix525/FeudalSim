@@ -54,7 +54,7 @@ namespace Saves
         private void SaveWorldInfo()
         {
             string worldInfoPath = Path.Combine(_worldPath, "World.txt");
-            WorldInfo worldInfo = new();
+            WorldInfo worldInfo = new(true);
             string json = JsonUtility.ToJson(worldInfo);
             File.WriteAllText(worldInfoPath, json);
         }
@@ -62,7 +62,7 @@ namespace Saves
         private void SavePlayerInfo()
         {
             string playerInfoPath = Path.Combine(_worldPath, "Player.txt");
-            PlayerInfo playerInfo = new();
+            PlayerInfo playerInfo = new(true);
             string json = JsonUtility.ToJson(playerInfo);
             File.WriteAllText(playerInfoPath, json);
         }
