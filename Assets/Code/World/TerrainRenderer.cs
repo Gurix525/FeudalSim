@@ -75,7 +75,9 @@ namespace World
 
         public static ChunkRenderer GetChunkRenderer(Vector2Int position)
         {
-            return Instance._chunks[Terrain.GetChunkCoordinates(position)];
+            Instance._chunks.TryGetValue(
+                Terrain.GetChunkCoordinates(position), out ChunkRenderer renderer);
+            return renderer;
         }
 
         public static ChunkRenderer GetChunkRenderer(Vector3 position)
@@ -85,7 +87,8 @@ namespace World
 
         public static ChunkRenderer GetChunkRenderer(Chunk chunk)
         {
-            return GetChunkRenderer(chunk.Position);
+            Instance._chunks.TryGetValue(chunk.Position, out ChunkRenderer renderer);
+            return renderer;
         }
 
         #endregion Public

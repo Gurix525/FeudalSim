@@ -38,6 +38,15 @@ namespace World
             _meshCollider = GetComponent<MeshCollider>();
             CreateChildren();
             InitializeMesh();
+            SpawnNature();
+        }
+
+        public void SpawnNature()
+        {
+            Chunk chunk = Terrain.Chunks[Position];
+            if (chunk.IsNatureSpawned)
+                return;
+            chunk.IsNatureSpawned = true;
             SpawnTrees();
             SpawnBoulders();
         }

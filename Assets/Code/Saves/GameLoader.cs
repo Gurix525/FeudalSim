@@ -61,6 +61,7 @@ namespace Saves
                 TerrainRenderer.GenerateWorld(Terrain.GetChunkCoordinates(
                     playerinfo.Position));
                 LoadChunkRenderers(chunkInfos);
+                GrassInstancer.MarkToReload();
                 Directory.Delete(_savePath, true);
             }
             catch (Exception e)
@@ -96,7 +97,8 @@ namespace Saves
             {
                 ChunkInfo chunkInfo = JsonUtility.FromJson<ChunkInfo>(
                     File.ReadAllText(fileNames[i]));
-                Terrain.Chunks[chunkInfo.Position] = new(chunkInfo);
+                Chunk chunk = Terrain.Chunks[chunkInfo.Position] = new(chunkInfo);
+                chunk.IsNatureSpawned = chunkInfo.IsNatureSpawned;
                 chunkInfos.Add(chunkInfo);
             }
             return chunkInfos.ToArray();
@@ -108,6 +110,8 @@ namespace Saves
             {
                 ChunkRenderer chunkRenderer = TerrainRenderer.GetChunkRenderer(
                     Terrain.Chunks[chunkInfo.Position]);
+                if (chunkRenderer == null)
+                    continue;
                 LoadBuildings(chunkInfo, chunkRenderer);
                 LoadItemHandlers(chunkInfo, chunkRenderer);
                 LoadTrees(chunkInfo, chunkRenderer);

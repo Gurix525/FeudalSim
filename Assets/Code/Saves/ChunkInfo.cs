@@ -13,6 +13,7 @@ namespace Saves
         #region Fields
 
         public Vector2Int Position;
+        public bool IsNatureSpawned;
         public int[] Heights;
         public float[] Steepnesses;
         public Color[] Colors;
@@ -44,6 +45,7 @@ namespace Saves
         public void Initialize(Chunk chunk)
         {
             Position = chunk.Position;
+            IsNatureSpawned = chunk.IsNatureSpawned;
             Heights = new int[10000];
             Steepnesses = new float[10000];
             Colors = new Color[10000];
@@ -53,6 +55,8 @@ namespace Saves
             SetTerrainInfo(chunk);
 
             ChunkRenderer chunkRenderer = TerrainRenderer.GetChunkRenderer(chunk);
+            if (chunkRenderer == null)
+                return;
             SetBuildingsInfo(chunkRenderer);
             SetItemHandlersInfo(chunkRenderer);
             SetTreesInfo(chunkRenderer);

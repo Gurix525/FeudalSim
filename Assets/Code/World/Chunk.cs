@@ -11,8 +11,7 @@ namespace World
         #region Properties
 
         public Vector2Int Position { get; }
-        public int X => Position.x;
-        public int Z => Position.y;
+        public bool IsNatureSpawned { get; set; }
 
         public Dictionary<Vector2Int, Cell> Cells { get; private set; } = new();
 
