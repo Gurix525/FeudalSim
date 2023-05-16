@@ -3,6 +3,7 @@ using System.Collections;
 using System.Linq;
 using System.Threading.Tasks;
 using Controls;
+using Misc;
 using UnityEngine;
 
 namespace World
@@ -13,11 +14,7 @@ namespace World
     [RequireComponent(typeof(CursorCellPositionFinder))]
     public class ChunkRenderer : MonoBehaviour
     {
-        public Vector2Int Position { get; private set; }
-        public Transform Buildings { get; private set; }
-        public Transform ItemHandlers { get; private set; }
-        public Transform Trees { get; private set; }
-        public Transform Boulders { get; private set; }
+        #region Fields
 
         private MeshFilter _meshFilter;
         private MeshCollider _meshCollider;
@@ -26,10 +23,52 @@ namespace World
         private bool _isBaking = false;
         private bool _isInitialized = false;
 
+        #endregion Fields
+
+        #region Properties
+
+        public Vector2Int Position { get; private set; }
+        public Transform Buildings { get; private set; }
+        public Transform ItemHandlers { get; private set; }
+        public Transform Trees { get; private set; }
+        public Transform Boulders { get; private set; }
+
+        #endregion Properties
+
+        #region Public
+
         public void SetPosition(Vector2Int position)
         {
             Position = position;
         }
+
+        public void SetColors()
+        {
+            Color[] colors = new Color[10201];
+            var thisChunk = Terrain.Chunks[Position].Colors;
+            var rightChunk = Terrain.Chunks[new(Position.x + 1, Position.y)].Colors;
+            var upChunk = Terrain.Chunks[new(Position.x, Position.y + 1)].Colors;
+            var diagonalChunk = Terrain.Chunks[new(Position.x + 1, Position.y + 1)].Colors;
+            for (int z = 0; z < 101; z++)
+            {
+                for (int x = 0; x < 101; x++)
+                {
+                    if (z < 100 && x < 100)
+                        colors[z * 101 + x] = thisChunk[z * 100 + x];
+                    else if (x == 100 && z < 100)
+                        colors[z * 101 + x] = rightChunk[z * 100];
+                    else if (z == 100 && x < 100)
+                        colors[z * 101 + x] = upChunk[x];
+                    else
+                        colors[10200] = diagonalChunk[0];
+                }
+            }
+            _mesh.SetColors(colors);
+        }
+
+        #endregion Public
+
+        #region Private
 
         private void Initialize()
         {
@@ -39,49 +78,6 @@ namespace World
             CreateChildren();
             InitializeMesh();
             SpawnNature();
-        }
-
-        public void SpawnNature()
-        {
-            Chunk chunk = Terrain.Chunks[Position];
-            if (chunk.IsNatureSpawned)
-                return;
-            chunk.IsNatureSpawned = true;
-            SpawnTrees();
-            SpawnBoulders();
-        }
-
-        private void SpawnBoulders()
-        {
-            var boulderPrefab = Resources.Load<GameObject>("Prefabs/Nature/Boulder");
-            for (int z = 0; z < 100; z++)
-                for (int x = 0; x < 100; x++)
-                {
-                    Vector2 position = new Vector2(Position.x * 100 + x, Position.y * 100 + z);
-                    float noise = NoiseSampler.GetBouldersNoise(position.x, position.y);
-                    if (noise == 1F)
-                    {
-                        float height = Terrain.GetHeight(position);
-                        Instantiate(boulderPrefab, new Vector3(position.x, height, position.y), Quaternion.identity, Boulders);
-                    }
-                }
-        }
-
-        private void SpawnTrees()
-        {
-            var treePrefab = Resources.Load<GameObject>("Prefabs/Nature/Tree");
-            for (int z = 0; z < 100; z++)
-                for (int x = 0; x < 100; x++)
-                {
-                    Vector2 position = new Vector2(Position.x * 100 + x, Position.y * 100 + z);
-                    float noise = NoiseSampler.GetTreesNoise(position.x, position.y);
-                    if (noise == 1F)
-                    {
-                        float height = Terrain.GetHeight(position);
-                        if (height > 0 && height <= 6)
-                            Instantiate(treePrefab, new Vector3(position.x, height, position.y), Quaternion.identity, Trees);
-                    }
-                }
         }
 
         private void CreateChildren()
@@ -106,6 +102,54 @@ namespace World
             _meshFilter.mesh = _mesh;
             _mesh.indexFormat = UnityEngine.Rendering.IndexFormat.UInt32;
             _meshInstanceId = _mesh.GetInstanceID();
+        }
+
+        public void SpawnNature()
+        {
+            Chunk chunk = Terrain.Chunks[Position];
+            if (chunk.IsNatureSpawned)
+                return;
+            chunk.IsNatureSpawned = true;
+            SpawnTrees();
+            SpawnBoulders();
+        }
+
+        private void SpawnTrees()
+        {
+            var treePrefab = Resources.Load<GameObject>("Prefabs/Nature/Tree");
+            for (int z = 0; z < 100; z++)
+                for (int x = 0; x < 100; x++)
+                {
+                    Vector2 position = new Vector2(Position.x * 100 + x, Position.y * 100 + z);
+                    float noise = NoiseSampler.GetTreesNoise(position.x, position.y);
+                    if (noise == 1F)
+                    {
+                        float height = Terrain.GetHeight(position);
+                        if (height > 0 && height <= 6)
+                        {
+                            var tree = Instantiate(treePrefab, new Vector3(position.x, height, position.y), Quaternion.identity, Trees);
+                            tree.transform.position += RandomVector3.One / 4F;
+                            tree.transform.localScale = new RandomVector3(0.8F, 1.2F);
+                            tree.transform.rotation = Quaternion.Euler(new RandomVector3(0F, 60F, 0F));
+                        }
+                    }
+                }
+        }
+
+        private void SpawnBoulders()
+        {
+            var boulderPrefab = Resources.Load<GameObject>("Prefabs/Nature/Boulder");
+            for (int z = 0; z < 100; z++)
+                for (int x = 0; x < 100; x++)
+                {
+                    Vector2 position = new Vector2(Position.x * 100 + x, Position.y * 100 + z);
+                    float noise = NoiseSampler.GetBouldersNoise(position.x, position.y);
+                    if (noise == 1F)
+                    {
+                        float height = Terrain.GetHeight(position);
+                        Instantiate(boulderPrefab, new Vector3(position.x, height, position.y), Quaternion.identity, Boulders);
+                    }
+                }
         }
 
         public void GenerateMesh()
@@ -162,30 +206,6 @@ namespace World
             StartCoroutine(AssignMeshToColliderCoroutine());
         }
 
-        public void SetColors()
-        {
-            Color[] colors = new Color[10201];
-            var thisChunk = Terrain.Chunks[Position].Colors;
-            var rightChunk = Terrain.Chunks[new(Position.x + 1, Position.y)].Colors;
-            var upChunk = Terrain.Chunks[new(Position.x, Position.y + 1)].Colors;
-            var diagonalChunk = Terrain.Chunks[new(Position.x + 1, Position.y + 1)].Colors;
-            for (int z = 0; z < 101; z++)
-            {
-                for (int x = 0; x < 101; x++)
-                {
-                    if (z < 100 && x < 100)
-                        colors[z * 101 + x] = thisChunk[z * 100 + x];
-                    else if (x == 100 && z < 100)
-                        colors[z * 101 + x] = rightChunk[z * 100];
-                    else if (z == 100 && x < 100)
-                        colors[z * 101 + x] = upChunk[x];
-                    else
-                        colors[10200] = diagonalChunk[0];
-                }
-            }
-            _mesh.SetColors(colors);
-        }
-
         private IEnumerator AssignMeshToColliderCoroutine()
         {
             if (_isBaking)
@@ -209,5 +229,7 @@ namespace World
             Physics.BakeMesh(_meshInstanceId, false);
             return Task.CompletedTask;
         }
+
+        #endregion Private
     }
 }
