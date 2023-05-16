@@ -7,6 +7,7 @@ using Controls;
 using Items;
 using Misc;
 using Nature;
+using Unity.VisualScripting.Antlr3.Runtime.Tree;
 using UnityEngine;
 using World;
 using Terrain = World.Terrain;
@@ -165,6 +166,7 @@ namespace Saves
                 GameObject tree = GameObject.Instantiate(prefab, chunkRenderer.Trees);
                 tree.transform.SetPositionAndRotation(
                     treeInfo.Position, treeInfo.Rotation);
+                tree.transform.localScale = treeInfo.Scale;
             }
         }
 
@@ -176,6 +178,7 @@ namespace Saves
                 GameObject boulder = GameObject.Instantiate(prefab, chunkRenderer.Boulders);
                 boulder.transform.SetPositionAndRotation(
                     boulderInfo.Position, boulderInfo.Rotation);
+                boulder.transform.localScale = boulderInfo.Scale;
             }
         }
 

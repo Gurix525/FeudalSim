@@ -18,6 +18,7 @@ namespace Saves
         public void Initialize(Nature.Tree tree)
         {
             base.Initialize(tree);
+            Scale = tree.transform.parent.localScale;
         }
     }
 }

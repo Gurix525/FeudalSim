@@ -10,6 +10,7 @@ namespace Saves
     {
         public Vector3 Position;
         public Quaternion Rotation;
+        public Vector3 Scale;
 
         public GameObjectInfo()
         {
@@ -24,6 +25,7 @@ namespace Saves
         {
             Position = component.transform.position;
             Rotation = component.transform.rotation;
+            Scale = component.transform.localScale;
         }
     }
 }
