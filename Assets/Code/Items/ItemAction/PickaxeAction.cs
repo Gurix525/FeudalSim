@@ -20,8 +20,9 @@ namespace Items
         {
             if (Cursor.RaycastHit != null)
             {
-                (component as IPickaxeActionOutline)?.EnableOutline();
-                _leftClickable = component as Boulder;
+                var converted = component as IPickaxeActionOutline;
+                converted?.EnableOutline();
+                _leftClickable = converted as Boulder;
             }
             else
             {

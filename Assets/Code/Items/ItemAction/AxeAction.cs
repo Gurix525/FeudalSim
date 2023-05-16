@@ -20,8 +20,9 @@ namespace Items
         {
             if (Cursor.RaycastHit != null)
             {
-                (component as IAxeActionOutline)?.EnableOutline();
-                _leftClickable = component as Tree;
+                var converted = component as IAxeActionOutline;
+                converted?.EnableOutline();
+                _leftClickable = converted as Tree;
             }
             else
             {
