@@ -162,8 +162,7 @@ namespace Saves
             GameObject prefab = Resources.Load<GameObject>("Prefabs/Nature/Tree");
             foreach (var treeInfo in chunkInfo.Trees)
             {
-                Tree tree = GameObject.Instantiate(prefab, chunkRenderer.Trees)
-                    .GetComponent<Tree>();
+                GameObject tree = GameObject.Instantiate(prefab, chunkRenderer.Trees);
                 tree.transform.SetPositionAndRotation(
                     treeInfo.Position, treeInfo.Rotation);
             }
@@ -174,8 +173,7 @@ namespace Saves
             GameObject prefab = Resources.Load<GameObject>("Prefabs/Nature/Boulder");
             foreach (var boulderInfo in chunkInfo.Boulders)
             {
-                Boulder boulder = GameObject.Instantiate(prefab, chunkRenderer.Boulders)
-                    .GetComponent<Boulder>();
+                GameObject boulder = GameObject.Instantiate(prefab, chunkRenderer.Boulders);
                 boulder.transform.SetPositionAndRotation(
                     boulderInfo.Position, boulderInfo.Rotation);
             }

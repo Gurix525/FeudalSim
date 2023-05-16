@@ -33,13 +33,15 @@ namespace Nature
             Equipment.Insert(item);
             if (item.Count > 0)
                 item.Drop(Player.Position);
-            GameObject log = Instantiate(Resources.Load<GameObject>("Prefabs/Nature/Log"), transform.parent);
+            GameObject log = Instantiate(
+                Resources.Load<GameObject>("Prefabs/Nature/Log"),
+                transform.parent.parent);
             log.transform.position = transform.position;
             log.GetComponent<TemporaryRigidbody>().ActivateRigidbody(
                 Vector3.forward * 100F,
                 log.transform.position + Vector3.up * 10F,
                 200F);
-            Destroy(gameObject);
+            Destroy(transform.parent.gameObject);
         }
 
         #endregion Public
