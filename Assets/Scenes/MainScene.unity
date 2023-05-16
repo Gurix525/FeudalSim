@@ -1710,7 +1710,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _texture: {fileID: 2800000, guid: 8f5e3364b6978f24bb65583b927f342c, type: 3}
-  _mipMapBias: -1
+  _mipMapBias: -1.5
 --- !u!114 &1207663845
 MonoBehaviour:
   m_ObjectHideFlags: 0
