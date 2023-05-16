@@ -127,7 +127,8 @@ namespace World
                         float height = Terrain.GetHeight(position);
                         if (height > 0 && height <= 6)
                         {
-                            var tree = Instantiate(treePrefab, new Vector3(position.x, height, position.y), Quaternion.identity, Trees);
+                            var tree = Instantiate(treePrefab, new Vector3(
+                                position.x, height, position.y), Quaternion.identity, Trees);
                             tree.transform.position += RandomVector3.One / 4F;
                             tree.transform.localScale = new RandomVector3(0.8F, 1.2F);
                             tree.transform.rotation = Quaternion.Euler(new RandomVector3(0F, 60F, 0F));
@@ -147,7 +148,11 @@ namespace World
                     if (noise == 1F)
                     {
                         float height = Terrain.GetHeight(position);
-                        Instantiate(boulderPrefab, new Vector3(position.x, height, position.y), Quaternion.identity, Boulders);
+                        var boulder = Instantiate(boulderPrefab, new Vector3(
+                            position.x, height, position.y), Quaternion.identity, Boulders);
+                        boulder.transform.position += RandomVector3.OneUnsigned / 4F;
+                        boulder.transform.localScale = new RandomVector3(0.8F, 1.2F);
+                        boulder.transform.rotation = Quaternion.Euler(new RandomVector3(0F, 360F, 0F));
                     }
                 }
         }

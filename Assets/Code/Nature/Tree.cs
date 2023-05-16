@@ -37,6 +37,7 @@ namespace Nature
                 Resources.Load<GameObject>("Prefabs/Nature/Log"),
                 transform.parent.parent);
             log.transform.position = transform.position;
+            log.transform.localScale = transform.parent.localScale;
             log.GetComponent<TemporaryRigidbody>().ActivateRigidbody(
                 Vector3.forward * 100F,
                 log.transform.position + Vector3.up * 10F,
