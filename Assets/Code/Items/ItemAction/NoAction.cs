@@ -26,9 +26,10 @@ namespace Items
         {
             if (Cursor.RaycastHit != null)
             {
-                (component as INoActionOutline)?.EnableOutline();
-                _leftClickable = component as ILeftClickHandler;
-                _rightclickable = component as IRightClickHandler;
+                var converted = component as INoActionOutline;
+                converted?.EnableOutline();
+                _leftClickable = converted as ILeftClickHandler;
+                _rightclickable = converted as IRightClickHandler;
             }
             else
             {
