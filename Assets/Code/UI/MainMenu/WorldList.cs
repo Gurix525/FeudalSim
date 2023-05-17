@@ -2,7 +2,6 @@ using System;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
-using System.Text.RegularExpressions;
 using Saves;
 using UnityEngine;
 
@@ -61,7 +60,8 @@ namespace UI
                 foreach (Transform child in transform)
                     Destroy(child.gameObject);
                 foreach (var zip in _savesFolder.GetFiles()
-                    .Where(x => x.Name.EndsWith(".zip")))
+                    .Where(file => file.Name.EndsWith(".zip"))
+                    .OrderByDescending(file => file.LastWriteTime.Ticks))
                 {
                     GameObject worldButton = Instantiate(
                         Resources.Load<GameObject>("Prefabs/UI/WorldButton"),
@@ -91,9 +91,9 @@ namespace UI
             TimeSpan fullTime = new(worldInfo.FullTimeInWorld);
             button.NameText.text = worldInfo.Name;
             button.CreationTimeText.text = creationTime.ToString("dd MMMM yyyy");
-            button.LastPlayedTime.text = lastPlayedTime.ToString("dd MMMM yyyy");
-            button.FullTimeInWorld.text = $"{fullTime.TotalHours}:" +
-                $"{fullTime.Minutes}:{fullTime.Seconds}";
+            button.LastPlayedTime.text = lastPlayedTime.ToString("dd MMMM yyyy HH:mm:ss");
+            button.FullTimeInWorld.text =
+                ((int)fullTime.TotalHours).ToString("00") + ":" + fullTime.Minutes.ToString("00") + ":" + fullTime.Seconds.ToString("00");
             File.Delete(worldFilePath);
         }
     }

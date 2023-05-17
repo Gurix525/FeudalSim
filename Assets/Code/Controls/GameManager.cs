@@ -6,13 +6,13 @@ namespace Controls
     public class GameManager : MonoBehaviour
     {
         public static string WorldName { get; set; }
-        public static DateTime WorldCreationTime { get; set; }
-        public static DateTime FullTimeInWorld { get; set; }
-        public static DateTime LastPlayedTime { get; set; }
+        public static long WorldCreationTime { get; set; }
+        public static long FullTimeInWorld { get; set; }
+        public static long LastPlayedTime { get; set; }
 
         private void FixedUpdate()
         {
-            FullTimeInWorld.AddSeconds((double)Time.fixedDeltaTime);
+            FullTimeInWorld += (long)(Time.fixedDeltaTime * 10000000);
         }
     }
 }

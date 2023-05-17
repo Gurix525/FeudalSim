@@ -27,9 +27,9 @@ namespace Saves
         {
             Name = Controls.GameManager.WorldName;
             Seed = NoiseSampler.Seed;
-            CreationTime = GameManager.WorldCreationTime.Ticks;
-            FullTimeInWorld = GameManager.FullTimeInWorld.Ticks;
-            LastPlayedTime = GameManager.LastPlayedTime.Ticks;
+            CreationTime = GameManager.WorldCreationTime;
+            FullTimeInWorld = GameManager.FullTimeInWorld;
+            LastPlayedTime = DateTime.Now.Ticks;
         }
     }
 }

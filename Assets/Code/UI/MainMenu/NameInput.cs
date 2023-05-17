@@ -28,7 +28,7 @@ public class NameInput : MonoBehaviour
         _nameInput = GetComponent<TMP_InputField>();
         _nameInput.characterValidation =
             TMP_InputField.CharacterValidation.Alphanumeric;
-        _nameInput.characterLimit = 50;
+        _nameInput.characterLimit = 16;
     }
 
     private void OnEnable()

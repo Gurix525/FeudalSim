@@ -82,9 +82,9 @@ namespace Saves
                 File.ReadAllText(Path.Combine(_savePath, "World.txt")));
             NoiseSampler.SetSeed(worldInfo.Seed);
             GameManager.WorldName = worldInfo.Name;
-            GameManager.WorldCreationTime = new(worldInfo.CreationTime);
-            GameManager.FullTimeInWorld = new(worldInfo.FullTimeInWorld);
-            GameManager.LastPlayedTime = new(worldInfo.LastPlayedTime);
+            GameManager.WorldCreationTime = worldInfo.CreationTime;
+            GameManager.FullTimeInWorld = worldInfo.FullTimeInWorld;
+            GameManager.LastPlayedTime = worldInfo.LastPlayedTime;
         }
 
         private PlayerInfo LoadPlayer()

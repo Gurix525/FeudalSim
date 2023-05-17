@@ -36,8 +36,8 @@ namespace UI
                 await Task.Yield();
             NoiseSampler.SetSeed(_seedInput.Seed);
             GameManager.WorldName = _nameInput.Text;
-            GameManager.WorldCreationTime = DateTime.Now;
-            GameManager.LastPlayedTime = DateTime.Now;
+            GameManager.WorldCreationTime = DateTime.Now.Ticks;
+            GameManager.LastPlayedTime = DateTime.Now.Ticks;
             TerrainRenderer.GenerateWorld(Vector2Int.zero);
             GrassInstancer.MarkToReload();
             float originHeight = World.Terrain.GetHeight(new(0F, 0F));
