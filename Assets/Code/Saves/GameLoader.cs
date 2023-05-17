@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
+using System.Threading.Tasks;
 using Buildings;
 using Controls;
 using Items;
@@ -9,6 +10,7 @@ using Misc;
 using Nature;
 using Unity.VisualScripting.Antlr3.Runtime.Tree;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using World;
 using Terrain = World.Terrain;
 using Tree = Nature.Tree;
@@ -51,7 +53,7 @@ namespace Saves
 
         #region Public
 
-        public void LoadGame()
+        public async Task LoadGame()
         {
             try
             {
@@ -63,12 +65,18 @@ namespace Saves
                     playerinfo.Position));
                 LoadChunkRenderers(chunkInfos);
                 GrassInstancer.MarkToReload();
-                Directory.Delete(_savePath, true);
             }
             catch (Exception e)
             {
                 Debug.LogError(e.Message);
                 Debug.Log(e.StackTrace);
+                AsyncOperation sceneLoading = SceneManager.LoadSceneAsync("MainMenu", LoadSceneMode.Single);
+                while (!sceneLoading.isDone)
+                    await Task.Yield();
+            }
+            finally
+            {
+                Directory.Delete(_savePath, true);
             }
         }
 

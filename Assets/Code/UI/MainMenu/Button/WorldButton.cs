@@ -35,7 +35,7 @@ namespace UI
             while (!sceneLoading.isDone)
                 await Task.Yield();
             GameLoader gameLoader = new(_nameText.text);
-            gameLoader.LoadGame();
+            _ = gameLoader.LoadGame();
         }
     }
 }
