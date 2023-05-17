@@ -20,6 +20,8 @@ namespace UI
         public TextMeshProUGUI LastPlayedTime => _lastPlayedTime;
         public TextMeshProUGUI FullTimeInWorld => _fullTimeInWorld;
 
+        public bool IsWorldDeleted { get; set; }
+
         protected override void Execute()
         {
             _ = LoadWorld();
@@ -27,6 +29,8 @@ namespace UI
 
         private async Task LoadWorld()
         {
+            if (IsWorldDeleted)
+                return;
             AsyncOperation sceneLoading = SceneManager.LoadSceneAsync("MainScene", LoadSceneMode.Single);
             while (!sceneLoading.isDone)
                 await Task.Yield();
