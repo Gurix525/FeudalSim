@@ -104,6 +104,8 @@ namespace Items
             int count = 1,
             Dictionary<string, string> stats = null)
         {
+            if (name == null)
+                throw new ArgumentNullException("Name cannot be null");
             if (!_itemModels.TryGetValue(name, out ItemModel itemModel))
                 return null;
             return new(itemModel, count, stats);

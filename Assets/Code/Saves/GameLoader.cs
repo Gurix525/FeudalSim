@@ -97,6 +97,11 @@ namespace Saves
             player.SetActive(true);
             Equipment.SetInventoryContainer((Container)playerInfo.InventoryContainer);
             Equipment.SetArmorContainer((Container)playerInfo.ArmorContainer);
+            try
+            {
+                Controls.Cursor.Container[0] = (Item)playerInfo.CursorItem;
+            }
+            catch (ArgumentNullException) { }
             return playerInfo;
         }
 
