@@ -21,7 +21,7 @@ namespace Saves
 
         public void Initialize()
         {
-            Name = "A";
+            Name = World.World.Name;
             Seed = NoiseSampler.Seed;
         }
     }
