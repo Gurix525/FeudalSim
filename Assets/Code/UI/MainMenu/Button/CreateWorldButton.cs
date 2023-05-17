@@ -14,6 +14,7 @@ namespace UI
     public class CreateWorldButton : Button
     {
         [SerializeField] private NameInput _nameInput;
+        [SerializeField] private SeedInput _seedInput;
 
         private bool _isBusy;
 
@@ -31,8 +32,7 @@ namespace UI
             AsyncOperation sceneLoading = SceneManager.LoadSceneAsync("MainScene", LoadSceneMode.Single);
             while (!sceneLoading.isDone)
                 await Task.Yield();
-            System.Random random = new();
-            NoiseSampler.SetSeed(random.Next());
+            NoiseSampler.SetSeed(_seedInput.Seed);
             World.World.Name = _nameInput.Text;
             TerrainRenderer.GenerateWorld(Vector2Int.zero);
             GrassInstancer.MarkToReload();

@@ -1,6 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.IO;
 using TMPro;
 using UnityEngine;
@@ -29,6 +26,9 @@ public class NameInput : MonoBehaviour
     private void Awake()
     {
         _nameInput = GetComponent<TMP_InputField>();
+        _nameInput.characterValidation =
+            TMP_InputField.CharacterValidation.Alphanumeric;
+        _nameInput.characterLimit = 50;
     }
 
     private void OnEnable()
