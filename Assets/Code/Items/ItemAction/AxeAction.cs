@@ -22,7 +22,7 @@ namespace Items
             {
                 var converted = component as IAxeActionOutline;
                 converted?.EnableOutline();
-                _leftClickable = converted as Tree;
+                _leftClickable = converted as ILeftClickHandler;
             }
             else
             {

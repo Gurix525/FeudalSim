@@ -22,7 +22,7 @@ namespace Items
             {
                 var converted = component as IPickaxeActionOutline;
                 converted?.EnableOutline();
-                _leftClickable = converted as Boulder;
+                _leftClickable = converted as ILeftClickHandler;
             }
             else
             {

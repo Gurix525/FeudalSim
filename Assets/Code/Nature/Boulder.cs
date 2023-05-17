@@ -29,6 +29,8 @@ namespace Nature
 
         public void OnLeftMouseButton()
         {
+            if (this == null)
+                return;
             Item item = Item.Create("Stone", 0);
             Equipment.Insert(item);
             if (item.Count > 0)

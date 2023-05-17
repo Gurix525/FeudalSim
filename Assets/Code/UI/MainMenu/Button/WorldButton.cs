@@ -11,8 +11,14 @@ namespace UI
     public class WorldButton : Button
     {
         [SerializeField] private TextMeshProUGUI _nameText;
+        [SerializeField] private TextMeshProUGUI _creationTime;
+        [SerializeField] private TextMeshProUGUI _lastPlayedTime;
+        [SerializeField] private TextMeshProUGUI _fullTimeInWorld;
 
         public TextMeshProUGUI NameText => _nameText;
+        public TextMeshProUGUI CreationTimeText => _creationTime;
+        public TextMeshProUGUI LastPlayedTime => _lastPlayedTime;
+        public TextMeshProUGUI FullTimeInWorld => _fullTimeInWorld;
 
         protected override void Execute()
         {

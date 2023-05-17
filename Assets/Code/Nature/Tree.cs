@@ -29,13 +29,15 @@ namespace Nature
 
         public void OnLeftMouseButton()
         {
+            if (this == null)
+                return;
             Item item = Item.Create("Wood", 0);
             Equipment.Insert(item);
             if (item.Count > 0)
                 item.Drop(Player.Position);
             GameObject log = Instantiate(
                 Resources.Load<GameObject>("Prefabs/Nature/Log"),
-                transform.parent.parent);
+                transform.parent.parent.parent);
             log.transform.position = transform.position;
             log.transform.localScale = transform.parent.localScale;
             log.GetComponent<TemporaryRigidbody>().ActivateRigidbody(

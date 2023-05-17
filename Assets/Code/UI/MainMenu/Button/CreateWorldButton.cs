@@ -1,6 +1,8 @@
+using System;
 using System.Collections;
 using System.Linq;
 using System.Threading.Tasks;
+using Controls;
 using Misc;
 using MyNamespace;
 using TMPro;
@@ -33,7 +35,9 @@ namespace UI
             while (!sceneLoading.isDone)
                 await Task.Yield();
             NoiseSampler.SetSeed(_seedInput.Seed);
-            World.World.Name = _nameInput.Text;
+            GameManager.WorldName = _nameInput.Text;
+            GameManager.WorldCreationTime = DateTime.Now;
+            GameManager.LastPlayedTime = DateTime.Now;
             TerrainRenderer.GenerateWorld(Vector2Int.zero);
             GrassInstancer.MarkToReload();
             float originHeight = World.Terrain.GetHeight(new(0F, 0F));

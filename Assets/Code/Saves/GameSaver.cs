@@ -41,7 +41,7 @@ namespace Saves
         private void SaveGame(CallbackContext context)
         {
             Directory.CreateDirectory(_allSavesPath);
-            _worldPath = Path.Combine(_allSavesPath, World.World.Name);
+            _worldPath = Path.Combine(_allSavesPath, Controls.GameManager.WorldName);
             Directory.CreateDirectory(_worldPath);
             SaveWorldInfo();
             SavePlayerInfo();
