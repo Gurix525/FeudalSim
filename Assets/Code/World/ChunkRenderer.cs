@@ -5,6 +5,8 @@ using System.Threading.Tasks;
 using Controls;
 using Misc;
 using UnityEngine;
+using Unity.AI.Navigation;
+using UnityEngine.AI;
 
 namespace World
 {
@@ -32,6 +34,7 @@ namespace World
         public Transform ItemHandlers { get; private set; }
         public Transform Trees { get; private set; }
         public Transform Boulders { get; private set; }
+        public NavMeshSurface NavMeshSurface { get; private set; }
 
         #endregion Properties
 
@@ -64,97 +67,6 @@ namespace World
                 }
             }
             _mesh.SetColors(colors);
-        }
-
-        #endregion Public
-
-        #region Private
-
-        private void Initialize()
-        {
-            _isInitialized = true;
-            _meshFilter = GetComponent<MeshFilter>();
-            _meshCollider = GetComponent<MeshCollider>();
-            CreateChildren();
-            InitializeMesh();
-            SpawnNature();
-        }
-
-        private void CreateChildren()
-        {
-            Buildings = new GameObject("Buildings").transform;
-            Buildings.transform.parent = transform;
-
-            ItemHandlers = new GameObject("ItemHandlers").transform;
-            ItemHandlers.transform.parent = transform;
-
-            Boulders = new GameObject("Boulders").transform;
-            Boulders.transform.parent = transform;
-
-            Trees = new GameObject("Trees").transform;
-            Trees.transform.parent = transform;
-        }
-
-        private void InitializeMesh()
-        {
-            _mesh = new();
-            _mesh.MarkDynamic();
-            _meshFilter.mesh = _mesh;
-            _mesh.indexFormat = UnityEngine.Rendering.IndexFormat.UInt32;
-            _meshInstanceId = _mesh.GetInstanceID();
-        }
-
-        public void SpawnNature()
-        {
-            Chunk chunk = Terrain.Chunks[Position];
-            if (chunk.IsNatureSpawned)
-                return;
-            chunk.IsNatureSpawned = true;
-            SpawnTrees();
-            SpawnBoulders();
-        }
-
-        private void SpawnTrees()
-        {
-            var treePrefab = Resources.Load<GameObject>("Prefabs/Nature/Tree");
-            for (int z = 0; z < 100; z++)
-                for (int x = 0; x < 100; x++)
-                {
-                    Vector2 position = new Vector2(Position.x * 100 + x, Position.y * 100 + z);
-                    float noise = NoiseSampler.GetTreesNoise(position.x, position.y);
-                    if (noise == 1F)
-                    {
-                        float height = Terrain.GetHeight(position);
-                        if (height > 0 && height <= 6)
-                        {
-                            var tree = Instantiate(treePrefab, new Vector3(
-                                position.x, height, position.y), Quaternion.identity, Trees);
-                            tree.transform.position += RandomVector3.One / 4F;
-                            tree.transform.localScale = new RandomVector3(0.8F, 1.2F);
-                            tree.transform.rotation = Quaternion.Euler(new RandomVector3(0F, 60F, 0F));
-                        }
-                    }
-                }
-        }
-
-        private void SpawnBoulders()
-        {
-            var boulderPrefab = Resources.Load<GameObject>("Prefabs/Nature/Boulder");
-            for (int z = 0; z < 100; z++)
-                for (int x = 0; x < 100; x++)
-                {
-                    Vector2 position = new Vector2(Position.x * 100 + x, Position.y * 100 + z);
-                    float noise = NoiseSampler.GetBouldersNoise(position.x, position.y);
-                    if (noise == 1F)
-                    {
-                        float height = Terrain.GetHeight(position);
-                        var boulder = Instantiate(boulderPrefab, new Vector3(
-                            position.x, height, position.y), Quaternion.identity, Boulders);
-                        boulder.transform.position += RandomVector3.OneUnsigned / 4F;
-                        boulder.transform.localScale = new RandomVector3(0.8F, 1.2F);
-                        boulder.transform.rotation = Quaternion.Euler(new RandomVector3(0F, 360F, 0F));
-                    }
-                }
         }
 
         public void GenerateMesh()
@@ -211,6 +123,98 @@ namespace World
             StartCoroutine(AssignMeshToColliderCoroutine());
         }
 
+        #endregion Public
+
+        #region Private
+
+        private void Initialize()
+        {
+            _isInitialized = true;
+            _meshFilter = GetComponent<MeshFilter>();
+            _meshCollider = GetComponent<MeshCollider>();
+            CreateChildren();
+            InitializeMesh();
+            SpawnNature();
+            //InitializeNavMesh();
+        }
+
+        private void CreateChildren()
+        {
+            Buildings = new GameObject("Buildings").transform;
+            Buildings.transform.parent = transform;
+
+            ItemHandlers = new GameObject("ItemHandlers").transform;
+            ItemHandlers.transform.parent = transform;
+
+            Boulders = new GameObject("Boulders").transform;
+            Boulders.transform.parent = transform;
+
+            Trees = new GameObject("Trees").transform;
+            Trees.transform.parent = transform;
+        }
+
+        private void InitializeMesh()
+        {
+            _mesh = new();
+            _mesh.MarkDynamic();
+            _meshFilter.mesh = _mesh;
+            _mesh.indexFormat = UnityEngine.Rendering.IndexFormat.UInt32;
+            _meshInstanceId = _mesh.GetInstanceID();
+        }
+
+        private void SpawnNature()
+        {
+            Chunk chunk = Terrain.Chunks[Position];
+            if (chunk.IsNatureSpawned)
+                return;
+            chunk.IsNatureSpawned = true;
+            SpawnTrees();
+            SpawnBoulders();
+        }
+
+        private void SpawnTrees()
+        {
+            var treePrefab = Resources.Load<GameObject>("Prefabs/Nature/Tree");
+            for (int z = 0; z < 100; z++)
+                for (int x = 0; x < 100; x++)
+                {
+                    Vector2 position = new Vector2(Position.x * 100 + x, Position.y * 100 + z);
+                    float noise = NoiseSampler.GetTreesNoise(position.x, position.y);
+                    if (noise == 1F)
+                    {
+                        float height = Terrain.GetHeight(position);
+                        if (height > 0 && height <= 6)
+                        {
+                            var tree = Instantiate(treePrefab, new Vector3(
+                                position.x, height, position.y), Quaternion.identity, Trees);
+                            tree.transform.position += RandomVector3.One / 4F;
+                            tree.transform.localScale = new RandomVector3(0.8F, 1.2F);
+                            tree.transform.rotation = Quaternion.Euler(new RandomVector3(0F, 60F, 0F));
+                        }
+                    }
+                }
+        }
+
+        private void SpawnBoulders()
+        {
+            var boulderPrefab = Resources.Load<GameObject>("Prefabs/Nature/Boulder");
+            for (int z = 0; z < 100; z++)
+                for (int x = 0; x < 100; x++)
+                {
+                    Vector2 position = new Vector2(Position.x * 100 + x, Position.y * 100 + z);
+                    float noise = NoiseSampler.GetBouldersNoise(position.x, position.y);
+                    if (noise == 1F)
+                    {
+                        float height = Terrain.GetHeight(position);
+                        var boulder = Instantiate(boulderPrefab, new Vector3(
+                            position.x, height, position.y), Quaternion.identity, Boulders);
+                        boulder.transform.position += RandomVector3.OneUnsigned / 4F;
+                        boulder.transform.localScale = new RandomVector3(0.8F, 1.2F);
+                        boulder.transform.rotation = Quaternion.Euler(new RandomVector3(0F, 360F, 0F));
+                    }
+                }
+        }
+
         private IEnumerator AssignMeshToColliderCoroutine()
         {
             if (_isBaking)
@@ -233,6 +237,13 @@ namespace World
         {
             Physics.BakeMesh(_meshInstanceId, false);
             return Task.CompletedTask;
+        }
+
+        private void InitializeNavMesh()
+        {
+            NavMeshSurface = gameObject.AddComponent<NavMeshSurface>();
+            NavMeshSurface.useGeometry = NavMeshCollectGeometry.PhysicsColliders;
+            NavMeshSurface.collectObjects = CollectObjects.Children;
         }
 
         #endregion Private

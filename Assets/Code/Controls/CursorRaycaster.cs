@@ -1,3 +1,4 @@
+using System;
 using Input;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -22,22 +23,30 @@ namespace Controls
 
         private static RaycastHit? GetRaycastHit()
         {
-            if (_isPointerOverGameObject)
+            try
             {
-                Hit = null;
+                if (_isPointerOverGameObject)
+                {
+                    Hit = null;
+                    return null;
+                }
+                Ray ray = Camera.main
+                    .ScreenPointToRay(PlayerController.MainPoint.ReadValue<Vector2>());
+                Physics.Raycast(ray, out RaycastHit hit);
+                if (Vector3.Distance(hit.point, Player.Position) > MaxCursorDistanceFromPlayer
+                    && Vector3.Distance(hit.collider.transform.position, Player.Position) > MaxCursorDistanceFromPlayer)
+                {
+                    Hit = null;
+                    return null;
+                }
+                Hit = hit;
+                return hit;
+            }
+            catch (NullReferenceException e)
+            {
+                Debug.LogError(e.Message + e.StackTrace);
                 return null;
             }
-            Ray ray = Camera.main
-                .ScreenPointToRay(PlayerController.MainPoint.ReadValue<Vector2>());
-            Physics.Raycast(ray, out RaycastHit hit);
-            if (Vector3.Distance(hit.point, Player.Position) > MaxCursorDistanceFromPlayer
-                && Vector3.Distance(hit.collider.transform.position, Player.Position) > MaxCursorDistanceFromPlayer)
-            {
-                Hit = null;
-                return null;
-            }
-            Hit = hit;
-            return hit;
         }
     }
 }

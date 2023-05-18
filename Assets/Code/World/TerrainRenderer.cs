@@ -1,8 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using Misc;
+using Unity.AI.Navigation;
 using UnityEngine;
+using UnityEngine.AI;
 using UnityEngine.Events;
 
 namespace World
@@ -31,6 +32,8 @@ namespace World
             _instance ??= FindObjectOfType<TerrainRenderer>();
 
         public static UnityEvent<Vector2> TerrainUpdating { get; private set; } = new();
+
+        public static NavMeshSurface NavMeshSurface { get; private set; }
 
         #endregion Properties
 
@@ -73,10 +76,10 @@ namespace World
             RecalculateActiveChunkBorderSteepness();
         }
 
-        public static ChunkRenderer GetChunkRenderer(Vector2Int position)
+        public static ChunkRenderer GetChunkRenderer(Vector2Int chunkPosition)
         {
             Instance._chunks.TryGetValue(
-                Terrain.GetChunkCoordinates(position), out ChunkRenderer renderer);
+                Terrain.GetChunkCoordinates(chunkPosition), out ChunkRenderer renderer);
             return renderer;
         }
 
@@ -92,6 +95,15 @@ namespace World
         }
 
         #endregion Public
+
+        #region Unity
+
+        private void Awake()
+        {
+            InitializeNavMesh();
+        }
+
+        #endregion Unity
 
         #region Private
 
@@ -113,6 +125,13 @@ namespace World
                     if (!Instance._chunks.ContainsKey(new(x, z)))
                         GenerateChunk(x, z);
 
+            foreach (var chunk in Terrain.Chunks.Values)
+            {
+                if (chunk.IsNatureSpawned && !Instance._chunks
+                    .ContainsKey(new(chunk.Position.x, chunk.Position.y)))
+                    GenerateChunk(chunk.Position.x, chunk.Position.y);
+            }
+
             ActiveChunk ??= Terrain.Chunks[activePosition];
         }
 
@@ -127,6 +146,13 @@ namespace World
             chunkRenderer.SetPosition(new(x, z));
             Instance._chunks.Add(new(x, z), chunkRenderer);
             chunkRenderer.GenerateMesh();
+        }
+
+        private static void InitializeNavMesh()
+        {
+            NavMeshSurface = Instance.gameObject.AddComponent<NavMeshSurface>();
+            NavMeshSurface.useGeometry = NavMeshCollectGeometry.PhysicsColliders;
+            NavMeshSurface.collectObjects = CollectObjects.Children;
         }
 
         #endregion Private

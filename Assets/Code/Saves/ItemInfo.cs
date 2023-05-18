@@ -23,6 +23,8 @@ namespace Saves
 
         public void Initialize(Item item)
         {
+            if (item == null)
+                return;
             Model = item.Model.Name;
             Count = item.Count;
             if (item.HasSpecificStats)
