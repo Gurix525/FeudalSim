@@ -17,7 +17,7 @@ namespace World
         private bool _isInitialized = false;
         private Vector2Int _currentPlayerPosition;
 
-        public static bool HasToReload = false;
+        public static bool HasToReload { get; private set; }
 
         public static void MarkToReload()
         {

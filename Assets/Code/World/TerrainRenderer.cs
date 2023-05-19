@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Misc;
@@ -17,6 +18,7 @@ namespace World
         private Chunk _activeChunk;
         private Dictionary<Vector2Int, ChunkRenderer> _chunks = new();
         private static TerrainRenderer _instance;
+        private static float _timeSinceLastNavMeshRebuild = 0F;
 
         #endregion Fields
 
@@ -35,6 +37,8 @@ namespace World
 
         public static NavMeshSurface NavMeshSurface { get; private set; }
 
+        public static bool NavMeshHasToRebuild { get; private set; }
+
         #endregion Properties
 
         #region Public
@@ -45,14 +49,14 @@ namespace World
             yield return null;
             GenerateChunks(position);
             ActiveChunk = Terrain.Chunks[position];
-            Reload();
+            yield return Instance.StartCoroutine(Reload());
             LoadingImage.Disable();
         }
 
         public static void GenerateWorld(Vector2Int startChunkPosition)
         {
             GenerateChunks(startChunkPosition);
-            Reload();
+            Instance.StartCoroutine(Reload());
         }
 
         public static void ReloadChunk(Vector2Int position)
@@ -61,7 +65,7 @@ namespace World
             TerrainUpdating.Invoke(ActiveChunk.Position);
         }
 
-        public static void Reload()
+        public static IEnumerator Reload()
         {
             foreach (var chunk in Instance._chunks)
             {
@@ -74,6 +78,8 @@ namespace World
             }
             TerrainUpdating.Invoke(ActiveChunk.Position);
             RecalculateActiveChunkBorderSteepness();
+            yield return null;
+            MarkNavMeshToReload();
         }
 
         public static ChunkRenderer GetChunkRenderer(Vector2Int chunkPosition)
@@ -94,6 +100,11 @@ namespace World
             return renderer;
         }
 
+        public static void MarkNavMeshToReload()
+        {
+            NavMeshHasToRebuild = true;
+        }
+
         #endregion Public
 
         #region Unity
@@ -101,6 +112,13 @@ namespace World
         private void Awake()
         {
             InitializeNavMesh();
+        }
+
+        private void FixedUpdate()
+        {
+            _timeSinceLastNavMeshRebuild += Time.fixedDeltaTime;
+            if (NavMeshHasToRebuild && _timeSinceLastNavMeshRebuild > 0.5F)
+                RebuildNavMesh();
         }
 
         #endregion Unity
@@ -150,9 +168,17 @@ namespace World
 
         private static void InitializeNavMesh()
         {
-            NavMeshSurface = Instance.gameObject.AddComponent<NavMeshSurface>();
-            NavMeshSurface.useGeometry = NavMeshCollectGeometry.PhysicsColliders;
-            NavMeshSurface.collectObjects = CollectObjects.Children;
+            NavMeshSurface = Instance.GetComponent<NavMeshSurface>();
+        }
+
+        private static void RebuildNavMesh()
+        {
+            _timeSinceLastNavMeshRebuild = 0F;
+            NavMeshHasToRebuild = false;
+            DateTime t1 = DateTime.Now;
+            NavMeshSurface.BuildNavMesh();
+            DateTime t2 = DateTime.Now;
+            Debug.Log((t2 - t1).TotalSeconds);
         }
 
         #endregion Private
