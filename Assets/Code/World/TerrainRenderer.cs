@@ -117,7 +117,7 @@ namespace World
         private void FixedUpdate()
         {
             _timeSinceLastNavMeshRebuild += Time.fixedDeltaTime;
-            if (NavMeshHasToRebuild && _timeSinceLastNavMeshRebuild > 0.5F)
+            if (NavMeshHasToRebuild && _timeSinceLastNavMeshRebuild > 1F)
                 RebuildNavMesh();
         }
 
