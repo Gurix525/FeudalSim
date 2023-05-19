@@ -158,6 +158,7 @@ namespace Items
             building.GetComponent<Building>().
                 Initialize(inputItem, _buildingMode);
             Terrain.SetBuildingMark(_calibratedPosition, _buildingMode, _meshRotation, true);
+            TerrainRenderer.MarkNavMeshToReload();
             _isWaitingForAnotherBuilding = true;
             PlayerController.MainLeftClick.AddListener(ActionType.Canceled, DisableWaiting);
         }

@@ -2,6 +2,7 @@ using Controls;
 using Items;
 using Misc;
 using UnityEngine;
+using World;
 using Cursor = Controls.Cursor;
 
 namespace Nature
@@ -45,6 +46,7 @@ namespace Nature
                 log.transform.position + Vector3.up * 10F,
                 200F);
             Destroy(transform.parent.gameObject);
+            TerrainRenderer.MarkNavMeshToReload();
         }
 
         #endregion Public

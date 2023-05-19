@@ -54,6 +54,7 @@ namespace Items
             itemHandler.transform.SetPositionAndRotation(
                 CursorItemMeshHighlight.Position,
                 CursorItemMeshHighlight.Rotation);
+            TerrainRenderer.MarkNavMeshToReload();
         }
 
         public override void OnRightMouseButton()
@@ -81,6 +82,7 @@ namespace Items
             itemHandler.transform.SetPositionAndRotation(
                 CursorItemMeshHighlight.Position,
                 CursorItemMeshHighlight.Rotation);
+            TerrainRenderer.MarkNavMeshToReload();
         }
 
         public override void Update()

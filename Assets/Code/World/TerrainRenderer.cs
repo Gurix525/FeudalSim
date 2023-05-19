@@ -175,10 +175,7 @@ namespace World
         {
             _timeSinceLastNavMeshRebuild = 0F;
             NavMeshHasToRebuild = false;
-            DateTime t1 = DateTime.Now;
             NavMeshSurface.BuildNavMesh();
-            DateTime t2 = DateTime.Now;
-            Debug.Log((t2 - t1).TotalSeconds);
         }
 
         #endregion Private

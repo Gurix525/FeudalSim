@@ -2,6 +2,7 @@ using Controls;
 using Items;
 using Misc;
 using UnityEngine;
+using World;
 using Cursor = Controls.Cursor;
 
 namespace Nature
@@ -36,6 +37,7 @@ namespace Nature
             if (item.Count > 0)
                 item.Drop(Player.Position);
             Destroy(gameObject);
+            TerrainRenderer.MarkNavMeshToReload();
         }
 
         #endregion Public

@@ -7,6 +7,7 @@ using Input;
 using UnityEngine.InputSystem;
 using System;
 using static UnityEngine.InputSystem.InputAction;
+using World;
 
 namespace Items
 {
@@ -76,6 +77,7 @@ namespace Items
             if (extractedItem.Count > 0)
                 buildingToDestroy.AssignItem(extractedItem);
             GameObject.Destroy(buildingToDestroy.gameObject);
+            TerrainRenderer.MarkNavMeshToReload();
             _isWaitingForAnotherBuilding = true;
             PlayerController.MainLeftClick.AddListener(ActionType.Canceled, DisableWaiting);
         }

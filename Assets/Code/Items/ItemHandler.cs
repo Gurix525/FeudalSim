@@ -3,6 +3,7 @@ using Cursor = Controls.Cursor;
 using UnityEngine;
 using Controls;
 using System.Threading.Tasks;
+using World;
 
 namespace Items
 {
@@ -37,6 +38,7 @@ namespace Items
             rigidbody.isKinematic = true;
             Destroy(rigidbody);
             meshCollider.convex = false;
+            TerrainRenderer.MarkNavMeshToReload();
         }
 
         public void OnLeftMouseButton()
@@ -62,6 +64,7 @@ namespace Items
                     Container[0] = null;
             if (Item == null)
                 Destroy(gameObject);
+            TerrainRenderer.MarkNavMeshToReload();
         }
 
         public void OnRightMouseButton()
@@ -106,6 +109,7 @@ namespace Items
                 if (Item == null)
                     Destroy(gameObject);
             }
+            TerrainRenderer.MarkNavMeshToReload();
         }
 
         public void EnableOutline()

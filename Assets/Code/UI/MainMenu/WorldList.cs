@@ -70,9 +70,9 @@ namespace UI
                     AssignWorldButtonData(zip, worldButtonComponent);
                 }
             }
-            catch (Exception es)
+            catch (Exception ex)
             {
-                Debug.LogError(es.Message);
+                Debug.LogError(ex.Message + ex.StackTrace);
             }
         }
 

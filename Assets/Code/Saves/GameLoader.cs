@@ -68,8 +68,7 @@ namespace Saves
             }
             catch (Exception e)
             {
-                Debug.LogError(e.Message);
-                Debug.Log(e.StackTrace);
+                Debug.LogError(e.Message + e.StackTrace);
                 AsyncOperation sceneLoading = SceneManager.LoadSceneAsync("MainMenu", LoadSceneMode.Single);
                 while (!sceneLoading.isDone)
                     await Task.Yield();

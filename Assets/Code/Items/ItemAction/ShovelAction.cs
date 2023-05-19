@@ -4,6 +4,7 @@ using UnityEngine;
 using Cursor = Controls.Cursor;
 using System;
 using Input;
+using World;
 
 namespace Items
 {
@@ -64,6 +65,7 @@ namespace Items
                     Plow();
                     break;
             }
+            TerrainRenderer.MarkNavMeshToReload();
             _isWaitingForAnotherCell = true;
             PlayerController.MainLeftClick.AddListener(ActionType.Canceled, DisableWaiting);
         }

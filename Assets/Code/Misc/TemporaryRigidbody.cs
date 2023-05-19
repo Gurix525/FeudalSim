@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Extensions;
 using UnityEngine;
+using World;
 
 namespace Misc
 {
@@ -37,6 +38,7 @@ namespace Misc
             rigidbody.isKinematic = true;
             Destroy(rigidbody);
             meshCollider.convex = false;
+            TerrainRenderer.MarkNavMeshToReload();
         }
     }
 }
