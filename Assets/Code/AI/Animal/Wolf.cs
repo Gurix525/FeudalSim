@@ -4,11 +4,10 @@ namespace AI
 {
     public class Wolf : Animal
     {
-        protected override void OnEntityDetected(Component component)
+        protected override void OnEntityDetected(Component detectedComponent)
         {
-            if (component is Wolf)
-                _interests[component] = 100F;
-            Debug.Log(_interests[component]);
+            if (detectedComponent is Wolf)
+                _interests[detectedComponent] = 100F;
         }
     }
 }
