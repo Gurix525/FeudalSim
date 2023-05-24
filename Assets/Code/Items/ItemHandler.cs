@@ -4,11 +4,12 @@ using UnityEngine;
 using Controls;
 using System.Threading.Tasks;
 using World;
+using AI;
 
 namespace Items
 {
     [RequireComponent(typeof(OutlineHandler))]
-    public class ItemHandler : MonoBehaviour, ILeftClickHandler, IRightClickHandler, INoActionOutline
+    public class ItemHandler : MonoBehaviour, ILeftClickHandler, IRightClickHandler, INoActionOutline, IDetectable
     {
         #region Fields
 

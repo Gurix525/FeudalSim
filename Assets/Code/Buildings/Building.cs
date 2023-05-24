@@ -1,3 +1,4 @@
+using AI;
 using Controls;
 using Extensions;
 using Items;
@@ -8,7 +9,7 @@ using Terrain = World.Terrain;
 
 namespace Buildings
 {
-    public class Building : MonoBehaviour
+    public class Building : MonoBehaviour, IDetectable
     {
         #region Fields
 

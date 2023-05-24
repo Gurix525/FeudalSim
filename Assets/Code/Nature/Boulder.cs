@@ -1,3 +1,4 @@
+using AI;
 using Controls;
 using Items;
 using Misc;
@@ -8,7 +9,7 @@ using Cursor = Controls.Cursor;
 namespace Nature
 {
     [RequireComponent(typeof(OutlineHandler))]
-    public class Boulder : MonoBehaviour, ILeftClickHandler, IPickaxeActionOutline
+    public class Boulder : MonoBehaviour, ILeftClickHandler, IPickaxeActionOutline, IDetectable
     {
         #region Fields
 

@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace AI
 {
@@ -14,6 +16,14 @@ namespace AI
         private ObservableCollection<Component> _visibleDetectables = new();
 
         #endregion Fields
+
+        #region Properties
+
+        public UnityEvent<Component> DetectableBecameVisible { get; } = new();
+
+        public UnityEvent<Component> DetectableBecameInvisible { get; } = new();
+
+        #endregion Properties
 
         #region Public
 
@@ -29,17 +39,18 @@ namespace AI
         private void Awake()
         {
             _sphereCollider = GetComponent<SphereCollider>();
-            _visibleDetectables.CollectionChanged += (a, b) => Debug.Log(b.NewItems + " " + b.OldItems);
+            _visibleDetectables.CollectionChanged += PublishCollectionChanges;
         }
 
         private void FixedUpdate()
         {
-            foreach (var component in _notVisibleDetectables)
+            for (int i = 0; i < _notVisibleDetectables.Count; i++)
             {
                 if (true)
                 {
-                    _notVisibleDetectables.Remove(component);
-                    _visibleDetectables.Add(component);
+                    _visibleDetectables.Add(_notVisibleDetectables[i]);
+                    _notVisibleDetectables.RemoveAt(i);
+                    i--;
                 }
             }
         }
@@ -47,7 +58,12 @@ namespace AI
         private void OnTriggerEnter(Collider other)
         {
             if (other.TryGetComponent(out IDetectable detectable))
-                _notVisibleDetectables.Add((Component)detectable);
+            {
+                Component component = detectable as Component;
+                if (!_visibleDetectables.Contains(component))
+                    if (!_notVisibleDetectables.Contains(component))
+                        _notVisibleDetectables.Add(component);
+            }
         }
 
         private void OnTriggerExit(Collider other)
@@ -61,5 +77,17 @@ namespace AI
         }
 
         #endregion Unity
+
+        #region Private
+
+        private void PublishCollectionChanges(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            foreach (var newItem in e.NewItems)
+                DetectableBecameVisible.Invoke((Component)newItem);
+            foreach (var oldItem in e.OldItems)
+                DetectableBecameInvisible.Invoke((Component)oldItem);
+        }
+
+        #endregion Private
     }
 }
