@@ -11,7 +11,7 @@ namespace AI
 
         private EntitiesDetector _detector;
         private Dictionary<Component, Attitude> _attitudes = new();
-        protected List<(Type type, AttitudeType attitudeType, Func<float> method)> _attitudesMap = new();
+        protected List<AttitudeModel> _attitudeModels = new();
 
         #endregion Fields
 
@@ -22,7 +22,7 @@ namespace AI
             _detector = GetComponent<EntitiesDetector>();
             _detector.DetectableBecameVisible.AddListener(OnEntityDetected);
             _detector.DetectableBecameInvisible.AddListener(OnEntityDetectionLost);
-            CreateAttitudesMap();
+            CreateAttitudeModels();
         }
 
         #endregion Unity
@@ -31,12 +31,12 @@ namespace AI
 
         protected virtual void OnEntityDetected(Component component)
         {
-            foreach (var attitudeModel in _attitudesMap)
+            foreach (var attitudeModel in _attitudeModels)
             {
-                if (attitudeModel.type == component.GetType())
+                if (attitudeModel.Type == component.GetType())
                 {
-                    AddAttitude(component, attitudeModel.attitudeType,
-                        attitudeModel.method);
+                    AddAttitude(component, attitudeModel.AttitudeType,
+                        attitudeModel.Method);
                     return;
                 }
             }
@@ -47,7 +47,7 @@ namespace AI
             _attitudes.Remove(component);
         }
 
-        protected abstract void CreateAttitudesMap();
+        protected abstract void CreateAttitudeModels();
 
         #endregion Protected
 
