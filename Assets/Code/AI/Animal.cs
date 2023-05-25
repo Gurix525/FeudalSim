@@ -68,7 +68,6 @@ namespace AI
                 AttitudeType.Hungry => new HungryAttitude(strengthCalculationMethod),
                 _ => new NeutralAttitude(strengthCalculationMethod),
             });
-            Debug.Log($"Attitude to {component.name}: {_attitudes[component]}");
         }
 
         #endregion Private

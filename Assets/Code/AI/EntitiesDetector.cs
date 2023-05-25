@@ -27,15 +27,6 @@ namespace AI
 
         #endregion Properties
 
-        #region Public
-
-        public void SetDetectingRadius(float radius)
-        {
-            _sphereCollider.radius = radius;
-        }
-
-        #endregion Public
-
         #region Unity
 
         private void Awake()
