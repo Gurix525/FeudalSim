@@ -4,10 +4,10 @@ namespace AI
 {
     public class Wolf : Animal
     {
-        protected override void OnEntityDetected(Component detectedComponent)
+        protected override void CreateAttitudesMap()
         {
-            if (detectedComponent is Wolf)
-                _interests[detectedComponent] = 100F;
+            _attitudesMap.Add((typeof(Wolf), AttitudeType.Friendly, () => 10F));
+            _attitudesMap.Add((typeof(Animal), AttitudeType.Hostile, () => 100F));
         }
     }
 }

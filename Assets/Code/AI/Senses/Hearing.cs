@@ -1,12 +1,15 @@
 using UnityEngine;
 
-[DisallowMultipleComponent]
-public class Hearing : Sense
+namespace AI
 {
-    public override bool IsObjectPerceptible(GameObject gameObject)
+    [DisallowMultipleComponent]
+    public class Hearing : Sense
     {
-        if (!IsObjectInPerceptingRange(gameObject))
+        public override bool IsObjectPerceptible(GameObject gameObject)
+        {
+            if (!IsObjectInPerceptingRange(gameObject))
+                return false;
             return false;
-        return false;
+        }
     }
 }

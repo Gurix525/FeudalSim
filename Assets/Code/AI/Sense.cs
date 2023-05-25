@@ -1,44 +1,47 @@
 using UnityEngine;
 using UnityEngine.Events;
 
-public abstract class Sense : MonoBehaviour
+namespace AI
 {
-    #region Fields
-
-    [SerializeField] private float _maxPerceptingDistance = 20F;
-
-    #endregion Fields
-
-    #region Properties
-
-    public UnityEvent PerceptingDistanceChanged { get; } = new();
-
-    public float MaxPerceptingDistance
+    public abstract class Sense : MonoBehaviour
     {
-        get => _maxPerceptingDistance;
-        private set
+        #region Fields
+
+        [SerializeField] private float _maxPerceptingDistance = 20F;
+
+        #endregion Fields
+
+        #region Properties
+
+        public UnityEvent PerceptingDistanceChanged { get; } = new();
+
+        public float MaxPerceptingDistance
         {
-            _maxPerceptingDistance = value;
-            PerceptingDistanceChanged.Invoke();
+            get => _maxPerceptingDistance;
+            private set
+            {
+                _maxPerceptingDistance = value;
+                PerceptingDistanceChanged.Invoke();
+            }
         }
+
+        #endregion Properties
+
+        #region Public
+
+        public abstract bool IsObjectPerceptible(GameObject gameObject);
+
+        #endregion Public
+
+        #region Protected
+
+        protected bool IsObjectInPerceptingRange(GameObject gameObject)
+        {
+            return Vector3.Distance(
+                transform.position, gameObject.transform.position)
+                <= _maxPerceptingDistance;
+        }
+
+        #endregion Protected
     }
-
-    #endregion Properties
-
-    #region Public
-
-    public abstract bool IsObjectPerceptible(GameObject gameObject);
-
-    #endregion Public
-
-    #region Protected
-
-    protected bool IsObjectInPerceptingRange(GameObject gameObject)
-    {
-        return Vector3.Distance(
-            transform.position, gameObject.transform.position)
-            <= _maxPerceptingDistance;
-    }
-
-    #endregion Protected
 }
