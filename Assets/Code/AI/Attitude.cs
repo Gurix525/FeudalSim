@@ -18,5 +18,10 @@ namespace AI
         {
             Strength = _strengthCalculation();
         }
+
+        public override string ToString()
+        {
+            return $"{GetType()}: {Strength}";
+        }
     }
 }

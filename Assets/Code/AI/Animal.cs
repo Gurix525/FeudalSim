@@ -1,9 +1,11 @@
 using System;
 using System.Collections.Generic;
+using Extensions;
 using UnityEngine;
 
 namespace AI
 {
+    [DisallowMultipleComponent]
     [RequireComponent(typeof(EntitiesDetector))]
     public abstract class Animal : MonoBehaviour, IDetectable
     {
@@ -33,7 +35,7 @@ namespace AI
         {
             foreach (var attitudeModel in _attitudeModels)
             {
-                if (attitudeModel.Type == component.GetType())
+                if (component.GetType().IsSameOrSubclass(attitudeModel.Type))
                 {
                     AddAttitude(component, attitudeModel.AttitudeType,
                         attitudeModel.Method);
@@ -66,6 +68,7 @@ namespace AI
                 AttitudeType.Hungry => new HungryAttitude(strengthCalculationMethod),
                 _ => new NeutralAttitude(strengthCalculationMethod),
             });
+            Debug.Log($"Attitude to {component.name}: {_attitudes[component]}");
         }
 
         #endregion Private
