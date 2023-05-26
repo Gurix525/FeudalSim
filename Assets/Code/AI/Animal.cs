@@ -13,23 +13,29 @@ namespace AI
 
         private EntitiesDetector _detector;
         private Dictionary<Component, Attitude> _attitudes = new();
-        protected List<AttitudeModel> _attitudeModels = new();
+        private List<AttitudeModel> _attitudeModels = new();
+        private Dictionary<AttitudeType, AIBehaviour> _behaviours = new();
 
         #endregion Fields
 
         #region Unity
 
-        protected virtual void Awake()
+        protected void Awake()
         {
             _detector = GetComponent<EntitiesDetector>();
             _detector.DetectableBecameVisible.AddListener(OnEntityDetected);
             _detector.DetectableBecameInvisible.AddListener(OnEntityDetectionLost);
             CreateAttitudeModels();
+            CreateBehaviours();
         }
 
         #endregion Unity
 
         #region Protected
+
+        protected abstract void CreateAttitudeModels();
+
+        protected abstract void CreateBehaviours();
 
         protected virtual void OnEntityDetected(Component component)
         {
@@ -49,7 +55,16 @@ namespace AI
             _attitudes.Remove(component);
         }
 
-        protected abstract void CreateAttitudeModels();
+        protected void AddAttitude(AttitudeModel model)
+        {
+            _attitudeModels.Add(model);
+        }
+
+        protected void AddBehaviour<T>(AttitudeType type) where T : AIBehaviour
+        {
+            _behaviours[type] = gameObject.AddComponent<T>();
+            _behaviours[type].Animal = this;
+        }
 
         #endregion Protected
 
@@ -60,14 +75,7 @@ namespace AI
             AttitudeType type,
             Func<float> strengthCalculationMethod)
         {
-            _attitudes.Add(component, type switch
-            {
-                AttitudeType.Friendly => new FriendlyAttitude(strengthCalculationMethod),
-                AttitudeType.Hostile => new HostileAttitude(strengthCalculationMethod),
-                AttitudeType.Scared => new ScaredAttitude(strengthCalculationMethod),
-                AttitudeType.Hungry => new HungryAttitude(strengthCalculationMethod),
-                _ => new NeutralAttitude(strengthCalculationMethod),
-            });
+            _attitudes.Add(component, new(type, strengthCalculationMethod));
         }
 
         #endregion Private

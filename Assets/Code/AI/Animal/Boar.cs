@@ -4,8 +4,12 @@
     {
         protected override void CreateAttitudeModels()
         {
-            _attitudeModels.Add((typeof(Boar), AttitudeType.Friendly, () => 10F));
-            _attitudeModels.Add((typeof(Animal), AttitudeType.Hostile, () => 100F));
+            AddAttitude((typeof(Boar), AttitudeType.Friendly, () => 10F));
+            AddAttitude((typeof(Animal), AttitudeType.Hostile, () => 100F));
+        }
+
+        protected override void CreateBehaviours()
+        {
         }
     }
 }
