@@ -1,4 +1,5 @@
 ﻿using System;
+using UnityEngine;
 
 namespace AI
 {
@@ -6,11 +7,13 @@ namespace AI
     {
         private Func<float> _strengthCalculation;
 
+        public Component Component { get; }
         public AttitudeType AttitudeType { get; }
-        public float Strength { get; set; }
+        public float Strength { get; private set; }
 
-        public Attitude(AttitudeType attitudeType, Func<float> strengthCalculationMethod)
+        public Attitude(Component component, AttitudeType attitudeType, Func<float> strengthCalculationMethod)
         {
+            Component = component;
             AttitudeType = attitudeType;
             _strengthCalculation = strengthCalculationMethod;
             RecalculateStrength();

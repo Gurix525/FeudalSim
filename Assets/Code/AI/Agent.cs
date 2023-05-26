@@ -18,6 +18,21 @@ namespace AI
             _agent.SetDestination(target);
         }
 
+        public void Stop()
+        {
+            _agent.isStopped = true;
+        }
+
+        public void Resume()
+        {
+            _agent.isStopped = false;
+        }
+
+        public void ResetPath()
+        {
+            _agent.ResetPath();
+        }
+
         #endregion Public
 
         #region Unity

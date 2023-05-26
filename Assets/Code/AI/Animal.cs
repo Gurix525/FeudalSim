@@ -1,22 +1,46 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Extensions;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 namespace AI
 {
     [DisallowMultipleComponent]
-    [RequireComponent(typeof(EntitiesDetector))]
+    [RequireComponent(typeof(EntitiesDetector), typeof(Agent))]
     public abstract class Animal : MonoBehaviour, IDetectable
     {
         #region Fields
 
         private EntitiesDetector _detector;
+        private Agent _agent;
         private Dictionary<Component, Attitude> _attitudes = new();
         private List<AttitudeModel> _attitudeModels = new();
         private Dictionary<AttitudeType, AIBehaviour> _behaviours = new();
+        private Attitude _highestPriorityAttitude;
+        private float _attitudesCheckInterval = 10F;
+        private float _timeSinceAttitudesCheck;
 
         #endregion Fields
+
+        #region Properties
+
+        public Component Focus => HighestPriorityAttitude?.Component;
+
+        private Attitude HighestPriorityAttitude
+        {
+            get => _highestPriorityAttitude;
+            set
+            {
+                if (_highestPriorityAttitude == value)
+                    return;
+                _highestPriorityAttitude = value;
+                _agent.ResetPath();
+            }
+        }
+
+        #endregion Properties
 
         #region Public
 
@@ -31,6 +55,7 @@ namespace AI
 
         protected void Awake()
         {
+            _agent = GetComponent<Agent>();
             _detector = GetComponent<EntitiesDetector>();
             _detector.DetectableBecameVisible.AddListener(OnEntityDetected);
             _detector.DetectableBecameInvisible.AddListener(OnEntityDetectionLost);
@@ -38,29 +63,16 @@ namespace AI
             CreateBehaviours();
         }
 
+        private void FixedUpdate()
+        {
+            CheckAttitudes();
+        }
+
         #endregion Unity
 
         #region Protected
 
         protected abstract void CreateAttitudeModels();
-
-        protected virtual void OnEntityDetected(Component component)
-        {
-            foreach (var attitudeModel in _attitudeModels)
-            {
-                if (component.GetType().IsSameOrSubclass(attitudeModel.Type))
-                {
-                    AddAttitude(component, attitudeModel.AttitudeType,
-                        attitudeModel.Method);
-                    return;
-                }
-            }
-        }
-
-        protected virtual void OnEntityDetectionLost(Component component)
-        {
-            _attitudes.Remove(component);
-        }
 
         protected void AddAttitude(AttitudeModel model)
         {
@@ -76,12 +88,11 @@ namespace AI
             AttitudeType type,
             Func<float> strengthCalculationMethod)
         {
-            _attitudes.Add(component, new(type, strengthCalculationMethod));
+            _attitudes.Add(component, new(component, type, strengthCalculationMethod));
         }
 
         private void CreateBehaviours()
         {
-            DateTime t1 = DateTime.Now;
             var thisType = GetType();
             var nestedTypes = thisType.GetNestedTypes();
             if (nestedTypes.Length == 0)
@@ -101,9 +112,66 @@ namespace AI
                     var generic = method.MakeGenericMethod(type);
                     _behaviours[attitudeType] = (AIBehaviour)generic.Invoke(this, null);
                     _behaviours[attitudeType].Animal = this;
+                    _behaviours[attitudeType].Agent = _agent;
                 }
-            DateTime t2 = DateTime.Now;
-            Debug.Log((t2 - t1).TotalMilliseconds);
+        }
+
+        private void OnEntityDetected(Component component)
+        {
+            foreach (var attitudeModel in _attitudeModels)
+            {
+                if (component.GetType().IsSameOrSubclass(attitudeModel.Type))
+                {
+                    AddAttitude(component, attitudeModel.AttitudeType,
+                        attitudeModel.Method);
+                    break;
+                }
+            }
+            RecalculateAttitudesAndSelectBehaviour();
+        }
+
+        private void OnEntityDetectionLost(Component component)
+        {
+            _attitudes.Remove(component);
+            RecalculateAttitudesAndSelectBehaviour();
+        }
+
+        private void RecalculateAttitudesAndSelectBehaviour()
+        {
+            _timeSinceAttitudesCheck = 0F;
+            if (_attitudes.Count == 0)
+            {
+                HighestPriorityAttitude = null;
+                ChangeBehavioursState(AttitudeType.Neutral);
+                return;
+            }
+            foreach (var attitude in _attitudes)
+                attitude.Value.RecalculateStrength();
+            HighestPriorityAttitude = _attitudes.Values.Aggregate(
+                (currentMax, attitude) =>
+                attitude.Strength > (currentMax ?? attitude).Strength
+                ? attitude : currentMax);
+            ChangeBehavioursState(HighestPriorityAttitude.AttitudeType);
+        }
+
+        private void ChangeBehavioursState(AttitudeType activeType)
+        {
+            foreach (var behaviour in _behaviours)
+            {
+                if (behaviour.Key == activeType)
+                    behaviour.Value.enabled = true;
+                else
+                    behaviour.Value.enabled = false;
+            }
+        }
+
+        private void CheckAttitudes()
+        {
+            _timeSinceAttitudesCheck += Time.fixedDeltaTime;
+            if (_timeSinceAttitudesCheck >= _attitudesCheckInterval)
+            {
+                RecalculateAttitudesAndSelectBehaviour();
+            }
         }
 
         #endregion Private

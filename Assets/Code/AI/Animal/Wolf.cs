@@ -11,18 +11,27 @@ namespace AI
         }
 
         public class FriendlyBehaviour : AIBehaviour
-        { }
+        {
+        }
 
         public class HostileBehaviour : AIBehaviour
-        { }
+        {
+            private void FixedUpdate()
+            {
+                Agent.SetDestination(Focus.transform.position);
+            }
+        }
 
         public class ScaredBehaviour : AIBehaviour
-        { }
+        {
+        }
 
         public class HungryBehaviour : AIBehaviour
-        { }
+        {
+        }
 
         public class NeutralBehaviour : AIBehaviour
-        { }
+        {
+        }
     }
 }
