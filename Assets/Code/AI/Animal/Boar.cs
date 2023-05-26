@@ -7,9 +7,5 @@
             AddAttitude((typeof(Boar), AttitudeType.Friendly, () => 10F));
             AddAttitude((typeof(Animal), AttitudeType.Hostile, () => 100F));
         }
-
-        protected override void CreateBehaviours()
-        {
-        }
     }
 }

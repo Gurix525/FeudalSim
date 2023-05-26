@@ -18,6 +18,15 @@ namespace AI
 
         #endregion Fields
 
+        #region Public
+
+        public AIBehaviour AddBehaviour<T>() where T : AIBehaviour
+        {
+            return gameObject.AddComponent<T>();
+        }
+
+        #endregion Public
+
         #region Unity
 
         protected void Awake()
@@ -34,8 +43,6 @@ namespace AI
         #region Protected
 
         protected abstract void CreateAttitudeModels();
-
-        protected abstract void CreateBehaviours();
 
         protected virtual void OnEntityDetected(Component component)
         {
@@ -60,12 +67,6 @@ namespace AI
             _attitudeModels.Add(model);
         }
 
-        protected void AddBehaviour<T>(AttitudeType type) where T : AIBehaviour
-        {
-            _behaviours[type] = gameObject.AddComponent<T>();
-            _behaviours[type].Animal = this;
-        }
-
         #endregion Protected
 
         #region Private
@@ -76,6 +77,33 @@ namespace AI
             Func<float> strengthCalculationMethod)
         {
             _attitudes.Add(component, new(type, strengthCalculationMethod));
+        }
+
+        private void CreateBehaviours()
+        {
+            DateTime t1 = DateTime.Now;
+            var thisType = GetType();
+            var nestedTypes = thisType.GetNestedTypes();
+            if (nestedTypes.Length == 0)
+                return;
+            var method = thisType.GetMethod(nameof(AddBehaviour));
+            foreach (var type in nestedTypes)
+                if (type.IsSubclassOf(typeof(AIBehaviour)))
+                {
+                    AttitudeType attitudeType = type.Name switch
+                    {
+                        "FriendlyBehaviour" => AttitudeType.Friendly,
+                        "HostileBehaviour" => AttitudeType.Hostile,
+                        "ScaredBehaviour" => AttitudeType.Scared,
+                        "HungryBehaviour" => AttitudeType.Hungry,
+                        _ => AttitudeType.Neutral
+                    };
+                    var generic = method.MakeGenericMethod(type);
+                    _behaviours[attitudeType] = (AIBehaviour)generic.Invoke(this, null);
+                    _behaviours[attitudeType].Animal = this;
+                }
+            DateTime t2 = DateTime.Now;
+            Debug.Log((t2 - t1).TotalMilliseconds);
         }
 
         #endregion Private

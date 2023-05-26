@@ -10,28 +10,19 @@ namespace AI
             AddAttitude((typeof(Animal), AttitudeType.Hostile, () => 100F));
         }
 
-        protected override void CreateBehaviours()
-        {
-            AddBehaviour<FriendlyBehaviour>(AttitudeType.Friendly);
-            AddBehaviour<HostileBehaviour>(AttitudeType.Hostile);
-            AddBehaviour<ScaredBehaviour>(AttitudeType.Scared);
-            AddBehaviour<HungryBehaviour>(AttitudeType.Hungry);
-            AddBehaviour<NeutralBehaviour>(AttitudeType.Neutral);
-        }
-
-        private class FriendlyBehaviour : AIBehaviour
+        public class FriendlyBehaviour : AIBehaviour
         { }
 
-        private class HostileBehaviour : AIBehaviour
+        public class HostileBehaviour : AIBehaviour
         { }
 
-        private class ScaredBehaviour : AIBehaviour
+        public class ScaredBehaviour : AIBehaviour
         { }
 
-        private class HungryBehaviour : AIBehaviour
+        public class HungryBehaviour : AIBehaviour
         { }
 
-        private class NeutralBehaviour : AIBehaviour
+        public class NeutralBehaviour : AIBehaviour
         { }
     }
 }
