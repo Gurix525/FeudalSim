@@ -39,6 +39,7 @@ namespace AI
         {
             if (Task != null)
                 Task.Stop();
+            TaskFinished.RemoveAllListeners();
             Task = new(_getCoroutine(), false);
             Task.Finished += (manual) => TaskFinished.Invoke();
             Task.Finished += ResetTask;
