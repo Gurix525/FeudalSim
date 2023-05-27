@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Extensions;
 using UnityEngine;
-using UnityEngine.EventSystems;
 
 namespace AI
 {
@@ -152,6 +151,12 @@ namespace AI
                 (currentMax, attitude) =>
                 attitude.Power > (currentMax ?? attitude).Power
                 ? attitude : currentMax);
+            if (HighestPriorityAttitude.Power < 0F)
+            {
+                HighestPriorityAttitude = null;
+                ChangeBehavioursState(AttitudeType.Neutral);
+                return;
+            }
             ChangeBehavioursState(HighestPriorityAttitude.AttitudeType);
         }
 
@@ -163,7 +168,7 @@ namespace AI
                     behaviour.Value.enabled = true;
                 else
                 {
-                    behaviour.Value.StopAllCoroutines();
+                    behaviour.Value.StopAction();
                     behaviour.Value.enabled = false;
                 }
             }

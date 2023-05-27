@@ -35,6 +35,11 @@ namespace AI
             Task.Start();
         }
 
+        public void StopTask()
+        {
+            Task.Stop();
+        }
+
         public void ResetTask(bool manual)
         {
             if (Task != null)

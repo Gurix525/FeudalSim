@@ -2,7 +2,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using Extensions;
-using TaskManager;
 using UnityEngine;
 
 namespace AI
@@ -27,6 +26,15 @@ namespace AI
 
         #endregion Properties
 
+        #region Public
+
+        public void StopAction()
+        {
+            _currentAction?.StopTask();
+        }
+
+        #endregion Public
+
         #region Unity
 
         protected virtual void Awake()
@@ -42,24 +50,8 @@ namespace AI
 
         private void OnDisable()
         {
-            ResetCurrentAction();
+            StopAndDisableCurrentAction();
         }
-
-        //protected virtual void FixedUpdate()
-        //{
-        //    foreach (var action in _actions)
-        //    {
-        //        if (action == _currentAction)
-        //        {
-        //            action.Power -= Time.fixedDeltaTime;
-        //            action.Power = action.Power < 0 ? 0 : action.Power;
-        //            continue;
-        //        }
-        //        action.Power += Time.fixedDeltaTime / (_actions.Count - 1);
-        //    }
-        //    if (_currentAction?.Power <= 0)
-        //        _currentAction?.Task?.Stop();
-        //}
 
         #endregion Unity
 
@@ -99,6 +91,12 @@ namespace AI
         private void StartCurrentAction()
         {
             _currentAction?.StartTask();
+        }
+
+        private void StopAndDisableCurrentAction()
+        {
+            _currentAction?.StopTask();
+            _currentAction?.TaskFinished.RemoveAllListeners();
         }
 
         #endregion Private

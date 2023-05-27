@@ -10,7 +10,7 @@ namespace AI
     {
         protected override void CreateAttitudeModels()
         {
-            AddAttitude((typeof(Wolf), AttitudeType.Friendly, () => 10F));
+            AddAttitude((typeof(Wolf), AttitudeType.Friendly, () => -10F));
             AddAttitude((typeof(Animal), AttitudeType.Hostile, () => 100F));
         }
 
