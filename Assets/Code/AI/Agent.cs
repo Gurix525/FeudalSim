@@ -15,6 +15,10 @@ namespace AI
 
         public Vector3 Destination => _agent.destination;
 
+        public float Speed { get => _agent.speed; set => _agent.speed = value; }
+
+        public float Acceleration { get => _agent.acceleration; set => _agent.acceleration = value; }
+
         #endregion Properties
 
         #region Public

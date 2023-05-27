@@ -57,9 +57,7 @@ namespace AI
 
         #region Protected
 
-        protected virtual void CreateActions()
-        {
-        }
+        protected abstract void CreateActions();
 
         protected void AddAction(AIAction aiAction)
         {

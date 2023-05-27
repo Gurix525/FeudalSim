@@ -14,28 +14,41 @@ namespace AI
             AddAttitude((typeof(Animal), AttitudeType.Hostile, () => 100F));
         }
 
-        public class FriendlyBehaviour : AIBehaviour
-        {
-        }
-
         public class HostileBehaviour : AIBehaviour
         {
-        }
+            protected override void CreateActions()
+            {
+                AddAction(ChaseTarget);
+            }
 
-        public class ScaredBehaviour : AIBehaviour
-        {
-        }
+            private void OnEnable()
+            {
+                Agent.Speed = 8F;
+                Agent.Acceleration = 6F;
+            }
 
-        public class HungryBehaviour : AIBehaviour
-        {
+            private IEnumerator ChaseTarget()
+            {
+                while (Vector3.Distance(transform.position, Focus.transform.position) > 2F)
+                {
+                    Agent.SetDestination(Focus.transform.position);
+                    yield return new WaitForFixedUpdate();
+                }
+            }
         }
 
         public class NeutralBehaviour : AIBehaviour
         {
             protected override void CreateActions()
             {
-                AddAction(StandIdle);
-                AddAction(Roam);
+                AddAction((StandIdle, 1F));
+                AddAction((Roam, 2F));
+            }
+
+            private void OnEnable()
+            {
+                Agent.Speed = 2F;
+                Agent.Acceleration = 2F;
             }
 
             private IEnumerator StandIdle()
