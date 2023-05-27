@@ -33,6 +33,11 @@ namespace AI
             _agent.ResetPath();
         }
 
+        public void Move(Vector3 offset)
+        {
+            _agent.Move(offset);
+        }
+
         #endregion Public
 
         #region Unity

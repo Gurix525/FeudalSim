@@ -61,6 +61,7 @@ namespace AI
             _detector.DetectableBecameInvisible.AddListener(OnEntityDetectionLost);
             CreateAttitudeModels();
             CreateBehaviours();
+            RecalculateAttitudesAndSelectBehaviour();
         }
 
         private void FixedUpdate()
@@ -146,10 +147,10 @@ namespace AI
                 return;
             }
             foreach (var attitude in _attitudes)
-                attitude.Value.RecalculateStrength();
+                attitude.Value.RecalculatePower();
             HighestPriorityAttitude = _attitudes.Values.Aggregate(
                 (currentMax, attitude) =>
-                attitude.Strength > (currentMax ?? attitude).Strength
+                attitude.Power > (currentMax ?? attitude).Power
                 ? attitude : currentMax);
             ChangeBehavioursState(HighestPriorityAttitude.AttitudeType);
         }
@@ -161,7 +162,10 @@ namespace AI
                 if (behaviour.Key == activeType)
                     behaviour.Value.enabled = true;
                 else
+                {
+                    behaviour.Value.StopAllCoroutines();
                     behaviour.Value.enabled = false;
+                }
             }
         }
 

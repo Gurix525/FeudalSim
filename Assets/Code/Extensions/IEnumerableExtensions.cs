@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
@@ -19,6 +20,29 @@ namespace Extensions
             float averageY = vectors.Select(vector => vector.y).Sum() / vectors.Count();
             float averageZ = vectors.Select(vector => vector.z).Sum() / vectors.Count();
             return new(averageX, averageY, averageZ);
+        }
+
+        public static T RandomElementByWeight<T>(
+            this IEnumerable<T> sequence, Func<T, float> weightSelector)
+        {
+            float totalWeight = sequence.Sum(weightSelector);
+            float itemWeightIndex = (float)new System.Random().NextDouble() * totalWeight;
+            float currentWeightIndex = 0;
+
+            foreach (var item in from weightedItem in sequence
+                                 select new
+                                 {
+                                     Value = weightedItem,
+                                     Weight = weightSelector(weightedItem)
+                                 })
+            {
+                currentWeightIndex += item.Weight;
+
+                if (currentWeightIndex >= itemWeightIndex)
+                    return item.Value;
+            }
+
+            return default(T);
         }
     }
 }

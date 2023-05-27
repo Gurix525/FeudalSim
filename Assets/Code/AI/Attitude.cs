@@ -5,23 +5,23 @@ namespace AI
 {
     public class Attitude
     {
-        private Func<float> _strengthCalculation;
+        private Func<float> _powerCalculation;
 
         public Component Component { get; }
         public AttitudeType AttitudeType { get; }
-        public float Strength { get; private set; }
+        public float Power { get; private set; }
 
-        public Attitude(Component component, AttitudeType attitudeType, Func<float> strengthCalculationMethod)
+        public Attitude(Component component, AttitudeType attitudeType, Func<float> powerCalculationMethod)
         {
             Component = component;
             AttitudeType = attitudeType;
-            _strengthCalculation = strengthCalculationMethod;
-            RecalculateStrength();
+            _powerCalculation = powerCalculationMethod;
+            RecalculatePower();
         }
 
-        public void RecalculateStrength()
+        public void RecalculatePower()
         {
-            Strength = _strengthCalculation();
+            Power = _powerCalculation();
         }
     }
 }
