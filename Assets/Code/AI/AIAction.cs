@@ -42,12 +42,16 @@ namespace AI
             TaskFinished.RemoveAllListeners();
             Task = new(_getCoroutine(), false);
             Task.Finished += (manual) => TaskFinished.Invoke();
-            Task.Finished += ResetTask;
         }
 
         public static implicit operator AIAction((Func<IEnumerator> getCoroutine, float power) input)
         {
             return new(input.getCoroutine, input.power);
+        }
+
+        public static implicit operator AIAction(Func<IEnumerator> getCoroutine)
+        {
+            return new(getCoroutine, 1F);
         }
 
         #endregion Public

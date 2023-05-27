@@ -1,4 +1,6 @@
 using System.Collections;
+using Extensions;
+using Misc;
 using TaskManager;
 using UnityEngine;
 
@@ -32,26 +34,33 @@ namespace AI
         {
             protected override void CreateActions()
             {
-                AddAction((MoveRight, 3F));
-                AddAction((MoveLeft, 3F));
+                AddAction(StandIdle);
+                AddAction(Roam);
             }
 
-            private IEnumerator MoveRight()
+            private IEnumerator StandIdle()
             {
-                while (true)
-                {
-                    Agent.Move(transform.right * Time.fixedDeltaTime);
-                    yield return new WaitForFixedUpdate();
-                }
+                float randomTime = ((float)_random.NextDouble()).Remap(0F, 1F, 5F, 15F);
+                Debug.Log(randomTime);
+                yield return new WaitForSeconds(randomTime);
             }
 
-            private IEnumerator MoveLeft()
+            private IEnumerator Roam()
             {
-                while (true)
+                float roamMaxTime = _random.NextFloat(5F, 10F);
+                float roamingTime = 0F;
+                Vector3 randomOffset =
+                    Quaternion.Euler(0F, _random.NextFloat(0F, 360F), 0F)
+                    * new Vector3(0F, 0F, _random.NextFloat(5F, 20F));
+                Agent.SetDestination(transform.position + randomOffset);
+                Debug.Log(Agent.Destination);
+                while (Vector3.Distance(transform.position, Agent.Destination) > 2F
+                    && roamingTime < roamMaxTime)
                 {
-                    Agent.Move(-transform.right * Time.fixedDeltaTime);
+                    roamingTime += Time.fixedDeltaTime;
                     yield return new WaitForFixedUpdate();
                 }
+                yield return new WaitForSeconds(roamingTime.Remap(5F, 10F, 2F, 5F));
             }
         }
     }

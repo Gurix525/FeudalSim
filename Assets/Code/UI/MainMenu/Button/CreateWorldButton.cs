@@ -4,7 +4,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using Controls;
 using Misc;
-using MyNamespace;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;

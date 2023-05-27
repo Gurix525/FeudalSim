@@ -11,11 +11,22 @@ namespace AI
 
         #endregion Fields
 
+        #region Properties
+
+        public Vector3 Destination => _agent.destination;
+
+        #endregion Properties
+
         #region Public
 
-        public void SetDestination(Vector3 target)
+        public void SetDestination(Vector3 targetPosition, bool hasToSamplePosition = true)
         {
-            _agent.SetDestination(target);
+            if (hasToSamplePosition)
+            {
+                NavMesh.SamplePosition(targetPosition, out NavMeshHit hit, float.MaxValue, NavMesh.AllAreas);
+                targetPosition = hit.position;
+            }
+            _agent.SetDestination(targetPosition);
         }
 
         public void Stop()

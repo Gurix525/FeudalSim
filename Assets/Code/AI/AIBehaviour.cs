@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using Extensions;
 using TaskManager;
 using UnityEngine;
@@ -8,6 +10,8 @@ namespace AI
     public abstract class AIBehaviour : MonoBehaviour
     {
         #region Fields
+
+        protected System.Random _random = new();
 
         private AIAction _currentAction;
         private List<AIAction> _actions = new();
@@ -41,21 +45,21 @@ namespace AI
             ResetCurrentAction();
         }
 
-        protected virtual void FixedUpdate()
-        {
-            foreach (var action in _actions)
-            {
-                if (action == _currentAction)
-                {
-                    action.Power -= Time.fixedDeltaTime;
-                    action.Power = action.Power < 0 ? 0 : action.Power;
-                    continue;
-                }
-                action.Power += Time.fixedDeltaTime / (_actions.Count - 1);
-            }
-            if (_currentAction?.Power <= 0)
-                _currentAction?.Task?.Stop();
-        }
+        //protected virtual void FixedUpdate()
+        //{
+        //    foreach (var action in _actions)
+        //    {
+        //        if (action == _currentAction)
+        //        {
+        //            action.Power -= Time.fixedDeltaTime;
+        //            action.Power = action.Power < 0 ? 0 : action.Power;
+        //            continue;
+        //        }
+        //        action.Power += Time.fixedDeltaTime / (_actions.Count - 1);
+        //    }
+        //    if (_currentAction?.Power <= 0)
+        //        _currentAction?.Task?.Stop();
+        //}
 
         #endregion Unity
 
@@ -68,6 +72,11 @@ namespace AI
         protected void AddAction(AIAction aiAction)
         {
             _actions.Add(aiAction);
+        }
+
+        protected void AddAction(Func<IEnumerator> getCoroutine)
+        {
+            _actions.Add(getCoroutine);
         }
 
         #endregion Protected
