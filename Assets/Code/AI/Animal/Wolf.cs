@@ -14,30 +14,18 @@ namespace AI
 
         public class FriendlyBehaviour : AIBehaviour
         {
-            protected override void CreateActions()
-            {
-            }
         }
 
         public class HostileBehaviour : AIBehaviour
         {
-            protected override void CreateActions()
-            {
-            }
         }
 
         public class ScaredBehaviour : AIBehaviour
         {
-            protected override void CreateActions()
-            {
-            }
         }
 
         public class HungryBehaviour : AIBehaviour
         {
-            protected override void CreateActions()
-            {
-            }
         }
 
         public class NeutralBehaviour : AIBehaviour

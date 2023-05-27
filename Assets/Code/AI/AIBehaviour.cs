@@ -28,20 +28,17 @@ namespace AI
         protected virtual void Awake()
         {
             CreateActions();
-            RandomizeAction();
-            StartCurrentTask();
             enabled = false;
         }
 
         private void OnEnable()
         {
-            ResetCurrentTask();
-            StartCurrentTask();
+            RandomizeAction();
         }
 
         private void OnDisable()
         {
-            ResetCurrentTask();
+            ResetCurrentAction();
         }
 
         protected virtual void FixedUpdate()
@@ -51,19 +48,22 @@ namespace AI
                 if (action == _currentAction)
                 {
                     action.Power -= Time.fixedDeltaTime;
+                    action.Power = action.Power < 0 ? 0 : action.Power;
                     continue;
                 }
-                action.Power += Time.fixedDeltaTime / _actions.Count - 1;
+                action.Power += Time.fixedDeltaTime / (_actions.Count - 1);
             }
-            if (_currentAction.Power < 0)
-                _currentAction.Task.Stop();
+            if (_currentAction?.Power <= 0)
+                _currentAction?.Task?.Stop();
         }
 
         #endregion Unity
 
         #region Protected
 
-        protected abstract void CreateActions();
+        protected virtual void CreateActions()
+        {
+        }
 
         protected void AddAction(AIAction aiAction)
         {
@@ -77,15 +77,17 @@ namespace AI
         private void RandomizeAction()
         {
             _currentAction = _actions.RandomElementByWeight(action => action.Power);
+            ResetCurrentAction();
+            StartCurrentAction();
         }
 
-        private void ResetCurrentTask()
+        private void ResetCurrentAction()
         {
             _currentAction?.ResetTask(true);
             _currentAction?.TaskFinished.AddListener(RandomizeAction);
         }
 
-        private void StartCurrentTask()
+        private void StartCurrentAction()
         {
             _currentAction?.StartTask();
         }
