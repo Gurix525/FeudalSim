@@ -22,11 +22,9 @@ namespace AI
                 AddAction(RunAway);
             }
 
-            protected override void OnEnable()
+            protected override void DuringEnable()
             {
-                base.OnEnable();
-                Agent.Speed = 8F;
-                Agent.Acceleration = 8F;
+                SetSpeed(MoveSpeedType.Run);
             }
 
             private IEnumerator RunAway()
@@ -55,11 +53,9 @@ namespace AI
                 AddAction((Roam, 2F));
             }
 
-            protected override void OnEnable()
+            protected override void DuringEnable()
             {
-                base.OnEnable();
-                Agent.Speed = 2F;
-                Agent.Acceleration = 2F;
+                SetSpeed(MoveSpeedType.Walk);
             }
 
             private IEnumerator StandIdle()

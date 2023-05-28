@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace AI
 {
-    public struct AttitudeModel
+    public class AttitudeModel
     {
         public Type Type { get; }
         public AttitudeType AttitudeType { get; }

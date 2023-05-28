@@ -44,9 +44,10 @@ namespace AI
             enabled = false;
         }
 
-        protected virtual void OnEnable()
+        protected void OnEnable()
         {
             RandomizeAction();
+            DuringEnable();
         }
 
         protected virtual void OnDisable()
@@ -61,6 +62,9 @@ namespace AI
 
         protected abstract void CreateActions();
 
+        protected virtual void DuringEnable()
+        { }
+
         protected void AddAction(AIAction aiAction)
         {
             _actions.Add(aiAction);
@@ -69,6 +73,11 @@ namespace AI
         protected void AddAction(Func<IEnumerator> getCoroutine)
         {
             _actions.Add(getCoroutine);
+        }
+
+        protected void SetSpeed(MoveSpeedType type)
+        {
+            Animal.MoveSpeed = type;
         }
 
         #endregion Protected

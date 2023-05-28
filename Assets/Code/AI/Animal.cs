@@ -21,6 +21,14 @@ namespace AI
         private Attitude _highestPriorityAttitude;
         private float _attitudesCheckInterval = 5F;
         private float _timeSinceAttitudesCheck;
+        private MoveSpeedType _moveSpeedType;
+
+        private Dictionary<MoveSpeedType, MoveSpeed> _moveSpeeds = new()
+        {
+            { MoveSpeedType.Walk, new(2F, 2F)},
+            { MoveSpeedType.Trot, new(4F, 4F) },
+            { MoveSpeedType.Run, new(8F, 8F) }
+        };
 
         #endregion Fields
 
@@ -29,6 +37,16 @@ namespace AI
         public Component Focus => HighestPriorityAttitude?.Component;
         public IReadOnlyDictionary<Component, Attitude> Attitudes => _attitudes;
         public float MaxDetectingDistance => _detector.MaxDetectingDistance;
+
+        public MoveSpeedType MoveSpeed
+        {
+            get => _moveSpeedType;
+            set
+            {
+                _moveSpeedType = value;
+                SetSpeed(value);
+            }
+        }
 
         private Attitude HighestPriorityAttitude
         {
@@ -58,6 +76,8 @@ namespace AI
         protected void Awake()
         {
             _agent = GetComponent<Agent>();
+            RandomizeSpeedValues();
+            SetSpeed(MoveSpeedType.Walk);
             _detector = GetComponent<EntitiesDetector>();
             _detector.DetectableBecameVisible.AddListener(OnEntityDetected);
             _detector.DetectableBecameInvisible.AddListener(OnEntityDetectionLost);
@@ -185,6 +205,23 @@ namespace AI
             {
                 RecalculateAttitudesAndSelectBehaviour();
             }
+        }
+
+        private void RandomizeSpeedValues()
+        {
+            System.Random random = new();
+            _moveSpeeds = new()
+            {
+                { MoveSpeedType.Walk, (random.NextFloat(1.8F, 2.2F), random.NextFloat(1.8F, 2.2F))},
+                { MoveSpeedType.Trot, (random.NextFloat(3.8F, 4.2F), random.NextFloat(3.5F, 4.2F))},
+                { MoveSpeedType.Run, (random.NextFloat(7.8F, 8.2F), random.NextFloat(7F, 8.2F))},
+            };
+        }
+
+        private void SetSpeed(MoveSpeedType value)
+        {
+            _agent.Speed = _moveSpeeds[value].Speed;
+            _agent.Acceleration = _moveSpeeds[value].Acceleration;
         }
 
         #endregion Private
