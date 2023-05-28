@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System;
+using UnityEngine;
 
 namespace AI
 {
@@ -7,9 +8,9 @@ namespace AI
     {
         public Type Type { get; }
         public AttitudeType AttitudeType { get; }
-        public Func<float> Method { get; }
+        public Func<Component, float> Method { get; }
 
-        public AttitudeModel(Type type, AttitudeType attitudeType, Func<float> method)
+        public AttitudeModel(Type type, AttitudeType attitudeType, Func<Component, float> method)
         {
             this.Type = type;
             this.AttitudeType = attitudeType;
@@ -21,7 +22,7 @@ namespace AI
             return obj is AttitudeModel other &&
                    EqualityComparer<Type>.Default.Equals(Type, other.Type) &&
                    AttitudeType == other.AttitudeType &&
-                   EqualityComparer<Func<float>>.Default.Equals(Method, other.Method);
+                   EqualityComparer<Func<Component, float>>.Default.Equals(Method, other.Method);
         }
 
         public override int GetHashCode()
@@ -29,19 +30,19 @@ namespace AI
             return HashCode.Combine(Type, AttitudeType, Method);
         }
 
-        public void Deconstruct(out Type type, out AttitudeType attitudeType, out Func<float> method)
+        public void Deconstruct(out Type type, out AttitudeType attitudeType, out Func<Component, float> method)
         {
             type = this.Type;
             attitudeType = this.AttitudeType;
             method = this.Method;
         }
 
-        public static implicit operator (Type type, AttitudeType attitudeType, Func<float> method)(AttitudeModel value)
+        public static implicit operator (Type type, AttitudeType attitudeType, Func<Component, float> method)(AttitudeModel value)
         {
             return (value.Type, value.AttitudeType, value.Method);
         }
 
-        public static implicit operator AttitudeModel((Type type, AttitudeType attitudeType, Func<float> method) value)
+        public static implicit operator AttitudeModel((Type type, AttitudeType attitudeType, Func<Component, float> method) value)
         {
             return new AttitudeModel(value.type, value.attitudeType, value.method);
         }

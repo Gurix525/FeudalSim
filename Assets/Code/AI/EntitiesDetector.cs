@@ -24,6 +24,8 @@ namespace AI
 
         public UnityEvent<Component> DetectableBecameInvisible { get; } = new();
 
+        public float MaxDetectingDistance => _sphereCollider.radius;
+
         #endregion Properties
 
         #region Unity

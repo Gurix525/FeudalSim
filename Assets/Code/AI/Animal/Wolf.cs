@@ -10,8 +10,19 @@ namespace AI
     {
         protected override void CreateAttitudeModels()
         {
-            AddAttitude((typeof(Wolf), AttitudeType.Friendly, () => -10F));
-            AddAttitude((typeof(Animal), AttitudeType.Hostile, () => 100F));
+            AddAttitude((typeof(Wolf), AttitudeType.Friendly, (target) => -10F));
+            AddAttitude((typeof(Animal), AttitudeType.Hostile, (target) =>
+                100F + GetDistancePoints(target)));
+        }
+
+        private float GetDistancePoints(Component component)
+        {
+            float distance = Vector3.Distance(component.transform.position, transform.position);
+            float clamped = distance.Clamp(0F, MaxDetectingDistance);
+            float remapped = clamped.Remap(0F, MaxDetectingDistance, 0F, 10F);
+            return 10F - Vector3.Distance(component.transform.position, transform.position)
+                .Clamp(0F, MaxDetectingDistance)
+                .Remap(0F, MaxDetectingDistance, 0F, 10F);
         }
 
         public class HostileBehaviour : AIBehaviour
@@ -21,19 +32,24 @@ namespace AI
                 AddAction(ChaseTarget);
             }
 
-            private void OnEnable()
+            protected override void OnEnable()
             {
+                base.OnEnable();
                 Agent.Speed = 8F;
                 Agent.Acceleration = 6F;
             }
 
             private IEnumerator ChaseTarget()
             {
-                while (Vector3.Distance(transform.position, Focus.transform.position) > 2F)
+                bool hasToUpdate = false;
+                StateUpdated.AddListener(() => hasToUpdate = true);
+                while (Vector3.Distance(transform.position, Focus.transform.position) > 2F
+                    && !hasToUpdate)
                 {
                     Agent.SetDestination(Focus.transform.position);
                     yield return new WaitForFixedUpdate();
                 }
+                StateUpdated.RemoveAllListeners();
             }
         }
 
@@ -45,8 +61,9 @@ namespace AI
                 AddAction((Roam, 2F));
             }
 
-            private void OnEnable()
+            protected override void OnEnable()
             {
+                base.OnEnable();
                 Agent.Speed = 2F;
                 Agent.Acceleration = 2F;
             }
@@ -54,7 +71,6 @@ namespace AI
             private IEnumerator StandIdle()
             {
                 float randomTime = ((float)_random.NextDouble()).Remap(0F, 1F, 5F, 15F);
-                Debug.Log(randomTime);
                 yield return new WaitForSeconds(randomTime);
             }
 
@@ -66,7 +82,6 @@ namespace AI
                     Quaternion.Euler(0F, _random.NextFloat(0F, 360F), 0F)
                     * new Vector3(0F, 0F, _random.NextFloat(5F, 20F));
                 Agent.SetDestination(transform.position + randomOffset);
-                Debug.Log(Agent.Destination);
                 while (Vector3.Distance(transform.position, Agent.Destination) > 2F
                     && roamingTime < roamMaxTime)
                 {

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Extensions;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace AI
 {
@@ -18,14 +19,18 @@ namespace AI
         private List<AttitudeModel> _attitudeModels = new();
         private Dictionary<AttitudeType, AIBehaviour> _behaviours = new();
         private Attitude _highestPriorityAttitude;
-        private float _attitudesCheckInterval = 10F;
+        private float _attitudesCheckInterval = 5F;
         private float _timeSinceAttitudesCheck;
 
         #endregion Fields
 
         #region Properties
 
+        //public UnityEvent<Component> FocusChanged { get; } = new();
+
         public Component Focus => HighestPriorityAttitude?.Component;
+        public IReadOnlyDictionary<Component, Attitude> Attitudes => _attitudes;
+        public float MaxDetectingDistance => _detector.MaxDetectingDistance;
 
         private Attitude HighestPriorityAttitude
         {
@@ -36,6 +41,7 @@ namespace AI
                     return;
                 _highestPriorityAttitude = value;
                 _agent.ResetPath();
+                //FocusChanged.Invoke(value.Component);
             }
         }
 
@@ -86,7 +92,7 @@ namespace AI
         private void AddAttitude(
             Component component,
             AttitudeType type,
-            Func<float> strengthCalculationMethod)
+            Func<Component, float> strengthCalculationMethod)
         {
             _attitudes.Add(component, new(component, type, strengthCalculationMethod));
         }
@@ -171,6 +177,7 @@ namespace AI
                     behaviour.Value.StopAction();
                     behaviour.Value.enabled = false;
                 }
+                behaviour.Value.StateUpdated.Invoke();
             }
         }
 

@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Extensions;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace AI
 {
@@ -21,7 +22,7 @@ namespace AI
 
         public Animal Animal { get; set; }
         public Agent Agent { get; set; }
-
+        public UnityEvent StateUpdated { get; } = new();
         public Component Focus => Animal.Focus;
 
         #endregion Properties
@@ -43,14 +44,15 @@ namespace AI
             enabled = false;
         }
 
-        private void OnEnable()
+        protected virtual void OnEnable()
         {
             RandomizeAction();
         }
 
-        private void OnDisable()
+        protected virtual void OnDisable()
         {
             StopAndDisableCurrentAction();
+            StateUpdated.RemoveAllListeners();
         }
 
         #endregion Unity
