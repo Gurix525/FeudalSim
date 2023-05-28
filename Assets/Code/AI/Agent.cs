@@ -13,11 +13,13 @@ namespace AI
 
         #region Properties
 
-        public Vector3 Destination => _agent.destination;
+        public Vector3 Destination => NavAgent.destination;
 
-        public float Speed { get => _agent.speed; set => _agent.speed = value; }
+        public float Speed { get => NavAgent.speed; set => NavAgent.speed = value; }
 
-        public float Acceleration { get => _agent.acceleration; set => _agent.acceleration = value; }
+        public float Acceleration { get => NavAgent.acceleration; set => NavAgent.acceleration = value; }
+
+        private NavMeshAgent NavAgent => _agent ??= GetComponent<NavMeshAgent>();
 
         #endregion Properties
 
@@ -30,38 +32,29 @@ namespace AI
                 NavMesh.SamplePosition(targetPosition, out NavMeshHit hit, float.MaxValue, NavMesh.AllAreas);
                 targetPosition = hit.position;
             }
-            _agent.SetDestination(targetPosition);
+            NavAgent.SetDestination(targetPosition);
         }
 
         public void Stop()
         {
-            _agent.isStopped = true;
+            NavAgent.isStopped = true;
         }
 
         public void Resume()
         {
-            _agent.isStopped = false;
+            NavAgent.isStopped = false;
         }
 
         public void ResetPath()
         {
-            _agent.ResetPath();
+            NavAgent.ResetPath();
         }
 
         public void Move(Vector3 offset)
         {
-            _agent.Move(offset);
+            NavAgent.Move(offset);
         }
 
         #endregion Public
-
-        #region Unity
-
-        private void Awake()
-        {
-            _agent = GetComponent<NavMeshAgent>();
-        }
-
-        #endregion Unity
     }
 }

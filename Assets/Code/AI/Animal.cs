@@ -26,8 +26,6 @@ namespace AI
 
         #region Properties
 
-        //public UnityEvent<Component> FocusChanged { get; } = new();
-
         public Component Focus => HighestPriorityAttitude?.Component;
         public IReadOnlyDictionary<Component, Attitude> Attitudes => _attitudes;
         public float MaxDetectingDistance => _detector.MaxDetectingDistance;
@@ -41,7 +39,6 @@ namespace AI
                     return;
                 _highestPriorityAttitude = value;
                 _agent.ResetPath();
-                //FocusChanged.Invoke(value.Component);
             }
         }
 
