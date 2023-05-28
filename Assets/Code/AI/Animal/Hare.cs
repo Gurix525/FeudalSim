@@ -38,7 +38,8 @@ namespace AI
                     .Select(attitude => (transform.position - attitude.Component.transform.position).normalized)
                     .Aggregate((last, current) => (last + current).normalized)
                     .normalized * 50F;
-                Agent.SetDestination(transform.position + runDirection);
+                Agent.SetDestination(transform.position
+                    + Quaternion.Euler(0F, _random.NextFloat(-30F, 30F), 0F) * runDirection);
                 yield return new WaitUntil(() => (
                     Vector3.Distance(transform.position, Agent.Destination) < 10F)
                     || hasToUpdate);

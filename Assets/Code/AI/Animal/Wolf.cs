@@ -17,9 +17,6 @@ namespace AI
 
         private float GetDistancePoints(Component component)
         {
-            float distance = Vector3.Distance(component.transform.position, transform.position);
-            float clamped = distance.Clamp(0F, MaxDetectingDistance);
-            float remapped = clamped.Remap(0F, MaxDetectingDistance, 0F, 10F);
             return 10F - Vector3.Distance(component.transform.position, transform.position)
                 .Clamp(0F, MaxDetectingDistance)
                 .Remap(0F, MaxDetectingDistance, 0F, 10F);
