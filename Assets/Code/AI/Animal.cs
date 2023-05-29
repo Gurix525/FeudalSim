@@ -1,20 +1,21 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Combat;
 using Extensions;
 using UnityEngine;
-using UnityEngine.Events;
 
 namespace AI
 {
     [DisallowMultipleComponent]
-    [RequireComponent(typeof(EntitiesDetector), typeof(Agent))]
+    [RequireComponent(typeof(EntitiesDetector), typeof(Agent), typeof(Health))]
     public abstract class Animal : MonoBehaviour, IDetectable
     {
         #region Fields
 
         private EntitiesDetector _detector;
         private Agent _agent;
+        private Health _health;
         private Dictionary<Component, Attitude> _attitudes = new();
         private List<AttitudeModel> _attitudeModels = new();
         private Dictionary<AttitudeType, AIBehaviour> _behaviours = new();
@@ -79,6 +80,7 @@ namespace AI
             RandomizeSpeedValues();
             SetSpeed(MoveSpeedType.Walk);
             _detector = GetComponent<EntitiesDetector>();
+            _health = GetComponent<Health>();
             _detector.DetectableBecameVisible.AddListener(OnEntityDetected);
             _detector.DetectableBecameInvisible.AddListener(OnEntityDetectionLost);
             CreateAttitudeModels();
