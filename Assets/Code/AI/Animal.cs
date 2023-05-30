@@ -1,8 +1,10 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Combat;
 using Extensions;
+using TaskManager;
 using UnityEngine;
 
 namespace AI
@@ -23,6 +25,8 @@ namespace AI
         private float _attitudesCheckInterval = 5F;
         private float _timeSinceAttitudesCheck;
         private MoveSpeedType _moveSpeedType;
+        private bool _isKnockbackActive;
+        private Task _knockbackTask;
 
         private Dictionary<MoveSpeedType, MoveSpeed> _moveSpeeds = new()
         {
@@ -36,7 +40,9 @@ namespace AI
         #region Properties
 
         public Component Focus => HighestPriorityAttitude?.Component;
+
         public IReadOnlyDictionary<Component, Attitude> Attitudes => _attitudes;
+
         public float MaxDetectingDistance => _detector.MaxDetectingDistance;
 
         public MoveSpeedType MoveSpeed
@@ -61,6 +67,8 @@ namespace AI
             }
         }
 
+        private bool AreBehavioursPermitted => !_isKnockbackActive;
+
         #endregion Properties
 
         #region Public
@@ -81,6 +89,7 @@ namespace AI
             SetSpeed(MoveSpeedType.Walk);
             _detector = GetComponent<EntitiesDetector>();
             _health = GetComponent<Health>();
+            _health.GotHit.AddListener(OnGotHit);
             _detector.DetectableBecameVisible.AddListener(OnEntityDetected);
             _detector.DetectableBecameInvisible.AddListener(OnEntityDetectionLost);
             CreateAttitudeModels();
@@ -163,6 +172,8 @@ namespace AI
 
         private void RecalculateAttitudesAndSelectBehaviour()
         {
+            if (!AreBehavioursPermitted)
+                return;
             _timeSinceAttitudesCheck = 0F;
             if (_attitudes.Count == 0)
             {
@@ -200,6 +211,16 @@ namespace AI
             }
         }
 
+        private void DisableAllBehaviours()
+        {
+            foreach (var behaviour in _behaviours)
+            {
+                behaviour.Value.StopAction();
+                behaviour.Value.enabled = false;
+                behaviour.Value.StateUpdated.Invoke();
+            }
+        }
+
         private void CheckAttitudes()
         {
             _timeSinceAttitudesCheck += Time.fixedDeltaTime;
@@ -224,6 +245,31 @@ namespace AI
         {
             _agent.Speed = _moveSpeeds[value].Speed;
             _agent.Acceleration = _moveSpeeds[value].Acceleration;
+        }
+
+        private void OnGotHit(Attack attack)
+        {
+            if (_knockbackTask != null)
+                _knockbackTask.Stop();
+            _knockbackTask = new(KnockBack(attack));
+        }
+
+        private IEnumerator KnockBack(Attack attack)
+        {
+            _isKnockbackActive = true;
+            Debug.Log("KNOCKBACK");
+            DisableAllBehaviours();
+            float elapsedTime = 0F;
+            float blockedTime = 0.5F;
+            Vector3 direction = (transform.position - attack.transform.position).normalized * 10F;
+            while (elapsedTime < blockedTime)
+            {
+                elapsedTime += Time.fixedDeltaTime;
+                _agent.Move(direction * Time.fixedDeltaTime * (blockedTime - elapsedTime) / blockedTime);
+                yield return new WaitForFixedUpdate();
+            }
+            RecalculateAttitudesAndSelectBehaviour();
+            _isKnockbackActive = false;
         }
 
         #endregion Private

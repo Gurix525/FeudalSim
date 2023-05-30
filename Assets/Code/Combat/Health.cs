@@ -1,10 +1,21 @@
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace Combat
 {
     public class Health : MonoBehaviour
     {
+        #region Fields
+
         private Hitbox[] _hitboxes;
+
+        #endregion Fields
+
+        #region Properties
+
+        public UnityEvent<Attack> GotHit { get; } = new();
+
+        #endregion Properties
 
         #region Unity
 
@@ -36,6 +47,10 @@ namespace Combat
 
         private void OnGotHit(Attack attack)
         {
+            if (attack.Sender.TryGetComponent(out Health senderHealth))
+                if (senderHealth == this)
+                    return;
+            GotHit.Invoke(attack);
         }
 
         #endregion Private

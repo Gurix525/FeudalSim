@@ -3234,7 +3234,7 @@
     "m_Group": {
         "m_Id": ""
     },
-    "m_Name": "TerrainPixelation",
+    "m_Name": "Pixelation",
     "m_DrawState": {
         "m_Expanded": true,
         "m_Position": {
@@ -7025,7 +7025,7 @@
     "m_Group": {
         "m_Id": ""
     },
-    "m_Name": "TerrainPixelation",
+    "m_Name": "Pixelation",
     "m_DrawState": {
         "m_Expanded": true,
         "m_Position": {
@@ -7365,7 +7365,7 @@
     "m_Group": {
         "m_Id": ""
     },
-    "m_Name": "TerrainPixelation",
+    "m_Name": "Pixelation",
     "m_DrawState": {
         "m_Expanded": true,
         "m_Position": {
@@ -7931,7 +7931,7 @@
     "m_Group": {
         "m_Id": ""
     },
-    "m_Name": "TerrainPixelation",
+    "m_Name": "Pixelation",
     "m_DrawState": {
         "m_Expanded": true,
         "m_Position": {
@@ -8106,7 +8106,7 @@
     "m_Group": {
         "m_Id": ""
     },
-    "m_Name": "TerrainPixelation",
+    "m_Name": "Pixelation",
     "m_DrawState": {
         "m_Expanded": true,
         "m_Position": {
@@ -12194,7 +12194,7 @@
     "m_Group": {
         "m_Id": ""
     },
-    "m_Name": "TerrainPixelation",
+    "m_Name": "Pixelation",
     "m_DrawState": {
         "m_Expanded": true,
         "m_Position": {

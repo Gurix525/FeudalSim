@@ -25,6 +25,16 @@ namespace AI
 
         #region Public
 
+        public void Disable()
+        {
+            _agent.enabled = false;
+        }
+
+        public void Enable()
+        {
+            _agent.enabled = true;
+        }
+
         public void SetDestination(Vector3 targetPosition, bool hasToSamplePosition = true)
         {
             if (hasToSamplePosition)

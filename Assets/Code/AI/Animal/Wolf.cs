@@ -1,4 +1,5 @@
 using System.Collections;
+using Combat;
 using Extensions;
 using Misc;
 using TaskManager;
@@ -27,6 +28,7 @@ namespace AI
             protected override void CreateActions()
             {
                 AddAction(ChaseTarget);
+                AddAction(AttackTarget);
             }
 
             protected override void DuringEnable()
@@ -38,13 +40,28 @@ namespace AI
             {
                 bool hasToUpdate = false;
                 StateUpdated.AddListener(() => hasToUpdate = true);
-                while (Vector3.Distance(transform.position, Focus.transform.position) > 2F
+                while (Vector3.Distance(transform.position, Focus.transform.position) >= 4F
                     && !hasToUpdate)
                 {
                     Agent.SetDestination(Focus.transform.position);
                     yield return new WaitForFixedUpdate();
                 }
                 StateUpdated.RemoveAllListeners();
+            }
+
+            private IEnumerator AttackTarget()
+            {
+                if (Vector3.Distance(transform.position, Focus.transform.position) >= 4F)
+                    yield break;
+                float oldSpeed = Agent.Speed;
+                Agent.Speed *= 2F;
+                var attack = Attack.Spawn(this, Vector3.forward, lifetime: 0.5F, parent: transform);
+                while (attack.gameObject.activeSelf)
+                {
+                    Agent.SetDestination(Focus.transform.position);
+                    yield return new WaitForFixedUpdate();
+                }
+                Agent.Speed = oldSpeed;
             }
         }
 
