@@ -55,7 +55,7 @@ namespace AI
                     yield break;
                 float oldSpeed = Agent.Speed;
                 Agent.Speed *= 2F;
-                var attack = Attack.Spawn(this, Vector3.forward, lifetime: 0.5F, parent: transform);
+                var attack = Attack.Spawn(this, Vector3.forward, 4F, lifetime: 0.5F, parent: transform);
                 while (attack.gameObject.activeSelf)
                 {
                     Agent.SetDestination(Focus.transform.position);

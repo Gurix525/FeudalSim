@@ -99,6 +99,8 @@ namespace AI
 
         private bool IsObjectPerceptible(Component component)
         {
+            if (component == null)
+                return false;
             foreach (var sense in _senses)
             {
                 if (sense.IsObjectPerceptible(component.gameObject))

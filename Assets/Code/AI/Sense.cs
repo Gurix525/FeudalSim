@@ -37,6 +37,8 @@ namespace AI
 
         protected bool IsObjectInPerceptingRange(GameObject gameObject)
         {
+            if (gameObject == null)
+                return false;
             return Vector3.Distance(
                 transform.position, gameObject.transform.position)
                 <= _maxPerceptingDistance;

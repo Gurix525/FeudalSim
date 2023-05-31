@@ -10,8 +10,6 @@ namespace AI
 
         public override bool IsObjectPerceptible(GameObject gameObject)
         {
-            if (!IsObjectInPerceptingRange(gameObject))
-                return false;
             return Vector3.Dot(
                 transform.forward,
                 (gameObject.transform.position - transform.position).normalized)

@@ -21,7 +21,10 @@ namespace AI
 
         public void RecalculatePower()
         {
-            Power = _powerCalculation(Component);
+            if (Component != null)
+                Power = _powerCalculation(Component);
+            else
+                Power = float.NegativeInfinity;
         }
     }
 }

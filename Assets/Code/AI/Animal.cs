@@ -18,7 +18,7 @@ namespace AI
         private EntitiesDetector _detector;
         private Agent _agent;
         private Health _health;
-        private Dictionary<Component, Attitude> _attitudes = new();
+        private List<Attitude> _attitudes = new();
         private List<AttitudeModel> _attitudeModels = new();
         private Dictionary<AttitudeType, AIBehaviour> _behaviours = new();
         private Attitude _highestPriorityAttitude;
@@ -26,6 +26,7 @@ namespace AI
         private float _timeSinceAttitudesCheck;
         private MoveSpeedType _moveSpeedType;
         private bool _isKnockbackActive;
+        private bool _isBeingDestroyed;
         private Task _knockbackTask;
 
         private Dictionary<MoveSpeedType, MoveSpeed> _moveSpeeds = new()
@@ -39,9 +40,9 @@ namespace AI
 
         #region Properties
 
-        public Component Focus => HighestPriorityAttitude?.Component;
+        public Component Focus => HighestPriorityAttitude?.Component ?? this;
 
-        public IReadOnlyDictionary<Component, Attitude> Attitudes => _attitudes;
+        public IReadOnlyCollection<Attitude> Attitudes => _attitudes;
 
         public float MaxDetectingDistance => _detector.MaxDetectingDistance;
 
@@ -67,7 +68,7 @@ namespace AI
             }
         }
 
-        private bool AreBehavioursPermitted => !_isKnockbackActive;
+        private bool AreBehavioursPermitted => !_isKnockbackActive && !_isBeingDestroyed;
 
         #endregion Properties
 
@@ -97,6 +98,11 @@ namespace AI
             RecalculateAttitudesAndSelectBehaviour();
         }
 
+        private void OnDisable()
+        {
+            DisableAllBehaviours();
+        }
+
         private void FixedUpdate()
         {
             CheckAttitudes();
@@ -122,7 +128,7 @@ namespace AI
             AttitudeType type,
             Func<Component, float> strengthCalculationMethod)
         {
-            _attitudes.Add(component, new(component, type, strengthCalculationMethod));
+            _attitudes.Add(new(component, type, strengthCalculationMethod));
         }
 
         private void CreateBehaviours()
@@ -166,7 +172,7 @@ namespace AI
 
         private void OnEntityDetectionLost(Component component)
         {
-            _attitudes.Remove(component);
+            _attitudes.Remove(_attitudes.Find(attitude => attitude.Component == component));
             RecalculateAttitudesAndSelectBehaviour();
         }
 
@@ -182,8 +188,22 @@ namespace AI
                 return;
             }
             foreach (var attitude in _attitudes)
-                attitude.Value.RecalculatePower();
-            HighestPriorityAttitude = _attitudes.Values.Aggregate(
+            {
+                attitude.RecalculatePower();
+            }
+            for (int i = 0; i < _attitudes.Count; i++)
+                if (_attitudes[i].Component == null || !_attitudes[i].Component.gameObject.activeInHierarchy)
+                {
+                    _attitudes.Remove(_attitudes[i]);
+                    i--;
+                }
+            if (_attitudes.Count == 0)
+            {
+                HighestPriorityAttitude = null;
+                ChangeBehavioursState(AttitudeType.Neutral);
+                return;
+            }
+            HighestPriorityAttitude = _attitudes.Aggregate(
                 (currentMax, attitude) =>
                 attitude.Power > (currentMax ?? attitude).Power
                 ? attitude : currentMax);
@@ -249,15 +269,18 @@ namespace AI
 
         private void OnGotHit(Attack attack)
         {
-            if (_knockbackTask != null)
-                _knockbackTask.Stop();
+            _knockbackTask?.Stop();
+            if (_health.CurrentHealth <= 0F)
+            {
+                new Task(DestroySafely());
+                return;
+            }
             _knockbackTask = new(KnockBack(attack));
         }
 
         private IEnumerator KnockBack(Attack attack)
         {
             _isKnockbackActive = true;
-            Debug.Log("KNOCKBACK");
             DisableAllBehaviours();
             float elapsedTime = 0F;
             float blockedTime = 0.5F;
@@ -270,6 +293,19 @@ namespace AI
             }
             RecalculateAttitudesAndSelectBehaviour();
             _isKnockbackActive = false;
+        }
+
+        private IEnumerator DestroySafely()
+        {
+            _knockbackTask?.Stop();
+            _isBeingDestroyed = true;
+            DisableAllBehaviours();
+            _agent.Disable();
+            transform.position = new(100000F, 100000F, 100000F);
+            yield return new WaitForFixedUpdate();
+            gameObject.SetActive(false);
+            yield return new WaitForFixedUpdate();
+            Destroy(gameObject);
         }
 
         #endregion Private

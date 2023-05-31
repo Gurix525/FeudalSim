@@ -1,3 +1,4 @@
+using Extensions;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -12,6 +13,8 @@ namespace Combat
         #endregion Fields
 
         #region Properties
+
+        public float CurrentHealth { get; private set; } = 10F;
 
         public UnityEvent<Attack> GotHit { get; } = new();
 
@@ -50,6 +53,8 @@ namespace Combat
             if (attack.Sender.TryGetComponent(out Health senderHealth))
                 if (senderHealth == this)
                     return;
+            CurrentHealth -= attack.Damage;
+            CurrentHealth = CurrentHealth.Clamp(0F, float.PositiveInfinity);
             GotHit.Invoke(attack);
         }
 

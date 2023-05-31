@@ -31,16 +31,20 @@ namespace AI
             {
                 bool hasToUpdate = false;
                 StateUpdated.AddListener(() => hasToUpdate = true);
-                Vector3 runDirection = Animal.Attitudes.Values
+                Vector3 runDirection = Animal.Attitudes
                     .Where(attitude => attitude.AttitudeType == AttitudeType.Scared)
                     .Select(attitude => (transform.position - attitude.Component.transform.position).normalized)
                     .Aggregate((last, current) => (last + current).normalized)
                     .normalized * 50F;
                 Agent.SetDestination(transform.position
                     + Quaternion.Euler(0F, _random.NextFloat(-30F, 30F), 0F) * runDirection);
-                yield return new WaitUntil(() => (
-                    Vector3.Distance(transform.position, Agent.Destination) < 10F)
-                    || hasToUpdate);
+                yield return new WaitUntil(() =>
+                {
+                    if (this == null)
+                        return true;
+                    return Vector3.Distance(transform.position, Agent.Destination) < 10F
+                    || hasToUpdate;
+                });
                 StateUpdated.RemoveAllListeners();
             }
         }

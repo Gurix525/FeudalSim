@@ -42,7 +42,8 @@ namespace AI
                 NavMesh.SamplePosition(targetPosition, out NavMeshHit hit, float.MaxValue, NavMesh.AllAreas);
                 targetPosition = hit.position;
             }
-            NavAgent.SetDestination(targetPosition);
+            if (NavAgent.isOnNavMesh)
+                NavAgent.SetDestination(targetPosition);
         }
 
         public void Stop()

@@ -21,6 +21,7 @@ namespace Combat
 
         public Component Sender { get; private set; }
         public float Lifetime { get; private set; }
+        public float Damage { get; private set; }
 
         #endregion Properties
 
@@ -29,7 +30,8 @@ namespace Combat
         public static Attack Spawn(
             Component sender,
             Vector3 position,
-            float lifetime = 0.2F,
+            float damage,
+            float lifetime = 0.5F,
             Transform parent = null,
             bool isWorldSpace = false)
         {
@@ -41,6 +43,7 @@ namespace Combat
             attack.gameObject.SetActive(true);
             attack.Sender = sender;
             attack.Lifetime = lifetime;
+            attack.Damage = damage;
             attack.transform.SetParent(parent);
             if (isWorldSpace)
                 attack.transform.position = position;
