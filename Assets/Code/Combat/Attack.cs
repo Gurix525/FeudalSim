@@ -37,11 +37,11 @@ namespace Combat
             bool isWorldSpace = false)
         {
             Attack attack = _attacks.First?.Value;
-            if (attack == null)
-            {
+            if (attack != null)
+                _attacks.RemoveFirst();
+            else
                 attack = Instantiate(_attackPrefab ??= Resources.Load<GameObject>("Prefabs/Combat/Attack"))
                     .GetComponent<Attack>();
-            }
             attack.gameObject.SetActive(true);
             attack.Sender = sender;
             attack.Lifetime = lifetime;
