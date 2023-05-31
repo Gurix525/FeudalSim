@@ -40,7 +40,9 @@ namespace AI
             {
                 bool hasToUpdate = false;
                 StateUpdated.AddListener(() => hasToUpdate = true);
-                while (Vector3.Distance(transform.position, Focus.transform.position) >= 4F
+                while ((Vector3.Dot(transform.forward,
+                    (Focus.transform.position - transform.position).normalized) < 0.9F
+                    || Vector3.Distance(transform.position, Focus.transform.position) >= 4F)
                     && !hasToUpdate)
                 {
                     Agent.SetDestination(Focus.transform.position);
@@ -53,15 +55,21 @@ namespace AI
             {
                 if (Vector3.Distance(transform.position, Focus.transform.position) >= 4F)
                     yield break;
-                float oldSpeed = Agent.Speed;
-                Agent.Speed *= 2F;
-                var attack = Attack.Spawn(this, Vector3.forward, 4F, lifetime: 0.5F, parent: transform);
+                if (Vector3.Dot(
+                    transform.forward,
+                    (Focus.transform.position - transform.position).normalized)
+                    < 0.9F)
+                    yield break;
+                Vector3 direction = (Focus.transform.position - transform.position).normalized * Agent.Speed;
+                float lifetime = 0.5F;
+                var attack = Attack.Spawn(this, Vector3.forward, 4F, lifetime: lifetime, parent: transform);
+                Agent.ResetPath();
                 while (attack.gameObject.activeSelf)
                 {
-                    Agent.SetDestination(Focus.transform.position);
+                    Agent.Move(direction * Time.fixedDeltaTime);
                     yield return new WaitForFixedUpdate();
                 }
-                Agent.Speed = oldSpeed;
+                yield return new WaitForSeconds(0.5F);
             }
         }
 

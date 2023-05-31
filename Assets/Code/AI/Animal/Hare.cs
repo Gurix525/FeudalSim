@@ -76,7 +76,7 @@ namespace AI
                     Quaternion.Euler(0F, _random.NextFloat(0F, 360F), 0F)
                     * new Vector3(0F, 0F, _random.NextFloat(5F, 20F));
                 Agent.SetDestination(transform.position + randomOffset);
-                while (Vector3.Distance(transform.position, Agent.Destination) > 2F
+                while (this == null ? true : Vector3.Distance(transform.position, Agent.Destination) > 2F
                     && roamingTime < roamMaxTime)
                 {
                     roamingTime += Time.fixedDeltaTime;

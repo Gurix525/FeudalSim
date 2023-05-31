@@ -12,8 +12,9 @@ namespace Combat
 
         private Collider _collider;
 
-        private static Queue<Attack> _attacksPool = new();
+        private static LinkedList<Attack> _attacks = new();
         private static GameObject _attackPrefab;
+        private static Transform _attacksPool;
 
         #endregion fields
 
@@ -35,7 +36,8 @@ namespace Combat
             Transform parent = null,
             bool isWorldSpace = false)
         {
-            if (!_attacksPool.TryDequeue(out Attack attack))
+            Attack attack = _attacks.First?.Value;
+            if (attack == null)
             {
                 attack = Instantiate(_attackPrefab ??= Resources.Load<GameObject>("Prefabs/Combat/Attack"))
                     .GetComponent<Attack>();
@@ -69,7 +71,12 @@ namespace Combat
 
         private void OnDisable()
         {
-            _attacksPool.Enqueue(this);
+            _attacks.AddFirst(this);
+        }
+
+        private void OnDestroy()
+        {
+            _attacks.Remove(this);
         }
 
         #endregion Unity
@@ -79,6 +86,7 @@ namespace Combat
         private IEnumerator FadeOff(float lifetime)
         {
             yield return new WaitForSeconds(lifetime);
+            transform.SetParent(_attacksPool ??= new GameObject("AttacksPool").transform);
             gameObject.SetActive(false);
         }
 
