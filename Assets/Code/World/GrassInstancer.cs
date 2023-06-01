@@ -7,6 +7,7 @@ namespace World
 {
     public class GrassInstancer : MonoBehaviour
     {
+        [SerializeField] private Transform _player;
         [SerializeField] private Mesh _mesh;
         [SerializeField] private Material _material;
 
@@ -33,15 +34,15 @@ namespace World
         private void FixedUpdate()
         {
             _timeSinceLastActivation += Time.fixedDeltaTime;
-            if ((_timeSinceLastActivation > 0.5F && Vector3.Distance(transform.position, _lastPosition) > 10F)
+            if ((_timeSinceLastActivation > 0.5F && Vector3.Distance(_player.position, _lastPosition) > 10F)
                 || !_isInitialized
                 || HasToReload)
             {
                 _isInitialized = true;
                 HasToReload = false;
                 _timeSinceLastActivation = 0F;
-                _lastPosition = transform.position;
-                _currentPlayerPosition = new((int)Mathf.Floor(transform.position.x), (int)Mathf.Floor(transform.position.z));
+                _lastPosition = _player.position;
+                _currentPlayerPosition = new((int)Mathf.Floor(_player.position.x), (int)Mathf.Floor(_player.position.z));
 
                 Task.Run(InstantiateGrass);
             }

@@ -7,6 +7,8 @@ namespace World
 {
     public class TerrainChunkActivator : MonoBehaviour
     {
+        [SerializeField] private Transform _player;
+
         private float _timeSinceLastActivation = 0F;
 
         private void FixedUpdate()
@@ -20,7 +22,7 @@ namespace World
         {
             if (TerrainRenderer.ActiveChunk == null)
                 return;
-            Vector2Int currentChunkPos = new((int)Mathf.Floor(transform.position.x / 100F), (int)Mathf.Floor(transform.position.z / 100F));
+            Vector2Int currentChunkPos = new((int)Mathf.Floor(_player.position.x / 100F), (int)Mathf.Floor(_player.position.z / 100F));
             if (TerrainRenderer.ActiveChunk.Position != currentChunkPos)
             {
                 _timeSinceLastActivation = 0F;
