@@ -8,7 +8,7 @@ namespace Misc
         [SerializeField] private Vector3 _offset;
         [SerializeField] private float _lerpTime;
 
-        private void FixedUpdate()
+        private void LateUpdate()
         {
             transform.position = Vector3.Lerp(transform.position, _target.position + _offset, _lerpTime);
         }
