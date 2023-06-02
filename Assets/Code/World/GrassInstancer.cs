@@ -77,11 +77,11 @@ namespace World
                     float noise4 = (noise3 * 4) % 1F;
                     positions[index] = Matrix4x4.TRS(
                         position + new Vector3(0.5F, 0F, 0.5F) + new Vector3(0.1F, 0F, 0.1F) * noise,
-                        Quaternion.Euler(new(-90F, noise * 180F, 0F)),
+                        Quaternion.Euler(new(0F, noise * 180F, 0F)),
                         new Vector3(
                             noise2.Remap(0F, 1F, 1.5F, 2F),
-                            noise3.Remap(0F, 1F, 1.5F, 2F),
-                            noise4.Remap(0F, 1F, 0.5F, 1F)));
+                            noise3.Remap(0F, 1F, 0.25F, 0.5F),
+                            noise4.Remap(0F, 1F, 1.5F, 2F)));
                     index++;
 
                     //Vector3 position2 = position + new Vector3(0.5F, 0F, 0.5F);

@@ -39,7 +39,7 @@ namespace AI
         {
             if (hasToSamplePosition)
             {
-                NavMesh.SamplePosition(targetPosition, out NavMeshHit hit, float.MaxValue, NavMesh.AllAreas);
+                NavMesh.SamplePosition(targetPosition, out NavMeshHit hit, 10F, NavMesh.AllAreas);
                 targetPosition = hit.position;
             }
             if (NavAgent.isOnNavMesh)

@@ -35,14 +35,14 @@ namespace AI
                     .Where(attitude => attitude.AttitudeType == AttitudeType.Scared)
                     .Select(attitude => (transform.position - attitude.Component.transform.position).normalized)
                     .Aggregate((last, current) => (last + current).normalized)
-                    .normalized * 50F;
+                    .normalized * 10F;
                 Agent.SetDestination(transform.position
                     + Quaternion.Euler(0F, _random.NextFloat(-30F, 30F), 0F) * runDirection);
                 yield return new WaitUntil(() =>
                 {
                     if (this == null)
                         return true;
-                    return Vector3.Distance(transform.position, Agent.Destination) < 10F
+                    return Vector3.Distance(transform.position, Agent.Destination) < 2F
                     || hasToUpdate;
                 });
                 StateUpdated.RemoveAllListeners();
