@@ -22,7 +22,7 @@ namespace World
         {
             if (TerrainRenderer.ActiveChunk == null)
                 return;
-            Vector2Int currentChunkPos = new((int)Mathf.Floor(_player.position.x / 100F), (int)Mathf.Floor(_player.position.z / 100F));
+            Vector2Int currentChunkPos = new((int)Mathf.Floor(_player.position.x / 50F), (int)Mathf.Floor(_player.position.z / 50F));
             if (TerrainRenderer.ActiveChunk.Position != currentChunkPos)
             {
                 _timeSinceLastActivation = 0F;

@@ -21,12 +21,12 @@ namespace World
             var prefabs = Resources.LoadAll<GameObject>("Prefabs/Animals");
             for (int i = 0; i < 50; i++)
             {
-                NavMesh.SamplePosition(new RandomVector3(100F, 0F, 100F), out NavMeshHit hit, 10F, NavMesh.AllAreas);
+                NavMesh.SamplePosition(new RandomVector3(50F, 0F, 50F), out NavMeshHit hit, 10F, NavMesh.AllAreas);
                 Instantiate(prefabs[0], hit.position, Quaternion.Euler(0F, random.NextFloat(0F, 360F), 0F), transform);
             }
             for (int i = 0; i < 20; i++)
             {
-                NavMesh.SamplePosition(new RandomVector3(100F, 0F, 100F), out NavMeshHit hit, 10F, NavMesh.AllAreas);
+                NavMesh.SamplePosition(new RandomVector3(50F, 0F, 50F), out NavMeshHit hit, 10F, NavMesh.AllAreas);
                 Instantiate(prefabs[1], hit.position, Quaternion.Euler(0F, random.NextFloat(0F, 360F), 0F), transform);
             }
         }

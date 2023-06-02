@@ -80,75 +80,75 @@ namespace World
 
         private void GenerateCells()
         {
-            for (int z = 0; z < 100; z++)
-                for (int x = 0; x < 100; x++)
+            for (int z = 0; z < 50; z++)
+                for (int x = 0; x < 50; x++)
                     Cells.Add(
                         new(x, z),
                         new Cell(
                             new Vector2Int(
-                                Position.x * 100 + x,
-                                Position.y * 100 + z),
+                                Position.x * 50 + x,
+                                Position.y * 50 + z),
                             NoiseSampler.GetHeight(
-                                Position.x * 100 + x,
-                                Position.y * 100 + z)
+                                Position.x * 50 + x,
+                                Position.y * 50 + z)
                             ));
         }
 
         private void LoadHeights(ChunkInfo chunkInfo)
         {
-            for (int z = 0; z < 100; z++)
-                for (int x = 0; x < 100; x++)
+            for (int z = 0; z < 50; z++)
+                for (int x = 0; x < 50; x++)
                     Cells.Add(
                         new(x, z),
                         new Cell(
                             new Vector2Int(
-                                Position.x * 100 + x,
-                                Position.y * 100 + z),
-                            chunkInfo.Heights[z * 100 + x]));
+                                Position.x * 50 + x,
+                                Position.y * 50 + z),
+                            chunkInfo.Heights[z * 50 + x]));
         }
 
         public void RecalculateBorderSteepness()
         {
-            for (int x = Position.x * 100; x < Position.x * 100 + 100; x++)
+            for (int x = Position.x * 50; x < Position.x * 50 + 50; x++)
             {
                 float min = Mathf.Min(
-                    Terrain.GetHeight(new(x, Position.y * 100 + 99)),
-                    Terrain.GetHeight(new(x + 1, Position.y * 100 + 99)),
-                    Terrain.GetHeight(new(x, Position.y * 100 + 100)),
-                    Terrain.GetHeight(new(x + 1, Position.y * 100 + 100)));
+                    Terrain.GetHeight(new(x, Position.y * 50 + 49)),
+                    Terrain.GetHeight(new(x + 1, Position.y * 50 + 49)),
+                    Terrain.GetHeight(new(x, Position.y * 50 + 50)),
+                    Terrain.GetHeight(new(x + 1, Position.y * 50 + 50)));
                 float max = Mathf.Max(
-                    Terrain.GetHeight(new(x, Position.y * 100 + 99)),
-                    Terrain.GetHeight(new(x + 1, Position.y * 100 + 99)),
-                    Terrain.GetHeight(new(x, Position.y * 100 + 100)),
-                    Terrain.GetHeight(new(x + 1, Position.y * 100 + 100)));
-                Terrain.GetCell(new Vector2(x, Position.y * 100 + 99))
+                    Terrain.GetHeight(new(x, Position.y * 50 + 49)),
+                    Terrain.GetHeight(new(x + 1, Position.y * 50 + 49)),
+                    Terrain.GetHeight(new(x, Position.y * 50 + 50)),
+                    Terrain.GetHeight(new(x + 1, Position.y * 50 + 50)));
+                Terrain.GetCell(new Vector2(x, Position.y * 50 + 49))
                     .Steepness = Mathf.Round((max - min) * 2F) / 2F;
             }
-            for (int z = Position.y * 100; z < Position.y * 100 + 100; z++)
+            for (int z = Position.y * 50; z < Position.y * 50 + 50; z++)
             {
                 float min = Mathf.Min(
-                    Terrain.GetHeight(new(Position.x * 100 + 99, z)),
-                    Terrain.GetHeight(new(Position.x * 100 + 99, z + 1)),
-                    Terrain.GetHeight(new(Position.x * 100 + 100, z)),
-                    Terrain.GetHeight(new(Position.x * 100 + 100, z + 1)));
+                    Terrain.GetHeight(new(Position.x * 50 + 49, z)),
+                    Terrain.GetHeight(new(Position.x * 50 + 49, z + 1)),
+                    Terrain.GetHeight(new(Position.x * 50 + 50, z)),
+                    Terrain.GetHeight(new(Position.x * 50 + 50, z + 1)));
                 float max = Mathf.Max(
-                    Terrain.GetHeight(new(Position.x * 100 + 99, z)),
-                    Terrain.GetHeight(new(Position.x * 100 + 99, z + 1)),
-                    Terrain.GetHeight(new(Position.x * 100 + 100, z)),
-                    Terrain.GetHeight(new(Position.x * 100 + 100, z + 1)));
-                Terrain.GetCell(new Vector2(Position.x * 100 + 99, z))
+                    Terrain.GetHeight(new(Position.x * 50 + 49, z)),
+                    Terrain.GetHeight(new(Position.x * 50 + 49, z + 1)),
+                    Terrain.GetHeight(new(Position.x * 50 + 50, z)),
+                    Terrain.GetHeight(new(Position.x * 50 + 50, z + 1)));
+                Terrain.GetCell(new Vector2(Position.x * 50 + 49, z))
                     .Steepness = Mathf.Round((max - min) * 2F) / 2F;
             }
         }
 
         private void CalculateSteepness()
         {
-            for (int z = 0; z < 100; z++)
-                for (int x = 0; x < 100; x++)
+            for (int z = 0; z < 50; z++)
+                for (int x = 0; x < 50; x++)
                 {
                     float min = 0F;
                     float max = 0F;
-                    if (x < 99 && z < 99)
+                    if (x < 49 && z < 49)
                     {
                         min = Mathf.Min(
                             Cells[new(x, z)].Height,
@@ -161,7 +161,7 @@ namespace World
                             Cells[new(x, z + 1)].Height,
                             Cells[new(x + 1, z + 1)].Height);
                     }
-                    else if (x < 99 && z == 99)
+                    else if (x < 49 && z == 49)
                     {
                         min = Mathf.Min(
                             Cells[new(x, z)].Height,
@@ -170,7 +170,7 @@ namespace World
                             Cells[new(x, z)].Height,
                             Cells[new(x + 1, z)].Height);
                     }
-                    else if (x == 99 && z < 99)
+                    else if (x == 49 && z < 49)
                     {
                         min = Mathf.Min(
                             Cells[new(x, z)].Height,

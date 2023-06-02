@@ -55,11 +55,11 @@ namespace World
 
         private Task InstantiateGrass()
         {
-            Matrix4x4[] positions = new Matrix4x4[10000];
+            Matrix4x4[] positions = new Matrix4x4[3600];
 
             int index = 0;
-            for (int z = _currentPlayerPosition.y - 49; z < _currentPlayerPosition.y + 50; z++)
-                for (int x = _currentPlayerPosition.x - 49; x < _currentPlayerPosition.x + 50; x++)
+            for (int z = _currentPlayerPosition.y - 29; z < _currentPlayerPosition.y + 30; z++)
+                for (int x = _currentPlayerPosition.x - 29; x < _currentPlayerPosition.x + 30; x++)
                 {
                     Cell cell = Terrain.GetCell(new Vector2Int(x, z));
                     if (!cell.HasGrass)
@@ -99,7 +99,7 @@ namespace World
                     //index++;
                 }
 
-            for (int i = 0; i < 10000; i++)
+            for (int i = 0; i < 3600; i++)
             {
                 _batches[i / 1000][i % 1000] = positions[i];
             }

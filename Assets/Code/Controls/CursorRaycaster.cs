@@ -42,9 +42,8 @@ namespace Controls
                 Hit = hit;
                 return hit;
             }
-            catch (NullReferenceException e)
+            catch (NullReferenceException)
             {
-                Debug.LogError(e.Message + e.StackTrace);
                 return null;
             }
         }

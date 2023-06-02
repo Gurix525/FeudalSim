@@ -46,12 +46,12 @@ namespace Saves
         {
             Position = chunk.Position;
             IsNatureSpawned = chunk.IsNatureSpawned;
-            Heights = new int[10000];
-            Steepnesses = new float[10000];
-            Colors = new Color[10000];
-            FloorHeights = new string[10000];
-            HorizontalWallHeights = new string[10000];
-            VerticalWallHeights = new string[10000];
+            Heights = new int[2500];
+            Steepnesses = new float[2500];
+            Colors = new Color[2500];
+            FloorHeights = new string[2500];
+            HorizontalWallHeights = new string[2500];
+            VerticalWallHeights = new string[2500];
             SetTerrainInfo(chunk);
 
             ChunkRenderer chunkRenderer = TerrainRenderer.GetChunkRenderer(chunk);
@@ -70,7 +70,7 @@ namespace Saves
         private void SetTerrainInfo(Chunk chunk)
         {
             Cell[] cells = chunk.Cells.Values.ToArray();
-            for (int i = 0; i < 10000; i++)
+            for (int i = 0; i < 2500; i++)
             {
                 Cell cell = cells[i];
                 Heights[i] = cell.Height;

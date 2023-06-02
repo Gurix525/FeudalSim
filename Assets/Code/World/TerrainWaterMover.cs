@@ -14,9 +14,9 @@ namespace World
         private void OnTerrainUpdating(Vector2 activeChunkPosition)
         {
             transform.position = new Vector3(
-                activeChunkPosition.x * 100F + 50F,
+                activeChunkPosition.x * 50F + 50F,
                 -0.1F,
-                activeChunkPosition.y * 100F + 50F);
+                activeChunkPosition.y * 50F + 50F);
         }
     }
 }

@@ -34,7 +34,6 @@ namespace World
         public Transform ItemHandlers { get; private set; }
         public Transform Trees { get; private set; }
         public Transform Boulders { get; private set; }
-        public NavMeshSurface NavMeshSurface { get; private set; }
 
         #endregion Properties
 
@@ -47,23 +46,23 @@ namespace World
 
         public void SetColors()
         {
-            Color[] colors = new Color[10201];
+            Color[] colors = new Color[2601];
             var thisChunk = Terrain.Chunks[Position].Colors;
             var rightChunk = Terrain.Chunks[new(Position.x + 1, Position.y)].Colors;
             var upChunk = Terrain.Chunks[new(Position.x, Position.y + 1)].Colors;
             var diagonalChunk = Terrain.Chunks[new(Position.x + 1, Position.y + 1)].Colors;
-            for (int z = 0; z < 101; z++)
+            for (int z = 0; z < 51; z++)
             {
-                for (int x = 0; x < 101; x++)
+                for (int x = 0; x < 51; x++)
                 {
-                    if (z < 100 && x < 100)
-                        colors[z * 101 + x] = thisChunk[z * 100 + x];
-                    else if (x == 100 && z < 100)
-                        colors[z * 101 + x] = rightChunk[z * 100];
-                    else if (z == 100 && x < 100)
-                        colors[z * 101 + x] = upChunk[x];
+                    if (z < 50 && x < 50)
+                        colors[z * 51 + x] = thisChunk[z * 50 + x];
+                    else if (x == 50 && z < 50)
+                        colors[z * 51 + x] = rightChunk[z * 50];
+                    else if (z == 50 && x < 50)
+                        colors[z * 51 + x] = upChunk[x];
                     else
-                        colors[10200] = diagonalChunk[0];
+                        colors[2600] = diagonalChunk[0];
                 }
             }
             _mesh.SetColors(colors);
@@ -76,38 +75,38 @@ namespace World
 
             //int size = 101;
 
-            Vector3[] vertices = new Vector3[10201];
+            Vector3[] vertices = new Vector3[2601];
             var thisChunk = Terrain.Chunks[Position].Vertices;
             var rightChunk = Terrain.Chunks[new(Position.x + 1, Position.y)].Vertices;
             var upChunk = Terrain.Chunks[new(Position.x, Position.y + 1)].Vertices;
             var diagonalChunk = Terrain.Chunks[new(Position.x + 1, Position.y + 1)].Vertices;
-            for (int z = 0; z < 101; z++)
+            for (int z = 0; z < 51; z++)
             {
-                for (int x = 0; x < 101; x++)
+                for (int x = 0; x < 51; x++)
                 {
-                    if (z < 100 && x < 100)
-                        vertices[z * 101 + x] = thisChunk[z * 100 + x];
-                    else if (x == 100 && z < 100)
-                        vertices[z * 101 + x] = rightChunk[z * 100];
-                    else if (z == 100 && x < 100)
-                        vertices[z * 101 + x] = upChunk[x];
+                    if (z < 50 && x < 50)
+                        vertices[z * 51 + x] = thisChunk[z * 50 + x];
+                    else if (x == 50 && z < 50)
+                        vertices[z * 51 + x] = rightChunk[z * 50];
+                    else if (z == 50 && x < 50)
+                        vertices[z * 51 + x] = upChunk[x];
                     else
-                        vertices[10200] = diagonalChunk[0];
+                        vertices[2600] = diagonalChunk[0];
                 }
             }
-            int[] triangles = new int[60000];
+            int[] triangles = new int[15000];
 
             int index = 0;
-            for (int z = 0; z < 100; z++)
-                for (int x = 0; x < 100; x++)
+            for (int z = 0; z < 50; z++)
+                for (int x = 0; x < 50; x++)
                 {
-                    int i = (z * 101) + x;
+                    int i = (z * 51) + x;
 
                     triangles[index] = i;
-                    triangles[index + 1] = i + 101;
-                    triangles[index + 2] = i + 102;
+                    triangles[index + 1] = i + 51;
+                    triangles[index + 2] = i + 52;
                     triangles[index + 3] = i;
-                    triangles[index + 4] = i + 102;
+                    triangles[index + 4] = i + 52;
                     triangles[index + 5] = i + 1;
                     index += 6;
                 }
@@ -120,7 +119,7 @@ namespace World
                 .ToArray());
             _mesh.RecalculateNormals();
             _mesh.RecalculateTangents();
-            StartCoroutine(AssignMeshToColliderCoroutine());
+            AssignMeshToCollider();
         }
 
         #endregion Public
@@ -135,7 +134,6 @@ namespace World
             CreateChildren();
             InitializeMesh();
             SpawnNature();
-            //InitializeNavMesh();
         }
 
         private void CreateChildren()
@@ -175,10 +173,10 @@ namespace World
         private void SpawnTrees()
         {
             var treePrefab = Resources.Load<GameObject>("Prefabs/Nature/Tree");
-            for (int z = 0; z < 100; z++)
-                for (int x = 0; x < 100; x++)
+            for (int z = 0; z < 50; z++)
+                for (int x = 0; x < 50; x++)
                 {
-                    Vector2 position = new Vector2(Position.x * 100 + x, Position.y * 100 + z);
+                    Vector2 position = new Vector2(Position.x * 50 + x, Position.y * 50 + z);
                     float noise = NoiseSampler.GetTreesNoise(position.x, position.y);
                     if (noise == 1F)
                     {
@@ -198,10 +196,10 @@ namespace World
         private void SpawnBoulders()
         {
             var boulderPrefab = Resources.Load<GameObject>("Prefabs/Nature/Boulder");
-            for (int z = 0; z < 100; z++)
-                for (int x = 0; x < 100; x++)
+            for (int z = 0; z < 50; z++)
+                for (int x = 0; x < 50; x++)
                 {
-                    Vector2 position = new Vector2(Position.x * 100 + x, Position.y * 100 + z);
+                    Vector2 position = new Vector2(Position.x * 50 + x, Position.y * 50 + z);
                     float noise = NoiseSampler.GetBouldersNoise(position.x, position.y);
                     if (noise == 1F)
                     {
@@ -215,35 +213,9 @@ namespace World
                 }
         }
 
-        private IEnumerator AssignMeshToColliderCoroutine()
+        private void AssignMeshToCollider()
         {
-            if (_isBaking)
-                yield break;
-            _isBaking = true;
-            var task = Task.Run(BakePhysicsMesh);
-            while (true)
-            {
-                if (task.IsCompleted)
-                    break;
-                if (UnityEngine.Input.GetKeyDown(KeyCode.U))
-                    break;
-                yield return null;
-            }
             _meshCollider.sharedMesh = _mesh;
-            _isBaking = false;
-        }
-
-        private Task BakePhysicsMesh()
-        {
-            Physics.BakeMesh(_meshInstanceId, false);
-            return Task.CompletedTask;
-        }
-
-        private void InitializeNavMesh()
-        {
-            NavMeshSurface = gameObject.AddComponent<NavMeshSurface>();
-            NavMeshSurface.useGeometry = NavMeshCollectGeometry.PhysicsColliders;
-            NavMeshSurface.collectObjects = CollectObjects.Children;
         }
 
         #endregion Private
