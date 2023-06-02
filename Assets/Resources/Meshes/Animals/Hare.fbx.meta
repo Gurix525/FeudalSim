@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 3a458cd666fcd184c90b7879f445868b
+guid: aa4bc9118d92ba44db3e86806802c6c3
 ModelImporter:
   serializedVersion: 21300
   internalIDToNameTable: []
@@ -7,18 +7,13 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
-      name: Futro
-    second: {fileID: 2100000, guid: 4239b6a3c081c0e45b0ee344b5105701, type: 2}
+      name: "Sier\u015B\u0107_1"
+    second: {fileID: 2100000, guid: 9af4e6ce7eeb76342a4d42be1cf5dc87, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
-      name: Grzywa
-    second: {fileID: 2100000, guid: 31f3316a218279a4a9185bf62af5adfe, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: Oczy
-    second: {fileID: 2100000, guid: 0a748ee3e72557c48b1bf61dbd3f0196, type: 2}
+      name: "Sier\u015B\u0107_2"
+    second: {fileID: 2100000, guid: 1cda611f300b8ef4f9812f15cb00eb47, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
@@ -81,7 +76,7 @@ ModelImporter:
     secondaryUVMinLightmapResolution: 40
     secondaryUVMinObjectScale: 1
     secondaryUVPackMargin: 4
-    useFileScale: 1
+    useFileScale: 0
   tangentSpace:
     normalSmoothAngle: 60
     normalImportMode: 0
