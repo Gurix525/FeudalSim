@@ -106,6 +106,7 @@ namespace AI
         private void FixedUpdate()
         {
             CheckAttitudes();
+            ChangeAngularSpeed();
         }
 
         #endregion Unity
@@ -113,6 +114,11 @@ namespace AI
         #region Protected
 
         protected abstract void CreateAttitudeModels();
+
+        protected virtual void ChangeAngularSpeed()
+        {
+            _agent.AngularSpeed = Mathf.Lerp(120F, 360F, 1F - (_agent.Velocity.magnitude / _agent.Speed));
+        }
 
         protected void AddAttitude(AttitudeModel model)
         {

@@ -15,9 +15,13 @@ namespace AI
 
         public Vector3 Destination => NavAgent.destination;
 
+        public Vector3 Velocity => NavAgent.velocity;
+
         public float Speed { get => NavAgent.speed; set => NavAgent.speed = value; }
 
         public float Acceleration { get => NavAgent.acceleration; set => NavAgent.acceleration = value; }
+
+        public float AngularSpeed { get => NavAgent.angularSpeed; set => NavAgent.angularSpeed = value; }
 
         private NavMeshAgent NavAgent => _agent ??= GetComponent<NavMeshAgent>();
 
