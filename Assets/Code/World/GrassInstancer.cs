@@ -34,7 +34,7 @@ namespace World
         private void FixedUpdate()
         {
             _timeSinceLastActivation += Time.fixedDeltaTime;
-            if ((_timeSinceLastActivation > 0.5F && Vector3.Distance(_player.position, _lastPosition) > 10F)
+            if ((_timeSinceLastActivation > 0.5F && Vector3.Distance(_player.position, _lastPosition) > 5F)
                 || !_isInitialized
                 || HasToReload)
             {
