@@ -1,7 +1,6 @@
 ﻿using UnityEngine;
 using Controls;
 using Cursor = Controls.Cursor;
-using Tree = Nature.Tree;
 using Misc;
 
 namespace Items
