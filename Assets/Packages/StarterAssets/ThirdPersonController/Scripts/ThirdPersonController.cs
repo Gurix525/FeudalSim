@@ -1,19 +1,14 @@
-﻿ using UnityEngine;
-#if ENABLE_INPUT_SYSTEM 
+﻿using UnityEngine;
 using UnityEngine.InputSystem;
-#endif
-
-/* Note: animations are called via the controller for both the character and capsule using animator null checks
- */
 
 namespace StarterAssets
 {
     [RequireComponent(typeof(CharacterController))]
-#if ENABLE_INPUT_SYSTEM 
     [RequireComponent(typeof(PlayerInput))]
-#endif
     public class ThirdPersonController : MonoBehaviour
     {
+        #region Fields
+
         [Header("Player")]
         [Tooltip("Move speed of the character in m/s")]
         public float MoveSpeed = 2.0f;
@@ -77,10 +72,12 @@ namespace StarterAssets
 
         // cinemachine
         private float _cinemachineTargetYaw;
+
         private float _cinemachineTargetPitch;
 
         // player
         private float _speed;
+
         private float _animationBlend;
         private float _targetRotation = 0.0f;
         private float _rotationVelocity;
@@ -89,18 +86,18 @@ namespace StarterAssets
 
         // timeout deltatime
         private float _jumpTimeoutDelta;
+
         private float _fallTimeoutDelta;
 
         // animation IDs
         private int _animIDSpeed;
+
         private int _animIDGrounded;
         private int _animIDJump;
         private int _animIDFreeFall;
         private int _animIDMotionSpeed;
 
-#if ENABLE_INPUT_SYSTEM 
         private PlayerInput _playerInput;
-#endif
         private Animator _animator;
         private CharacterController _controller;
         private StarterAssetsInputs _input;
@@ -110,18 +107,21 @@ namespace StarterAssets
 
         private bool _hasAnimator;
 
+        #endregion Fields
+
+        #region Properties
+
         private bool IsCurrentDeviceMouse
         {
             get
             {
-#if ENABLE_INPUT_SYSTEM
                 return _playerInput.currentControlScheme == "KeyboardMouse";
-#else
-				return false;
-#endif
             }
         }
 
+        #endregion Properties
+
+        #region Unity
 
         private void Awake()
         {
@@ -135,15 +135,11 @@ namespace StarterAssets
         private void Start()
         {
             _cinemachineTargetYaw = CinemachineCameraTarget.transform.rotation.eulerAngles.y;
-            
+
             _hasAnimator = TryGetComponent(out _animator);
             _controller = GetComponent<CharacterController>();
             _input = GetComponent<StarterAssetsInputs>();
-#if ENABLE_INPUT_SYSTEM 
             _playerInput = GetComponent<PlayerInput>();
-#else
-			Debug.LogError( "Starter Assets package is missing dependencies. Please use Tools/Starter Assets/Reinstall Dependencies to fix it");
-#endif
 
             AssignAnimationIDs();
 
@@ -165,6 +161,10 @@ namespace StarterAssets
         {
             CameraRotation();
         }
+
+        #endregion Unity
+
+        #region Private
 
         private void AssignAnimationIDs()
         {
@@ -263,7 +263,6 @@ namespace StarterAssets
                 // rotate to face input direction relative to camera position
                 transform.rotation = Quaternion.Euler(0.0f, rotation, 0.0f);
             }
-
 
             Vector3 targetDirection = Quaternion.Euler(0.0f, _targetRotation, 0.0f) * Vector3.forward;
 
@@ -388,5 +387,7 @@ namespace StarterAssets
                 AudioSource.PlayClipAtPoint(LandingAudioClip, transform.TransformPoint(_controller.center), FootstepAudioVolume);
             }
         }
+
+        #endregion Private
     }
 }
