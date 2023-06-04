@@ -53,15 +53,15 @@ namespace Items
             _buildingMeshes ??=
                 new Mesh[5]
                 {
-                    Resources.Load<Mesh>("Meshes/Buildings/" + Name + "Floor")
+                    Resources.Load<Mesh>("Meshes/Buildings/" + Name + "/Floor")
                         ?? Resources.Load<Mesh>("Meshes/Buildings/Floor"),
-                    Resources.Load<Mesh>("Meshes/Buildings/" + Name + "BigFloor")
+                    Resources.Load<Mesh>("Meshes/Buildings/" + Name + "/BigFloor")
                         ?? Resources.Load<Mesh>("Meshes/Buildings/BigFloor"),
-                    Resources.Load<Mesh>("Meshes/Buildings/" + Name + "ShortWall")
+                    Resources.Load<Mesh>("Meshes/Buildings/" + Name + "/ShortWall")
                         ?? Resources.Load<Mesh>("Meshes/Buildings/ShortWall"),
-                    Resources.Load<Mesh>("Meshes/Buildings/" + Name + "Wall")
+                    Resources.Load<Mesh>("Meshes/Buildings/" + Name + "/Wall")
                         ?? Resources.Load<Mesh>("Meshes/Buildings/Wall"),
-                    Resources.Load<Mesh>("Meshes/Buildings/" + Name + "BigWall")
+                    Resources.Load<Mesh>("Meshes/Buildings/" + Name + "/BigWall")
                         ?? Resources.Load<Mesh>("Meshes/Buildings/BigWall")
                 };
 

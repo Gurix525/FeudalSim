@@ -14,6 +14,7 @@ namespace Buildings
         #region Fields
 
         private MeshRenderer _renderer;
+        private MeshFilter _filter;
         private Item _backingItem;
         private BuildingMode _buildingMode;
         private Color _originalColor;
@@ -55,6 +56,8 @@ namespace Buildings
         {
             _backingItem = item;
             _buildingMode = buildingMode;
+            _filter = GetComponent<MeshFilter>();
+            _filter.sharedMesh = _backingItem.BuildingMeshes[(int)_buildingMode];
             _renderer = GetComponent<MeshRenderer>();
             _renderer.material = _backingItem.Material;
             _renderer.material.SetFloat("_Displacement", buildingMode switch
