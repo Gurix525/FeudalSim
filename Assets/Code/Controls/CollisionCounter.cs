@@ -33,12 +33,14 @@ namespace Controls
 
         private void OnTriggerEnter(Collider other)
         {
-            _colliders.Add(other);
+            if (!other.isTrigger)
+                _colliders.Add(other);
         }
 
         private void OnTriggerExit(Collider other)
         {
-            _colliders.Remove(other);
+            if (!other.isTrigger)
+                _colliders.Remove(other);
         }
     }
 }
