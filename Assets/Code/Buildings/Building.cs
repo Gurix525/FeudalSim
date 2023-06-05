@@ -59,7 +59,7 @@ namespace Buildings
             _filter = GetComponent<MeshFilter>();
             _filter.sharedMesh = _backingItem.BuildingMeshes[(int)_buildingMode];
             _renderer = GetComponent<MeshRenderer>();
-            _renderer.material = _backingItem.Material;
+            _renderer.sharedMaterial = _backingItem.Material;
             _renderer.material.SetFloat("_Displacement", buildingMode switch
             {
                 BuildingMode.Floor => 0F,

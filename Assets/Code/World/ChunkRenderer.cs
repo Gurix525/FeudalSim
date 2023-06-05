@@ -21,8 +21,6 @@ namespace World
         private MeshFilter _meshFilter;
         private MeshCollider _meshCollider;
         private Mesh _mesh;
-        private int _meshInstanceId;
-        private bool _isBaking = false;
         private bool _isInitialized = false;
 
         #endregion Fields
@@ -119,7 +117,7 @@ namespace World
                 .ToArray());
             _mesh.RecalculateNormals();
             _mesh.RecalculateTangents();
-            AssignMeshToCollider();
+            _meshCollider.sharedMesh = _mesh;
         }
 
         #endregion Public
@@ -157,7 +155,6 @@ namespace World
             _mesh.MarkDynamic();
             _meshFilter.mesh = _mesh;
             _mesh.indexFormat = UnityEngine.Rendering.IndexFormat.UInt32;
-            _meshInstanceId = _mesh.GetInstanceID();
         }
 
         private void SpawnNature()
@@ -211,11 +208,6 @@ namespace World
                         boulder.transform.rotation = Quaternion.Euler(new RandomVector3(0F, 360F, 0F));
                     }
                 }
-        }
-
-        private void AssignMeshToCollider()
-        {
-            _meshCollider.sharedMesh = _mesh;
         }
 
         #endregion Private
