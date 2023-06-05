@@ -8,6 +8,21 @@ namespace Controls
 {
     public class Player : MonoBehaviour
     {
+        #region Fields
+
+        private Animator _animator;
+
+        #endregion Fields
+
+        #region Public
+
+        public static void SetAnimatorBool(string parameterName, bool value)
+        {
+            Instance._animator.SetBool(parameterName, true);
+        }
+
+        #endregion Public
+
         #region Properties
 
         public static Vector3 Position => Instance.transform.position;
@@ -21,6 +36,7 @@ namespace Controls
         private void Awake()
         {
             Instance = this;
+            _animator = GetComponent<Animator>();
         }
 
         private void OnEnable()
