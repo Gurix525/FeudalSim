@@ -27,7 +27,7 @@ namespace Controls
 
         public static Vector3 Position => Instance.transform.position;
 
-        private static Player Instance { get; set; }
+        public static Player Instance { get; set; }
 
         #endregion Properties
 

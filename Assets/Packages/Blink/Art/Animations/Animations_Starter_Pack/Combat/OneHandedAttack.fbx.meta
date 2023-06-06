@@ -8,7 +8,7 @@ ModelImporter:
     second: tpose
   - first:
       74: -8731992131643994696
-    second: MeleeAttack_OneHanded
+    second: OneHandedAttack
   externalObjects: {}
   materials:
     materialImportMode: 1
@@ -39,7 +39,7 @@ ModelImporter:
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
-      name: MeleeAttack_OneHanded
+      name: OneHandedAttack
       takeName: hum_male_meleeattack_1H_Weapon_01
       internalID: 0
       firstFrame: 2

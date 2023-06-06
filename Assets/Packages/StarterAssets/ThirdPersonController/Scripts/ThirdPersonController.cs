@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using StateMachineBehaviours;
+using UnityEngine;
 using UnityEngine.InputSystem;
 
 namespace StarterAssets
@@ -107,6 +108,11 @@ namespace StarterAssets
 
         private bool _hasAnimator;
 
+        // NOWE OD TEGO MIEJSCA
+
+        private bool _isAttacking;
+        private int _queuedAttacks;
+
         #endregion Fields
 
         #region Properties
@@ -120,6 +126,26 @@ namespace StarterAssets
         }
 
         #endregion Properties
+
+        #region Public
+
+        public void StartAttack()
+        {
+            //_queuedAttacks = _queuedAttacks == 1 ? 1 : _queuedAttacks + 1;
+
+            if (_isAttacking)
+                return;
+            _isAttacking = true;
+            _animator.SetBool("IsAttacking", true);
+            _animator.GetBehaviour<OneHandedAttack>().AttackFinished
+                .AddListener(() =>
+                {
+                    _animator.SetBool("IsAttacking", false);
+                    _isAttacking = false;
+                });
+        }
+
+        #endregion Public
 
         #region Unity
 
