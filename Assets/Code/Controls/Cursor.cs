@@ -2,12 +2,15 @@
 using Items;
 using Misc;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace Controls
 {
     public static class Cursor
     {
         private static Vector2Int? _cellPosition;
+
+        public static UnityEvent<Item> ItemChanged { get; } = new();
 
         public static bool IsNoActionActive { get; set; }
         public static bool IsAboveTerrain { get; private set; }

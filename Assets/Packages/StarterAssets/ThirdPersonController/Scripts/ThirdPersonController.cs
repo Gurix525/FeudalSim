@@ -6,6 +6,7 @@ namespace StarterAssets
 {
     [RequireComponent(typeof(CharacterController))]
     [RequireComponent(typeof(PlayerInput))]
+    [RequireComponent(typeof(Animator))]
     public class ThirdPersonController : MonoBehaviour
     {
         #region Fields
@@ -98,7 +99,6 @@ namespace StarterAssets
         private int _animIDFreeFall;
         private int _animIDMotionSpeed;
 
-        private PlayerInput _playerInput;
         private Animator _animator;
         private CharacterController _controller;
         private StarterAssetsInputs _input;
@@ -108,23 +108,10 @@ namespace StarterAssets
 
         // NOWE OD TEGO MIEJSCA
 
-        private bool _isAttacking;
         private bool _isRootMotionEnforced;
         private ForceRootMotion _forceRootMotion;
 
         #endregion Fields
-
-        #region Properties
-
-        private bool IsCurrentDeviceMouse
-        {
-            get
-            {
-                return _playerInput.currentControlScheme == "KeyboardMouse";
-            }
-        }
-
-        #endregion Properties
 
         #region Public
 
@@ -174,7 +161,6 @@ namespace StarterAssets
 
             _controller = GetComponent<CharacterController>();
             _input = GetComponent<StarterAssetsInputs>();
-            _playerInput = GetComponent<PlayerInput>();
 
             AssignAnimationIDs();
 
@@ -227,11 +213,8 @@ namespace StarterAssets
             // if there is an input and camera position is not fixed
             if (_input.look.sqrMagnitude >= _threshold && !LockCameraPosition)
             {
-                //Don't multiply mouse input by Time.deltaTime;
-                float deltaTimeMultiplier = IsCurrentDeviceMouse ? 1.0f : Time.deltaTime;
-
-                _cinemachineTargetYaw += _input.look.x * deltaTimeMultiplier;
-                _cinemachineTargetPitch += _input.look.y * deltaTimeMultiplier;
+                _cinemachineTargetYaw += _input.look.x;
+                _cinemachineTargetPitch += _input.look.y;
             }
 
             // clamp our rotations so our values are limited 360 degrees

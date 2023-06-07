@@ -44,6 +44,7 @@ namespace Items
         public ItemAction Action => _model.Action;
         public ItemAction[] Actions => _model.Actions;
         public bool HasSpecificStats => _stats != null;
+        public GameObject WeaponPrefab => _model.WeaponPrefab;
 
         public Dictionary<string, string> Stats
         {

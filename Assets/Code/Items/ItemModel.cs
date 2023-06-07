@@ -16,6 +16,7 @@ namespace Items
         private Material _material;
         private ItemAction _currentAction;
         private ItemAction[] _actions;
+        private GameObject _weaponPrefab;
 
         #endregion Fields
 
@@ -28,6 +29,9 @@ namespace Items
         public Dictionary<string, string> Stats { get; }
         public Material Material => _material ??= Materials.GetMaterial(Name) ?? Materials.DefaultMaterial;
         public ItemAction Action => _currentAction;
+
+        public GameObject WeaponPrefab =>
+            _weaponPrefab ??= Resources.Load<GameObject>("Prefabs/Weapons/" + Name);
 
         public ItemAction[] Actions
         {
