@@ -106,12 +106,11 @@ namespace StarterAssets
 
         private const float _threshold = 0.01f;
 
-        private bool _hasAnimator;
-
         // NOWE OD TEGO MIEJSCA
 
         private bool _isAttacking;
-        private int _queuedAttacks;
+        private bool _isRootMotionEnforced;
+        private ForceRootMotion _forceRootMotion;
 
         #endregion Fields
 
@@ -131,19 +130,24 @@ namespace StarterAssets
 
         public void StartAttack()
         {
-            //_queuedAttacks = _queuedAttacks == 1 ? 1 : _queuedAttacks + 1;
-
-            if (_isAttacking)
-                return;
-            _isAttacking = true;
             _animator.SetBool("IsAttacking", true);
-            _animator.GetBehaviour<OneHandedAttack>().AttackFinished
-                .AddListener(() =>
-                {
-                    _animator.SetBool("IsAttacking", false);
-                    _isAttacking = false;
-                });
         }
+
+        //public void StartAttack()
+        //{
+        //    _isAttackQueued = true;
+        //    if (_isAttacking)
+        //        return;
+        //    _isAttacking = true;
+        //    _animator.SetBool("IsAttacking", true);
+        //    _animator.GetBehaviour<OneHandedAttack>().AttackFinished
+        //        .AddListener(() =>
+        //        {
+        //            if (_isAttackQueued)
+        //                _animator.SetBool("IsAttacking", false);
+        //            _isAttacking = false;
+        //        });
+        //}
 
         #endregion Public
 
@@ -151,6 +155,12 @@ namespace StarterAssets
 
         private void Awake()
         {
+            _animator = GetComponent<Animator>();
+            _forceRootMotion = _animator.GetBehaviour<ForceRootMotion>();
+            _forceRootMotion.RootMotionForced.AddListener((isEnforced) =>
+            {
+                _isRootMotionEnforced = isEnforced;
+            });
             // get a reference to our main camera
             if (_mainCamera == null)
             {
@@ -162,7 +172,6 @@ namespace StarterAssets
         {
             _cinemachineTargetYaw = CinemachineCameraTarget.transform.rotation.eulerAngles.y;
 
-            _hasAnimator = TryGetComponent(out _animator);
             _controller = GetComponent<CharacterController>();
             _input = GetComponent<StarterAssetsInputs>();
             _playerInput = GetComponent<PlayerInput>();
@@ -176,9 +185,7 @@ namespace StarterAssets
 
         private void Update()
         {
-            _hasAnimator = TryGetComponent(out _animator);
-
-            if (_isAttacking)
+            if (_isRootMotionEnforced)
                 return;
             JumpAndGravity();
             GroundedCheck();
@@ -212,10 +219,7 @@ namespace StarterAssets
                 QueryTriggerInteraction.Ignore);
 
             // update animator if using character
-            if (_hasAnimator)
-            {
-                _animator.SetBool(_animIDGrounded, Grounded);
-            }
+            _animator.SetBool(_animIDGrounded, Grounded);
         }
 
         private void CameraRotation()
@@ -299,11 +303,8 @@ namespace StarterAssets
                              new Vector3(0.0f, _verticalVelocity, 0.0f) * Time.deltaTime);
 
             // update animator if using character
-            if (_hasAnimator)
-            {
-                _animator.SetFloat(_animIDSpeed, _animationBlend);
-                _animator.SetFloat(_animIDMotionSpeed, inputMagnitude);
-            }
+            _animator.SetFloat(_animIDSpeed, _animationBlend);
+            _animator.SetFloat(_animIDMotionSpeed, inputMagnitude);
         }
 
         private void JumpAndGravity()
@@ -314,11 +315,8 @@ namespace StarterAssets
                 _fallTimeoutDelta = FallTimeout;
 
                 // update animator if using character
-                if (_hasAnimator)
-                {
-                    _animator.SetBool(_animIDJump, false);
-                    _animator.SetBool(_animIDFreeFall, false);
-                }
+                _animator.SetBool(_animIDJump, false);
+                _animator.SetBool(_animIDFreeFall, false);
 
                 // stop our velocity dropping infinitely when grounded
                 if (_verticalVelocity < 0.0f)
@@ -333,10 +331,7 @@ namespace StarterAssets
                     _verticalVelocity = Mathf.Sqrt(JumpHeight * -2f * Gravity);
 
                     // update animator if using character
-                    if (_hasAnimator)
-                    {
-                        _animator.SetBool(_animIDJump, true);
-                    }
+                    _animator.SetBool(_animIDJump, true);
                 }
 
                 // jump timeout
@@ -358,10 +353,7 @@ namespace StarterAssets
                 else
                 {
                     // update animator if using character
-                    if (_hasAnimator)
-                    {
-                        _animator.SetBool(_animIDFreeFall, true);
-                    }
+                    _animator.SetBool(_animIDFreeFall, true);
                 }
 
                 // if we are not grounded, do not jump
