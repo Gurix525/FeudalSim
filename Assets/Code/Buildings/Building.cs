@@ -9,7 +9,7 @@ using Terrain = World.Terrain;
 
 namespace Buildings
 {
-    public class Building : MonoBehaviour, IDetectable
+    public class Building : MonoBehaviour
     {
         #region Fields
 

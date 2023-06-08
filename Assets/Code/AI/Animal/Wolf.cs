@@ -56,23 +56,39 @@ namespace AI
 
             private IEnumerator AttackTarget()
             {
-                if (Vector3.Distance(transform.position, Focus.transform.position) >= 4F)
+                float distance = Vector3.Distance(transform.position, Focus.transform.position);
+                if (distance >= 4F)
                     yield break;
                 if (Vector3.Dot(
                     transform.forward,
                     (Focus.transform.position - transform.position).normalized)
                     < 0.9F)
                     yield break;
+                yield return new WaitForSeconds(0.5F);
+                Animal.SetAttackActive(true);
+                Animal.SetAttackTarget(Focus);
                 Vector3 direction = (Focus.transform.position - transform.position).normalized * Agent.Speed;
-                float lifetime = 0.5F;
-                var attack = Attack.Spawn(this, Vector3.forward, 4F, lifetime: lifetime, parent: transform);
                 Agent.ResetPath();
-                while (attack.gameObject.activeSelf)
+                float delta = 0F;
+                bool hasHit = false;
+                Animal.DealedHit.AddListener((hitbox) => hasHit = true);
+                StateUpdated.AddListener(
+                    () =>
+                    {
+                        Animal.DealedHit.RemoveAllListeners();
+                        Animal.SetAttackTarget(null);
+                    });
+                while (delta < distance && hasHit == false)
                 {
-                    Agent.Move(direction * Time.fixedDeltaTime);
+                    Vector3 movement = direction * Time.fixedDeltaTime;
+                    Agent.Move(movement);
+                    delta += movement.magnitude;
                     yield return new WaitForFixedUpdate();
                 }
-                yield return new WaitForSeconds(0.5F);
+                Animal.SetAttackActive(false);
+                Animal.SetAttackTarget(null);
+                yield return new WaitForSeconds(1F);
+                StateUpdated.RemoveAllListeners();
             }
         }
 

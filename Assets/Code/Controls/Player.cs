@@ -14,6 +14,7 @@ namespace Controls
         #region Fields
 
         private Animator _animator;
+        private Health _health;
 
         #endregion Fields
 
@@ -40,6 +41,8 @@ namespace Controls
         {
             Instance = this;
             _animator = GetComponent<Animator>();
+            _health = GetComponent<Health>();
+            _health.Receiver = this;
         }
 
         private void OnEnable()

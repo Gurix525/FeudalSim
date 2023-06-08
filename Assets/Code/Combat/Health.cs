@@ -9,12 +9,26 @@ namespace Combat
         #region Fields
 
         private Hitbox[] _hitboxes;
+        private Component _receiver;
 
         #endregion Fields
 
         #region Properties
 
         public float CurrentHealth { get; private set; } = 10F;
+
+        public Component Receiver
+        {
+            get => _receiver;
+            set
+            {
+                if (_hitboxes == null)
+                    GetHitboxesInChildren();
+                _receiver = value;
+                foreach (Hitbox hitbox in _hitboxes)
+                    hitbox.Receiver = value;
+            }
+        }
 
         public UnityEvent<Attack> GotHit { get; } = new();
 
@@ -50,9 +64,6 @@ namespace Combat
 
         private void OnGotHit(Attack attack)
         {
-            if (attack.Sender.TryGetComponent(out Health senderHealth))
-                if (senderHealth == this)
-                    return;
             CurrentHealth -= attack.Damage;
             CurrentHealth = CurrentHealth.Clamp(0F, float.PositiveInfinity);
             GotHit.Invoke(attack);

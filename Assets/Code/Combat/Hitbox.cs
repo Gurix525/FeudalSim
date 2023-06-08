@@ -4,6 +4,7 @@ using UnityEngine.Events;
 namespace Combat
 {
     [DisallowMultipleComponent]
+    [RequireComponent(typeof(Rigidbody))]
     [RequireComponent(typeof(Collider))]
     public class Hitbox : MonoBehaviour
     {
@@ -11,8 +12,11 @@ namespace Combat
 
         public UnityEvent<Attack> GotHit { get; } = new();
 
+        public Component Receiver { get; set; }
+
         private void Awake()
         {
+            GetComponent<Rigidbody>().isKinematic = true;
             _collider = GetComponent<Collider>();
             _collider.isTrigger = true;
             gameObject.layer = LayerMask.NameToLayer("Hitbox");
@@ -20,7 +24,13 @@ namespace Combat
 
         private void OnTriggerEnter(Collider other)
         {
-            GotHit.Invoke(other.GetComponent<Attack>());
+            other.TryGetComponent(out Attack attack);
+            if (attack.Sender == Receiver)
+                return;
+            if (attack.Target != null)
+                if (attack.Target != Receiver)
+                    return;
+            GotHit.Invoke(attack);
         }
     }
 }

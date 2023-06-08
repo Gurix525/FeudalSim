@@ -9,7 +9,7 @@ using Cursor = Controls.Cursor;
 namespace Nature
 {
     [RequireComponent(typeof(OutlineHandler))]
-    public class Tree : MonoBehaviour, ILeftClickHandler, IAxeActionOutline, IDetectable
+    public class Tree : MonoBehaviour, ILeftClickHandler, IAxeActionOutline
     {
         #region Fields
 

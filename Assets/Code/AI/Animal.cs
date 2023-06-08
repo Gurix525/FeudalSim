@@ -6,14 +6,20 @@ using Combat;
 using Extensions;
 using TaskManager;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace AI
 {
     [DisallowMultipleComponent]
-    [RequireComponent(typeof(EntitiesDetector), typeof(Agent), typeof(Health))]
+    [RequireComponent(typeof(EntitiesDetector))]
+    [RequireComponent(typeof(Agent))]
+    [RequireComponent(typeof(Health))]
     public abstract class Animal : MonoBehaviour, IDetectable
     {
         #region Fields
+
+        [SerializeField]
+        private Attack[] _attacks;
 
         private EntitiesDetector _detector;
         private Agent _agent;
@@ -40,9 +46,13 @@ namespace AI
 
         #region Properties
 
+        public UnityEvent<Hitbox> DealedHit { get; } = new();
+
         public Component Focus => HighestPriorityAttitude?.Component ?? this;
 
         public IReadOnlyCollection<Attitude> Attitudes => _attitudes;
+
+        public IReadOnlyCollection<Attack> Attacks => _attacks;
 
         public float MaxDetectingDistance => _detector.MaxDetectingDistance;
 
@@ -79,6 +89,48 @@ namespace AI
             return gameObject.AddComponent<T>();
         }
 
+        /// <summary>
+        /// -1 oznacza wszystkie ataki przypisane do tego zwierzęcia
+        /// </summary>
+        public void SetAttackActive(bool state, int index = -1)
+        {
+            if (index == -1)
+            {
+                foreach (Attack attack in Attacks)
+                    attack.gameObject.SetActive(state);
+                return;
+            }
+            if (index >= _attacks.Length)
+                throw new IndexOutOfRangeException("Nie ma ataku o takim indeksie.");
+            _attacks[index].gameObject.SetActive(state);
+        }
+
+        public void SetAttackDamage(float damage, int index = -1)
+        {
+            if (index == -1)
+            {
+                foreach (Attack attack in Attacks)
+                    attack.Damage = damage;
+                return;
+            }
+            if (index >= _attacks.Length)
+                throw new IndexOutOfRangeException("Nie ma ataku o takim indeksie.");
+            _attacks[index].Damage = damage;
+        }
+
+        public void SetAttackTarget(Component target, int index = -1)
+        {
+            if (index == -1)
+            {
+                foreach (Attack attack in Attacks)
+                    attack.Target = target;
+                return;
+            }
+            if (index >= _attacks.Length)
+                throw new IndexOutOfRangeException("Nie ma ataku o takim indeksie.");
+            _attacks[index].Target = target;
+        }
+
         #endregion Public
 
         #region Unity
@@ -90,9 +142,13 @@ namespace AI
             SetSpeed(MoveSpeedType.Walk);
             _detector = GetComponent<EntitiesDetector>();
             _health = GetComponent<Health>();
+            _health.Receiver = this;
             _health.GotHit.AddListener(OnGotHit);
             _detector.DetectableBecameVisible.AddListener(OnEntityDetected);
             _detector.DetectableBecameInvisible.AddListener(OnEntityDetectionLost);
+            foreach (Attack attack in Attacks)
+                attack.Sender = this;
+            SetAttackActive(false);
             CreateAttitudeModels();
             CreateBehaviours();
             RecalculateAttitudesAndSelectBehaviour();
