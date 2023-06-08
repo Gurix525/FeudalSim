@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Controls;
 using Extensions;
 using UnityEngine;
 
@@ -12,6 +13,7 @@ namespace AI
         protected override void CreateAttitudeModels()
         {
             AddAttitude((typeof(Wolf), AttitudeType.Scared, (target) => 100F));
+            AddAttitude((typeof(Player), AttitudeType.Scared, (target) => 100F));
             AddAttitude((typeof(Hare), AttitudeType.Friendly, (target) => -10F));
         }
 

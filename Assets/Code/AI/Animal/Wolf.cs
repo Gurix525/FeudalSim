@@ -1,5 +1,6 @@
 using System.Collections;
 using Combat;
+using Controls;
 using Extensions;
 using Misc;
 using TaskManager;
@@ -12,8 +13,10 @@ namespace AI
         protected override void CreateAttitudeModels()
         {
             AddAttitude((typeof(Wolf), AttitudeType.Friendly, (target) => -10F));
-            AddAttitude((typeof(Animal), AttitudeType.Hostile, (target) =>
-                100F + GetDistancePoints(target)));
+            AddAttitude((typeof(Animal), AttitudeType.Hostile,
+                (target) => 100F + GetDistancePoints(target)));
+            AddAttitude((typeof(Player), AttitudeType.Hostile,
+                (target) => 100F + GetDistancePoints(target)));
         }
 
         private float GetDistancePoints(Component component)

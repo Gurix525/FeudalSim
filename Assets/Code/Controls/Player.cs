@@ -1,4 +1,6 @@
 using System;
+using AI;
+using Combat;
 using Extensions;
 using Input;
 using UnityEngine;
@@ -6,7 +8,8 @@ using static UnityEngine.InputSystem.InputAction;
 
 namespace Controls
 {
-    public class Player : MonoBehaviour
+    [RequireComponent(typeof(Health))]
+    public class Player : MonoBehaviour, IDetectable
     {
         #region Fields
 
