@@ -8,21 +8,13 @@ namespace Combat
     {
         #region Fields
 
-        private int _instanceID;
+        private static int _nextInt;
 
         #endregion Fields
 
         #region Properties
 
-        public int InstanceID
-        {
-            get
-            {
-                if (_instanceID == 0)
-                    _instanceID = gameObject.GetInstanceID();
-                return _instanceID;
-            }
-        }
+        public int ID { get; private set; }
 
         public Component Sender { get; set; }
         public Component Target { get; set; }
@@ -31,6 +23,15 @@ namespace Combat
         public UnityEvent<Hitbox> DealedHit { get; } = new();
 
         #endregion Properties
+
+        #region Public
+
+        public void SetNextID()
+        {
+            ID = _nextInt++;
+        }
+
+        #endregion Public
 
         #region Unity
 

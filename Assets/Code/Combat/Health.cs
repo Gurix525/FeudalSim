@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Extensions;
 using UnityEngine;
 using UnityEngine.Events;
@@ -10,6 +11,7 @@ namespace Combat
 
         private Hitbox[] _hitboxes;
         private Component _receiver;
+        private Dictionary<int, int> AlreadyUsedIDs = new();
 
         #endregion Fields
 
@@ -64,6 +66,9 @@ namespace Combat
 
         private void OnGotHit(Attack attack)
         {
+            if (AlreadyUsedIDs.ContainsKey(attack.ID))
+                return;
+            AlreadyUsedIDs[attack.ID] = attack.ID;
             CurrentHealth -= attack.Damage;
             CurrentHealth = CurrentHealth.Clamp(0F, float.PositiveInfinity);
             GotHit.Invoke(attack);

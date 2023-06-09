@@ -22,11 +22,17 @@ namespace Combat
         {
             _attack.Sender = Player.Instance;
             Player.PendingAttack.AddListener(OnPendingAttack);
+            Player.AttackChanged.AddListener(OnAttackChanged);
         }
 
         private void OnPendingAttack(bool state)
         {
             _attack.gameObject.SetActive(state);
+        }
+
+        private void OnAttackChanged()
+        {
+            _attack.SetNextID();
         }
     }
 }

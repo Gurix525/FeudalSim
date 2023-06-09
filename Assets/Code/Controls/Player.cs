@@ -1,3 +1,4 @@
+using System;
 using AI;
 using Combat;
 using Input;
@@ -17,12 +18,15 @@ namespace Controls
         private Health _health;
         private Animator _animator;
         private AttackStartStop _attackStartStop;
+        private AttackChange _attackChange;
 
         #endregion Fields
 
         #region Properties
 
         public static UnityEvent<bool> PendingAttack { get; } = new();
+
+        public static UnityEvent AttackChanged { get; } = new();
 
         public static Vector3 Position => Instance.transform.position;
 
@@ -39,8 +43,6 @@ namespace Controls
             _health = GetComponent<Health>();
             _health.Receiver = this;
             _animator = GetComponent<Animator>();
-            _attackStartStop = _animator.GetBehaviour<AttackStartStop>();
-            _attackStartStop.PendingAttack.AddListener(OnPendingAttack);
         }
 
         private void OnEnable()
@@ -55,6 +57,11 @@ namespace Controls
             {
                 _attackStartStop = _animator.GetBehaviour<AttackStartStop>();
                 _attackStartStop.PendingAttack.AddListener(OnPendingAttack);
+            }
+            if (_attackChange == null)
+            {
+                _attackChange = _animator.GetBehaviour<AttackChange>();
+                _attackChange.AttackChanged.AddListener(OnAttackChanged);
             }
             Cursor.Action.Update();
         }
@@ -82,6 +89,11 @@ namespace Controls
         private void OnPendingAttack(bool state)
         {
             PendingAttack.Invoke(state);
+        }
+
+        private void OnAttackChanged()
+        {
+            AttackChanged.Invoke();
         }
 
         #endregion Private
