@@ -8,20 +8,14 @@ namespace StateMachineBehaviours
     {
         public UnityEvent<bool> PendingAttack { get; } = new();
 
-        public override void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
+        public override void OnStateMachineEnter(Animator animator, int stateMachinePathHash)
         {
-            new TaskManager.Task(InvokeTrue());
+            PendingAttack.Invoke(true);
         }
 
-        public override void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
+        public override void OnStateMachineExit(Animator animator, int stateMachinePathHash)
         {
             PendingAttack.Invoke(false);
-        }
-
-        private IEnumerator InvokeTrue()
-        {
-            yield return null;
-            PendingAttack.Invoke(true);
         }
     }
 }

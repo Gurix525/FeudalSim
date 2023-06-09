@@ -6,7 +6,23 @@ namespace Combat
     [RequireComponent(typeof(Rigidbody))]
     public class Attack : MonoBehaviour
     {
+        #region Fields
+
+        private int _instanceID;
+
+        #endregion Fields
+
         #region Properties
+
+        public int InstanceID
+        {
+            get
+            {
+                if (_instanceID == 0)
+                    _instanceID = gameObject.GetInstanceID();
+                return _instanceID;
+            }
+        }
 
         public Component Sender { get; set; }
         public Component Target { get; set; }

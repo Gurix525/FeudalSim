@@ -16,7 +16,7 @@ namespace Controls
 
         private Health _health;
         private Animator _animator;
-        private AttackStartStop[] _attackStartStops;
+        private AttackStartStop _attackStartStop;
 
         #endregion Fields
 
@@ -39,9 +39,8 @@ namespace Controls
             _health = GetComponent<Health>();
             _health.Receiver = this;
             _animator = GetComponent<Animator>();
-            _attackStartStops = _animator.GetBehaviours<AttackStartStop>();
-            foreach (var attackStartStop in _attackStartStops)
-                attackStartStop.PendingAttack.AddListener(OnPendingAttack);
+            _attackStartStop = _animator.GetBehaviour<AttackStartStop>();
+            _attackStartStop.PendingAttack.AddListener(OnPendingAttack);
         }
 
         private void OnEnable()
@@ -52,11 +51,10 @@ namespace Controls
 
         private void Update()
         {
-            if (_attackStartStops[0] == null)
+            if (_attackStartStop == null)
             {
-                _attackStartStops = _animator.GetBehaviours<AttackStartStop>();
-                foreach (var attackStartStop in _attackStartStops)
-                    attackStartStop.PendingAttack.AddListener(OnPendingAttack);
+                _attackStartStop = _animator.GetBehaviour<AttackStartStop>();
+                _attackStartStop.PendingAttack.AddListener(OnPendingAttack);
             }
             Cursor.Action.Update();
         }
