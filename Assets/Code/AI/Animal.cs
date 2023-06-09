@@ -140,15 +140,9 @@ namespace AI
             _agent = GetComponent<Agent>();
             RandomizeSpeedValues();
             SetSpeed(MoveSpeedType.Walk);
-            _detector = GetComponent<EntitiesDetector>();
-            _health = GetComponent<Health>();
-            _health.Receiver = this;
-            _health.GotHit.AddListener(OnGotHit);
-            _detector.DetectableBecameVisible.AddListener(OnEntityDetected);
-            _detector.DetectableBecameInvisible.AddListener(OnEntityDetectionLost);
-            foreach (Attack attack in Attacks)
-                attack.Sender = this;
-            SetAttackActive(false);
+            InitializeHealth();
+            InitializeDetector();
+            InitializeAttacks();
             CreateAttitudeModels();
             CreateBehaviours();
             RecalculateAttitudesAndSelectBehaviour();
@@ -173,7 +167,7 @@ namespace AI
 
         protected virtual void ChangeAngularSpeed()
         {
-            _agent.AngularSpeed = Mathf.Lerp(120F, 360F, 1F - (_agent.Velocity.magnitude / _agent.Speed));
+            _agent.AngularSpeed = Mathf.Lerp(120F, 720F, 1F - (_agent.Velocity.magnitude / _agent.Speed));
         }
 
         protected void AddAttitude(AttitudeModel model)
@@ -338,6 +332,30 @@ namespace AI
                 return;
             }
             _knockbackTask = new(KnockBack(attack));
+        }
+
+        private void InitializeHealth()
+        {
+            _health = GetComponent<Health>();
+            _health.Receiver = this;
+            _health.GotHit.AddListener(OnGotHit);
+        }
+
+        private void InitializeDetector()
+        {
+            _detector = GetComponent<EntitiesDetector>();
+            _detector.DetectableBecameVisible.AddListener(OnEntityDetected);
+            _detector.DetectableBecameInvisible.AddListener(OnEntityDetectionLost);
+        }
+
+        private void InitializeAttacks()
+        {
+            foreach (Attack attack in Attacks)
+            {
+                attack.Sender = this;
+                attack.DealedHit.AddListener((hitbox) => DealedHit.Invoke(hitbox));
+            }
+            SetAttackActive(false);
         }
 
         private IEnumerator KnockBack(Attack attack)

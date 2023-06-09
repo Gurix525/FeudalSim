@@ -120,22 +120,6 @@ namespace StarterAssets
             _animator.SetBool("IsAttacking", true);
         }
 
-        //public void StartAttack()
-        //{
-        //    _isAttackQueued = true;
-        //    if (_isAttacking)
-        //        return;
-        //    _isAttacking = true;
-        //    _animator.SetBool("IsAttacking", true);
-        //    _animator.GetBehaviour<OneHandedAttack>().AttackFinished
-        //        .AddListener(() =>
-        //        {
-        //            if (_isAttackQueued)
-        //                _animator.SetBool("IsAttacking", false);
-        //            _isAttacking = false;
-        //        });
-        //}
-
         #endregion Public
 
         #region Unity

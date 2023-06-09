@@ -15,7 +15,7 @@ namespace AI
 
         public Vector3 Destination => NavAgent.destination;
 
-        public Vector3 Velocity => NavAgent.velocity;
+        public Vector3 Velocity { get => NavAgent.velocity; set => NavAgent.velocity = value; }
 
         public float Speed { get => NavAgent.speed; set => NavAgent.speed = value; }
 

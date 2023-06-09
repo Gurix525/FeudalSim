@@ -32,6 +32,7 @@ namespace AI
             {
                 AddAction(ChaseTarget);
                 AddAction(AttackTarget);
+                AddAction(RotateToTarget);
             }
 
             protected override void DuringEnable()
@@ -41,6 +42,8 @@ namespace AI
 
             private IEnumerator ChaseTarget()
             {
+                if ((transform.position - Focus.transform.position).magnitude < 4F)
+                    yield break;
                 bool hasToUpdate = false;
                 StateUpdated.AddListener(() => hasToUpdate = true);
                 while ((Vector3.Dot(transform.forward,
@@ -54,22 +57,38 @@ namespace AI
                 StateUpdated.RemoveAllListeners();
             }
 
+            private IEnumerator RotateToTarget()
+            {
+                if ((Focus.transform.position - transform.position).magnitude >= 4F)
+                    yield break;
+                while (Vector3.Dot(
+                    transform.forward,
+                    (Focus.transform.position - transform.position).normalized)
+                    < 0.99F)
+                {
+                    Vector3 direction = Focus.transform.position - transform.position;
+                    if (direction.magnitude >= 4F)
+                        yield break;
+                    transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(direction), Time.deltaTime * 5);
+                    yield return new WaitForFixedUpdate();
+                }
+            }
+
             private IEnumerator AttackTarget()
             {
-                float distance = Vector3.Distance(transform.position, Focus.transform.position);
+                float distance = (transform.position - Focus.transform.position).magnitude;
                 if (distance >= 4F)
                     yield break;
                 if (Vector3.Dot(
                     transform.forward,
                     (Focus.transform.position - transform.position).normalized)
-                    < 0.9F)
+                    < 0.99F)
                     yield break;
-                yield return new WaitForSeconds(0.5F);
                 Animal.SetAttackActive(true);
                 Animal.SetAttackTarget(Focus);
                 Vector3 direction = (Focus.transform.position - transform.position).normalized * Agent.Speed;
                 Agent.ResetPath();
-                float delta = 0F;
+                float distanceFromStart = 0F;
                 bool hasHit = false;
                 Animal.DealedHit.AddListener((hitbox) => hasHit = true);
                 StateUpdated.AddListener(
@@ -78,13 +97,15 @@ namespace AI
                         Animal.DealedHit.RemoveAllListeners();
                         Animal.SetAttackTarget(null);
                     });
-                while (delta < distance && hasHit == false)
+                Vector3 startPosition = transform.position;
+                while (distanceFromStart < distance && hasHit == false)
                 {
                     Vector3 movement = direction * Time.fixedDeltaTime;
                     Agent.Move(movement);
-                    delta += movement.magnitude;
+                    distanceFromStart = (startPosition - transform.position).magnitude;
                     yield return new WaitForFixedUpdate();
                 }
+                Agent.Velocity = Vector3.zero;
                 Animal.SetAttackActive(false);
                 Animal.SetAttackTarget(null);
                 yield return new WaitForSeconds(1F);

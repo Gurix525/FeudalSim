@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 686723481007424380}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Ear_1.L
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -51,7 +51,7 @@ GameObject:
   - component: {fileID: 1016782961279025332}
   - component: {fileID: 1016782961279025333}
   - component: {fileID: 1016782961279025313}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Hare
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -152,6 +152,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b1b8017652fb5e74880f7b233b764446, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _attacks: []
 --- !u!114 &1016782961279025338
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -299,7 +300,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7364786652549274771}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Front_Paw_3.L
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -330,7 +331,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7683836516396392350}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Hind_Paw_1.L
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -363,7 +364,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6795663286655628782}
   - component: {fileID: 2112075693578852403}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Skin
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -475,7 +476,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6469803288717303398}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Hind_Paw_2.R
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -507,7 +508,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 912518807578706863}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Front_Paw_2.L
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -539,7 +540,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7271435723977678666}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Front_Paw_IK.R
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -570,7 +571,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6970398876307804239}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Hind_Paw_IK.R
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -601,7 +602,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3637308387473203665}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Front_Paw_1.L
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -633,7 +634,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5600251774678356465}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Front_Paw_3.R
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -664,7 +665,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8131846542780650816}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Neck
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -696,7 +697,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1674076589706951240}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Front_Paw_2.R
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -728,7 +729,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8264961846137337515}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Body_Back
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -763,7 +764,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1450920399726765272}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Ear_2.R
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -794,7 +795,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5093174595218883155}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Tail
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -825,7 +826,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6807213239801878345}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Armature
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -861,7 +862,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 756223224134608306}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Hind_Paw_1.R
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -893,7 +894,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1888129763991800481}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Front_Paw_IK.L
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -924,7 +925,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7548106587512038499}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Front_Paw_1.R
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -956,7 +957,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8842620145753274474}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Hind_Paw_3.L
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -988,7 +989,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6103321758805550503}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Body_Front
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1023,7 +1024,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1928511291796187933}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Hind_Paw_2.L
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1055,7 +1056,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4019520153102724467}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Hind_Paw_3.R
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1087,7 +1088,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1781872871382134766}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Hind_Paw_4.L
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1118,7 +1119,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3874167627624325856}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Ear_1.R
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1150,7 +1151,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7248279050643840981}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Head
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1183,7 +1184,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4236247612124002178}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Ear_2.L
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1214,7 +1215,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5952898979055894461}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Hind_Paw_IK.L
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1245,7 +1246,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2996500689067878940}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Hind_Paw_4.R
   m_TagString: Untagged
   m_Icon: {fileID: 0}

@@ -22,7 +22,7 @@ namespace Combat
         {
             GetComponent<Rigidbody>().isKinematic = true;
             gameObject.layer = LayerMask.NameToLayer("Attack");
-            Sender = this;
+            Sender ??= this;
         }
 
         private void OnTriggerEnter(Collider other)
