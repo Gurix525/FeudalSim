@@ -19,12 +19,12 @@ namespace World
             yield return 10;
             System.Random random = new();
             var prefabs = Resources.LoadAll<GameObject>("Prefabs/Animals");
-            for (int i = 0; i < 0; i++)
+            for (int i = 0; i < 20; i++)
             {
                 NavMesh.SamplePosition(new RandomVector3(50F, 0F, 50F), out NavMeshHit hit, 10F, NavMesh.AllAreas);
                 Instantiate(prefabs[0], hit.position, Quaternion.Euler(0F, random.NextFloat(0F, 360F), 0F), transform);
             }
-            for (int i = 0; i < 1; i++)
+            for (int i = 0; i < 5; i++)
             {
                 NavMesh.SamplePosition(new RandomVector3(50F, 0F, 50F), out NavMeshHit hit, 10F, NavMesh.AllAreas);
                 Instantiate(prefabs[1], hit.position, Quaternion.Euler(0F, random.NextFloat(0F, 360F), 0F), transform);

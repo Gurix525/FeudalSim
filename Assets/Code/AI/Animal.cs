@@ -325,6 +325,7 @@ namespace AI
 
         private void OnGotHit(Attack attack)
         {
+            Debug.Log($"{this} został uderzony przez {attack.Sender}");
             _knockbackTask?.Stop();
             if (_health.CurrentHealth <= 0F)
             {
@@ -353,6 +354,7 @@ namespace AI
             foreach (Attack attack in Attacks)
             {
                 attack.Sender = this;
+                attack.Damage = 4F;
                 attack.DealedHit.AddListener((hitbox) => DealedHit.Invoke(hitbox));
             }
             SetAttackActive(false);

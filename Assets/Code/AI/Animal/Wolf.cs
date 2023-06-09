@@ -30,9 +30,9 @@ namespace AI
         {
             protected override void CreateActions()
             {
-                AddAction(ChaseTarget);
-                AddAction(AttackTarget);
-                AddAction(RotateToTarget);
+                AddAction((ChaseTarget, GetChaseTargetPoints));
+                AddAction((RotateToTarget, GetRotateToTargetPoints));
+                AddAction((AttackTarget, GetAttackTargetPoints));
             }
 
             protected override void DuringEnable()
@@ -42,8 +42,6 @@ namespace AI
 
             private IEnumerator ChaseTarget()
             {
-                if ((transform.position - Focus.transform.position).magnitude < 4F)
-                    yield break;
                 bool hasToUpdate = false;
                 StateUpdated.AddListener(() => hasToUpdate = true);
                 while ((Vector3.Dot(transform.forward,
@@ -59,8 +57,6 @@ namespace AI
 
             private IEnumerator RotateToTarget()
             {
-                if ((Focus.transform.position - transform.position).magnitude >= 4F)
-                    yield break;
                 while (Vector3.Dot(
                     transform.forward,
                     (Focus.transform.position - transform.position).normalized)
@@ -76,14 +72,7 @@ namespace AI
 
             private IEnumerator AttackTarget()
             {
-                float distance = (transform.position - Focus.transform.position).magnitude;
-                if (distance >= 4F)
-                    yield break;
-                if (Vector3.Dot(
-                    transform.forward,
-                    (Focus.transform.position - transform.position).normalized)
-                    < 0.99F)
-                    yield break;
+                float startDistanceToTarget = (transform.position - Focus.transform.position).magnitude;
                 Animal.SetAttackActive(true);
                 Animal.SetAttackTarget(Focus);
                 Vector3 direction = (Focus.transform.position - transform.position).normalized * Agent.Speed;
@@ -98,7 +87,7 @@ namespace AI
                         Animal.SetAttackTarget(null);
                     });
                 Vector3 startPosition = transform.position;
-                while (distanceFromStart < distance && hasHit == false)
+                while (distanceFromStart < startDistanceToTarget && hasHit == false)
                 {
                     Vector3 movement = direction * Time.fixedDeltaTime;
                     Agent.Move(movement);
@@ -108,8 +97,34 @@ namespace AI
                 Agent.Velocity = Vector3.zero;
                 Animal.SetAttackActive(false);
                 Animal.SetAttackTarget(null);
-                yield return new WaitForSeconds(1F);
+                yield return new WaitForSeconds(0.5F);
                 StateUpdated.RemoveAllListeners();
+            }
+
+            private float GetChaseTargetPoints()
+            {
+                return (Focus.transform.position - transform.position)
+                    .magnitude >= 4F ? 1F : 0F;
+            }
+
+            private float GetRotateToTargetPoints()
+            {
+                return ((Focus.transform.position - transform.position)
+                    .magnitude < 4F ? 1F : 0F) *
+                    Vector3.Dot(
+                    transform.forward,
+                    (Focus.transform.position - transform.position).normalized)
+                    < 0.99F ? 1 : 0;
+            }
+
+            private float GetAttackTargetPoints()
+            {
+                return ((Focus.transform.position - transform.position)
+                    .magnitude < 4F ? 1F : 0F) *
+                    Vector3.Dot(
+                    transform.forward,
+                    (Focus.transform.position - transform.position).normalized)
+                    >= 0.99F ? 1 : 0;
             }
         }
 

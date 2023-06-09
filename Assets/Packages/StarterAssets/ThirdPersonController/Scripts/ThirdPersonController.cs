@@ -155,6 +155,14 @@ namespace StarterAssets
 
         private void Update()
         {
+            if (_forceRootMotion == null)
+            {
+                _forceRootMotion = _animator.GetBehaviour<ForceRootMotion>();
+                _forceRootMotion.RootMotionForced.AddListener((isEnforced) =>
+                {
+                    _isRootMotionEnforced = isEnforced;
+                });
+            }
             if (_isRootMotionEnforced)
                 return;
             JumpAndGravity();
