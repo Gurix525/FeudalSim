@@ -2086,6 +2086,7 @@ GameObject:
   - component: {fileID: 744291004}
   - component: {fileID: 744291003}
   - component: {fileID: 744291011}
+  - component: {fileID: 744291012}
   m_Layer: 8
   m_Name: Player
   m_TagString: Player
@@ -2266,7 +2267,7 @@ MonoBehaviour:
   GroundedRadius: 0.28
   GroundLayers:
     serializedVersion: 2
-    m_Bits: 513
+    m_Bits: 1
   CinemachineCameraTarget: {fileID: 1011478194}
   TopClamp: 70
   BottomClamp: -30
@@ -2362,6 +2363,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2e4e16e5c8c9b8f46a701a86d3b1710c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!208 &744291012
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 744291002}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 1
+  m_Extents: {x: 0.5, y: 0.5, z: 0.5}
+  m_MoveThreshold: 0.1
+  m_Carve: 1
+  m_CarveOnlyStationary: 0
+  m_Center: {x: 0, y: 0, z: 0}
+  m_TimeToStationary: 0.1
 --- !u!1 &745985002
 GameObject:
   m_ObjectHideFlags: 0

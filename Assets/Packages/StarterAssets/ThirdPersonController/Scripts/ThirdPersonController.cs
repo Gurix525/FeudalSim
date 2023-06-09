@@ -72,6 +72,10 @@ namespace StarterAssets
         [Tooltip("For locking the camera position on all axis")]
         public bool LockCameraPosition = false;
 
+        [Header("Combat")]
+        [SerializeField]
+        private float _attackMoveSpeed = 4F;
+
         // cinemachine
         private float _cinemachineTargetYaw;
 
@@ -164,7 +168,11 @@ namespace StarterAssets
                 });
             }
             if (_isRootMotionEnforced)
+            {
+                transform.LookAt(transform.position + new Vector3(_input.move.x, 0F, _input.move.y));
+                _controller.Move(transform.forward * Time.deltaTime * _attackMoveSpeed);
                 return;
+            }
             JumpAndGravity();
             GroundedCheck();
             Move();
