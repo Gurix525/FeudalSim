@@ -76,6 +76,9 @@ namespace StarterAssets
         [SerializeField]
         private float _attackMoveSpeed = 4F;
 
+        [SerializeField]
+        private float _rollMoveSpeed = 4F;
+
         // cinemachine
         private float _cinemachineTargetYaw;
 
@@ -113,7 +116,12 @@ namespace StarterAssets
         // NOWE OD TEGO MIEJSCA
 
         private bool _isRootMotionEnforced;
+        private bool _isRollPending;
+
+        private Vector3 _lockedDirection;
+
         private ForceRootMotion _forceRootMotion;
+        private Roll _roll;
 
         #endregion Fields
 
@@ -170,15 +178,32 @@ namespace StarterAssets
                 _forceRootMotion.RootMotionForced.AddListener((isEnforced) =>
                 {
                     _isRootMotionEnforced = isEnforced;
+                    LockCurrentDirection();
                 });
             }
+            if (_roll == null)
+            {
+                _roll = _animator.GetBehaviour<Roll>();
+                _roll.RollPending.AddListener((isPending) =>
+                {
+                    _isRollPending = isPending;
+                    LockCurrentDirection();
+                });
+            }
+            Jumping();
+            DoGravity();
             if (_isRootMotionEnforced)
             {
-                transform.LookAt(transform.position + new Vector3(_input.move.x, 0F, _input.move.y));
+                transform.LookAt(transform.position + _lockedDirection);
                 _controller.Move(transform.forward * Time.deltaTime * _attackMoveSpeed);
                 return;
             }
-            JumpAndGravity();
+            if (_isRollPending)
+            {
+                transform.LookAt(transform.position + _lockedDirection);
+                _controller.Move(transform.forward * Time.deltaTime * _rollMoveSpeed);
+                return;
+            }
             GroundedCheck();
             Move();
         }
@@ -295,7 +320,7 @@ namespace StarterAssets
             _animator.SetFloat(_animIDMotionSpeed, inputMagnitude);
         }
 
-        private void JumpAndGravity()
+        private void Jumping()
         {
             if (Grounded)
             {
@@ -347,12 +372,6 @@ namespace StarterAssets
                 // if we are not grounded, do not jump
                 _input.jump = false;
             }
-
-            // apply gravity over time if under terminal (multiply by delta time twice to linearly speed up over time)
-            if (_verticalVelocity < _terminalVelocity)
-            {
-                _verticalVelocity += Gravity * Time.deltaTime;
-            }
         }
 
         private static float ClampAngle(float lfAngle, float lfMin, float lfMax)
@@ -393,6 +412,20 @@ namespace StarterAssets
             if (animationEvent.animatorClipInfo.weight > 0.5f)
             {
                 AudioSource.PlayClipAtPoint(LandingAudioClip, transform.TransformPoint(_controller.center), FootstepAudioVolume);
+            }
+        }
+
+        private void LockCurrentDirection()
+        {
+            _lockedDirection = new(_input.move.x, 0F, _input.move.y);
+        }
+
+        private void DoGravity()
+        {
+            // apply gravity over time if under terminal (multiply by delta time twice to linearly speed up over time)
+            if (_verticalVelocity < _terminalVelocity)
+            {
+                _verticalVelocity += Gravity * Time.deltaTime;
             }
         }
 
