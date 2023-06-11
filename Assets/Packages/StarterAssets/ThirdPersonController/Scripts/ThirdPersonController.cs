@@ -124,6 +124,11 @@ namespace StarterAssets
             _animator.SetBool("IsAttacking", true);
         }
 
+        public void OnRoll(InputValue value)
+        {
+            _animator.SetBool("IsRolling", true);
+        }
+
         #endregion Public
 
         #region Unity
