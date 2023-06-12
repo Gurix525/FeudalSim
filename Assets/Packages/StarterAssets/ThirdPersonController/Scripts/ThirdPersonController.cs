@@ -117,6 +117,8 @@ namespace StarterAssets
 
         private bool _isRootMotionEnforced;
         private bool _isRollPending;
+        private bool _isStringingBow;
+        private bool _isShooting;
 
         private Vector3 _lockedDirection;
 
@@ -126,6 +128,25 @@ namespace StarterAssets
         #endregion Fields
 
         #region Public
+
+        public void StartStringingBow()
+        {
+            _isStringingBow = true;
+            _animator.SetBool("IsStringingBow", true);
+        }
+
+        public void ShootBow()
+        {
+            _isStringingBow = false;
+            _isShooting = true;
+            _animator.SetBool("IsStringingBow", false);
+        }
+
+        public void RelaseBow()
+        {
+            _isStringingBow = false;
+            _isShooting = false;
+        }
 
         public void StartAttack()
         {

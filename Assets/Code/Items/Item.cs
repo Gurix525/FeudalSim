@@ -21,6 +21,7 @@ namespace Items
             { "Wood", new("Wood", 20, actions: new ItemAction[] {new BuildAction()}) },
             { "Plank", new("Plank", 20, actions: new ItemAction[] {new BuildAction()}) },
             { "Sword", new("Sword", 1, actions: new ItemAction[] {new SwordAction()}) },
+            { "Bow", new("Bow", 1, actions: new ItemAction[] {new BowAction()}) },
             { "Axe", new("Axe", 1, actions: new ItemAction[] {new AxeAction(),  new DestroyAction()}) },
             { "Pickaxe", new("Pickaxe", 1, actions: new ItemAction[] {new PickaxeAction() }) },
             { "Shovel", new("Shovel", 1, actions: new ItemAction[] {new ShovelAction()}) },

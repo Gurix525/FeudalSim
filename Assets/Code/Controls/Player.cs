@@ -2,6 +2,7 @@ using System;
 using AI;
 using Combat;
 using Input;
+using StarterAssets;
 using StateMachineBehaviours;
 using UnityEngine;
 using UnityEngine.Events;
@@ -19,10 +20,13 @@ namespace Controls
         private Animator _animator;
         private AttackStartStop _attackStartStop;
         private AttackChange _attackChange;
+        private ThirdPersonController _thirdPersonController;
 
         #endregion Fields
 
         #region Properties
+
+        public ThirdPersonController ThirdPersonController => _thirdPersonController ??= GetComponent<ThirdPersonController>();
 
         public static UnityEvent<bool> PendingAttack { get; } = new();
 
@@ -49,6 +53,8 @@ namespace Controls
         {
             PlayerController.MainLeftClick.AddListener(ActionType.Started, OnLeftMouseButton);
             PlayerController.MainRightClick.AddListener(ActionType.Started, OnRightMouseButton);
+            PlayerController.MainLeftClick.AddListener(ActionType.Canceled, OnLeftMouseButtonRelase);
+            PlayerController.MainRightClick.AddListener(ActionType.Canceled, OnRightMouseButtonRelase);
         }
 
         private void Update()
@@ -70,6 +76,8 @@ namespace Controls
         {
             PlayerController.MainLeftClick.RemoveListener(ActionType.Started, OnLeftMouseButton);
             PlayerController.MainRightClick.RemoveListener(ActionType.Started, OnRightMouseButton);
+            PlayerController.MainLeftClick.RemoveListener(ActionType.Canceled, OnLeftMouseButtonRelase);
+            PlayerController.MainRightClick.RemoveListener(ActionType.Canceled, OnRightMouseButtonRelase);
         }
 
         #endregion Unity
@@ -81,9 +89,19 @@ namespace Controls
             Cursor.Action.OnLeftMouseButton();
         }
 
+        private void OnLeftMouseButtonRelase(CallbackContext context)
+        {
+            Cursor.Action.OnLeftMouseButtonRelase();
+        }
+
         private void OnRightMouseButton(CallbackContext context)
         {
             Cursor.Action.OnRightMouseButton();
+        }
+
+        private void OnRightMouseButtonRelase(CallbackContext context)
+        {
+            Cursor.Action.OnRightMouseButtonRelase();
         }
 
         private void OnPendingAttack(bool state)
