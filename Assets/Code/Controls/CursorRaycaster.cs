@@ -12,6 +12,8 @@ namespace Controls
 
         public static float MaxCursorDistanceFromPlayer { get; } = 4F;
 
+        public static RaycastHit? ClearHit { get; private set; } = null;
+
         public static RaycastHit? Hit { get; private set; } = null;
 
         public static RaycastHit? CurrentHit => GetRaycastHit();
@@ -28,6 +30,7 @@ namespace Controls
             {
                 if (_isPointerOverGameObject)
                 {
+                    ClearHit = null;
                     Hit = null;
                     return null;
                 }
@@ -37,9 +40,11 @@ namespace Controls
                 if (Vector3.Distance(hit.point, Player.Position) > MaxCursorDistanceFromPlayer
                     && Vector3.Distance(hit.collider.transform.position, Player.Position) > MaxCursorDistanceFromPlayer)
                 {
+                    ClearHit = hit;
                     Hit = null;
                     return null;
                 }
+                ClearHit = hit;
                 Hit = hit;
                 return hit;
             }

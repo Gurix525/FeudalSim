@@ -45,6 +45,9 @@ namespace Controls
         public static RaycastHit? RaycastHit =>
             CursorRaycaster.Hit;
 
+        public static RaycastHit? ClearRaycastHit =>
+            CursorRaycaster.ClearHit;
+
         /// <summary>
         /// Do użycia jeśli RaycastHit przekazuje nieaktualną wartość
         /// (np. kiedy event OnMouseEnter potrzebuje aktualnego hita)

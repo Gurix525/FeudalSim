@@ -1,7 +1,9 @@
 using System;
+using System.Collections;
 using Extensions;
 using Input;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 namespace PlayerControls
 {
@@ -17,6 +19,9 @@ namespace PlayerControls
         private float _acceleration = 10F;
 
         [SerializeField]
+        private float _jumpForce = Physics.gravity.magnitude * 2F;
+
+        [SerializeField]
         private float _gravityForce = Physics.gravity.magnitude;
 
         private Rigidbody _rigidbody;
@@ -29,6 +34,8 @@ namespace PlayerControls
 
         public bool CanMove => true;
 
+        public bool CanJump => true;
+
         public bool IsGravityEnabled => true;
 
         public bool CanRotateToCursor => !_isCursorRaycastNull;
@@ -40,6 +47,16 @@ namespace PlayerControls
         private void Awake()
         {
             _rigidbody = GetComponent<Rigidbody>();
+        }
+
+        private void OnEnable()
+        {
+            PlayerController.MainJump.AddListener(ActionType.Started, Jump);
+        }
+
+        private void OnDisable()
+        {
+            PlayerController.MainJump.RemoveListener(ActionType.Started, Jump);
         }
 
         private void FixedUpdate()
@@ -59,7 +76,7 @@ namespace PlayerControls
 
         private void CheckConditions()
         {
-            _isCursorRaycastNull = Controls.Cursor.RaycastHit == null;
+            _isCursorRaycastNull = Controls.Cursor.ClearRaycastHit == null;
         }
 
         private void Move()
@@ -84,7 +101,15 @@ namespace PlayerControls
 
         private void RotateToCursor()
         {
-            transform.LookAt(Controls.Cursor.RaycastHit.Value.point);
+            transform.LookAt(Controls.Cursor.ClearRaycastHit.Value.point);
+            transform.rotation = Quaternion.Euler(0F, transform.eulerAngles.y, 0F);
+        }
+
+        private void Jump(InputAction.CallbackContext context)
+        {
+            if (!CanJump)
+                return;
+            _rigidbody.AddForce(Vector3.up * _jumpForce, ForceMode.VelocityChange);
         }
 
         #endregion Private
