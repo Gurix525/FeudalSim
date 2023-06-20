@@ -28,13 +28,15 @@ namespace PlayerControls
 
         private bool _isCursorRaycastNull = true;
 
+        private int _groundMask;
+
         #endregion Fields
 
         #region Properties
 
         public bool CanMove => true;
 
-        public bool CanJump => true;
+        public bool CanJump => IsOnGround();
 
         public bool IsGravityEnabled => true;
 
@@ -47,6 +49,7 @@ namespace PlayerControls
         private void Awake()
         {
             _rigidbody = GetComponent<Rigidbody>();
+            _groundMask = ~LayerMask.GetMask("Player");
         }
 
         private void OnEnable()
@@ -110,6 +113,13 @@ namespace PlayerControls
             if (!CanJump)
                 return;
             _rigidbody.AddForce(Vector3.up * _jumpForce, ForceMode.VelocityChange);
+        }
+
+        private bool IsOnGround()
+        {
+            bool isGround = Physics.CheckSphere(transform.position, 0.27F, _groundMask);
+            Debug.Log(isGround);
+            return isGround;
         }
 
         #endregion Private
