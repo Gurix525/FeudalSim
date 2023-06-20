@@ -1,25 +1,20 @@
-using System;
 using AI;
 using Combat;
 using Input;
 using StarterAssets;
-using StateMachineBehaviours;
 using UnityEngine;
 using UnityEngine.Events;
 using static UnityEngine.InputSystem.InputAction;
+using Cursor = Controls.Cursor;
 
-namespace Controls
+namespace PlayerControls
 {
     [RequireComponent(typeof(Health))]
-    [RequireComponent(typeof(Animator))]
     public class Player : MonoBehaviour, IDetectable
     {
         #region Fields
 
         private Health _health;
-        private Animator _animator;
-        private AttackStartStop _attackStartStop;
-        private AttackChange _attackChange;
         private ThirdPersonController _thirdPersonController;
 
         #endregion Fields
@@ -43,10 +38,8 @@ namespace Controls
         private void Awake()
         {
             Instance = this;
-            _animator = GetComponent<Animator>();
             _health = GetComponent<Health>();
             _health.Receiver = this;
-            _animator = GetComponent<Animator>();
         }
 
         private void OnEnable()
@@ -59,16 +52,6 @@ namespace Controls
 
         private void Update()
         {
-            if (_attackStartStop == null)
-            {
-                _attackStartStop = _animator.GetBehaviour<AttackStartStop>();
-                _attackStartStop.PendingAttack.AddListener(OnPendingAttack);
-            }
-            if (_attackChange == null)
-            {
-                _attackChange = _animator.GetBehaviour<AttackChange>();
-                _attackChange.AttackChanged.AddListener(OnAttackChanged);
-            }
             Cursor.Action.Update();
         }
 

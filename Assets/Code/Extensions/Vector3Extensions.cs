@@ -22,6 +22,11 @@ namespace Extensions
                 Mathf.Round(v.z / accuracy) * accuracy);
         }
 
+        public static Vector3 Clamp(this Vector3 v, float min, float max)
+        {
+            return new(v.x.Clamp(min, max), v.y.Clamp(min, max), v.z.Clamp(min, max));
+        }
+
         public static Vector3Int ToVector3Int(this Vector3 v)
         {
             return new(Mathf.RoundToInt(v.x), Mathf.RoundToInt(v.y), Mathf.RoundToInt(v.z));

@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections;
 using System.Linq;
-using Controls;
 using Extensions;
 using UnityEngine;
+using PlayerControls;
 
 namespace AI
 {

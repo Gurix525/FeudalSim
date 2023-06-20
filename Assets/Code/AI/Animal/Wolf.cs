@@ -1,9 +1,6 @@
+using PlayerControls;
 using System.Collections;
-using Combat;
-using Controls;
 using Extensions;
-using Misc;
-using TaskManager;
 using UnityEngine;
 
 namespace AI

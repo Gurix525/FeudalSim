@@ -8,6 +8,7 @@ using UnityEngine.EventSystems;
 using UI;
 using Controls;
 using Cursor = Controls.Cursor;
+using PlayerControls;
 
 namespace Items
 {

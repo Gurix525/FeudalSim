@@ -5,6 +5,7 @@ using Misc;
 using UnityEngine;
 using World;
 using Cursor = Controls.Cursor;
+using PlayerControls;
 
 namespace Nature
 {

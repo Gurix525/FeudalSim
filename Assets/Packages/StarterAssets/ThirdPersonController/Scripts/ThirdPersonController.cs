@@ -1,5 +1,4 @@
-﻿using StateMachineBehaviours;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.InputSystem;
 
 namespace StarterAssets
@@ -122,9 +121,6 @@ namespace StarterAssets
 
         private Vector3 _lockedDirection;
 
-        private ForceRootMotion _forceRootMotion;
-        private Roll _roll;
-
         #endregion Fields
 
         #region Public
@@ -165,11 +161,6 @@ namespace StarterAssets
         private void Awake()
         {
             _animator = GetComponent<Animator>();
-            _forceRootMotion = _animator.GetBehaviour<ForceRootMotion>();
-            _forceRootMotion.RootMotionForced.AddListener((isEnforced) =>
-            {
-                _isRootMotionEnforced = isEnforced;
-            });
             // get a reference to our main camera
             if (_mainCamera == null)
             {
@@ -193,24 +184,6 @@ namespace StarterAssets
 
         private void Update()
         {
-            if (_forceRootMotion == null)
-            {
-                _forceRootMotion = _animator.GetBehaviour<ForceRootMotion>();
-                _forceRootMotion.RootMotionForced.AddListener((isEnforced) =>
-                {
-                    _isRootMotionEnforced = isEnforced;
-                    LockCurrentDirection();
-                });
-            }
-            if (_roll == null)
-            {
-                _roll = _animator.GetBehaviour<Roll>();
-                _roll.RollPending.AddListener((isPending) =>
-                {
-                    _isRollPending = isPending;
-                    LockCurrentDirection();
-                });
-            }
             Jumping();
             DoGravity();
             if (_isRootMotionEnforced)

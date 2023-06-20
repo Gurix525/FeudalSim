@@ -3,6 +3,7 @@ using Controls;
 using StarterAssets;
 using TaskManager;
 using UnityEngine;
+using PlayerControls;
 
 namespace Items
 {

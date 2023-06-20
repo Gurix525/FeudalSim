@@ -2,6 +2,7 @@ using System;
 using Input;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using PlayerControls;
 
 namespace Controls
 {

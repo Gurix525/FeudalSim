@@ -1,6 +1,7 @@
 using Controls;
 using UnityEngine;
 using Cursor = Controls.Cursor;
+using PlayerControls;
 
 namespace Misc
 {
