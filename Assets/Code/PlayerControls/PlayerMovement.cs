@@ -124,8 +124,21 @@ namespace PlayerControls
         private void SetAnimatorParameters()
         {
             Vector2 velocity = new Vector2(_rigidbody.velocity.x, _rigidbody.velocity.z);
+            Vector2 lookDirection = GetLookDirection();
+            float relativeAngle = Vector2.SignedAngle(velocity.normalized, lookDirection.normalized).Remap(-180F, 180F, 0F, 360F);
             _animator.SetFloat("Speed", velocity.magnitude);
             _animator.SetBool("IsGrounded", _isGrounded);
+            _animator.SetFloat("RelativeMoveAngle", relativeAngle);
+        }
+
+        private Vector2 GetLookDirection()
+        {
+            if (Controls.Cursor.ClearRaycastHit == null)
+                return Vector2.zero;
+            Vector3 cursorPosition = Controls.Cursor.ClearRaycastHit.Value.point;
+            Vector2 transformPosition = new(transform.position.x, transform.position.z);
+            Vector2 targetPosition = new(cursorPosition.x, cursorPosition.z);
+            return targetPosition - transformPosition;
         }
 
         #endregion Private
