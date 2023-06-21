@@ -117,9 +117,7 @@ namespace PlayerControls
 
         private bool IsOnGround()
         {
-            bool isGround = Physics.CheckSphere(transform.position, 0.27F, _groundMask);
-            Debug.Log(isGround);
-            return isGround;
+            return Physics.CheckSphere(transform.position, 0.27F, _groundMask);
         }
 
         #endregion Private

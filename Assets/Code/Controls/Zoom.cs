@@ -11,6 +11,8 @@ namespace Controls
     [RequireComponent(typeof(CinemachineVirtualCamera))]
     public class Zoom : MonoBehaviour
     {
+        #region Fields
+
         [SerializeField]
         private float _minZoom = 4F;
 
@@ -20,18 +22,32 @@ namespace Controls
         [SerializeField]
         private float _targetZoom = 16F;
 
+        [SerializeField]
+        private float _minCameraAngle = 30F;
+
+        [SerializeField]
+        private float _maxCameraAngle = 60F;
+
+        [SerializeField]
+        private float _angleCorrectingSpeed = 0.1F;
+
+        private float currentAngle = 60F;
+
+        private float _targetAngle = 60F;
+
         private CinemachineVirtualCamera _camera;
 
         private CinemachineFramingTransposer _framingTransposer;
 
-        private CinemachinePOV _pov;
+        #endregion Fields
+
+        #region Unity
 
         private void Awake()
         {
             _camera = GetComponent<CinemachineVirtualCamera>();
             _framingTransposer = _camera
                 .GetCinemachineComponent<CinemachineFramingTransposer>();
-            _pov = _camera.GetCinemachineComponent<CinemachinePOV>();
         }
 
         private void OnEnable()
@@ -39,10 +55,21 @@ namespace Controls
             PlayerController.MainScroll.AddListener(ActionType.Started, DoZoom);
         }
 
+        private void FixedUpdate()
+        {
+            Vector3 oldRotation = transform.eulerAngles;
+            float newAngle = Mathf.Lerp(transform.eulerAngles.x, _targetAngle, _angleCorrectingSpeed);
+            transform.rotation = Quaternion.Euler(newAngle, oldRotation.y, oldRotation.z);
+        }
+
         private void OnDisable()
         {
             PlayerController.MainScroll.RemoveListener(ActionType.Started, DoZoom);
         }
+
+        #endregion Unity
+
+        #region Private
 
         private void DoZoom(InputAction.CallbackContext obj)
         {
@@ -56,8 +83,10 @@ namespace Controls
             _targetZoom = _targetZoom.Clamp(_minZoom, _maxZoom);
             _framingTransposer.m_CameraDistance = _targetZoom;
 
-            //_pov.m_VerticalAxis.Value =
-            //    Mathf.Lerp(30F, 60F, _targetZoom.Remap(_minZoom, _maxZoom, 0F, 1F));
+            _targetAngle = Mathf.Lerp(_minCameraAngle, _maxCameraAngle,
+                _targetZoom.Remap(_minZoom, _maxZoom, 0F, 1F));
         }
+
+        #endregion Private
     }
 }
