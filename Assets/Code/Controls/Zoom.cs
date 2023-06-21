@@ -50,7 +50,8 @@ namespace Controls
 
         private void OnEnable()
         {
-            PlayerController.MainScroll.AddListener(ActionType.Started, ChangeZoom);
+            AdjustZoom();
+            PlayerController.MainScroll.AddListener(ActionType.Started, ChangeZoomParameters);
         }
 
         private void FixedUpdate()
@@ -60,14 +61,14 @@ namespace Controls
 
         private void OnDisable()
         {
-            PlayerController.MainScroll.RemoveListener(ActionType.Started, ChangeZoom);
+            PlayerController.MainScroll.RemoveListener(ActionType.Started, ChangeZoomParameters);
         }
 
         #endregion Unity
 
         #region Private
 
-        private void ChangeZoom(InputAction.CallbackContext obj)
+        private void ChangeZoomParameters(InputAction.CallbackContext context)
         {
             if (CursorRaycaster.IsPointerOverGameObject)
                 return;
@@ -76,6 +77,11 @@ namespace Controls
                 _targetZoom += 2;
             else
                 _targetZoom -= 2;
+            AdjustZoom();
+        }
+
+        private void AdjustZoom()
+        {
             _targetZoom = _targetZoom.Clamp(_minZoom, _maxZoom);
             _framingTransposer.m_CameraDistance = _targetZoom;
 

@@ -8,6 +8,14 @@ namespace Controls
 {
     public class CursorRaycaster : MonoBehaviour
     {
+        #region Fields
+
+        private static int _layerMask;
+
+        #endregion Fields
+
+        #region Properties
+
         public static bool IsPointerOverGameObject { get; private set; }
 
         public static float MaxCursorDistanceFromPlayer { get; } = 4F;
@@ -18,11 +26,24 @@ namespace Controls
 
         public static RaycastHit? CurrentHit => GetRaycastHit();
 
+        #endregion Properties
+
+        #region Unity
+
+        private void Awake()
+        {
+            _layerMask = ~LayerMask.GetMask("Player", "Hitbox", "Attack");
+        }
+
         private void Update()
         {
             IsPointerOverGameObject = EventSystem.current.IsPointerOverGameObject();
             GetRaycastHit();
         }
+
+        #endregion Unity
+
+        #region Private
 
         private static RaycastHit? GetRaycastHit()
         {
@@ -36,7 +57,7 @@ namespace Controls
                 }
                 Ray ray = Camera.main
                     .ScreenPointToRay(PlayerController.MainPoint.ReadValue<Vector2>());
-                Physics.Raycast(ray, out RaycastHit hit);
+                Physics.Raycast(ray, out RaycastHit hit, int.MaxValue, _layerMask);
                 if (Vector3.Distance(hit.point, Player.Position) > MaxCursorDistanceFromPlayer
                     && Vector3.Distance(hit.collider.transform.position, Player.Position) > MaxCursorDistanceFromPlayer)
                 {
@@ -53,5 +74,7 @@ namespace Controls
                 return null;
             }
         }
+
+        #endregion Private
     }
 }

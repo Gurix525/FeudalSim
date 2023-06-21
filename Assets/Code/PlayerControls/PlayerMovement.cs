@@ -25,11 +25,15 @@ namespace PlayerControls
         [SerializeField]
         private float _gravityForce = Physics.gravity.magnitude;
 
+        [SerializeField]
+        private float _sprintMultiplier = 1.25F;
+
         private Rigidbody _rigidbody;
         private Animator _animator;
 
         private bool _isCursorRaycastNull = true;
         private bool _isGrounded;
+        private bool _isSprinting;
 
         private int _groundMask;
 
@@ -40,6 +44,8 @@ namespace PlayerControls
         public bool CanMove => true;
 
         public bool CanJump => _isGrounded;
+
+        public bool CanSprint => true;
 
         public bool IsGravityEnabled => true;
 
@@ -64,6 +70,7 @@ namespace PlayerControls
         private void FixedUpdate()
         {
             CheckConditions();
+            CheckSprint();
             if (CanMove)
                 Move();
             if (IsGravityEnabled)
@@ -85,22 +92,15 @@ namespace PlayerControls
         private void CheckConditions()
         {
             _isCursorRaycastNull = Controls.Cursor.ClearRaycastHit == null;
-            _isGrounded = Physics.CheckSphere(transform.position, 0.27F, _groundMask);
+            _isGrounded = Physics.CheckSphere(transform.position, 0.24F, _groundMask);
         }
 
         private void Move()
         {
             Vector2 direction = PlayerController.MainMove.ReadValue<Vector2>();
-            direction *= _moveSpeed;
+            direction *= _moveSpeed * (_isSprinting ? _sprintMultiplier : 1F);
             float y = _rigidbody.velocity.y;
             _rigidbody.velocity = new(direction.x, y, direction.y);
-            //if (correctedDirection != Vector3.zero)
-            //    _rigidbody.AddForce(correctedDirection * _acceleration * Time.fixedDeltaTime, ForceMode.VelocityChange);
-            //else
-            //    _rigidbody.AddForce(-_rigidbody.velocity * _acceleration * Time.fixedDeltaTime, ForceMode.VelocityChange); ;
-            //float y = _rigidbody.velocity.y;
-            //Vector3 clampedVelocity = Vector3.ClampMagnitude(_rigidbody.velocity, _moveSpeed);
-            //_rigidbody.velocity = new(clampedVelocity.x, y, clampedVelocity.z);
         }
 
         private void DoGravity()
@@ -114,21 +114,29 @@ namespace PlayerControls
             transform.rotation = Quaternion.Euler(0F, transform.eulerAngles.y, 0F);
         }
 
-        private void Jump(InputAction.CallbackContext context)
-        {
-            if (!CanJump)
-                return;
-            _rigidbody.AddForce(Vector3.up * _jumpForce, ForceMode.VelocityChange);
-        }
-
         private void SetAnimatorParameters()
         {
-            Vector2 velocity = new Vector2(_rigidbody.velocity.x, _rigidbody.velocity.z);
+            Vector2 velocity = new Vector2(
+                _rigidbody.velocity.x, _rigidbody.velocity.z);
             Vector2 lookDirection = GetLookDirection();
-            float relativeAngle = Vector2.SignedAngle(velocity.normalized, lookDirection.normalized).Remap(-180F, 180F, 0F, 360F);
+            float relativeAngle = Vector2
+                .SignedAngle(velocity.normalized, lookDirection.normalized)
+                .Remap(-180F, 180F, 0F, 360F);
             _animator.SetFloat("Speed", velocity.magnitude);
             _animator.SetBool("IsGrounded", _isGrounded);
             _animator.SetFloat("RelativeMoveAngle", relativeAngle);
+            _animator.SetFloat("Sprint", _isSprinting ? _sprintMultiplier : 1F);
+        }
+
+        private void CheckSprint()
+        {
+            if (CanSprint)
+                if (PlayerController.MainRun.IsPressed())
+                {
+                    _isSprinting = true;
+                    return;
+                }
+            _isSprinting = false;
         }
 
         private Vector2 GetLookDirection()
@@ -139,6 +147,13 @@ namespace PlayerControls
             Vector2 transformPosition = new(transform.position.x, transform.position.z);
             Vector2 targetPosition = new(cursorPosition.x, cursorPosition.z);
             return targetPosition - transformPosition;
+        }
+
+        private void Jump(InputAction.CallbackContext context)
+        {
+            if (!CanJump)
+                return;
+            _rigidbody.AddForce(Vector3.up * _jumpForce, ForceMode.VelocityChange);
         }
 
         #endregion Private

@@ -2229,8 +2229,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _moveSpeed: 6
   _acceleration: 10
-  _jumpForce: 10
-  _gravityForce: 20
+  _jumpForce: 12
+  _gravityForce: 30
+  _sprintMultiplier: 1.25
 --- !u!135 &744291016
 SphereCollider:
   m_ObjectHideFlags: 0
