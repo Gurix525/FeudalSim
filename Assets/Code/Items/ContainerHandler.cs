@@ -88,7 +88,7 @@ namespace Items
 
         private void OnMouseOver()
         {
-            _isPointerOverGameObject = EventSystem.current.IsPointerOverGameObject();
+            _isPointerOverGameObject = CursorRaycaster.IsPointerOverGameObject;
             Cursor.Action.OnMouseOver(this);
         }
 

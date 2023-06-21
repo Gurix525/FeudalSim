@@ -46,6 +46,7 @@ namespace Input
         public static ModifiableInputAction MainHotbar8 { get; } = new();
         public static ModifiableInputAction MainSave { get; } = new();
         public static ModifiableInputAction MainLoad { get; } = new();
+        public static ModifiableInputAction MainScroll { get; } = new();
 
         // QuickMenu
         public static ModifiableInputAction QuickMenuQuickMenu { get; } = new();
@@ -100,6 +101,7 @@ namespace Input
             MainHotbar8.Action = Main.FindAction("Hotbar8");
             MainSave.Action = Main.FindAction("Save");
             MainLoad.Action = Main.FindAction("Load");
+            MainScroll.Action = Main.FindAction("Scroll");
 
             // QuickMenu
             QuickMenuQuickMenu.Action = QuickMenu.FindAction("QuickMenu");

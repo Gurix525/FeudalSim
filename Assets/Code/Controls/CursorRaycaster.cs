@@ -8,7 +8,7 @@ namespace Controls
 {
     public class CursorRaycaster : MonoBehaviour
     {
-        private static bool _isPointerOverGameObject = false;
+        public static bool IsPointerOverGameObject { get; private set; }
 
         public static float MaxCursorDistanceFromPlayer { get; } = 4F;
 
@@ -20,7 +20,7 @@ namespace Controls
 
         private void Update()
         {
-            _isPointerOverGameObject = EventSystem.current.IsPointerOverGameObject();
+            IsPointerOverGameObject = EventSystem.current.IsPointerOverGameObject();
             GetRaycastHit();
         }
 
@@ -28,7 +28,7 @@ namespace Controls
         {
             try
             {
-                if (_isPointerOverGameObject)
+                if (IsPointerOverGameObject)
                 {
                     ClearHit = null;
                     Hit = null;
