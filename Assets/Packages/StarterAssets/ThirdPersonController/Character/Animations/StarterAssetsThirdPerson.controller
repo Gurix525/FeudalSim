@@ -204,7 +204,7 @@ AnimatorStateMachine:
     m_Position: {x: 200, y: 400, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -7469282255733588732}
-    m_Position: {x: 200, y: 700, z: 0}
+    m_Position: {x: 200, y: 500, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -1560500237150649743}
     m_Position: {x: -100, y: 400, z: 0}
@@ -338,8 +338,8 @@ AnimatorStateTransition:
   m_Mute: 0
   m_IsExit: 0
   serializedVersion: 3
-  m_TransitionDuration: 0.037536144
-  m_TransitionOffset: 0.23041831
+  m_TransitionDuration: 0
+  m_TransitionOffset: 0
   m_ExitTime: 0.9466194
   m_HasExitTime: 0
   m_HasFixedDuration: 1
@@ -424,10 +424,10 @@ BlendTree:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: BlendTree
+  m_Name: Running
   m_Childs:
   - serializedVersion: 2
-    m_Motion: {fileID: 7400000, guid: 0edb85933137deb4697d721315a02bbc, type: 2}
+    m_Motion: {fileID: 7400000, guid: 48443f9572baac849bf2b687e84c7892, type: 2}
     m_Threshold: 0
     m_Position: {x: 0, y: 0}
     m_TimeScale: 1
@@ -435,7 +435,7 @@ BlendTree:
     m_DirectBlendParameter: Speed
     m_Mirror: 0
   - serializedVersion: 2
-    m_Motion: {fileID: 7400000, guid: 5e236f43c7c3ff94096c543cdb19aa14, type: 2}
+    m_Motion: {fileID: 7400000, guid: f3ea6dfe186b25c4c983bc474e885a71, type: 2}
     m_Threshold: 90
     m_Position: {x: -1, y: 0}
     m_TimeScale: 1
@@ -443,15 +443,15 @@ BlendTree:
     m_DirectBlendParameter: Speed
     m_Mirror: 0
   - serializedVersion: 2
-    m_Motion: {fileID: 7400000, guid: 721b2eedc1058cd4fb76c16fe382d5bc, type: 2}
+    m_Motion: {fileID: 7400000, guid: 0124db47d78879f4aa5041855d1d14f4, type: 2}
     m_Threshold: 180
     m_Position: {x: 0, y: 0}
-    m_TimeScale: 1
+    m_TimeScale: 1.2
     m_CycleOffset: 0
     m_DirectBlendParameter: Speed
     m_Mirror: 0
   - serializedVersion: 2
-    m_Motion: {fileID: 7400000, guid: c25011c728851e04db5ed591eec7d54b, type: 2}
+    m_Motion: {fileID: 7400000, guid: 22435720c71cbae4f8d2f57db09c20d3, type: 2}
     m_Threshold: 270
     m_Position: {x: 0, y: 0}
     m_TimeScale: 1
@@ -459,7 +459,7 @@ BlendTree:
     m_DirectBlendParameter: Speed
     m_Mirror: 0
   - serializedVersion: 2
-    m_Motion: {fileID: 7400000, guid: 0edb85933137deb4697d721315a02bbc, type: 2}
+    m_Motion: {fileID: 7400000, guid: 48443f9572baac849bf2b687e84c7892, type: 2}
     m_Threshold: 360
     m_Position: {x: 0, y: 0}
     m_TimeScale: 1
@@ -695,10 +695,10 @@ AnimatorStateTransition:
   m_Mute: 0
   m_IsExit: 0
   serializedVersion: 3
-  m_TransitionDuration: 0.25
+  m_TransitionDuration: 0
   m_TransitionOffset: 0
   m_ExitTime: 0.90625
-  m_HasExitTime: 1
+  m_HasExitTime: 0
   m_HasFixedDuration: 1
   m_InterruptionSource: 0
   m_OrderedInterruption: 1
@@ -1044,7 +1044,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Idle Walk Run Blend
+  m_Name: Locomotion
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:
@@ -1123,11 +1123,10 @@ BlendTree:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Blend Tree
+  m_Name: Locomotion
   m_Childs:
   - serializedVersion: 2
-    m_Motion: {fileID: -3100369314251171874, guid: 12e52e465ed793a4d801955e9f964a82,
-      type: 3}
+    m_Motion: {fileID: 7400000, guid: 0edb85933137deb4697d721315a02bbc, type: 2}
     m_Threshold: 0
     m_Position: {x: 0, y: 0}
     m_TimeScale: 1
@@ -1135,7 +1134,7 @@ BlendTree:
     m_DirectBlendParameter: Speed
     m_Mirror: 0
   - serializedVersion: 2
-    m_Motion: {fileID: -3852352857334252662}
+    m_Motion: {fileID: 7400000, guid: 721b2eedc1058cd4fb76c16fe382d5bc, type: 2}
     m_Threshold: 4
     m_Position: {x: 0, y: 0}
     m_TimeScale: 1
@@ -1143,8 +1142,7 @@ BlendTree:
     m_DirectBlendParameter: Speed
     m_Mirror: 0
   - serializedVersion: 2
-    m_Motion: {fileID: 6564411413370888346, guid: 16114d403eabb53438de032c6f0d1deb,
-      type: 3}
+    m_Motion: {fileID: -3852352857334252662}
     m_Threshold: 6
     m_Position: {x: 0, y: 0}
     m_TimeScale: 1
