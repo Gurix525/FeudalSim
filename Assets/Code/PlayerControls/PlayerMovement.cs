@@ -8,6 +8,7 @@ using UnityEngine.InputSystem;
 namespace PlayerControls
 {
     [RequireComponent(typeof(Rigidbody))]
+    [RequireComponent(typeof(Animator))]
     public class PlayerMovement : MonoBehaviour
     {
         #region Fields
@@ -25,8 +26,10 @@ namespace PlayerControls
         private float _gravityForce = Physics.gravity.magnitude;
 
         private Rigidbody _rigidbody;
+        private Animator _animator;
 
         private bool _isCursorRaycastNull = true;
+        private bool _isGrounded;
 
         private int _groundMask;
 
@@ -36,7 +39,7 @@ namespace PlayerControls
 
         public bool CanMove => true;
 
-        public bool CanJump => IsOnGround();
+        public bool CanJump => _isGrounded;
 
         public bool IsGravityEnabled => true;
 
@@ -49,17 +52,13 @@ namespace PlayerControls
         private void Awake()
         {
             _rigidbody = GetComponent<Rigidbody>();
+            _animator = GetComponent<Animator>();
             _groundMask = ~LayerMask.GetMask("Player");
         }
 
         private void OnEnable()
         {
             PlayerController.MainJump.AddListener(ActionType.Started, Jump);
-        }
-
-        private void OnDisable()
-        {
-            PlayerController.MainJump.RemoveListener(ActionType.Started, Jump);
         }
 
         private void FixedUpdate()
@@ -71,6 +70,12 @@ namespace PlayerControls
                 DoGravity();
             if (CanRotateToCursor)
                 RotateToCursor();
+            SetAnimatorParameters();
+        }
+
+        private void OnDisable()
+        {
+            PlayerController.MainJump.RemoveListener(ActionType.Started, Jump);
         }
 
         #endregion Unity
@@ -80,6 +85,7 @@ namespace PlayerControls
         private void CheckConditions()
         {
             _isCursorRaycastNull = Controls.Cursor.ClearRaycastHit == null;
+            _isGrounded = Physics.CheckSphere(transform.position, 0.27F, _groundMask);
         }
 
         private void Move()
@@ -115,9 +121,11 @@ namespace PlayerControls
             _rigidbody.AddForce(Vector3.up * _jumpForce, ForceMode.VelocityChange);
         }
 
-        private bool IsOnGround()
+        private void SetAnimatorParameters()
         {
-            return Physics.CheckSphere(transform.position, 0.27F, _groundMask);
+            Vector2 velocity = new Vector2(_rigidbody.velocity.x, _rigidbody.velocity.z);
+            _animator.SetFloat("Speed", velocity.magnitude);
+            _animator.SetBool("IsGrounded", _isGrounded);
         }
 
         #endregion Private

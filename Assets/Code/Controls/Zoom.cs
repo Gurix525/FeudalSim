@@ -29,9 +29,7 @@ namespace Controls
         private float _maxCameraAngle = 60F;
 
         [SerializeField]
-        private float _angleCorrectingSpeed = 0.1F;
-
-        private float currentAngle = 60F;
+        private float _angleAdjustingSpeed = 0.1F;
 
         private float _targetAngle = 60F;
 
@@ -52,26 +50,24 @@ namespace Controls
 
         private void OnEnable()
         {
-            PlayerController.MainScroll.AddListener(ActionType.Started, DoZoom);
+            PlayerController.MainScroll.AddListener(ActionType.Started, ChangeZoom);
         }
 
         private void FixedUpdate()
         {
-            Vector3 oldRotation = transform.eulerAngles;
-            float newAngle = Mathf.Lerp(transform.eulerAngles.x, _targetAngle, _angleCorrectingSpeed);
-            transform.rotation = Quaternion.Euler(newAngle, oldRotation.y, oldRotation.z);
+            AdjustAngle();
         }
 
         private void OnDisable()
         {
-            PlayerController.MainScroll.RemoveListener(ActionType.Started, DoZoom);
+            PlayerController.MainScroll.RemoveListener(ActionType.Started, ChangeZoom);
         }
 
         #endregion Unity
 
         #region Private
 
-        private void DoZoom(InputAction.CallbackContext obj)
+        private void ChangeZoom(InputAction.CallbackContext obj)
         {
             if (CursorRaycaster.IsPointerOverGameObject)
                 return;
@@ -85,6 +81,13 @@ namespace Controls
 
             _targetAngle = Mathf.Lerp(_minCameraAngle, _maxCameraAngle,
                 _targetZoom.Remap(_minZoom, _maxZoom, 0F, 1F));
+        }
+
+        private void AdjustAngle()
+        {
+            Vector3 oldRotation = transform.eulerAngles;
+            float newAngle = Mathf.Lerp(transform.eulerAngles.x, _targetAngle, _angleAdjustingSpeed);
+            transform.rotation = Quaternion.Euler(newAngle, oldRotation.y, oldRotation.z);
         }
 
         #endregion Private
