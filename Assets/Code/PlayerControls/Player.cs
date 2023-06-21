@@ -21,8 +21,6 @@ namespace PlayerControls
 
         #region Properties
 
-        public ThirdPersonController ThirdPersonController => _thirdPersonController ??= GetComponent<ThirdPersonController>();
-
         public static UnityEvent<bool> PendingAttack { get; } = new();
 
         public static UnityEvent AttackChanged { get; } = new();

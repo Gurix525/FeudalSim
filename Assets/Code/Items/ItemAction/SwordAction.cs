@@ -16,7 +16,7 @@ namespace Items
 
         public override void OnLeftMouseButton()
         {
-            Player.Instance.GetComponent<ThirdPersonController>().StartAttack();
+            //Player.Instance.GetComponent<PlayerMovement>().StartAttack();
         }
 
         public override void OnMouseExit(Component component)

@@ -16,17 +16,14 @@ namespace Items
 
         public override void OnLeftMouseButton()
         {
-            Player.Instance.ThirdPersonController.StartStringingBow();
         }
 
         public override void OnLeftMouseButtonRelase()
         {
-            Player.Instance.ThirdPersonController.ShootBow();
         }
 
         public override void OnRightMouseButton()
         {
-            Player.Instance.ThirdPersonController.RelaseBow();
         }
 
         public override void OnMouseExit(Component component)
