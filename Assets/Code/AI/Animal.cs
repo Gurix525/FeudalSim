@@ -325,7 +325,6 @@ namespace AI
 
         private void OnGotHit(Attack attack)
         {
-            Debug.Log($"{this} został uderzony przez {attack.Sender}");
             _knockbackTask?.Stop();
             if (_health.CurrentHealth <= 0F)
             {

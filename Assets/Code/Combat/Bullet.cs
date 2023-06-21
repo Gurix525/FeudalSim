@@ -5,10 +5,12 @@ using UnityEngine;
 namespace Combat
 {
     [DisallowMultipleComponent]
-    [RequireComponent(typeof(Collider))]
+    [RequireComponent(typeof(SphereCollider))]
     public class Bullet : MonoBehaviour
     {
         #region fields
+
+        private SphereCollider _collider;
 
         private static LinkedList<Bullet> _bullets = new();
         private static GameObject _bulletPrefab;
@@ -19,6 +21,7 @@ namespace Combat
         #region Properties
 
         public Component Sender { get; private set; }
+        public SphereCollider Collider => _collider ??= GetComponent<SphereCollider>();
         public float Lifetime { get; private set; }
         public float Damage { get; private set; }
 
@@ -31,6 +34,7 @@ namespace Combat
             Vector3 position,
             float damage,
             float lifetime = 0.5F,
+            float radius = 1F,
             Transform parent = null,
             bool isWorldSpace = false)
         {
@@ -43,6 +47,7 @@ namespace Combat
             attack.gameObject.SetActive(true);
             attack.Sender = sender;
             attack.Lifetime = lifetime;
+            attack.Collider.radius = radius;
             attack.Damage = damage;
             attack.transform.SetParent(parent);
             if (isWorldSpace)

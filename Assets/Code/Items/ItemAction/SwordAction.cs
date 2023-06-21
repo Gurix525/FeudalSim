@@ -4,6 +4,7 @@ using StarterAssets;
 using TaskManager;
 using UnityEngine;
 using PlayerControls;
+using Combat;
 
 namespace Items
 {
@@ -16,7 +17,15 @@ namespace Items
 
         public override void OnLeftMouseButton()
         {
-            //Player.Instance.GetComponent<PlayerMovement>().StartAttack();
+            Player player = Player.Instance;
+            Bullet.Spawn(
+                player,
+                player.transform.forward,
+                4F,
+                0.5F,
+                1F,
+                player.transform,
+                false);
         }
 
         public override void OnMouseExit(Component component)
