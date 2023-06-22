@@ -1,10 +1,7 @@
-﻿using System.Collections;
-using Controls;
-using StarterAssets;
-using TaskManager;
-using UnityEngine;
+﻿using UnityEngine;
 using PlayerControls;
 using Combat;
+using Cursor = Controls.Cursor;
 
 namespace Items
 {
@@ -17,15 +14,21 @@ namespace Items
 
         public override void OnLeftMouseButton()
         {
+            if (Cursor.ClearRaycastHit == null)
+                return;
             Player player = Player.Instance;
-            Bullet.Spawn(
+            Vector3 direction =
+                (Cursor.ClearRaycastHit.Value.point - player.transform.position)
+                .normalized;
+            Attack attack = Bullet.Spawn(
                 player,
-                player.transform.forward,
+                player.transform.position + direction + Vector3.up,
                 4F,
                 0.5F,
-                1F,
+                1.5F,
                 player.transform,
-                false);
+                true);
+            attack.SetNextID();
         }
 
         public override void OnMouseExit(Component component)

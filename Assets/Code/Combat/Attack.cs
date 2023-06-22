@@ -35,14 +35,14 @@ namespace Combat
 
         #region Unity
 
-        private void Awake()
+        protected void Awake()
         {
             GetComponent<Rigidbody>().isKinematic = true;
             gameObject.layer = LayerMask.NameToLayer("Attack");
             Sender ??= this;
         }
 
-        private void OnTriggerEnter(Collider other)
+        protected void OnTriggerEnter(Collider other)
         {
             other.TryGetComponent(out Hitbox hitbox);
             if (hitbox.Receiver == Sender)

@@ -6,7 +6,7 @@ namespace Combat
 {
     [DisallowMultipleComponent]
     [RequireComponent(typeof(SphereCollider))]
-    public class Bullet : MonoBehaviour
+    public class Bullet : Attack
     {
         #region fields
 
@@ -20,10 +20,8 @@ namespace Combat
 
         #region Properties
 
-        public Component Sender { get; private set; }
         public SphereCollider Collider => _collider ??= GetComponent<SphereCollider>();
         public float Lifetime { get; private set; }
-        public float Damage { get; private set; }
 
         #endregion Properties
 
@@ -61,23 +59,22 @@ namespace Combat
 
         #region Unity
 
-        private void Awake()
-        {
-            gameObject.layer = LayerMask.NameToLayer("Attack");
-            Sender = this;
-        }
-
-        private void OnEnable()
+        protected void OnEnable()
         {
             StartCoroutine(FadeOff(Lifetime));
         }
 
-        private void OnDisable()
+        protected void Update()
+        {
+            transform.GetChild(0).localScale = Vector3.one * Collider.radius;
+        }
+
+        protected void OnDisable()
         {
             _bullets.AddFirst(this);
         }
 
-        private void OnDestroy()
+        protected void OnDestroy()
         {
             _bullets.Remove(this);
         }
