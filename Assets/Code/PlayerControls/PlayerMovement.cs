@@ -28,6 +28,9 @@ namespace PlayerControls
         [SerializeField]
         private float _sprintMultiplier = 1.25F;
 
+        [SerializeField]
+        private float _attackMoveSpeedMultiplier = 1F;
+
         private Rigidbody _rigidbody;
         private Animator _animator;
 
@@ -41,17 +44,29 @@ namespace PlayerControls
 
         #region Properties
 
-        public bool CanMove => true;
+        public Rigidbody Rigidbody => _rigidbody;
 
-        public bool CanJump => _isGrounded;
+        public float SprintSpeed => _moveSpeed * _sprintMultiplier;
+
+        public float AttackMoveSpeedMultiplier => _attackMoveSpeedMultiplier;
+
+        public bool IsPendingAttack { get; set; }
+
+        #endregion Properties
+
+        #region Conditions
+
+        public bool CanMove => !IsPendingAttack;
+
+        public bool CanJump => _isGrounded && !IsPendingAttack;
 
         public bool CanSprint => true;
 
         public bool IsGravityEnabled => true;
 
-        public bool CanRotateToCursor => !_isCursorRaycastNull;
+        public bool CanRotateToCursor => !_isCursorRaycastNull && !IsPendingAttack;
 
-        #endregion Properties
+        #endregion Conditions
 
         #region Unity
 
@@ -123,9 +138,10 @@ namespace PlayerControls
                 .SignedAngle(velocity.normalized, lookDirection.normalized)
                 .Remap(-180F, 180F, 0F, 360F);
             _animator.SetFloat("Speed", velocity.magnitude);
-            _animator.SetBool("IsGrounded", _isGrounded);
             _animator.SetFloat("RelativeMoveAngle", relativeAngle);
             _animator.SetFloat("Sprint", _isSprinting ? _sprintMultiplier : 1F);
+            _animator.SetBool("IsGrounded", _isGrounded);
+            _animator.SetBool("IsAttacking", IsPendingAttack);
         }
 
         private void CheckSprint()

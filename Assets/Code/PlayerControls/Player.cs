@@ -10,16 +10,20 @@ using Cursor = Controls.Cursor;
 namespace PlayerControls
 {
     [RequireComponent(typeof(Health))]
+    [RequireComponent(typeof(PlayerMovement))]
     public class Player : MonoBehaviour, IDetectable
     {
         #region Fields
 
         private Health _health;
         private ThirdPersonController _thirdPersonController;
+        private PlayerMovement _playerMovement;
 
         #endregion Fields
 
         #region Properties
+
+        public PlayerMovement PlayerMovement => _playerMovement ??= GetComponent<PlayerMovement>();
 
         public static UnityEvent<bool> PendingAttack { get; } = new();
 
