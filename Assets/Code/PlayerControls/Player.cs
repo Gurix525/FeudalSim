@@ -11,6 +11,7 @@ namespace PlayerControls
 {
     [RequireComponent(typeof(Health))]
     [RequireComponent(typeof(PlayerMovement))]
+    [RequireComponent(typeof(PlayerVFX))]
     public class Player : MonoBehaviour, IDetectable
     {
         #region Fields
@@ -18,12 +19,14 @@ namespace PlayerControls
         private Health _health;
         private ThirdPersonController _thirdPersonController;
         private PlayerMovement _playerMovement;
+        private PlayerVFX _playerVFX;
 
         #endregion Fields
 
         #region Properties
 
         public PlayerMovement PlayerMovement => _playerMovement ??= GetComponent<PlayerMovement>();
+        public PlayerVFX VFX => _playerVFX ??= GetComponent<PlayerVFX>();
 
         public static UnityEvent<bool> PendingAttack { get; } = new();
 

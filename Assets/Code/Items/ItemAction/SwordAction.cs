@@ -10,7 +10,7 @@ namespace Items
 {
     public class SwordAction : ItemAction
     {
-        private float _attackTime = 0.4F;
+        private float _attackTime = 0.35F;
 
         private bool _isNextAttackQueued = false;
 
@@ -40,6 +40,7 @@ namespace Items
                 .normalized;
             _playerMovement.RotateToCursor();
             CreateAttack(direction);
+            TriggerVFX();
             MovePlayer(direction);
         }
 
@@ -55,7 +56,7 @@ namespace Items
                 _player.transform.position + direction + Vector3.up,
                 4F,
                 _attackTime,
-                1.5F,
+                1.25F,
                 _player.transform,
                 true);
             attack.SetNextID();
@@ -99,6 +100,17 @@ namespace Items
             float xSpeed = direction.x * _playerMovement.SprintSpeed * _playerMovement.AttackMoveSpeedMultiplier;
             float zSpeed = direction.z * _playerMovement.SprintSpeed * _playerMovement.AttackMoveSpeedMultiplier;
             _playerMovement.Rigidbody.velocity = new(xSpeed, ySpeed, zSpeed);
+        }
+
+        private void TriggerVFX()
+        {
+            GameObject slash = _playerMovement.AttackComboNumber switch
+            {
+                0 => _player.VFX.FirstSlash,
+                _ => _player.VFX.SecondSlash
+            };
+            slash.SetActive(false);
+            slash.SetActive(true);
         }
     }
 }
