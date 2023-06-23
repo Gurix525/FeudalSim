@@ -25,7 +25,8 @@ namespace Items
 
         public Sprite Sprite => GetSprite();
 
-        protected bool IsLeftClickPermitted => !_playerMovement.IsPendingAttack;
+        protected bool IsLeftClickPermitted => !_playerMovement.IsPendingAttack
+            && _playerMovement.IsGrounded;
 
         #endregion Properties
 

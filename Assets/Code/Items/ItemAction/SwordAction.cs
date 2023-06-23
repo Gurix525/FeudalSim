@@ -12,6 +12,8 @@ namespace Items
     {
         private float _attackTime = 0.4F;
 
+        private bool _isNextAttackQueued = false;
+
         protected override Sprite GetSprite()
         {
             return Resources.Load<Sprite>("Sprites/Actions/Sword");
@@ -20,12 +22,23 @@ namespace Items
         public override void OnLeftMouseButton()
         {
             if (!IsLeftClickPermitted)
+            {
+                if (_playerMovement.IsPendingAttack)
+                    _isNextAttackQueued = true;
                 return;
+            }
+            _playerMovement.AttackComboNumber = 0;
+            Attack();
+        }
+
+        private void Attack()
+        {
             if (Cursor.ClearRaycastHit == null)
                 return;
             Vector3 direction =
                 (Cursor.ClearRaycastHit.Value.point - _player.transform.position)
                 .normalized;
+            _playerMovement.RotateToCursor();
             CreateAttack(direction);
             MovePlayer(direction);
         }
@@ -69,6 +82,13 @@ namespace Items
             {
                 elapsedTime += Time.fixedDeltaTime;
                 yield return new WaitForFixedUpdate();
+            }
+            if (_isNextAttackQueued)
+            {
+                _isNextAttackQueued = false;
+                _playerMovement.AttackComboNumber = _playerMovement.AttackComboNumber == 0 ? 1 : 0;
+                Attack();
+                yield break;
             }
             _playerMovement.IsPendingAttack = false;
         }

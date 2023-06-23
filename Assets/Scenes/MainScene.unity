@@ -2232,6 +2232,7 @@ MonoBehaviour:
   _jumpForce: 12
   _gravityForce: 30
   _sprintMultiplier: 1.25
+  _attackMoveSpeedMultiplier: 0.2
 --- !u!135 &744291016
 SphereCollider:
   m_ObjectHideFlags: 0

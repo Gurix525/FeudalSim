@@ -35,8 +35,6 @@ namespace PlayerControls
         private Animator _animator;
 
         private bool _isCursorRaycastNull = true;
-        private bool _isGrounded;
-        private bool _isSprinting;
 
         private int _groundMask;
 
@@ -52,13 +50,18 @@ namespace PlayerControls
 
         public bool IsPendingAttack { get; set; }
 
+        public int AttackComboNumber { get; set; }
+
+        public bool IsGrounded { get; private set; }
+        public bool IsSprinting { get; private set; }
+
         #endregion Properties
 
         #region Conditions
 
         public bool CanMove => !IsPendingAttack;
 
-        public bool CanJump => _isGrounded && !IsPendingAttack;
+        public bool CanJump => IsGrounded && !IsPendingAttack;
 
         public bool CanSprint => true;
 
@@ -67,6 +70,16 @@ namespace PlayerControls
         public bool CanRotateToCursor => !_isCursorRaycastNull && !IsPendingAttack;
 
         #endregion Conditions
+
+        #region Public
+
+        public void RotateToCursor()
+        {
+            transform.LookAt(Controls.Cursor.ClearRaycastHit.Value.point);
+            transform.rotation = Quaternion.Euler(0F, transform.eulerAngles.y, 0F);
+        }
+
+        #endregion Public
 
         #region Unity
 
@@ -107,13 +120,13 @@ namespace PlayerControls
         private void CheckConditions()
         {
             _isCursorRaycastNull = Controls.Cursor.ClearRaycastHit == null;
-            _isGrounded = Physics.CheckSphere(transform.position, 0.24F, _groundMask);
+            IsGrounded = Physics.CheckSphere(transform.position, 0.24F, _groundMask);
         }
 
         private void Move()
         {
             Vector2 direction = PlayerController.MainMove.ReadValue<Vector2>();
-            direction *= _moveSpeed * (_isSprinting ? _sprintMultiplier : 1F);
+            direction *= _moveSpeed * (IsSprinting ? _sprintMultiplier : 1F);
             float y = _rigidbody.velocity.y;
             _rigidbody.velocity = new(direction.x, y, direction.y);
         }
@@ -121,12 +134,6 @@ namespace PlayerControls
         private void DoGravity()
         {
             _rigidbody.AddForce(Vector3.down * _gravityForce * Time.fixedDeltaTime, ForceMode.VelocityChange);
-        }
-
-        private void RotateToCursor()
-        {
-            transform.LookAt(Controls.Cursor.ClearRaycastHit.Value.point);
-            transform.rotation = Quaternion.Euler(0F, transform.eulerAngles.y, 0F);
         }
 
         private void SetAnimatorParameters()
@@ -139,9 +146,10 @@ namespace PlayerControls
                 .Remap(-180F, 180F, 0F, 360F);
             _animator.SetFloat("Speed", velocity.magnitude);
             _animator.SetFloat("RelativeMoveAngle", relativeAngle);
-            _animator.SetFloat("Sprint", _isSprinting ? _sprintMultiplier : 1F);
-            _animator.SetBool("IsGrounded", _isGrounded);
+            _animator.SetFloat("Sprint", IsSprinting ? _sprintMultiplier : 1F);
+            _animator.SetBool("IsGrounded", IsGrounded);
             _animator.SetBool("IsAttacking", IsPendingAttack);
+            _animator.SetInteger("AttackComboNumber", AttackComboNumber);
         }
 
         private void CheckSprint()
@@ -149,10 +157,10 @@ namespace PlayerControls
             if (CanSprint)
                 if (PlayerController.MainRun.IsPressed())
                 {
-                    _isSprinting = true;
+                    IsSprinting = true;
                     return;
                 }
-            _isSprinting = false;
+            IsSprinting = false;
         }
 
         private Vector2 GetLookDirection()
