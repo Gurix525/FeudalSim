@@ -547,6 +547,50 @@ SkinnedMeshRenderer:
     m_Center: {x: 6.9849193e-10, y: -0.029447138, z: 0.006615611}
     m_Extent: {x: 0.00556683, y: 0.0074335104, z: 0.0057553165}
   m_DirtyAABB: 0
+--- !u!1 &191239350
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 191239351}
+  - component: {fileID: 191239352}
+  m_Layer: 8
+  m_Name: LeftHandItemHook
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &191239351
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 191239350}
+  m_LocalRotation: {x: -0.5, y: 0.5, z: -0.5, w: 0.5}
+  m_LocalPosition: {x: 0.00119, y: -0.00315, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 485308061}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 90, z: -90}
+--- !u!114 &191239352
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 191239350}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1934c74a71514434d9fcfa286cd7019d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &227738281
 GameObject:
   m_ObjectHideFlags: 0
@@ -1388,6 +1432,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1054575294}
+  - {fileID: 191239351}
   m_Father: {fileID: 380476229}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -2217,6 +2262,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5191a11cc0add3e4ebcb5e9797b5aacb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _rightHandItemHook: {fileID: 2009601172}
+  _leftHandItemHook: {fileID: 191239352}
 --- !u!95 &744291009
 Animator:
   serializedVersion: 4
@@ -5792,7 +5839,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 2009601170}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f094fea95bc4893488a60b109e140cd8, type: 3}
+  m_Script: {fileID: 11500000, guid: 1f06e4171119273468e8db737de5dbb3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &2014673886

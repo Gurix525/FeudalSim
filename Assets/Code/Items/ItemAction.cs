@@ -88,6 +88,8 @@ namespace Items
         private void OnCursorCollecionUpdated()
         {
             OnMouseExit(null);
+            OnLeftMouseButtonRelase();
+            OnRightMouseButtonRelase();
         }
 
         #endregion Private

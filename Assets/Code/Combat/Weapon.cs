@@ -5,33 +5,9 @@ namespace Combat
 {
     public class Weapon : MonoBehaviour
     {
-        private Attack _attack;
+        [SerializeField]
+        private bool _isLeftHanded = false;
 
-        private void Awake()
-        {
-            _attack = GetComponentInChildren<Attack>(true);
-            if (_attack == null)
-                throw new MissingComponentException(
-                    $"Nie utworzono obiektu attack jako dziecko broni {gameObject.name}");
-            _attack.Damage = 4F;
-            _attack.gameObject.SetActive(false);
-        }
-
-        private void Start()
-        {
-            _attack.Sender = Player.Instance;
-            Player.PendingAttack.AddListener(OnPendingAttack);
-            Player.AttackChanged.AddListener(OnAttackChanged);
-        }
-
-        private void OnPendingAttack(bool state)
-        {
-            _attack.gameObject.SetActive(state);
-        }
-
-        private void OnAttackChanged()
-        {
-            _attack.SetNextID();
-        }
+        public bool IsLeftHanded => _isLeftHanded;
     }
 }

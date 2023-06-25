@@ -1,8 +1,9 @@
 using System;
+using Combat;
 using Items;
 using UnityEngine;
 
-namespace Controls
+namespace PlayerControls
 {
     public class RightHandItemHook : MonoBehaviour
     {
@@ -10,7 +11,7 @@ namespace Controls
 
         private void Awake()
         {
-            Cursor.ItemChanged.AddListener(ChangeAssignedItem);
+            Controls.Cursor.ItemChanged.AddListener(ChangeAssignedItem);
         }
 
         private void ChangeAssignedItem(Item item)
@@ -19,6 +20,8 @@ namespace Controls
             if (item == null)
                 return;
             if (item.WeaponPrefab == null)
+                return;
+            if (item.WeaponPrefab.GetComponent<Weapon>().IsLeftHanded)
                 return;
             _assignedItem = Instantiate(item.WeaponPrefab);
             _assignedItem.transform.SetParent(transform, true);

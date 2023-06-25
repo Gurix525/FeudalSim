@@ -1,5 +1,6 @@
 using AI;
 using Combat;
+using Controls;
 using Input;
 using StarterAssets;
 using UnityEngine;
@@ -17,6 +18,12 @@ namespace PlayerControls
     {
         #region Fields
 
+        [SerializeField]
+        private RightHandItemHook _rightHandItemHook;
+
+        [SerializeField]
+        private LeftHandItemHook _leftHandItemHook;
+
         private Health _health;
         private PlayerMovement _playerMovement;
         private PlayerVFX _playerVFX;
@@ -29,10 +36,8 @@ namespace PlayerControls
         public PlayerMovement PlayerMovement => _playerMovement ??= GetComponent<PlayerMovement>();
         public PlayerVFX VFX => _playerVFX ??= GetComponent<PlayerVFX>();
         public AimCurve AimCurve => _aimCurve ??= GetComponent<AimCurve>();
-
-        public static UnityEvent<bool> PendingAttack { get; } = new();
-
-        public static UnityEvent AttackChanged { get; } = new();
+        public LeftHandItemHook LeftHandItemHook => _leftHandItemHook;
+        public RightHandItemHook RightHandItemHook => _rightHandItemHook;
 
         public static Vector3 Position => Instance.transform.position;
 
@@ -92,16 +97,6 @@ namespace PlayerControls
         private void OnRightMouseButtonRelase(CallbackContext context)
         {
             Cursor.Action.OnRightMouseButtonRelase();
-        }
-
-        private void OnPendingAttack(bool state)
-        {
-            PendingAttack.Invoke(state);
-        }
-
-        private void OnAttackChanged()
-        {
-            AttackChanged.Invoke();
         }
 
         #endregion Private

@@ -49,11 +49,13 @@ namespace Combat
         private void Awake()
         {
             _renderer = GetComponent<LineRenderer>();
+            _renderer.material.renderQueue = 3001;
         }
 
         private void Update()
         {
             DrawLine();
+            _renderer.material.SetVector("_StartPosition", StartPosition);
         }
 
         #endregion Unity
