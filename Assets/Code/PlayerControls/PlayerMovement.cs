@@ -17,9 +17,6 @@ namespace PlayerControls
         private float _moveSpeed = 6F;
 
         [SerializeField]
-        private float _acceleration = 10F;
-
-        [SerializeField]
         private float _jumpForce = Physics.gravity.magnitude * 2F;
 
         [SerializeField]
@@ -31,12 +28,16 @@ namespace PlayerControls
         [SerializeField]
         private float _attackMoveSpeedMultiplier = 1F;
 
+        [SerializeField]
+        private float _stringingBowSpeedMultiplier = 0.5F;
+
         private Rigidbody _rigidbody;
         private Animator _animator;
 
         private bool _isCursorRaycastNull = true;
 
         private int _groundMask;
+        private int _bowWalkingLayerIndex;
 
         #endregion Fields
 
@@ -44,7 +45,9 @@ namespace PlayerControls
 
         public Rigidbody Rigidbody => _rigidbody;
 
-        public float SprintSpeed => _moveSpeed * _sprintMultiplier;
+        public float MoveSpeed => _moveSpeed * (IsStringingBow ? _stringingBowSpeedMultiplier : 1F);
+
+        public float SprintSpeed => MoveSpeed * _sprintMultiplier;
 
         public float AttackMoveSpeedMultiplier => _attackMoveSpeedMultiplier;
 
@@ -61,11 +64,11 @@ namespace PlayerControls
 
         #region Conditions
 
-        public bool CanMove => !IsPendingAttack && !IsStringingBow;
+        public bool CanMove => !IsPendingAttack;
 
         public bool CanJump => IsGrounded && !IsPendingAttack && !IsStringingBow;
 
-        public bool CanSprint => true;
+        public bool CanSprint => !IsStringingBow;
 
         public bool IsGravityEnabled => true;
 
@@ -90,6 +93,7 @@ namespace PlayerControls
             _rigidbody = GetComponent<Rigidbody>();
             _animator = GetComponent<Animator>();
             _groundMask = ~LayerMask.GetMask("Player");
+            _bowWalkingLayerIndex = _animator.GetLayerIndex("BowWalking");
         }
 
         private void OnEnable()
@@ -128,7 +132,7 @@ namespace PlayerControls
         private void Move()
         {
             Vector2 direction = PlayerController.MainMove.ReadValue<Vector2>();
-            direction *= _moveSpeed * (IsSprinting ? _sprintMultiplier : 1F);
+            direction *= MoveSpeed * (IsSprinting ? _sprintMultiplier : 1F);
             float y = _rigidbody.velocity.y;
             _rigidbody.velocity = new(direction.x, y, direction.y);
         }
@@ -153,6 +157,14 @@ namespace PlayerControls
             _animator.SetBool("IsAttacking", IsPendingAttack);
             _animator.SetBool("IsStringingBow", IsStringingBow);
             _animator.SetInteger("AttackComboNumber", AttackComboNumber);
+            if (IsStringingBow)
+            {
+                _animator.SetLayerWeight(_bowWalkingLayerIndex, 1F);
+            }
+            else
+            {
+                _animator.SetLayerWeight(_bowWalkingLayerIndex, 0F);
+            }
         }
 
         private void CheckSprint()
