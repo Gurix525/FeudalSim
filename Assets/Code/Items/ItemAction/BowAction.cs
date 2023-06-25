@@ -12,12 +12,16 @@ namespace Items
 
         public override void OnLeftMouseButton()
         {
-            _player.AimCurve.Enable();
+            if (IsLeftClickPermitted)
+            {
+                _player.AimCurve.Enable();
+                _playerMovement.IsStringingBow = true;
+            }
         }
 
         public override void Update()
         {
-            if (Cursor.ClearRaycastHit == null)
+            if (Cursor.ClearRaycastHit == null || !_playerMovement.IsStringingBow)
                 return;
             Vector3 targetPosition = Cursor.ClearRaycastHit.Value.point;
             Vector3 playerPosition = _player.transform.position;
@@ -30,6 +34,7 @@ namespace Items
         public override void OnLeftMouseButtonRelase()
         {
             _player.AimCurve.Disable();
+            _playerMovement.IsStringingBow = false;
         }
 
         public override void OnRightMouseButton()

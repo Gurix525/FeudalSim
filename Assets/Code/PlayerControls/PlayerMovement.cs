@@ -50,6 +50,8 @@ namespace PlayerControls
 
         public bool IsPendingAttack { get; set; }
 
+        public bool IsStringingBow { get; set; }
+
         public int AttackComboNumber { get; set; }
 
         public bool IsGrounded { get; private set; }
@@ -59,9 +61,9 @@ namespace PlayerControls
 
         #region Conditions
 
-        public bool CanMove => !IsPendingAttack;
+        public bool CanMove => !IsPendingAttack && !IsStringingBow;
 
-        public bool CanJump => IsGrounded && !IsPendingAttack;
+        public bool CanJump => IsGrounded && !IsPendingAttack && !IsStringingBow;
 
         public bool CanSprint => true;
 
@@ -149,6 +151,7 @@ namespace PlayerControls
             _animator.SetFloat("Sprint", IsSprinting ? _sprintMultiplier : 1F);
             _animator.SetBool("IsGrounded", IsGrounded);
             _animator.SetBool("IsAttacking", IsPendingAttack);
+            _animator.SetBool("IsStringingBow", IsStringingBow);
             _animator.SetInteger("AttackComboNumber", AttackComboNumber);
         }
 
