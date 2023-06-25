@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using System;
+using PlayerControls;
+using UnityEngine;
 using Cursor = Controls.Cursor;
 
 namespace Items
@@ -26,9 +28,10 @@ namespace Items
             Vector3 targetPosition = Cursor.ClearRaycastHit.Value.point;
             Vector3 playerPosition = _player.transform.position;
             _player.AimCurve.SetControlPoints(
-                playerPosition + Vector3.up,
-                targetPosition,
-                (playerPosition + targetPosition) / 2F + Vector3.up * 2F);
+                _player.transform.position + Vector3.up * 1.3F,
+                //_player.LeftHandItemHook.transform.position,
+                targetPosition);
+            _playerMovement.LeftHandIKGoal = _player.AimCurve.GetNodePosition(5);
         }
 
         public override void OnLeftMouseButtonRelase()

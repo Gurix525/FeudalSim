@@ -51,6 +51,8 @@ namespace PlayerControls
 
         public float AttackMoveSpeedMultiplier => _attackMoveSpeedMultiplier;
 
+        public Vector3 LeftHandIKGoal { get; set; }
+
         public bool IsPendingAttack { get; set; }
 
         public bool IsStringingBow { get; set; }
@@ -101,6 +103,11 @@ namespace PlayerControls
             PlayerController.MainJump.AddListener(ActionType.Started, Jump);
         }
 
+        private void Update()
+        {
+            SetAnimatorParameters();
+        }
+
         private void FixedUpdate()
         {
             CheckConditions();
@@ -111,12 +118,16 @@ namespace PlayerControls
                 DoGravity();
             if (CanRotateToCursor)
                 RotateToCursor();
-            SetAnimatorParameters();
         }
 
         private void OnDisable()
         {
             PlayerController.MainJump.RemoveListener(ActionType.Started, Jump);
+        }
+
+        private void OnAnimatorIK(int layerIndex)
+        {
+            SetAnimatorIK();
         }
 
         #endregion Unity
@@ -164,6 +175,19 @@ namespace PlayerControls
             else
             {
                 _animator.SetLayerWeight(_bowWalkingLayerIndex, 0F);
+            }
+        }
+
+        private void SetAnimatorIK()
+        {
+            if (IsStringingBow)
+            {
+                _animator.SetIKPositionWeight(AvatarIKGoal.LeftHand, 1F);
+                _animator.SetIKPosition(AvatarIKGoal.LeftHand, LeftHandIKGoal);
+            }
+            else
+            {
+                _animator.SetIKPositionWeight(AvatarIKGoal.LeftHand, 0F);
             }
         }
 

@@ -1,4 +1,5 @@
 using System;
+using TMPro;
 using UnityEngine;
 
 namespace Combat
@@ -21,9 +22,16 @@ namespace Combat
         public Vector3 TargetPosition { get; set; }
         public Vector3 ControlPoint { get; set; }
 
+        public int NodesCount => _nodesCount;
+
         #endregion Properties
 
         #region Public
+
+        public Vector3 GetNodePosition(int index)
+        {
+            return _renderer.GetPosition(index);
+        }
 
         public void Enable()
         {
@@ -35,11 +43,12 @@ namespace Combat
             _renderer.enabled = false;
         }
 
-        public void SetControlPoints(Vector3 start, Vector3 target, Vector3 control)
+        public void SetControlPoints(Vector3 start, Vector3 target)
         {
             StartPosition = start;
             TargetPosition = target;
-            ControlPoint = control;
+            ControlPoint = (start + target) / 2F
+                + Vector3.up * Vector3.Distance(start, target) / 5F;
         }
 
         #endregion Public
@@ -56,6 +65,7 @@ namespace Combat
         {
             DrawLine();
             _renderer.material.SetVector("_StartPosition", StartPosition);
+            _renderer.material.SetFloat("_CurveLength", GetLength());
         }
 
         #endregion Unity
@@ -72,6 +82,7 @@ namespace Combat
                 float t = (float)i / (_nodesCount - 1);
                 nodes[i] = GetBezierPoint(t);
             }
+            nodes = FindEndOfCurve(nodes);
             _renderer.positionCount = nodes.Length;
             _renderer.SetPositions(nodes);
         }
@@ -81,6 +92,34 @@ namespace Combat
             return Mathf.Pow(1 - t, 2) * StartPosition
                 + 2 * (1 - t) * t * ControlPoint
                 + t * t * TargetPosition;
+        }
+
+        private float GetLength()
+        {
+            float length = 0F;
+            Vector3[] nodes = new Vector3[NodesCount];
+            _renderer.GetPositions(nodes);
+            for (int i = 1; i < NodesCount; i++)
+            {
+                length += (nodes[i] - nodes[i - 1]).magnitude;
+            }
+            return length;
+        }
+
+        private Vector3[] FindEndOfCurve(Vector3[] nodes)
+        {
+            for (int i = 0; i < nodes.Length - 1; i++)
+            {
+                if (Physics.Linecast(nodes[i], nodes[i + 1], out RaycastHit hit))
+                {
+                    for (int j = i + 1; j < nodes.Length; j++)
+                    {
+                        nodes[j] = hit.point;
+                    }
+                    return nodes;
+                }
+            }
+            return nodes;
         }
 
         #endregion Private
