@@ -6,13 +6,45 @@ namespace Combat
     [RequireComponent(typeof(LineRenderer))]
     public class AimCurve : MonoBehaviour
     {
-        [SerializeField]
-        private GameObject P1, P2, P3;
+        #region Fields
 
         [SerializeField]
         private int _nodesCount = 10;
 
         private LineRenderer _renderer;
+
+        #endregion Fields
+
+        #region Properties
+
+        public Vector3 StartPosition { get; set; }
+        public Vector3 TargetPosition { get; set; }
+        public Vector3 ControlPoint { get; set; }
+
+        #endregion Properties
+
+        #region Public
+
+        public void Enable()
+        {
+            _renderer.enabled = true;
+        }
+
+        public void Disable()
+        {
+            _renderer.enabled = false;
+        }
+
+        public void SetControlPoints(Vector3 start, Vector3 target, Vector3 control)
+        {
+            StartPosition = start;
+            TargetPosition = target;
+            ControlPoint = control;
+        }
+
+        #endregion Public
+
+        #region Unity
 
         private void Awake()
         {
@@ -23,6 +55,10 @@ namespace Combat
         {
             DrawLine();
         }
+
+        #endregion Unity
+
+        #region Private
 
         private void DrawLine()
         {
@@ -40,12 +76,11 @@ namespace Combat
 
         private Vector3 GetBezierPoint(float t)
         {
-            Vector3 p0 = P1.transform.position;
-            Vector3 p1 = P2.transform.position;
-            Vector3 p2 = P3.transform.position;
-            return Mathf.Pow(1 - t, 2) * p0
-                + 2 * (1 - t) * t * p1
-                + t * t * p2;
+            return Mathf.Pow(1 - t, 2) * StartPosition
+                + 2 * (1 - t) * t * ControlPoint
+                + t * t * TargetPosition;
         }
+
+        #endregion Private
     }
 }

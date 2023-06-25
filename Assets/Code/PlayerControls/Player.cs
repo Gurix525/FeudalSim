@@ -12,14 +12,15 @@ namespace PlayerControls
     [RequireComponent(typeof(Health))]
     [RequireComponent(typeof(PlayerMovement))]
     [RequireComponent(typeof(PlayerVFX))]
+    [RequireComponent(typeof(AimCurve))]
     public class Player : MonoBehaviour, IDetectable
     {
         #region Fields
 
         private Health _health;
-        private ThirdPersonController _thirdPersonController;
         private PlayerMovement _playerMovement;
         private PlayerVFX _playerVFX;
+        private AimCurve _aimCurve;
 
         #endregion Fields
 
@@ -27,6 +28,7 @@ namespace PlayerControls
 
         public PlayerMovement PlayerMovement => _playerMovement ??= GetComponent<PlayerMovement>();
         public PlayerVFX VFX => _playerVFX ??= GetComponent<PlayerVFX>();
+        public AimCurve AimCurve => _aimCurve ??= GetComponent<AimCurve>();
 
         public static UnityEvent<bool> PendingAttack { get; } = new();
 
