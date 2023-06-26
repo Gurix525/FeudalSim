@@ -1,4 +1,5 @@
 ﻿using System;
+using Combat;
 using PlayerControls;
 using UnityEngine;
 using Cursor = Controls.Cursor;
@@ -7,6 +8,8 @@ namespace Items
 {
     public class BowAction : ItemAction
     {
+        private GameObject _arrowPrefab;
+
         protected override Sprite GetSprite()
         {
             return Resources.Load<Sprite>("Sprites/Actions/Bow");
@@ -36,6 +39,15 @@ namespace Items
 
         public override void OnLeftMouseButtonRelase()
         {
+            if (_player.AimCurve.IsCurveEnabled)
+            {
+                var arrow = GameObject.Instantiate(
+                    _arrowPrefab ??= Resources.Load<GameObject>("Prefabs/Combat/Arrow"));
+                arrow.GetComponent<Arrow>().Initialize(
+                    _player.AimCurve.Nodes,
+                    _player,
+                    4F);
+            }
             _player.AimCurve.Disable();
             _playerMovement.IsStringingBow = false;
         }

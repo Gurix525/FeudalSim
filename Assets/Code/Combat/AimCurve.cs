@@ -10,7 +10,7 @@ namespace Combat
         #region Fields
 
         [SerializeField]
-        private int _nodesCount = 10;
+        private int _nodesCount = 11;
 
         [SerializeField]
         private GameObject _marker;
@@ -28,6 +28,9 @@ namespace Combat
         public Vector3 TargetPosition { get; set; }
         public Vector3 ControlPoint { get; set; }
 
+        public bool IsCurveEnabled { get; private set; }
+
+        public Vector3[] Nodes => GetLineNodes();
         public int NodesCount => _nodesCount;
 
         #endregion Properties
@@ -39,14 +42,23 @@ namespace Combat
             return _renderer.GetPosition(index);
         }
 
+        public Vector3[] GetLineNodes()
+        {
+            Vector3[] nodes = new Vector3[NodesCount];
+            _renderer.GetPositions(nodes);
+            return nodes;
+        }
+
         public void Enable()
         {
+            IsCurveEnabled = true;
             _renderer.enabled = true;
             _marker.SetActive(true);
         }
 
         public void Disable()
         {
+            IsCurveEnabled = false;
             _renderer.enabled = false;
             _marker.SetActive(false);
         }
@@ -114,8 +126,7 @@ namespace Combat
         private float GetLength()
         {
             float length = 0F;
-            Vector3[] nodes = new Vector3[NodesCount];
-            _renderer.GetPositions(nodes);
+            var nodes = GetLineNodes();
             for (int i = 1; i < NodesCount; i++)
             {
                 length += (nodes[i] - nodes[i - 1]).magnitude;

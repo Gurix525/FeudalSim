@@ -2505,7 +2505,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3c3dbbb6e8925943b9aa074c8bb1c51, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _nodesCount: 10
+  _nodesCount: 11
   _marker: {fileID: 134026542}
 --- !u!120 &744291019
 LineRenderer:
