@@ -12,7 +12,13 @@ namespace Combat
         [SerializeField]
         private int _nodesCount = 10;
 
+        [SerializeField]
+        private GameObject _marker;
+
         private LineRenderer _renderer;
+
+        private Vector3 _markerPosition;
+        private Vector3 _markerNormal;
 
         #endregion Fields
 
@@ -36,19 +42,23 @@ namespace Combat
         public void Enable()
         {
             _renderer.enabled = true;
+            _marker.SetActive(true);
         }
 
         public void Disable()
         {
             _renderer.enabled = false;
+            _marker.SetActive(false);
         }
 
-        public void SetControlPoints(Vector3 start, Vector3 target)
+        public void SetControlPoints(Vector3 start, Vector3 target, Vector3 targetNormal)
         {
             StartPosition = start;
             TargetPosition = target;
             ControlPoint = (start + target) / 2F
                 + Vector3.up * Vector3.Distance(start, target) / 5F;
+            _markerPosition = target;
+            _markerNormal = targetNormal;
         }
 
         #endregion Public
@@ -64,6 +74,7 @@ namespace Combat
         private void Update()
         {
             DrawLine();
+            PlaceMarker();
             _renderer.material.SetVector("_StartPosition", StartPosition);
             _renderer.material.SetFloat("_CurveLength", GetLength());
         }
@@ -85,6 +96,12 @@ namespace Combat
             nodes = FindEndOfCurve(nodes);
             _renderer.positionCount = nodes.Length;
             _renderer.SetPositions(nodes);
+        }
+
+        private void PlaceMarker()
+        {
+            _marker.transform.position = _markerPosition + _markerNormal * 0.0001F;
+            _marker.transform.LookAt(_markerPosition - _markerNormal);
         }
 
         private Vector3 GetBezierPoint(float t)
@@ -112,6 +129,8 @@ namespace Combat
             {
                 if (Physics.Linecast(nodes[i], nodes[i + 1], out RaycastHit hit))
                 {
+                    _markerPosition = hit.point;
+                    _markerNormal = hit.normal;
                     for (int j = i + 1; j < nodes.Length; j++)
                     {
                         nodes[j] = hit.point;

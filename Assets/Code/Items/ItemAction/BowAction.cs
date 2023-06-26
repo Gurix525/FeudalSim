@@ -25,12 +25,12 @@ namespace Items
         {
             if (Cursor.ClearRaycastHit == null || !_playerMovement.IsStringingBow)
                 return;
-            Vector3 targetPosition = Cursor.ClearRaycastHit.Value.point;
+            var hit = Cursor.ClearRaycastHit.Value;
             Vector3 playerPosition = _player.transform.position;
             _player.AimCurve.SetControlPoints(
                 _player.transform.position + Vector3.up * 1.3F,
-                //_player.LeftHandItemHook.transform.position,
-                targetPosition);
+                hit.point,
+                hit.normal);
             _playerMovement.LeftHandIKGoal = _player.AimCurve.GetNodePosition(5);
         }
 
