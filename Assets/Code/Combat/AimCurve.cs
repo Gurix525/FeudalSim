@@ -104,7 +104,7 @@ namespace Combat
             for (int i = 0; i < _nodesCount; i++)
             {
                 float t = (float)i / (_nodesCount - 1);
-                nodes[i] = Curve.GetPoint(t);
+                nodes[i] = Curve.EvaluatePosition(t);
             }
             nodes = FindEndOfCurve(nodes);
             _renderer.positionCount = nodes.Length;

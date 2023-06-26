@@ -20,7 +20,7 @@ namespace Maths
             ControlPoint = control;
         }
 
-        public Vector3 GetPoint(float t)
+        public Vector3 EvaluatePosition(float t)
         {
             return Mathf.Pow(1 - t, 2) * StartPosition
                 + 2 * (1 - t) * t * ControlPoint
@@ -45,7 +45,7 @@ namespace Maths
             float length = 0F;
             for (int i = 0; i < 11; i++)
             {
-                length += (GetPoint((i + 1F) / 11F) - GetPoint(i / 11F)).magnitude;
+                length += (EvaluatePosition((i + 1F) / 11F) - EvaluatePosition(i / 11F)).magnitude;
             }
             return length;
         }

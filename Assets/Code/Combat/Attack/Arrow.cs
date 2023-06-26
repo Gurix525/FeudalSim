@@ -1,39 +1,68 @@
 using System;
 using System.Collections;
+using Maths;
 using UnityEngine;
 
 namespace Combat
 {
     public class Arrow : MonoBehaviour
     {
+        #region Fields
+
         [SerializeField]
         private Attack _attack;
 
         [SerializeField]
         private Rigidbody _rigidbody;
 
-        private Vector3[] _path;
+        private Curve _curve;
 
-        public void Initialize(Vector3[] path, Component sender, float damage)
+        private float _elapsedTime = 0F;
+
+        private static readonly float _moveSpeed = 20F;
+
+        #endregion Fields
+
+        #region Public
+
+        public void Initialize(Curve curve, Component sender, float damage)
         {
-            _path = path;
+            _curve = curve;
             _attack.Sender = sender;
             _attack.Damage = damage;
             _attack.DealedHit.AddListener(OnDealedHit);
-            transform.position = _path[0];
-            StartCoroutine(FollowPath());
+            transform.position = curve.EvaluatePosition(0F);
         }
 
-        private IEnumerator FollowPath()
+        #endregion Public
+
+        #region Unity
+
+        private void OnTriggerEnter(Collider collider)
         {
-            int index = 1;
-            while (index < _path.Length)
-            {
-                _rigidbody.MovePosition(_path[index]);
-                yield return new WaitForFixedUpdate();
-                index++;
-            }
             Destroy(gameObject);
+        }
+
+        private void FixedUpdate()
+        {
+            FollowCurve();
+            DestroyIfTooLow();
+        }
+
+        #endregion Unity
+
+        #region Private
+
+        private void FollowCurve()
+        {
+            _elapsedTime += Time.fixedDeltaTime;
+            _rigidbody.MovePosition(_curve.EvaluatePosition(_elapsedTime * _moveSpeed / _curve.ApproximateLength));
+        }
+
+        private void DestroyIfTooLow()
+        {
+            if (transform.position.y < -50F)
+                Destroy(gameObject);
         }
 
         private void OnDealedHit(Hitbox hitbox)
@@ -41,9 +70,6 @@ namespace Combat
             Destroy(gameObject);
         }
 
-        private void OnCollisionEnter(Collision collision)
-        {
-            Destroy(gameObject);
-        }
+        #endregion Private
     }
 }

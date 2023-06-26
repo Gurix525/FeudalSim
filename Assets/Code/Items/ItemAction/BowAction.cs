@@ -44,7 +44,7 @@ namespace Items
                 var arrow = GameObject.Instantiate(
                     _arrowPrefab ??= Resources.Load<GameObject>("Prefabs/Combat/Arrow"));
                 arrow.GetComponent<Arrow>().Initialize(
-                    _player.AimCurve.Nodes,
+                    _player.AimCurve.Curve,
                     _player,
                     4F);
             }
