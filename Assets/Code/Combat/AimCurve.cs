@@ -1,4 +1,5 @@
 using System;
+using Maths;
 using TMPro;
 using UnityEngine;
 
@@ -24,9 +25,7 @@ namespace Combat
 
         #region Properties
 
-        public Vector3 StartPosition { get; set; }
-        public Vector3 TargetPosition { get; set; }
-        public Vector3 ControlPoint { get; set; }
+        public Curve Curve { get; private set; }
 
         public bool IsCurveEnabled { get; private set; }
 
@@ -39,6 +38,8 @@ namespace Combat
 
         public Vector3 GetNodePosition(int index)
         {
+            if (_renderer.positionCount <= index)
+                return Vector3.zero;
             return _renderer.GetPosition(index);
         }
 
@@ -65,10 +66,8 @@ namespace Combat
 
         public void SetControlPoints(Vector3 start, Vector3 target, Vector3 targetNormal)
         {
-            StartPosition = start;
-            TargetPosition = target;
-            ControlPoint = (start + target) / 2F
-                + Vector3.up * Vector3.Distance(start, target) / 5F;
+            Curve = new(start, target, (start + target) / 2F
+                + Vector3.up * Vector3.Distance(start, target) / 5F);
             _markerPosition = target;
             _markerNormal = targetNormal;
         }
@@ -85,10 +84,12 @@ namespace Combat
 
         private void Update()
         {
+            if (!IsCurveEnabled)
+                return;
             DrawLine();
             PlaceMarker();
-            _renderer.material.SetVector("_StartPosition", StartPosition);
-            _renderer.material.SetFloat("_CurveLength", GetLength());
+            _renderer.material.SetVector("_StartPosition", Curve.StartPosition);
+            _renderer.material.SetFloat("_CurveLength", Curve.ApproximateLength);
         }
 
         #endregion Unity
@@ -103,7 +104,7 @@ namespace Combat
             for (int i = 0; i < _nodesCount; i++)
             {
                 float t = (float)i / (_nodesCount - 1);
-                nodes[i] = GetBezierPoint(t);
+                nodes[i] = Curve.GetPoint(t);
             }
             nodes = FindEndOfCurve(nodes);
             _renderer.positionCount = nodes.Length;
@@ -114,24 +115,6 @@ namespace Combat
         {
             _marker.transform.position = _markerPosition + _markerNormal * 0.0001F;
             _marker.transform.LookAt(_markerPosition - _markerNormal);
-        }
-
-        private Vector3 GetBezierPoint(float t)
-        {
-            return Mathf.Pow(1 - t, 2) * StartPosition
-                + 2 * (1 - t) * t * ControlPoint
-                + t * t * TargetPosition;
-        }
-
-        private float GetLength()
-        {
-            float length = 0F;
-            var nodes = GetLineNodes();
-            for (int i = 1; i < NodesCount; i++)
-            {
-                length += (nodes[i] - nodes[i - 1]).magnitude;
-            }
-            return length;
         }
 
         private Vector3[] FindEndOfCurve(Vector3[] nodes)
