@@ -86,6 +86,8 @@ namespace Combat
         {
             if (!IsCurveEnabled)
                 return;
+            if (Curve == null)
+                return;
             DrawLine();
             PlaceMarker();
             _renderer.material.SetVector("_StartPosition", Curve.StartPosition);

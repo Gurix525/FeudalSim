@@ -14,7 +14,7 @@ namespace Combat
 
         private static LinkedList<Bullet> _bullets = new();
         private static GameObject _bulletPrefab;
-        private static Transform _attacksPool;
+        private static Transform _bulletsPool;
 
         #endregion fields
 
@@ -36,23 +36,23 @@ namespace Combat
             Transform parent = null,
             bool isWorldSpace = false)
         {
-            Bullet attack = _bullets.First?.Value;
-            if (attack != null)
+            Bullet bullet = _bullets.First?.Value;
+            if (bullet != null)
                 _bullets.RemoveFirst();
             else
-                attack = Instantiate(_bulletPrefab ??= Resources.Load<GameObject>("Prefabs/Combat/Bullet"))
+                bullet = Instantiate(_bulletPrefab ??= Resources.Load<GameObject>("Prefabs/Combat/Bullet"))
                     .GetComponent<Bullet>();
-            attack.gameObject.SetActive(true);
-            attack.Sender = sender;
-            attack.Lifetime = lifetime;
-            attack.Collider.radius = radius;
-            attack.Damage = damage;
-            attack.transform.SetParent(parent);
+            bullet.gameObject.SetActive(true);
+            bullet.Sender = sender;
+            bullet.Lifetime = lifetime;
+            bullet.Collider.radius = radius;
+            bullet.Damage = damage;
+            bullet.transform.SetParent(parent);
             if (isWorldSpace)
-                attack.transform.position = position;
+                bullet.transform.position = position;
             else
-                attack.transform.localPosition = position;
-            return attack;
+                bullet.transform.localPosition = position;
+            return bullet;
         }
 
         #endregion Public
@@ -62,11 +62,6 @@ namespace Combat
         protected void OnEnable()
         {
             StartCoroutine(FadeOff(Lifetime));
-        }
-
-        protected void Update()
-        {
-            transform.GetChild(0).localScale = Vector3.one * Collider.radius;
         }
 
         protected void OnDisable()
@@ -86,7 +81,7 @@ namespace Combat
         private IEnumerator FadeOff(float lifetime)
         {
             yield return new WaitForSeconds(lifetime);
-            transform.SetParent(_attacksPool ??= new GameObject("BulletsPool").transform);
+            transform.SetParent(_bulletsPool ??= new GameObject("BulletsPool").transform);
             gameObject.SetActive(false);
         }
 

@@ -43,7 +43,7 @@ GameObject:
   - component: {fileID: 1016782961279025314}
   - component: {fileID: 1016782961279025341}
   - component: {fileID: 1016782961279025319}
-  - component: {fileID: 1016782961279025343}
+  - component: {fileID: 9099692814382115513}
   - component: {fileID: 1016782961279025336}
   - component: {fileID: 1016782961279025312}
   - component: {fileID: 1016782961279025338}
@@ -105,8 +105,8 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 20
   m_Center: {x: 0, y: 0, z: 0}
---- !u!135 &1016782961279025343
-SphereCollider:
+--- !u!65 &9099692814382115513
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -116,8 +116,8 @@ SphereCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.5
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 0.3879893, y: 0.42229077, z: 0.7959964}
+  m_Center: {x: 0.00090266764, y: 0.19858752, z: -0.027982816}
 --- !u!195 &1016782961279025336
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -226,7 +226,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1016782961823612656}
   - component: {fileID: 6064215941668139088}
-  - component: {fileID: 1016782961823612662}
+  - component: {fileID: 2814664386409746157}
   - component: {fileID: 6560578295327154274}
   m_Layer: 6
   m_Name: Hitbox
@@ -266,8 +266,8 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!135 &1016782961823612662
-SphereCollider:
+--- !u!65 &2814664386409746157
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -277,8 +277,8 @@ SphereCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.5
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 0.53212786, y: 0.6547556, z: 0.9037843}
+  m_Center: {x: 0, y: 0.036788404, z: -0.029242039}
 --- !u!114 &6560578295327154274
 MonoBehaviour:
   m_ObjectHideFlags: 0

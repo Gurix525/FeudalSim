@@ -41,9 +41,7 @@ namespace Items
         {
             if (_player.AimCurve.IsCurveEnabled)
             {
-                var arrow = GameObject.Instantiate(
-                    _arrowPrefab ??= Resources.Load<GameObject>("Prefabs/Combat/Arrow"));
-                arrow.GetComponent<Arrow>().Initialize(
+                Arrow.Spawn(
                     _player.AimCurve.Curve,
                     _player,
                     4F);
