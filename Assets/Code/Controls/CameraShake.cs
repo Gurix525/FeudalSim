@@ -29,12 +29,9 @@ namespace Controls
 
         private void FixedUpdate()
         {
-            //_cameraNoise.m_AmplitudeGain =
-            //    Mathf.Lerp(_cameraNoise.m_AmplitudeGain, 0F, _shakeDecay);
             _cameraNoise.m_AmplitudeGain -= _shakeDecay * Time.fixedDeltaTime;
             if (_cameraNoise.m_AmplitudeGain < 0.01F)
                 _cameraNoise.m_AmplitudeGain = 0F;
-            //_cameraNoise.m_FrequencyGain = _cameraNoise.m_AmplitudeGain;
         }
 
         private void StartShakingCamera(float strength)

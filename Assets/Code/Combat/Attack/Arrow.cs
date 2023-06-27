@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using AI;
 using Maths;
+using Misc;
 using UnityEngine;
 
 namespace Combat
@@ -28,9 +29,7 @@ namespace Combat
 
         private static int? _hitboxLayerMask;
 
-        private static LinkedList<Arrow> _arrows = new();
-        private static GameObject _arrowPrefab;
-        private static Transform _arrowsPool;
+        private static Pool<Arrow> _pool = new("Prefabs/Combat/Arrow");
 
         #endregion Fields
 
@@ -38,12 +37,7 @@ namespace Combat
 
         public static Arrow Spawn(Curve curve, Component sender, float damage)
         {
-            Arrow arrow = _arrows.First?.Value;
-            if (arrow != null)
-                _arrows.RemoveFirst();
-            else
-                arrow = Instantiate(_arrowPrefab ??= Resources.Load<GameObject>("Prefabs/Combat/Arrow"))
-                    .GetComponent<Arrow>();
+            Arrow arrow = _pool.Pull();
             arrow._elapsedTime = 0F;
             arrow._curve = curve;
             arrow.transform.position = curve.EvaluatePosition(0F);
@@ -133,8 +127,7 @@ namespace Combat
 
         private void ReturnToPool()
         {
-            transform.SetParent(_arrowsPool ??= new GameObject("ArrowsPool").transform);
-            gameObject.SetActive(false);
+            _pool.Push(this);
         }
 
         #endregion Private
