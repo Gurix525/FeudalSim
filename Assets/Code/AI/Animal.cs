@@ -14,6 +14,7 @@ namespace AI
     [RequireComponent(typeof(EntitiesDetector))]
     [RequireComponent(typeof(Agent))]
     [RequireComponent(typeof(Health))]
+    [RequireComponent(typeof(Animator))]
     public abstract class Animal : MonoBehaviour, IDetectable
     {
         #region Fields
@@ -24,12 +25,16 @@ namespace AI
         private EntitiesDetector _detector;
         private Agent _agent;
         private Health _health;
+        private Animator _animator;
+        private System.Random _random = new();
         private List<Attitude> _attitudes = new();
         private List<AttitudeModel> _attitudeModels = new();
         private Dictionary<AttitudeType, AIBehaviour> _behaviours = new();
         private Attitude _highestPriorityAttitude;
         private float _attitudesCheckInterval = 5F;
         private float _timeSinceAttitudesCheck;
+        private float _idleType = 0F;
+        private float _timeSinceIdleTypeRandomization = 0F;
         private MoveSpeedType _moveSpeedType;
         private bool _isKnockbackActive;
         private bool _isBeingDestroyed;
@@ -138,6 +143,7 @@ namespace AI
         protected void Awake()
         {
             _agent = GetComponent<Agent>();
+            _animator = GetComponent<Animator>();
             RandomizeSpeedValues();
             SetSpeed(MoveSpeedType.Walk);
             InitializeHealth();
@@ -153,9 +159,15 @@ namespace AI
             DisableAllBehaviours();
         }
 
+        private void Update()
+        {
+            SetAnimatorParameters();
+        }
+
         private void FixedUpdate()
         {
             CheckAttitudes();
+            RandomizeIdleType();
         }
 
         #endregion Unity
@@ -163,6 +175,12 @@ namespace AI
         #region Protected
 
         protected abstract void CreateAttitudeModels();
+
+        protected virtual void SetAnimatorParameters()
+        {
+            _animator.SetFloat("MoveSpeed", _agent.Velocity.magnitude);
+            _animator.SetFloat("IdleType", Mathf.Lerp(_animator.GetFloat("IdleType"), _idleType, 0.05F));
+        }
 
         protected void AddAttitude(AttitudeModel model)
         {
@@ -351,6 +369,16 @@ namespace AI
                 attack.DealedHit.AddListener((hitbox) => DealedHit.Invoke(hitbox));
             }
             SetAttackActive(false);
+        }
+
+        private void RandomizeIdleType()
+        {
+            if (_timeSinceIdleTypeRandomization > 5F)
+            {
+                _timeSinceIdleTypeRandomization = 0F;
+                _idleType = _random.NextFloat();
+            }
+            _timeSinceIdleTypeRandomization += Time.fixedDeltaTime;
         }
 
         private IEnumerator KnockBack(Attack attack)
