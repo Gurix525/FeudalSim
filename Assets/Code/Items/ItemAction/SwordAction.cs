@@ -53,12 +53,13 @@ namespace Items
         {
             Attack attack = Bullet.Spawn(
                 _player,
-                _player.transform.position + direction + Vector3.up,
+                Vector3.zero,
                 4F,
                 _attackTime,
                 1.25F,
                 _player.transform,
-                true);
+                false);
+            attack.transform.localRotation = Quaternion.identity;
             attack.SetNextID();
         }
 
