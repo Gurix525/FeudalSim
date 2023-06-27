@@ -26,6 +26,8 @@ namespace Combat
 
         private static readonly float _moveSpeed = 20F;
 
+        private static int? _hitboxLayerMask;
+
         private static LinkedList<Arrow> _arrows = new();
         private static GameObject _arrowPrefab;
         private static Transform _arrowsPool;
@@ -62,8 +64,7 @@ namespace Combat
         {
             if (collider.isTrigger)
                 return;
-            transform.SetParent(_arrowsPool ??= new GameObject("ArrowsPool").transform);
-            gameObject.SetActive(false);
+            ReturnToPool();
         }
 
         private void FixedUpdate()
@@ -88,21 +89,49 @@ namespace Combat
 
         private void FollowCurve()
         {
+            Vector3 previousPosition = transform.position;
             _elapsedTime += Time.fixedDeltaTime;
-            _rigidbody.MovePosition(_curve.EvaluatePosition(
-                    _elapsedTime * _moveSpeed / _curve.ApproximateLength));
+            Vector3 nextPosition = _curve.EvaluatePosition(
+                    _elapsedTime * _moveSpeed / _curve.ApproximateLength);
+            bool oldQueriesSetings = Physics.queriesHitTriggers;
+            Physics.queriesHitTriggers = true;
+            var hitboxes = Physics.SphereCastAll(
+                previousPosition,
+                0.5F,
+                (nextPosition - previousPosition).normalized,
+                (nextPosition - previousPosition).magnitude,
+                _hitboxLayerMask ??= LayerMask.GetMask("Hitbox")
+                );
+            Physics.queriesHitTriggers = oldQueriesSetings;
+            int index = 0;
+            while (gameObject.activeInHierarchy && index < hitboxes.Length)
+            {
+                _attack.ForceCollision(hitboxes[index].collider);
+                hitboxes[index].collider.GetComponent<Hitbox>().ForceCollision(_attack.Collider);
+                if (gameObject.activeInHierarchy == false)
+                    return;
+                index++;
+            }
+            if (Physics.Linecast(previousPosition, nextPosition))
+            {
+                ReturnToPool();
+                return;
+            }
+            _rigidbody.MovePosition(nextPosition);
         }
 
         private void DestroyIfTooLow()
         {
             if (transform.position.y < -50F)
-            {
-                transform.SetParent(_arrowsPool ??= new GameObject("ArrowsPool").transform);
-                gameObject.SetActive(false);
-            }
+                ReturnToPool();
         }
 
         private void OnDealedHit(Hitbox hitbox)
+        {
+            ReturnToPool();
+        }
+
+        private void ReturnToPool()
         {
             transform.SetParent(_arrowsPool ??= new GameObject("ArrowsPool").transform);
             gameObject.SetActive(false);

@@ -14,6 +14,11 @@ namespace Combat
 
         public Component Receiver { get; set; }
 
+        public void ForceCollision(Collider other)
+        {
+            OnTriggerEnter(other);
+        }
+
         private void Awake()
         {
             GetComponent<Rigidbody>().isKinematic = true;

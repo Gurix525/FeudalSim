@@ -11,6 +11,7 @@ namespace Combat
         #region Fields
 
         private static int _nextInt;
+        private Collider _collider;
 
         #endregion Fields
 
@@ -24,6 +25,8 @@ namespace Combat
 
         public UnityEvent<Hitbox> DealedHit { get; } = new();
 
+        public Collider Collider => _collider ??= GetComponent<Collider>();
+
         #endregion Properties
 
         #region Public
@@ -31,6 +34,11 @@ namespace Combat
         public void SetNextID()
         {
             ID = _nextInt++;
+        }
+
+        public void ForceCollision(Collider other)
+        {
+            OnTriggerEnter(other);
         }
 
         #endregion Public
