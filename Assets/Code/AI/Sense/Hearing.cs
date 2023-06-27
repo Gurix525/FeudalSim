@@ -7,8 +7,8 @@ namespace AI
     {
         public override bool IsObjectPerceptible(GameObject gameObject)
         {
-            if (!IsObjectInPerceptingRange(gameObject))
-                return false;
+            //if (!IsObjectInPerceptingRange(gameObject))
+            //    return false;
             return false;
         }
     }

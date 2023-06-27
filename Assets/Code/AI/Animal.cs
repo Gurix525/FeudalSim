@@ -31,7 +31,7 @@ namespace AI
         private List<AttitudeModel> _attitudeModels = new();
         private Dictionary<AttitudeType, AIBehaviour> _behaviours = new();
         private Attitude _highestPriorityAttitude;
-        private float _attitudesCheckInterval = 5F;
+        private float _attitudesCheckInterval = 1F;
         private float _timeSinceAttitudesCheck;
         private float _idleType = 0F;
         private float _timeSinceIdleTypeRandomization = 0F;
@@ -42,9 +42,10 @@ namespace AI
 
         private Dictionary<MoveSpeedType, MoveSpeed> _moveSpeeds = new()
         {
-            { MoveSpeedType.Walk, new(2F, 2F)},
+            { MoveSpeedType.Walk, new(2F, 2F) },
             { MoveSpeedType.Trot, new(4F, 4F) },
-            { MoveSpeedType.Run, new(8F, 8F) }
+            { MoveSpeedType.Chase, new(6F, 6F) },
+            { MoveSpeedType.RunAway, new(8F, 8F) }
         };
 
         #endregion Fields
@@ -103,11 +104,15 @@ namespace AI
             {
                 foreach (Attack attack in Attacks)
                     attack.gameObject.SetActive(state);
+                if (state)
+                    foreach (Attack attack in Attacks)
+                        attack.SetNextID();
                 return;
             }
             if (index >= _attacks.Length)
                 throw new IndexOutOfRangeException("Nie ma ataku o takim indeksie.");
             _attacks[index].gameObject.SetActive(state);
+            _attacks[index].SetNextID();
         }
 
         public void SetAttackDamage(float damage, int index = -1)
@@ -144,7 +149,7 @@ namespace AI
         {
             _agent = GetComponent<Agent>();
             _animator = GetComponent<Animator>();
-            RandomizeSpeedValues();
+            //RandomizeSpeedValues();
             SetSpeed(MoveSpeedType.Walk);
             InitializeHealth();
             InitializeDetector();
@@ -325,7 +330,7 @@ namespace AI
             {
                 { MoveSpeedType.Walk, (random.NextFloat(1.8F, 2.2F), random.NextFloat(1.8F, 2.2F))},
                 { MoveSpeedType.Trot, (random.NextFloat(3.8F, 4.2F), random.NextFloat(3.5F, 4.2F))},
-                { MoveSpeedType.Run, (random.NextFloat(7.8F, 8.2F), random.NextFloat(7F, 8.2F))},
+                { MoveSpeedType.Chase, (random.NextFloat(7.8F, 8.2F), random.NextFloat(7F, 8.2F))},
             };
         }
 

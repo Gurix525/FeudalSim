@@ -173,6 +173,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b1b8017652fb5e74880f7b233b764446, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _interestLostDistance: 15
   _attacks: []
 --- !u!114 &1016782961279025338
 MonoBehaviour:
@@ -210,7 +211,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 46aa5e322a8403b47bb45ddaf45766d7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _maxPerceptingDistance: 20
+  _maxPerceptingDistance: 10
   _fieldOfViewAngle: 300
 --- !u!114 &1016782961279025333
 MonoBehaviour:
@@ -224,7 +225,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 570fe1178c60b4f4d85e2c66d7e701dd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _maxPerceptingDistance: 20
+  _maxPerceptingDistance: 10
 --- !u!114 &1016782961279025313
 MonoBehaviour:
   m_ObjectHideFlags: 0

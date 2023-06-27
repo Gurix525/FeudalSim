@@ -11,6 +11,9 @@ namespace AI
     {
         #region Fields
 
+        [SerializeField]
+        protected float _interestLostDistance = 15F;
+
         private SphereCollider _sphereCollider;
         private List<Component> _notVisibleDetectables = new();
         private ObservableCollection<Component> _visibleDetectables = new();
@@ -92,9 +95,10 @@ namespace AI
 
         private void AdjustDetectingTriggerRadius()
         {
-            _sphereCollider.radius = _senses.Length > 0F ?
+            float sensesMax = _senses.Length > 0F ?
                 _senses.Max(sense => sense.MaxPerceptingDistance)
                 : 0F;
+            _sphereCollider.radius = Mathf.Max(sensesMax, _interestLostDistance);
         }
 
         private bool IsObjectPerceptible(Component component)

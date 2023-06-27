@@ -4,6 +4,7 @@
     {
         Walk,
         Trot,
-        Run
+        Chase,
+        RunAway
     }
 }

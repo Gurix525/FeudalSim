@@ -7,7 +7,8 @@ namespace AI
     {
         #region Fields
 
-        [SerializeField] private float _maxPerceptingDistance = 20F;
+        [SerializeField]
+        protected float _perceptingDistance = 10F;
 
         #endregion Fields
 
@@ -17,10 +18,10 @@ namespace AI
 
         public float MaxPerceptingDistance
         {
-            get => _maxPerceptingDistance;
+            get => _perceptingDistance;
             private set
             {
-                _maxPerceptingDistance = value;
+                _perceptingDistance = value;
                 PerceptingDistanceChanged.Invoke();
             }
         }
@@ -41,7 +42,7 @@ namespace AI
                 return false;
             return Vector3.Distance(
                 transform.position, gameObject.transform.position)
-                <= _maxPerceptingDistance;
+                <= _perceptingDistance;
         }
 
         #endregion Protected

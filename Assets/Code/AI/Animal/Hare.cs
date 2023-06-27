@@ -24,7 +24,7 @@ namespace AI
 
             protected override void DuringEnable()
             {
-                SetSpeed(MoveSpeedType.Run);
+                SetSpeed(MoveSpeedType.RunAway);
             }
 
             private IEnumerator RunAway()

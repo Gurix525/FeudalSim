@@ -34,7 +34,7 @@ namespace AI
 
             protected override void DuringEnable()
             {
-                SetSpeed(MoveSpeedType.Run);
+                SetSpeed(MoveSpeedType.Chase);
             }
 
             private IEnumerator ChaseTarget()
