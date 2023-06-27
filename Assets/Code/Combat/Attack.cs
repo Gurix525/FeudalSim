@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using System;
+using Controls;
+using UnityEngine;
 using UnityEngine.Events;
 
 namespace Combat
@@ -40,6 +42,7 @@ namespace Combat
             GetComponent<Rigidbody>().isKinematic = true;
             gameObject.layer = LayerMask.NameToLayer("Attack");
             Sender ??= this;
+            DealedHit.AddListener(ShakeCamera);
         }
 
         protected void OnTriggerEnter(Collider other)
@@ -54,5 +57,15 @@ namespace Combat
         }
 
         #endregion Unity
+
+        #region Private
+
+        private void ShakeCamera(Hitbox hitbox)
+        {
+            if (Sender == PlayerControls.Player.Instance)
+                CameraShake.ShakeCamera(Damage);
+        }
+
+        #endregion Private
     }
 }
