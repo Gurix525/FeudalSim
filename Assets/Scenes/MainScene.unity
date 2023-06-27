@@ -2238,7 +2238,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fd2ae31293b4b2c42b73db0ca1c8ded5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _shakeDecay: 0.1
+  _shakeDecay: 1
 --- !u!1 &728571658
 GameObject:
   m_ObjectHideFlags: 0
@@ -3765,7 +3765,7 @@ MonoBehaviour:
   m_NoiseProfile: {fileID: 11400000, guid: e9ce97b7a206dc64d90931ea044e0c72, type: 2}
   m_PivotOffset: {x: 0, y: 0, z: 0}
   m_AmplitudeGain: 0
-  m_FrequencyGain: 1
+  m_FrequencyGain: 5
   mNoiseOffsets: {x: 0, y: 0, z: 0}
 --- !u!1 &1273028625
 GameObject:
