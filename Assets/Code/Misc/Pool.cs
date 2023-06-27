@@ -13,6 +13,7 @@ namespace Misc
         private LinkedList<T> _items = new();
         private GameObject _itemPrefab;
         private Transform _pool;
+        private string _prefabPath;
 
         private static Transform _poolsParent;
 
@@ -21,9 +22,7 @@ namespace Misc
         /// </summary>
         public Pool(string prefabPath)
         {
-            _itemPrefab = Resources.Load<GameObject>(prefabPath);
-            _pool = new GameObject(nameof(T)).transform;
-            _pool.SetParent(_poolsParent ??= new GameObject("Pools").transform);
+            _prefabPath = prefabPath;
         }
 
         public T Pull()
@@ -32,16 +31,23 @@ namespace Misc
             if (item != null)
                 _items.RemoveFirst();
             else
-                item = GameObject.Instantiate(_itemPrefab).GetComponent<T>();
+                item = GameObject
+                    .Instantiate(_itemPrefab = Resources.Load<GameObject>(_prefabPath))
+                    .GetComponent<T>();
             return item;
         }
 
         public void Push(T item)
         {
-            item.transform.SetParent(_pool ??= new GameObject("ArrowsPool").transform);
-            _pool.SetParent();
+            item.transform.SetParent(_pool ??= new GameObject(typeof(T).Name + "s").transform);
+            _pool.SetParent(_poolsParent ??= new GameObject("Pools").transform);
             item.gameObject.SetActive(false);
             _items.AddFirst(item);
+        }
+
+        public void Remove(T item)
+        {
+            _items.Remove(item);
         }
     }
 }

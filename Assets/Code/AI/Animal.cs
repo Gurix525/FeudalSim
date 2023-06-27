@@ -371,7 +371,7 @@ namespace AI
             {
                 attack.Sender = this;
                 attack.Damage = 4F;
-                attack.DealedHit.AddListener((hitbox) => DealedHit.Invoke(hitbox));
+                attack.DealedHit.AddListener((hitbox, contact) => DealedHit.Invoke(hitbox));
             }
             SetAttackActive(false);
         }

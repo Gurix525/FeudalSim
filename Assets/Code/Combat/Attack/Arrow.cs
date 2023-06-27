@@ -67,14 +67,9 @@ namespace Combat
             DestroyIfTooLow();
         }
 
-        protected void OnDisable()
-        {
-            _arrows.AddFirst(this);
-        }
-
         protected void OnDestroy()
         {
-            _arrows.Remove(this);
+            _pool.Remove(this);
         }
 
         #endregion Unity
@@ -120,7 +115,7 @@ namespace Combat
                 ReturnToPool();
         }
 
-        private void OnDealedHit(Hitbox hitbox)
+        private void OnDealedHit(Hitbox hitbox, Vector3 contact)
         {
             ReturnToPool();
         }

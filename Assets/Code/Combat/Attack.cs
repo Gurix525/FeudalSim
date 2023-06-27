@@ -23,7 +23,7 @@ namespace Combat
         public Component Target { get; set; }
         public float Damage { get; set; }
 
-        public UnityEvent<Hitbox> DealedHit { get; } = new();
+        public UnityEvent<Hitbox, Vector3> DealedHit { get; } = new();
 
         public Collider Collider => _collider ??= GetComponent<Collider>();
 
@@ -50,7 +50,7 @@ namespace Combat
             GetComponent<Rigidbody>().isKinematic = true;
             gameObject.layer = LayerMask.NameToLayer("Attack");
             Sender ??= this;
-            DealedHit.AddListener(ShakeCamera);
+            DealedHit.AddListener(PlayAttackEffects);
         }
 
         protected void OnTriggerEnter(Collider other)
@@ -61,17 +61,18 @@ namespace Combat
             if (Target != null)
                 if (hitbox.Receiver != Target)
                     return;
-            DealedHit.Invoke(hitbox);
+            DealedHit.Invoke(hitbox, other.ClosestPoint(transform.position));
         }
 
         #endregion Unity
 
         #region Private
 
-        private void ShakeCamera(Hitbox hitbox)
+        private void PlayAttackEffects(Hitbox hitbox, Vector3 contact)
         {
             if (Sender == PlayerControls.Player.Instance)
                 CameraShake.ShakeCamera(Damage);
+            VFX.Hit.Spawn(contact);
         }
 
         #endregion Private
