@@ -31,7 +31,7 @@ namespace VFX
 
         #region Public
 
-        public static void Spawn(string name, Vector3 position)
+        public static Effect Spawn(string name, Vector3 position)
         {
             LoadPrefab(name);
             SpawnPool(name);
@@ -40,6 +40,7 @@ namespace VFX
             effect.name = name;
             effect.transform.position = position;
             effect.gameObject.SetActive(true);
+            return effect;
         }
 
         #endregion Public
