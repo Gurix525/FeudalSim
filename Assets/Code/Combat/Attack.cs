@@ -78,6 +78,7 @@ namespace Combat
                 CameraShake.ShakeCamera(Damage);
             Effect.Spawn("Hit", contact);
             Effect.Spawn("BloodCloud", contact);
+            Effect.Spawn("BloodSplatter", contact);
         }
 
         #endregion Private

@@ -7,6 +7,7 @@ using Extensions;
 using TaskManager;
 using UnityEngine;
 using UnityEngine.Events;
+using VFX;
 
 namespace AI
 {
@@ -345,6 +346,9 @@ namespace AI
             _knockbackTask?.Stop();
             if (_health.CurrentHealth <= 0F)
             {
+                Effect.Spawn("DeathBloodCloud", transform.position + Vector3.up);
+                Effect.Spawn("DeathBloodSplatter", transform.position + Vector3.up);
+                Effect.Spawn("DeathHit", transform.position + Vector3.up);
                 new Task(DestroySafely());
                 return;
             }

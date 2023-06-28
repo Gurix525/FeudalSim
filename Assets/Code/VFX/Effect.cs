@@ -12,7 +12,7 @@ namespace VFX
     {
         #region Fields
 
-        private VisualEffect _visualEffect;
+        protected VisualEffect _visualEffect;
         private Pool _assignedPool;
 
         private static Dictionary<string, GameObject> _prefabs = new();
