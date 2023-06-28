@@ -2,6 +2,7 @@
 using Controls;
 using UnityEngine;
 using UnityEngine.Events;
+using VFX;
 
 namespace Combat
 {
@@ -72,7 +73,7 @@ namespace Combat
         {
             if (Sender == PlayerControls.Player.Instance)
                 CameraShake.ShakeCamera(Damage);
-            VFX.Hit.Spawn(contact);
+            Effect.Spawn("Hit", contact);
         }
 
         #endregion Private

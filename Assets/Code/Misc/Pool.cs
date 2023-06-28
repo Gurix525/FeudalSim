@@ -1,53 +1,37 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Combat;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 namespace Misc
 {
-    public class Pool<T> where T : MonoBehaviour
+    public class Pool
     {
-        private LinkedList<T> _items = new();
-        private GameObject _itemPrefab;
+        private LinkedList<GameObject> _items;
         private Transform _pool;
-        private string _prefabPath;
+        private GameObject _prefab;
 
-        private static Transform _poolsParent;
-
-        /// <summary>
-        /// Ścieżka w formacie: "Prefabs/Itp/Itd"
-        /// </summary>
-        public Pool(string prefabPath)
+        public Pool(GameObject prefab, Transform poolParent)
         {
-            _prefabPath = prefabPath;
+            _prefab = prefab;
+            _pool = new GameObject(prefab.name).transform;
+            _pool.SetParent(poolParent);
         }
 
-        public T Pull()
+        public GameObject Pull()
         {
-            T item = _items.First?.Value;
+            GameObject item = _items.First?.Value;
             if (item != null)
                 _items.RemoveFirst();
             else
-                item = GameObject
-                    .Instantiate(_itemPrefab = Resources.Load<GameObject>(_prefabPath))
-                    .GetComponent<T>();
+                item = GameObject.Instantiate(_prefab);
             return item;
         }
 
-        public void Push(T item)
+        public void Push(GameObject gameObject)
         {
-            item.transform.SetParent(_pool ??= new GameObject(typeof(T).Name + "s").transform);
-            _pool.SetParent(_poolsParent ??= new GameObject("Pools").transform);
-            item.gameObject.SetActive(false);
-            _items.AddFirst(item);
-        }
-
-        public void Remove(T item)
-        {
-            _items.Remove(item);
+            if (!_items.Contains(gameObject))
+                _items.AddFirst(gameObject);
+            gameObject.transform.SetParent(_pool);
+            gameObject.SetActive(false);
         }
     }
 }
