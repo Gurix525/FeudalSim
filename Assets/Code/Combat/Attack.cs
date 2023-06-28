@@ -62,7 +62,10 @@ namespace Combat
             if (Target != null)
                 if (hitbox.Receiver != Target)
                     return;
-            DealedHit.Invoke(hitbox, other.ClosestPoint(transform.position));
+            DealedHit.Invoke(hitbox,
+                this is IExactHitPoint
+                ? other.ClosestPoint(transform.position)
+                : other.transform.position + Vector3.up);
         }
 
         #endregion Unity
@@ -74,6 +77,7 @@ namespace Combat
             if (Sender == PlayerControls.Player.Instance)
                 CameraShake.ShakeCamera(Damage);
             Effect.Spawn("Hit", contact);
+            Effect.Spawn("BloodCloud", contact);
         }
 
         #endregion Private

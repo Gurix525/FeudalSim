@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &1570128868263129544
+--- !u!1 &4467468664912176133
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,40 +8,40 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 1570128868263129547}
-  - component: {fileID: 1570128868263129549}
-  - component: {fileID: 1570128868263129546}
+  - component: {fileID: 4467468664912176132}
+  - component: {fileID: 4467468664912176134}
+  - component: {fileID: 4467468664912176135}
   m_Layer: 0
-  m_Name: Hit
+  m_Name: BloodCloud
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &1570128868263129547
+--- !u!4 &4467468664912176132
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1570128868263129544}
+  m_GameObject: {fileID: 4467468664912176133}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1570128869839390153}
+  m_Father: {fileID: 4467468665153443239}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!2083052967 &1570128868263129549
+--- !u!2083052967 &4467468664912176134
 VisualEffect:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1570128868263129544}
+  m_GameObject: {fileID: 4467468664912176133}
   m_Enabled: 1
-  m_Asset: {fileID: 8926484042661614526, guid: ef12141c7f42ec64fad4db74b0452568, type: 3}
+  m_Asset: {fileID: 8926484042661614526, guid: 9b1d42f2e45deb24a9377aa2b3023bd0, type: 3}
   m_InitialEventName: OnPlay
   m_InitialEventNameOverriden: 0
   m_StartSeed: 0
@@ -70,14 +70,14 @@ VisualEffect:
       m_Array: []
     m_Bool:
       m_Array: []
---- !u!73398921 &1570128868263129546
+--- !u!73398921 &4467468664912176135
 VFXRenderer:
   serializedVersion: 1
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1570128868263129544}
+  m_GameObject: {fileID: 4467468664912176133}
   m_Enabled: 1
   m_CastShadows: 0
   m_ReceiveShadows: 0
@@ -110,7 +110,7 @@ VFXRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!1 &1570128869839390166
+--- !u!1 &4467468665153443236
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -118,38 +118,38 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 1570128869839390153}
-  - component: {fileID: 1442826374777171023}
+  - component: {fileID: 4467468665153443239}
+  - component: {fileID: 5396798578615334486}
   m_Layer: 0
-  m_Name: Hit
+  m_Name: BloodCloud
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &1570128869839390153
+--- !u!4 &4467468665153443239
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1570128869839390166}
+  m_GameObject: {fileID: 4467468665153443236}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 1570128868263129547}
+  - {fileID: 4467468664912176132}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1442826374777171023
+--- !u!114 &5396798578615334486
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1570128869839390166}
+  m_GameObject: {fileID: 4467468665153443236}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2fc50b80b7104484eb1c2a50606b2df2, type: 3}

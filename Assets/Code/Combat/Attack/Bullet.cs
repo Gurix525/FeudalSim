@@ -10,7 +10,7 @@ namespace Combat
     {
         #region fields
 
-        private MeshCollider _collider;
+        private MeshCollider _meshCollider;
 
         private static LinkedList<Bullet> _bullets = new();
         private static GameObject _bulletPrefab;
@@ -20,7 +20,7 @@ namespace Combat
 
         #region Properties
 
-        public MeshCollider Collider => _collider ??= GetComponent<MeshCollider>();
+        public MeshCollider Collider => _meshCollider ??= GetComponent<MeshCollider>();
         public float Lifetime { get; private set; }
 
         #endregion Properties
