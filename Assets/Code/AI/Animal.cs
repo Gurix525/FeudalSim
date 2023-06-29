@@ -176,6 +176,11 @@ namespace AI
             RandomizeIdleType();
         }
 
+        private void OnDestroy()
+        {
+            DisableAllBehaviours();
+        }
+
         #endregion Unity
 
         #region Protected
@@ -343,13 +348,15 @@ namespace AI
 
         private void OnGotHit(Attack attack)
         {
+            if (_isBeingDestroyed)
+                return;
             _knockbackTask?.Stop();
             if (_health.CurrentHealth <= 0F)
             {
                 Effect.Spawn("DeathBloodCloud", transform.position + Vector3.up);
                 Effect.Spawn("DeathBloodSplatter", transform.position + Vector3.up);
                 Effect.Spawn("DeathHit", transform.position + Vector3.up);
-                new Task(DestroySafely());
+                DestroySafely();
                 return;
             }
             _knockbackTask = new(KnockBack(attack));
@@ -407,16 +414,16 @@ namespace AI
             _isKnockbackActive = false;
         }
 
-        private IEnumerator DestroySafely()
+        private void DestroySafely()
         {
             _knockbackTask?.Stop();
             _isBeingDestroyed = true;
             DisableAllBehaviours();
             _agent.Disable();
-            transform.position = new(100000F, 100000F, 100000F);
-            yield return new WaitForFixedUpdate();
+            //transform.position = new(100000F, 100000F, 100000F);
+            //yield return new WaitForFixedUpdate();
             gameObject.SetActive(false);
-            yield return new WaitForFixedUpdate();
+            //yield return new WaitForFixedUpdate();
             Destroy(gameObject);
         }
 

@@ -12,12 +12,14 @@ namespace WorldUI
         #region Fields
 
         [SerializeField] private Vector3 _velocity = Vector3.up;
+        [SerializeField] private float _velocityDrop = 0.99F;
         [SerializeField] private float _fadeTime = 1F;
         [SerializeField] private AnimationCurve _scale = AnimationCurve.Linear(0F, 1F, 1F, 0F);
         [SerializeField] private AnimationCurve _alpha = AnimationCurve.Linear(0F, 1F, 1F, 0F);
 
         private TextMeshPro _text;
         private float _elapsedTime;
+        private Vector3 _currentVelocity;
 
         private static Dictionary<string, GameObject> _prefabs = new();
         private static Dictionary<string, Pool<Popup>> _pools = new();
@@ -41,6 +43,7 @@ namespace WorldUI
             popup.name = name;
             popup.transform.position = position;
             popup.Text.text = content;
+            popup._currentVelocity = popup._velocity;
             popup.gameObject.SetActive(true);
             return popup;
         }
@@ -61,7 +64,8 @@ namespace WorldUI
 
         private void FixedUpdate()
         {
-            transform.position += _velocity * Time.fixedDeltaTime;
+            transform.position += _currentVelocity * Time.fixedDeltaTime;
+            _currentVelocity *= _velocityDrop;
             transform.localScale = Vector3.one * _scale.Evaluate(_elapsedTime);
             Color oldColor = _text.color;
             _text.color = new(oldColor.r, oldColor.g, oldColor.b, _alpha.Evaluate(_elapsedTime));

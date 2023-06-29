@@ -29,7 +29,7 @@ RectTransform:
   m_GameObject: {fileID: 6304722655727554502}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.2, y: 0.2, z: 0.2}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 0}
@@ -112,8 +112,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294967295
-  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
+    rgba: 4280836351
+  m_fontColor: {r: 0.735849, g: 0.19251864, b: 0, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -199,28 +199,38 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f7ac6758e921ddf41ac5a43e83911684, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _velocity: {x: 0, y: 1, z: 0}
+  _velocity: {x: 0, y: 10, z: 0}
+  _velocityDrop: 0.95
   _fadeTime: 1
   _scale:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: -1
+      time: 0.0053207176
+      value: 0.016516924
+      inSlope: 27.103838
+      outSlope: 27.103838
       tangentMode: 0
       weightedMode: 0
       inWeight: 0
-      outWeight: 0
+      outWeight: 0.2720369
+    - serializedVersion: 3
+      time: 0.10959782
+      value: 0.3099383
+      inSlope: -0.4085401
+      outSlope: -0.4085401
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.09993652
     - serializedVersion: 3
       time: 1
       value: 0
-      inSlope: -1
-      outSlope: 0
-      tangentMode: 0
+      inSlope: -0.348088
+      outSlope: -0.348088
+      tangentMode: 34
       weightedMode: 0
-      inWeight: 0
+      inWeight: 0.33333334
       outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
@@ -232,16 +242,16 @@ MonoBehaviour:
       time: 0
       value: 1
       inSlope: 0
-      outSlope: -1
+      outSlope: 0
       tangentMode: 0
       weightedMode: 0
       inWeight: 0
       outWeight: 0
     - serializedVersion: 3
-      time: 1
-      value: 0
+      time: 0.9964539
+      value: 0.5023585
       inSlope: -1
-      outSlope: 0
+      outSlope: -1
       tangentMode: 0
       weightedMode: 0
       inWeight: 0

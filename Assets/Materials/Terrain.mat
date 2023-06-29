@@ -56,8 +56,8 @@ Material:
     m_Floats:
     - _DirtNormalStrength: 0.61
     - _DirtNormalTiling: 0.02
-    - _Displacement: 0
-    - _DisplacementNoiseScale: 0
+    - _Displacement: 0.2
+    - _DisplacementNoiseScale: 100
     - _FarmNormalStrength: 2.5
     - _FarmNormalTiling: 0.05
     - _GrassNormalStrength: 0.4
