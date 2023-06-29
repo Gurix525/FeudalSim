@@ -62,6 +62,7 @@ namespace VFX
 
         private IEnumerator FadeOff()
         {
+            yield return new WaitForSeconds(1F);
             while (true)
             {
                 yield return null;

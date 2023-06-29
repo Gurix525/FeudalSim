@@ -20,7 +20,7 @@ namespace Combat
 
         #region Properties
 
-        public MeshCollider Collider => _meshCollider ??= GetComponent<MeshCollider>();
+        public MeshCollider MeshCollider => _meshCollider ??= GetComponent<MeshCollider>();
         public float Lifetime { get; private set; }
 
         #endregion Properties

@@ -41,10 +41,11 @@ namespace Items
         {
             if (_player.AimCurve.IsCurveEnabled)
             {
-                Arrow.Spawn(
-                    _player.AimCurve.Curve,
-                    _player,
-                    4F);
+                if (_player.AimCurve.Curve != null)
+                    Arrow.Spawn(
+                        _player.AimCurve.Curve,
+                        _player,
+                        4F);
             }
             _player.AimCurve.Disable();
             _playerMovement.IsStringingBow = false;

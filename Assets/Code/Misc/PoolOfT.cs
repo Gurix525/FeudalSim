@@ -38,6 +38,7 @@ namespace Misc
                 item = GameObject
                     .Instantiate(_itemPrefab ??= Resources.Load<GameObject>(_prefabPath))
                     .GetComponent<T>();
+                item.gameObject.SetActive(false);
                 item.transform.SetParent(_pool ??= new GameObject(_itemPrefab.name + "s").transform);
                 _pool.SetParent(_parent ?? (_poolsParent ??= new GameObject("Pools").transform));
             }
