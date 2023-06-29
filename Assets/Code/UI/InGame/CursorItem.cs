@@ -25,20 +25,16 @@ namespace UI
 
         private void OnCollectionUpdated()
         {
-            if (Cursor.Item == null)
+            if (Cursor.Item == null || Cursor.IsItemFromHotbar)
             {
                 _text.text = string.Empty;
                 _image.enabled = false;
                 return;
             }
-            _image.rectTransform.localScale = Cursor.IsItemFromHotbar
-                ? Vector2.one / 2 : Vector2.one;
             if (Cursor.Item.MaxStack == 1)
                 _text.text = string.Empty;
             else
-                _text.text = !Cursor.IsItemFromHotbar
-                    ? Cursor.Item.Count.ToString()
-                    : string.Empty;
+                _text.text = Cursor.Item.Count.ToString();
             _image.sprite = Cursor.Item.Sprite;
             _image.enabled = true;
         }
