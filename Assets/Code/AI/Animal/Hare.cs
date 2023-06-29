@@ -53,8 +53,8 @@ namespace AI
         {
             protected override void CreateActions()
             {
-                AddAction((StandIdle, 1F));
-                AddAction((Roam, 2F));
+                AddAction(StandIdle, 1F);
+                AddAction(Roam, 2F);
             }
 
             protected override void DuringEnable()

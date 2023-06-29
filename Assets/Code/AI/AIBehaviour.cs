@@ -65,14 +65,24 @@ namespace AI
         protected virtual void DuringEnable()
         { }
 
-        protected void AddAction(AIAction aiAction)
+        protected virtual bool HasActionToStop()
         {
-            _actions.Add(aiAction);
+            return Focus == null;
+        }
+
+        protected void AddAction(Func<IEnumerator> getCoroutine, Func<float> getPower)
+        {
+            _actions.Add((getCoroutine, getPower, HasActionToStop));
+        }
+
+        protected void AddAction(Func<IEnumerator> getCoroutine, float power)
+        {
+            _actions.Add((getCoroutine, power, HasActionToStop));
         }
 
         protected void AddAction(Func<IEnumerator> getCoroutine)
         {
-            _actions.Add(getCoroutine);
+            _actions.Add((getCoroutine, HasActionToStop));
         }
 
         protected void SetSpeed(MoveSpeedType type)

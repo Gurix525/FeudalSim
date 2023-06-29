@@ -11,12 +11,14 @@ namespace AI
 
         private Func<IEnumerator> _getCoroutine;
         private Func<float> _getPower;
+        private Func<bool> _getStopCondition;
 
         #endregion Fields
 
         #region Properties
 
-        public float Power => _getPower();
+        public float Power => GetPower();
+
         public Task Task { get; private set; }
         public UnityEvent TaskFinished { get; } = new();
 
@@ -24,10 +26,11 @@ namespace AI
 
         #region Public
 
-        public AIAction(Func<IEnumerator> getCoroutine, Func<float> getPower)
+        public AIAction(Func<IEnumerator> getCoroutine, Func<float> getPower, Func<bool> getStopCondition)
         {
             _getCoroutine = getCoroutine;
             _getPower = getPower;
+            _getStopCondition = getStopCondition;
             ResetTask(false);
         }
 
@@ -46,25 +49,47 @@ namespace AI
             if (Task != null)
                 Task.Stop();
             TaskFinished.RemoveAllListeners();
-            Task = new(_getCoroutine(), false);
+            Task = new(GetConditionalCoroutine(), false);
             Task.Finished += (manual) => TaskFinished.Invoke();
         }
 
-        public static implicit operator AIAction((Func<IEnumerator> getCoroutine, Func<float> getPower) input)
+        public static implicit operator AIAction((Func<IEnumerator> getCoroutine, Func<float> getPower, Func<bool> getStopCondition) input)
         {
-            return new(input.getCoroutine, input.getPower);
+            return new(input.getCoroutine, input.getPower, input.getStopCondition);
         }
 
-        public static implicit operator AIAction((Func<IEnumerator> getCoroutine, float power) input)
+        public static implicit operator AIAction((Func<IEnumerator> getCoroutine, float power, Func<bool> getStopCondition) input)
         {
-            return new(input.getCoroutine, () => input.power);
+            return new(input.getCoroutine, () => input.power, input.getStopCondition);
         }
 
-        public static implicit operator AIAction(Func<IEnumerator> getCoroutine)
+        public static implicit operator AIAction((Func<IEnumerator> getCoroutine, Func<bool> getStopCondition) input)
         {
-            return new(getCoroutine, () => 1F);
+            return new(input.getCoroutine, () => 1F, input.getStopCondition);
         }
 
         #endregion Public
+
+        #region Private
+
+        private float GetPower()
+        {
+            return _getStopCondition() ? 0F : _getPower();
+        }
+
+        private IEnumerator GetConditionalCoroutine()
+        {
+            var coroutine = _getCoroutine();
+            while (true)
+            {
+                if (_getStopCondition())
+                    yield break;
+                if (coroutine.MoveNext())
+                    yield return coroutine.Current;
+                else yield break;
+            }
+        }
+
+        #endregion Private
     }
 }

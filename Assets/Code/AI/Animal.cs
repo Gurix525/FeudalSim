@@ -420,10 +420,7 @@ namespace AI
             _isBeingDestroyed = true;
             DisableAllBehaviours();
             _agent.Disable();
-            //transform.position = new(100000F, 100000F, 100000F);
-            //yield return new WaitForFixedUpdate();
             gameObject.SetActive(false);
-            //yield return new WaitForFixedUpdate();
             Destroy(gameObject);
         }
 

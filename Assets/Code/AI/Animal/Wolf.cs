@@ -27,9 +27,9 @@ namespace AI
         {
             protected override void CreateActions()
             {
-                AddAction((ChaseTarget, GetChaseTargetPoints));
-                AddAction((RotateToTarget, GetRotateToTargetPoints));
-                AddAction((AttackTarget, GetAttackTargetPoints));
+                AddAction(ChaseTarget, GetChaseTargetPoints);
+                AddAction(RotateToTarget, GetRotateToTargetPoints);
+                AddAction(AttackTarget, GetAttackTargetPoints);
             }
 
             protected override void DuringEnable()
@@ -129,8 +129,8 @@ namespace AI
         {
             protected override void CreateActions()
             {
-                AddAction((StandIdle, 1F));
-                AddAction((Roam, 2F));
+                AddAction(StandIdle, 1F);
+                AddAction(Roam, 2F);
             }
 
             protected override void DuringEnable()
