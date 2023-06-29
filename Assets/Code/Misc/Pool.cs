@@ -22,7 +22,10 @@ namespace Misc
             if (item != null)
                 _items.RemoveFirst();
             else
+            {
                 item = GameObject.Instantiate(_prefab);
+                item.transform.SetParent(_pool);
+            }
             return item;
         }
 

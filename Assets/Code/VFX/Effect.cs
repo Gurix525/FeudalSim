@@ -65,11 +65,10 @@ namespace VFX
             while (true)
             {
                 yield return null;
-                if (_visualEffect.aliveParticleCount == 0)
-                {
-                    EffectFinished.Invoke(this);
-                    yield break;
-                }
+                if (_visualEffect.HasAnySystemAwake())
+                    continue;
+                EffectFinished.Invoke(this);
+                yield break;
             }
         }
 

@@ -34,9 +34,14 @@ namespace Misc
             if (item != null)
                 _items.RemoveFirst();
             else
+            {
                 item = GameObject
                     .Instantiate(_itemPrefab ??= Resources.Load<GameObject>(_prefabPath))
                     .GetComponent<T>();
+                item.transform.SetParent(_pool ??= new GameObject(_itemPrefab.name + "s").transform);
+                _pool.SetParent(_parent ?? (_poolsParent ??= new GameObject("Pools").transform));
+            }
+
             return item;
         }
 
