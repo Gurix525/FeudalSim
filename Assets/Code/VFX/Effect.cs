@@ -13,7 +13,6 @@ namespace VFX
         #region Fields
 
         protected VisualEffect _visualEffect;
-        private Pool _assignedPool;
 
         private static Dictionary<string, GameObject> _prefabs = new();
         private static Dictionary<string, Pool<Effect>> _pools = new();
@@ -66,7 +65,7 @@ namespace VFX
             while (true)
             {
                 yield return null;
-                if (!_visualEffect.HasAnySystemAwake())
+                if (_visualEffect.aliveParticleCount == 0)
                 {
                     EffectFinished.Invoke(this);
                     yield break;

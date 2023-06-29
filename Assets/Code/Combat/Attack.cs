@@ -3,6 +3,7 @@ using Controls;
 using UnityEngine;
 using UnityEngine.Events;
 using VFX;
+using WorldUI;
 
 namespace Combat
 {
@@ -79,6 +80,7 @@ namespace Combat
             Effect.Spawn("Hit", contact);
             Effect.Spawn("BloodCloud", contact);
             Effect.Spawn("BloodSplatter", contact);
+            Popup.Spawn("Damage", contact, Damage.ToString());
         }
 
         #endregion Private

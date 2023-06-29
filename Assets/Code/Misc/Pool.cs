@@ -12,7 +12,7 @@ namespace Misc
         public Pool(GameObject prefab, Transform poolParent)
         {
             _prefab = prefab;
-            _pool = new GameObject(prefab.name).transform;
+            _pool = new GameObject(prefab.name + "s").transform;
             _pool.SetParent(poolParent);
         }
 

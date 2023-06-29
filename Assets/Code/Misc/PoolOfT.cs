@@ -42,7 +42,7 @@ namespace Misc
 
         public void Push(T item)
         {
-            item.transform.SetParent(_pool ??= new GameObject(typeof(T).Name + "s").transform);
+            item.transform.SetParent(_pool ??= new GameObject(_itemPrefab.name + "s").transform);
             _pool.SetParent(_parent ?? (_poolsParent ??= new GameObject("Pools").transform));
             item.gameObject.SetActive(false);
             if (!_items.Contains(item))
