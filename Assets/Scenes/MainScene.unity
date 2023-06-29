@@ -2526,14 +2526,15 @@ GameObject:
   m_Component:
   - component: {fileID: 744291010}
   - component: {fileID: 744291009}
-  - component: {fileID: 744291007}
-  - component: {fileID: 744291011}
-  - component: {fileID: 744291012}
   - component: {fileID: 744291013}
-  - component: {fileID: 744291015}
   - component: {fileID: 744291016}
-  - component: {fileID: 744291017}
+  - component: {fileID: 744291012}
   - component: {fileID: 744291019}
+  - component: {fileID: 744291007}
+  - component: {fileID: 744291015}
+  - component: {fileID: 744291020}
+  - component: {fileID: 744291011}
+  - component: {fileID: 744291017}
   - component: {fileID: 744291018}
   m_Layer: 8
   m_Name: Player
@@ -2842,6 +2843,22 @@ LineRenderer:
   m_UseWorldSpace: 1
   m_Loop: 0
   m_ApplyActiveColorSpace: 0
+--- !u!114 &744291020
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 744291002}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1a0196d0a9ad50342847a58b3c07970c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <CurrentHP>k__BackingField: 10
+  <MaxHP>k__BackingField: 12
+  <CurrentStamina>k__BackingField: 10
+  <MaxStamina>k__BackingField: 10
 --- !u!1 &745985002
 GameObject:
   m_ObjectHideFlags: 0
