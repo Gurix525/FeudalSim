@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using PlayerControls;
 using UnityEngine;
 
 public class Stats : MonoBehaviour
@@ -10,19 +12,12 @@ public class Stats : MonoBehaviour
 
     private Dictionary<string, Skill> _skills = new()
     {
-        { "Runing", 0 },
-        { "Jumping", 0 },
-        { "Woodcutting", 0 },
-        { "Diggind", 0 },
-        { "Sword", 0 },
-        { "Parrying", 0 },
-        { "Evading", 0 }
+        { "Running", Skill.Zero },
+        { "Jumping", Skill.Zero},
+        { "Woodcutting", Skill.Zero },
+        { "Digging", Skill.Zero },
+        { "Sword", Skill.Zero },
+        { "Parrying", Skill.Zero },
+        { "Evading", Skill.Zero }
     };
-
-    private class Skill
-    {
-        public string Name { get; }
-        public int Level { get; private set; }
-        public int CurrentXP { get; private set; }
-    }
 }
