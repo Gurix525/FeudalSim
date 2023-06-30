@@ -14,6 +14,7 @@ namespace PlayerControls
     [RequireComponent(typeof(PlayerMovement))]
     [RequireComponent(typeof(PlayerVFX))]
     [RequireComponent(typeof(AimCurve))]
+    [RequireComponent(typeof(Stats))]
     public class Player : MonoBehaviour, IDetectable
     {
         #region Fields
@@ -28,12 +29,14 @@ namespace PlayerControls
         private PlayerMovement _playerMovement;
         private PlayerVFX _playerVFX;
         private AimCurve _aimCurve;
+        private Stats _stats;
 
         #endregion Fields
 
         #region Properties
 
         public PlayerMovement PlayerMovement => _playerMovement ??= GetComponent<PlayerMovement>();
+        public Stats Stats => _stats ??= GetComponent<Stats>();
         public PlayerVFX VFX => _playerVFX ??= GetComponent<PlayerVFX>();
         public AimCurve AimCurve => _aimCurve ??= GetComponent<AimCurve>();
         public LeftHandItemHook LeftHandItemHook => _leftHandItemHook;
@@ -44,6 +47,8 @@ namespace PlayerControls
         public static Player Instance { get; set; }
 
         #endregion Properties
+
+
 
         #region Unity
 

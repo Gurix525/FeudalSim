@@ -1,22 +1,31 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using PlayerControls;
+using Unity.VisualScripting.Antlr3.Runtime.Misc;
 using UnityEngine;
 using UnityEngine.Events;
 
 public class Stats : MonoBehaviour
 {
+    #region Fields
+
     private Dictionary<string, Skill> _skills = new()
     {
-        { "Running", Skill.Zero },
+        { "Running", new(4F) },
         { "Jumping", Skill.Zero},
-        { "Woodcutting", Skill.Zero },
-        { "Digging", Skill.Zero },
-        { "Sword", Skill.Zero },
+        { "Woodcutting", new(98F)},
+        { "Digging", new(5353F)},
+        { "Sword", new(20) },
         { "Parrying", Skill.Zero },
-        { "Evading", Skill.Zero }
+        { "Evading", new(10000F)}
     };
 
+    #endregion Fields
+
+    #region Properties
+
+    public UnityEvent<IReadOnlyDictionary<string, Skill>> StatsChanged { get; } = new();
     public UnityEvent<string, Skill> SkillLevelIncreased { get; } = new();
 
     [field: SerializeField] public float CurrentHP { get; private set; }
@@ -24,19 +33,38 @@ public class Stats : MonoBehaviour
     [field: SerializeField] public float CurrentStamina { get; private set; }
     [field: SerializeField] public float MaxStamina { get; private set; }
 
+    #endregion Properties
+
+    #region Public
+
+    public void ReloadStats()
+    {
+        StatsChanged.Invoke(_skills);
+    }
+
     public Skill GetSkill(string skill)
     {
         return _skills[skill];
     }
 
-    public void IncreaseSkill(string skill, float xp)
+    public void ModifySkill(string skill, float xp)
     {
-        if (xp <= 0F)
-            throw new ArgumentException("Dodawany xp musi być dodatni.");
         int previousLevel = _skills[skill].Level;
         _skills[skill] += xp;
         int currentLevel = _skills[skill].Level;
         if (currentLevel > previousLevel)
             SkillLevelIncreased.Invoke(skill, _skills[skill]);
+        StatsChanged.Invoke(_skills);
     }
+
+    #endregion Public
+
+    #region Unity
+
+    private void Start()
+    {
+        StatsChanged.Invoke(_skills);
+    }
+
+    #endregion Unity
 }
