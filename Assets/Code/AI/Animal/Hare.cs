@@ -32,7 +32,7 @@ namespace AI
                 bool hasToUpdate = false;
                 StateUpdated.AddListener(() => hasToUpdate = true);
                 Vector3 runDirection = Animal.Attitudes
-                    .Where(attitude => attitude.AttitudeType == AttitudeType.Scared)
+                    .Where(attitude => attitude.AttitudeType == AttitudeType.Scared && attitude.Component != null)
                     .Select(attitude => (transform.position - attitude.Component.transform.position).normalized)
                     .Aggregate((last, current) => (last + current).normalized)
                     .normalized * 10F;

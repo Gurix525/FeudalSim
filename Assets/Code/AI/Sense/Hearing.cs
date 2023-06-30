@@ -5,11 +5,10 @@ namespace AI
     [DisallowMultipleComponent]
     public class Hearing : Sense
     {
-        public override bool IsObjectPerceptible(GameObject gameObject)
+        public override bool IsObjectPerceptible(GameObject other)
         {
-            //if (!IsObjectInPerceptingRange(gameObject))
-            //    return false;
-            return false;
+            return (transform.position - other.transform.position)
+                .magnitude < _perceptingDistance;
         }
     }
 }

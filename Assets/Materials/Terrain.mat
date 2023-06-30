@@ -62,6 +62,7 @@ Material:
     - _FarmNormalTiling: 0.05
     - _GrassNormalStrength: 0.4
     - _GrassNormalTiling: 0.025
+    - _NormalRandomizationScale: 0.15
     - _PathNormalStrength: 0.4
     - _PathNormalTiling: 0.05
     - _Pixelation: 15

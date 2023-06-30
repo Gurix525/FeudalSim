@@ -12,13 +12,13 @@ public class Stats : MonoBehaviour
 
     private Dictionary<string, Skill> _skills = new()
     {
-        { "Running", new(4F) },
-        { "Jumping", Skill.Zero},
-        { "Woodcutting", new(98F)},
-        { "Digging", new(5353F)},
-        { "Sword", new(20) },
+        { "Running", Skill.Zero },
+        { "Jumping", Skill.Zero },
+        { "Woodcutting", Skill.Zero },
+        { "Digging", Skill.Zero },
+        { "Sword", Skill.Zero },
         { "Parrying", Skill.Zero },
-        { "Evading", new(10000F)}
+        { "Evading", Skill.Zero }
     };
 
     #endregion Fields
