@@ -73,11 +73,12 @@ namespace Items
 
         public override void OnLeftMouseButton()
         {
-            if (Cursor.CurrentRaycastHit == null)
+            Vector3? planeHit = Cursor
+                .GetPlaneHit(Vector3.up, Vector3.up * CursorMeshHighlight.Height);
+            if (planeHit == null)
                 return;
             if (Cursor.Item.Count < RequiredItemCount)
                 return;
-            var position = Cursor.RaycastHit.Value.point;
             _calibratedPosition = CursorMeshHighlight.Position;
             if (CursorMeshHighlight.IsBlocked)
                 return;
@@ -128,11 +129,12 @@ namespace Items
 
         private void FinishExecution()
         {
-            if (Cursor.CurrentRaycastHit == null)
+            Vector3? planeHit = Cursor
+                .GetPlaneHit(Vector3.up, Vector3.up * CursorMeshHighlight.Height);
+            if (planeHit == null)
                 return;
             if (Cursor.Item.Count < RequiredItemCount)
                 return;
-            var position = Cursor.RaycastHit.Value.point;
             _calibratedPosition = CursorMeshHighlight.Position;
             if (CursorMeshHighlight.IsBlocked)
                 return;
@@ -180,7 +182,7 @@ namespace Items
             }
             PlayerController.MainChange.AddListener(ActionType.Started, ChangeRotation);
             PlayerController.MainScroll.AddListener(ActionType.Started, ChangeHeight);
-            CursorMeshHighlight.Height = (int)PlayerControls.Player.Instance.transform.position.y.Round();
+            //CursorMeshHighlight.Height = (int)PlayerControls.Player.Instance.transform.position.y.Round();
         }
 
         private void ChangeHeight(CallbackContext context)

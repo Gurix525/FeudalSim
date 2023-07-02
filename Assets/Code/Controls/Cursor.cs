@@ -1,4 +1,6 @@
-﻿using Extensions;
+﻿using AI;
+using Extensions;
+using Input;
 using Items;
 using Misc;
 using UnityEngine;
@@ -54,6 +56,11 @@ namespace Controls
         /// </summary>
         public static RaycastHit? CurrentRaycastHit =>
             CursorRaycaster.CurrentHit;
+
+        public static Vector3? GetPlaneHit(Vector3 normal, Vector3 point)
+        {
+            return CursorRaycaster.GetPLaneHit(normal, point);
+        }
 
         public static Vector3 GetAlignedPosition()
         {

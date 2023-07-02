@@ -34,7 +34,7 @@ namespace World
                 }
                 if (wolf == null)
                 {
-                    NavMesh.SamplePosition(PlayerControls.Player.Position + new RandomVector3(50F, 0F, 50F), out NavMeshHit hit, 10F, NavMesh.AllAreas);
+                    NavMesh.SamplePosition(PlayerControls.Player.Position + new RandomVector3(50F, 0F, 50F), out NavMeshHit hit, 100F, NavMesh.AllAreas);
                     wolf = Instantiate(Resources.Load<GameObject>("Prefabs/Animals/Wolf"), hit.position, Quaternion.Euler(0F, random.NextFloat(0F, 360F), 0F), transform);
                     _wolves[i] = wolf;
                 }
@@ -49,7 +49,7 @@ namespace World
                 }
                 if (hare == null)
                 {
-                    NavMesh.SamplePosition(PlayerControls.Player.Position + new RandomVector3(50F, 0F, 50F), out NavMeshHit hit, 10F, NavMesh.AllAreas);
+                    NavMesh.SamplePosition(PlayerControls.Player.Position + new RandomVector3(50F, 0F, 50F), out NavMeshHit hit, 100F, NavMesh.AllAreas);
                     hare = Instantiate(Resources.Load<GameObject>("Prefabs/Animals/Hare"), hit.position, Quaternion.Euler(0F, random.NextFloat(0F, 360F), 0F), transform);
                     _hares[i] = hare;
                 }

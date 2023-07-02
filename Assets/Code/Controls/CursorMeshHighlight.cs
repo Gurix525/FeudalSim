@@ -114,14 +114,12 @@ namespace Controls
                 _renderer.material = _blockedMaterial;
                 _previosMaterial = _blockedMaterial;
             }
-            if (_mesh != null && Cursor.RaycastHit != null)
+            Vector3? planeHit = Cursor.GetPlaneHit(Vector3.up, Vector3.up * CursorMeshHighlight.Height);
+            if (_mesh != null && planeHit != null)
             {
                 _renderer.enabled = true;
                 _renderer.material.renderQueue = 3001;
-                var ray = Camera.main.ScreenPointToRay(PlayerController.MainPoint.ReadValue<Vector2>());
-                new Plane(Vector3.up, Height).Raycast(ray, out float distance);
-                var position = ray.origin + ray.direction * distance;
-                var calibratedPosition = _positionFinder.GetPosition(Height, _meshRotation, position, _buildingMode);
+                var calibratedPosition = _positionFinder.GetPosition(Height, _meshRotation, planeHit.Value, _buildingMode);
                 _highlight.transform.SetPositionAndRotation(
                     calibratedPosition,
                     Quaternion.Euler(0, _meshRotation, 0));

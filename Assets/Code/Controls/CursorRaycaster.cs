@@ -3,6 +3,8 @@ using Input;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using PlayerControls;
+using System.Drawing;
+using UnityEngine.ProBuilder;
 
 namespace Controls
 {
@@ -73,6 +75,18 @@ namespace Controls
             {
                 return null;
             }
+        }
+
+        public static Vector3? GetPLaneHit(Vector3 normal, Vector3 point)
+        {
+            if (IsPointerOverGameObject)
+                return null;
+            var ray = Camera.main.ScreenPointToRay(PlayerController.MainPoint.ReadValue<Vector2>());
+            new Plane(normal, point).Raycast(ray, out float distance);
+            var position = ray.origin + ray.direction * distance;
+            if ((position - Player.Position).magnitude > MaxCursorDistanceFromPlayer)
+                return null;
+            return position;
         }
 
         #endregion Private
