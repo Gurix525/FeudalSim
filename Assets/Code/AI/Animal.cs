@@ -402,7 +402,7 @@ namespace AI
             _isKnockbackActive = true;
             DisableAllBehaviours();
             float elapsedTime = 0F;
-            float blockedTime = 0.5F;
+            float blockedTime = 0.25F;
             Vector3 direction = (transform.position - attack.transform.position).normalized * 10F;
             while (elapsedTime < blockedTime)
             {

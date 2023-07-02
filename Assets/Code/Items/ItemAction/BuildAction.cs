@@ -1,14 +1,12 @@
-﻿using Buildings;
-using Controls;
-using UnityEngine;
-using World;
+﻿using static UnityEngine.InputSystem.InputAction;
 using Cursor = Controls.Cursor;
-using Misc;
-using Extensions;
 using Terrain = World.Terrain;
-using System;
-using static UnityEngine.InputSystem.InputAction;
+using UnityEngine;
+using Extensions;
+using Buildings;
+using Controls;
 using Input;
+using World;
 
 namespace Items
 {
