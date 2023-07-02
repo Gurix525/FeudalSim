@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Maths
 {
-    public class Curve
+    public class BezierCurve
     {
         private float? _approximateLength;
 
@@ -13,7 +13,7 @@ namespace Maths
 
         public float ApproximateLength => _approximateLength ??= GetLength();
 
-        public Curve(Vector3 start, Vector3 target, Vector3 control)
+        public BezierCurve(Vector3 start, Vector3 target, Vector3 control)
         {
             StartPosition = start;
             TargetPosition = target;
@@ -29,7 +29,7 @@ namespace Maths
 
         public override bool Equals(object obj)
         {
-            return obj is Curve curve &&
+            return obj is BezierCurve curve &&
                    StartPosition.Equals(curve.StartPosition) &&
                    TargetPosition.Equals(curve.TargetPosition) &&
                    ControlPoint.Equals(curve.ControlPoint);

@@ -1,3 +1,4 @@
+using System;
 using Controls;
 using Extensions;
 using Items;
@@ -23,6 +24,7 @@ namespace Controls
         private Vector3 _previousPosition = Vector3.zero;
         private Mesh _previousMesh = null;
         private Material _previosMaterial = null;
+        private BuildPositionFinder _positionFinder = new();
 
         private static float _meshRotation;
 
@@ -105,10 +107,7 @@ namespace Controls
                 _renderer.enabled = true;
                 _renderer.material.renderQueue = 3001;
                 var position = Cursor.RaycastHit.Value.point;
-                var calibratedPosition = new Vector3(
-                    Mathf.Floor(position.x),
-                    Mathf.Round(position.y),
-                    Mathf.Floor(position.z));
+                var calibratedPosition = _positionFinder.GetPosition(0, _meshRotation, position, _buildingMode);
                 _highlight.transform.SetPositionAndRotation(
                     calibratedPosition,
                     Quaternion.Euler(0, _meshRotation, 0));
@@ -130,5 +129,72 @@ namespace Controls
         }
 
         #endregion Unity
+
+        #region Private
+
+        private class BuildPositionFinder
+        {
+            public int Height { get; set; } = 0;
+            public float Angle { get; set; }
+            public Vector3 Position { get; set; } = Vector3.zero;
+            public BuildingMode Mode { get; set; } = BuildingMode.Floor;
+
+            public Vector3 GetPosition(int height, float angle, Vector3 position, BuildingMode mode)
+            {
+                Height = height;
+                Angle = angle;
+                Position = position;
+                Mode = mode;
+                return mode switch
+                {
+                    BuildingMode.Floor => GetFloorPosition(),
+                    BuildingMode.BigFloor => GetBigFloorPosition(),
+                    BuildingMode.ShortWall => GetShortWallPosition(),
+                    BuildingMode.Wall => GetWallPosition(),
+                    BuildingMode.BigWall => GetBigWallPosition(),
+                    _ => throw new System.NotImplementedException(),
+                };
+            }
+
+            private Vector3 GetFloorPosition()
+            {
+                return new Vector3(
+                    Position.x.Floor(),
+                    Height,
+                    Position.z.Floor()
+                    );
+            }
+
+            private Vector3 GetBigFloorPosition()
+            {
+                return new Vector3(
+                    Position.x.Round() - 1,
+                    Height,
+                    Position.z.Round() - 1);
+            }
+
+            private Vector3 GetShortWallPosition()
+            {
+                if (Angle == 0F)
+                    return new Vector3(Position.x.Floor(), Height, Position.z.Round());
+                else
+                    return new Vector3(Position.x.Round(), Height, Position.z.Floor());
+            }
+
+            private Vector3 GetWallPosition()
+            {
+                return GetShortWallPosition();
+            }
+
+            private Vector3 GetBigWallPosition()
+            {
+                if (Angle == 0F)
+                    return new Vector3(Position.x.Round() - 1, Height, Position.z.Round());
+                else
+                    return new Vector3(Position.x.Round(), Height, Position.z.Round() - 1);
+            }
+        }
+
+        #endregion Private
     }
 }

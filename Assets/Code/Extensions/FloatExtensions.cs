@@ -13,5 +13,20 @@ namespace Extensions
         {
             return Math.Clamp(value, min, max);
         }
+
+        public static float Round(this float value)
+        {
+            return MathF.Round(value);
+        }
+
+        public static float Floor(this float value)
+        {
+            return MathF.Floor(value);
+        }
+
+        public static float Ceiling(this float value)
+        {
+            return MathF.Ceiling(value);
+        }
     }
 }

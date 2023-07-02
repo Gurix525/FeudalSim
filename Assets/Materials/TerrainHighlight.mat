@@ -92,7 +92,7 @@ Material:
     - _Cutoff: 0.5
     - _DetailAlbedoMapScale: 1
     - _DetailNormalMapScale: 1
-    - _Displacement: 0.1
+    - _Displacement: 0.05
     - _DisplacementNoiseScale: 100
     - _DstBlend: 0
     - _EnvironmentReflections: 1

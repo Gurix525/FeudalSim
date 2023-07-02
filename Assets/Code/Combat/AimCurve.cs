@@ -25,7 +25,7 @@ namespace Combat
 
         #region Properties
 
-        public Curve Curve { get; private set; }
+        public BezierCurve Curve { get; private set; }
 
         public bool IsCurveEnabled { get; private set; }
 

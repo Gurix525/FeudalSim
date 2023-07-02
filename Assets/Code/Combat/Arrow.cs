@@ -21,7 +21,7 @@ namespace Combat
         [SerializeField]
         private TrailRenderer _trailRenderer;
 
-        private Curve _curve;
+        private BezierCurve _curve;
 
         private float _elapsedTime = 0F;
 
@@ -35,7 +35,7 @@ namespace Combat
 
         #region Public
 
-        public static Arrow Spawn(Curve curve, Component sender, float damage)
+        public static Arrow Spawn(BezierCurve curve, Component sender, float damage)
         {
             Arrow arrow = _pool.Pull();
             arrow._elapsedTime = 0F;
