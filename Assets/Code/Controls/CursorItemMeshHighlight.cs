@@ -69,7 +69,7 @@ namespace Controls
             _renderer.material = _notBlockedMaterial;
         }
 
-        private void FixedUpdate()
+        private void Update()
         {
             if (Cursor.Action is not PutAction)
             {

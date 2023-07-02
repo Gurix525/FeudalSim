@@ -126,7 +126,7 @@ namespace Buildings
         {
             DropItem();
             Terrain.SetBuildingMark(
-                transform.position.ToVector3Int(),
+                transform.position.RoundToVector3Int(),
                 _buildingMode,
                 transform.rotation.y,
                 false);

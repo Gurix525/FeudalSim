@@ -1,6 +1,7 @@
 using System;
 using Controls;
 using Extensions;
+using Input;
 using Items;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -21,19 +22,30 @@ namespace Controls
         private MeshFilter _filter;
         private MeshRenderer _renderer;
         private BuildingMode _buildingMode = BuildingMode.Floor;
-        private Vector3 _previousPosition = Vector3.zero;
+        private Vector3Int _previousPosition = Vector3Int.zero;
         private Mesh _previousMesh = null;
         private Material _previosMaterial = null;
         private BuildPositionFinder _positionFinder = new();
 
         private static float _meshRotation;
+        private static int _height;
 
         #endregion Fields
 
         #region Properties
 
-        public static bool IsBlocked { get; set; } = false;
+        public static bool IsBlocked { get; set; }
 
+        public static int Height
+        {
+            get => _height;
+            set
+            {
+                _height = Math.Clamp(value, -2, 15);
+            }
+        }
+
+        public static Vector3Int Position { get; private set; }
         private static CursorMeshHighlight Instance { get; set; }
 
         private int RequiredItemCount => _buildingMode switch
@@ -54,7 +66,7 @@ namespace Controls
             if (Instance._mesh != mesh)
             {
                 Instance._mesh = mesh;
-                Instance._previousPosition = Vector3.zero;
+                Position = Vector3Int.zero;
             }
         }
 
@@ -106,16 +118,18 @@ namespace Controls
             {
                 _renderer.enabled = true;
                 _renderer.material.renderQueue = 3001;
-                var position = Cursor.RaycastHit.Value.point;
-                var calibratedPosition = _positionFinder.GetPosition(0, _meshRotation, position, _buildingMode);
+                var ray = Camera.main.ScreenPointToRay(PlayerController.MainPoint.ReadValue<Vector2>());
+                new Plane(Vector3.up, Height).Raycast(ray, out float distance);
+                var position = ray.origin + ray.direction * distance;
+                var calibratedPosition = _positionFinder.GetPosition(Height, _meshRotation, position, _buildingMode);
                 _highlight.transform.SetPositionAndRotation(
                     calibratedPosition,
                     Quaternion.Euler(0, _meshRotation, 0));
-                if (calibratedPosition != _previousPosition)
+                if (calibratedPosition != Position)
                 {
-                    _previousPosition = calibratedPosition;
+                    Position = calibratedPosition;
                     bool isBuildingPossible = Terrain.IsBuildingPossible(
-                        calibratedPosition.ToVector3Int(),
+                        calibratedPosition,
                         _buildingMode,
                         _meshRotation);
                     if (isBuildingPossible)
@@ -134,12 +148,12 @@ namespace Controls
 
         private class BuildPositionFinder
         {
-            public int Height { get; set; } = 0;
+            public int Height { get; set; }
             public float Angle { get; set; }
-            public Vector3 Position { get; set; } = Vector3.zero;
-            public BuildingMode Mode { get; set; } = BuildingMode.Floor;
+            public Vector3 Position { get; set; }
+            public BuildingMode Mode { get; set; }
 
-            public Vector3 GetPosition(int height, float angle, Vector3 position, BuildingMode mode)
+            public Vector3Int GetPosition(int height, float angle, Vector3 position, BuildingMode mode)
             {
                 Height = height;
                 Angle = angle;
@@ -156,42 +170,47 @@ namespace Controls
                 };
             }
 
-            private Vector3 GetFloorPosition()
+            private Vector3Int GetFloorPosition()
             {
                 return new Vector3(
                     Position.x.Floor(),
                     Height,
                     Position.z.Floor()
-                    );
+                    ).RoundToVector3Int();
             }
 
-            private Vector3 GetBigFloorPosition()
+            private Vector3Int GetBigFloorPosition()
             {
                 return new Vector3(
                     Position.x.Round() - 1,
                     Height,
-                    Position.z.Round() - 1);
+                    Position.z.Round() - 1)
+                    .RoundToVector3Int();
             }
 
-            private Vector3 GetShortWallPosition()
+            private Vector3Int GetShortWallPosition()
             {
                 if (Angle == 0F)
-                    return new Vector3(Position.x.Floor(), Height, Position.z.Round());
+                    return new Vector3(Position.x.Floor(), Height, Position.z.Round())
+                        .RoundToVector3Int();
                 else
-                    return new Vector3(Position.x.Round(), Height, Position.z.Floor());
+                    return new Vector3(Position.x.Round(), Height, Position.z.Floor())
+                        .RoundToVector3Int();
             }
 
-            private Vector3 GetWallPosition()
+            private Vector3Int GetWallPosition()
             {
                 return GetShortWallPosition();
             }
 
-            private Vector3 GetBigWallPosition()
+            private Vector3Int GetBigWallPosition()
             {
                 if (Angle == 0F)
-                    return new Vector3(Position.x.Round() - 1, Height, Position.z.Round());
+                    return new Vector3(Position.x.Round() - 1, Height, Position.z.Round())
+                        .RoundToVector3Int();
                 else
-                    return new Vector3(Position.x.Round(), Height, Position.z.Round() - 1);
+                    return new Vector3(Position.x.Round(), Height, Position.z.Round() - 1)
+                        .RoundToVector3Int();
             }
         }
 

@@ -7,6 +7,8 @@ using Buildings;
 using Controls;
 using Input;
 using World;
+using Unity.VisualScripting;
+using System;
 
 namespace Items
 {
@@ -76,11 +78,8 @@ namespace Items
             if (Cursor.Item.Count < RequiredItemCount)
                 return;
             var position = Cursor.RaycastHit.Value.point;
-            _calibratedPosition = new Vector3(
-                Mathf.Floor(position.x),
-                Mathf.Round(position.y),
-                Mathf.Floor(position.z)).ToVector3Int();
-            if (!Terrain.IsBuildingPossible(_calibratedPosition, _buildingMode, _meshRotation))
+            _calibratedPosition = CursorMeshHighlight.Position;
+            if (CursorMeshHighlight.IsBlocked)
                 return;
             if (_isWaitingForAnotherBuilding)
             {
@@ -134,11 +133,8 @@ namespace Items
             if (Cursor.Item.Count < RequiredItemCount)
                 return;
             var position = Cursor.RaycastHit.Value.point;
-            _calibratedPosition = new Vector3(
-                Mathf.Floor(position.x),
-                Mathf.Round(position.y),
-                Mathf.Floor(position.z)).ToVector3Int();
-            if (!Terrain.IsBuildingPossible(_calibratedPosition, _buildingMode, _meshRotation))
+            _calibratedPosition = CursorMeshHighlight.Position;
+            if (CursorMeshHighlight.IsBlocked)
                 return;
             GameObject prefab = BuildingPrefabs[(int)_buildingMode];
             GameObject building = GameObject.Instantiate(
@@ -178,9 +174,19 @@ namespace Items
             if (Cursor.Action != this)
             {
                 PlayerController.MainChange.RemoveListener(ActionType.Started, ChangeRotation);
+                PlayerController.MainScroll.RemoveListener(ActionType.Started, ChangeHeight);
+
                 return;
             }
             PlayerController.MainChange.AddListener(ActionType.Started, ChangeRotation);
+            PlayerController.MainScroll.AddListener(ActionType.Started, ChangeHeight);
+            CursorMeshHighlight.Height = (int)PlayerControls.Player.Instance.transform.position.y.Round();
+        }
+
+        private void ChangeHeight(CallbackContext context)
+        {
+            float change = context.ReadValue<float>();
+            CursorMeshHighlight.Height += change > 0 ? 1 : -1;
         }
 
         private void DisableWaiting(CallbackContext context)

@@ -36,14 +36,14 @@ namespace Items
 
         public ItemAction()
         {
-            Cursor.Container.CollectionUpdated.AddListener(OnCursorCollecionUpdated);
+            Cursor.Container.CollectionUpdated.AddListener(OnCursorCollectionUpdated);
             _player = Player.Instance;
             _playerMovement = _player.PlayerMovement;
         }
 
         ~ItemAction()
         {
-            Cursor.Container.CollectionUpdated.RemoveListener(OnCursorCollecionUpdated);
+            Cursor.Container.CollectionUpdated.RemoveListener(OnCursorCollectionUpdated);
         }
 
         #endregion Constructors
@@ -86,7 +86,7 @@ namespace Items
 
         #region Private
 
-        private void OnCursorCollecionUpdated()
+        private void OnCursorCollectionUpdated()
         {
             OnMouseExit(null);
             OnLeftMouseButtonRelase();

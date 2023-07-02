@@ -27,7 +27,7 @@ namespace Extensions
             return new(v.x.Clamp(min, max), v.y.Clamp(min, max), v.z.Clamp(min, max));
         }
 
-        public static Vector3Int ToVector3Int(this Vector3 v)
+        public static Vector3Int RoundToVector3Int(this Vector3 v)
         {
             return new(Mathf.RoundToInt(v.x), Mathf.RoundToInt(v.y), Mathf.RoundToInt(v.z));
         }
