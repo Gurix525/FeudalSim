@@ -144,8 +144,12 @@ namespace PlayerControls
         {
             Vector2 direction = PlayerController.MainMove.ReadValue<Vector2>();
             direction *= MoveSpeed * (IsSprinting ? _sprintMultiplier : 1F);
+            Vector3 fullDirection = new(direction.x, 0F, direction.y);
+            float cameraAngle = Camera.main.transform.eulerAngles.y;
             float y = _rigidbody.velocity.y;
-            _rigidbody.velocity = new(direction.x, y, direction.y);
+            Vector3 result = new Vector3(fullDirection.x, y, fullDirection.z);
+            Quaternion rotation = Quaternion.AngleAxis(cameraAngle, Vector3.up);
+            _rigidbody.velocity = rotation * result;
         }
 
         private void DoGravity()

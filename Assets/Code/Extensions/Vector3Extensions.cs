@@ -27,6 +27,11 @@ namespace Extensions
             return new(v.x.Clamp(min, max), v.y.Clamp(min, max), v.z.Clamp(min, max));
         }
 
+        public static Quaternion ToQuaternion(this Vector3 v)
+        {
+            return Quaternion.Euler(v.x, v.y, v.z);
+        }
+
         public static Vector3Int RoundToVector3Int(this Vector3 v)
         {
             return new(Mathf.RoundToInt(v.x), Mathf.RoundToInt(v.y), Mathf.RoundToInt(v.z));
