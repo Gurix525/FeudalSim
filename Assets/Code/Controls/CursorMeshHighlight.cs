@@ -24,7 +24,7 @@ namespace Controls
         private BuildingMode _buildingMode = BuildingMode.Floor;
         private Vector3Int _previousPosition = Vector3Int.zero;
         private Mesh _previousMesh = null;
-        private Material _previosMaterial = null;
+        private Material _previousMaterial = null;
         private BuildPositionFinder _positionFinder = new();
 
         private static float _meshRotation;
@@ -87,9 +87,9 @@ namespace Controls
         private void Awake()
         {
             Instance = this;
-            _highlight = new GameObject("MeshHighlight");
-            _filter = _highlight.AddComponent<MeshFilter>();
-            _renderer = _highlight.AddComponent<MeshRenderer>();
+            _highlight = Instantiate(Resources.Load<GameObject>("Prefabs/Controls/MeshHighlight"));
+            _filter = _highlight.GetComponent<MeshFilter>();
+            _renderer = _highlight.GetComponent<MeshRenderer>();
             _renderer.material = _notBlockedMaterial;
         }
 
@@ -104,15 +104,15 @@ namespace Controls
                 _filter.mesh = _mesh;
                 _previousMesh = _mesh;
             }
-            if (_previosMaterial != _notBlockedMaterial && !IsBlocked && Cursor.Item != null ? Cursor.Item.Count >= RequiredItemCount : false)
+            if (_previousMaterial != _notBlockedMaterial && !IsBlocked && Cursor.Item != null ? Cursor.Item.Count >= RequiredItemCount : false)
             {
                 _renderer.material = _notBlockedMaterial;
-                _previosMaterial = _notBlockedMaterial;
+                _previousMaterial = _notBlockedMaterial;
             }
-            else if (_previosMaterial != _blockedMaterial && (IsBlocked || (Cursor.Item != null ? Cursor.Item.Count < RequiredItemCount : false)))
+            else if (_previousMaterial != _blockedMaterial && (IsBlocked || (Cursor.Item != null ? Cursor.Item.Count < RequiredItemCount : false)))
             {
                 _renderer.material = _blockedMaterial;
-                _previosMaterial = _blockedMaterial;
+                _previousMaterial = _blockedMaterial;
             }
             Vector3? planeHit = Cursor.GetPlaneHit(Vector3.up, Vector3.up * CursorMeshHighlight.Height);
             if (_mesh != null && planeHit != null)

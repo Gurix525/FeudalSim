@@ -182,7 +182,6 @@ namespace Items
             }
             PlayerController.MainChange.AddListener(ActionType.Started, ChangeRotation);
             PlayerController.MainScroll.AddListener(ActionType.Started, ChangeHeight);
-            //CursorMeshHighlight.Height = (int)PlayerControls.Player.Instance.transform.position.y.Round();
         }
 
         private void ChangeHeight(CallbackContext context)
