@@ -13,6 +13,7 @@ public class BuildingGrid : MonoBehaviour
     {
         foreach (var renderer in _renderers)
             renderer.gameObject.SetActive(true);
+        _material.renderQueue = 3001;
     }
 
     public void Disable()
@@ -23,7 +24,7 @@ public class BuildingGrid : MonoBehaviour
 
     public void SetMousePosition(Vector3 position)
     {
-        _material.SetVector("MousePosition", position);
+        _material.SetVector("_MousePosition", position);
     }
 
     private void Start()

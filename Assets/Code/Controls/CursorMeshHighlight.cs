@@ -21,6 +21,7 @@ namespace Controls
         private GameObject _highlight;
         private MeshFilter _filter;
         private MeshRenderer _renderer;
+        private BuildingGrid _grid;
         private BuildingMode _buildingMode = BuildingMode.Floor;
         private Vector3Int _previousPosition = Vector3Int.zero;
         private Mesh _previousMesh = null;
@@ -90,6 +91,7 @@ namespace Controls
             _highlight = Instantiate(Resources.Load<GameObject>("Prefabs/Controls/MeshHighlight"));
             _filter = _highlight.GetComponent<MeshFilter>();
             _renderer = _highlight.GetComponent<MeshRenderer>();
+            _grid = _highlight.GetComponent<BuildingGrid>();
             _renderer.material = _notBlockedMaterial;
         }
 
@@ -117,8 +119,10 @@ namespace Controls
             Vector3? planeHit = Cursor.GetPlaneHit(Vector3.up, Vector3.up * CursorMeshHighlight.Height);
             if (_mesh != null && planeHit != null)
             {
+                _grid.Enable();
+                _grid.SetMousePosition(planeHit.Value);
                 _renderer.enabled = true;
-                _renderer.material.renderQueue = 3001;
+                _renderer.material.renderQueue = 3002;
                 var calibratedPosition = _positionFinder.GetPosition(Height, _meshRotation, planeHit.Value, _buildingMode);
                 _highlight.transform.SetPositionAndRotation(
                     calibratedPosition,
@@ -137,7 +141,10 @@ namespace Controls
                 }
             }
             else
+            {
                 _renderer.enabled = false;
+                _grid.Disable();
+            }
         }
 
         #endregion Unity
