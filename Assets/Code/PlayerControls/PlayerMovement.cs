@@ -229,6 +229,7 @@ namespace PlayerControls
             if (!CanJump)
                 return;
             _rigidbody.AddForce(Vector3.up * _jumpForce, ForceMode.VelocityChange);
+            Player.Instance.Stats.AddSkill("Jumping", 1F);
         }
 
         #endregion Private

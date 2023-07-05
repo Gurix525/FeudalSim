@@ -1,10 +1,8 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using AI;
 using Maths;
 using Misc;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace Combat
 {
@@ -35,7 +33,7 @@ namespace Combat
 
         #region Public
 
-        public static Arrow Spawn(BezierCurve curve, Component sender, float damage)
+        public static Arrow Spawn(BezierCurve curve, Component sender, float damage, Action onDamageDealt = null)
         {
             Arrow arrow = _pool.Pull();
             arrow._elapsedTime = 0F;
@@ -46,6 +44,7 @@ namespace Combat
             arrow._attack.DealedHit.AddListener(arrow.OnDealedHit);
             arrow._attack.SetNextID();
             arrow._trailRenderer.Clear();
+            arrow._attack.OnDamageDealt = onDamageDealt;
             arrow.gameObject.SetActive(true);
             return arrow;
         }

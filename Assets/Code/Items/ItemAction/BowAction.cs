@@ -8,12 +8,13 @@ namespace Items
 {
     public class BowAction : ItemAction
     {
+        #region Fields
+
         private GameObject _arrowPrefab;
 
-        protected override Sprite GetSprite()
-        {
-            return Resources.Load<Sprite>("Sprites/Actions/Bow");
-        }
+        #endregion Fields
+
+        #region Public
 
         public override void OnLeftMouseButton()
         {
@@ -45,7 +46,8 @@ namespace Items
                     Arrow.Spawn(
                         _player.AimCurve.Curve,
                         _player,
-                        4F);
+                        4F,
+                        IncreaseBowsSkill);
             }
             _player.AimCurve.Disable();
             _playerMovement.IsStringingBow = false;
@@ -59,5 +61,25 @@ namespace Items
         {
             base.OnMouseExit(component);
         }
+
+        #endregion Public
+
+        #region Protected
+
+        protected override Sprite GetSprite()
+        {
+            return Resources.Load<Sprite>("Sprites/Actions/Bow");
+        }
+
+        #endregion Protected
+
+        #region Private
+
+        private void IncreaseBowsSkill()
+        {
+            Player.Instance.Stats.AddSkill("Bows", 1F);
+        }
+
+        #endregion Private
     }
 }

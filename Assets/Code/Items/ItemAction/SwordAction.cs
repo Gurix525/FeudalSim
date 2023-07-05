@@ -10,14 +10,15 @@ namespace Items
 {
     public class SwordAction : ItemAction
     {
+        #region Fields
+
         private float _attackTime = 0.35F;
 
         private bool _isNextAttackQueued = false;
 
-        protected override Sprite GetSprite()
-        {
-            return Resources.Load<Sprite>("Sprites/Actions/Sword");
-        }
+        #endregion Fields
+
+        #region Public
 
         public override void OnLeftMouseButton()
         {
@@ -31,42 +32,23 @@ namespace Items
             Attack();
         }
 
-        private void Attack()
-        {
-            if (Cursor.ClearRaycastHit == null)
-                return;
-            Vector3 direction =
-                (Cursor.ClearRaycastHit.Value.point - _player.transform.position)
-                .normalized;
-            _playerMovement.RotateToCursor();
-            CreateAttack(direction);
-            TriggerVFX();
-            MovePlayer(direction);
-        }
-
         public override void OnMouseExit(Component component)
         {
             base.OnMouseExit(component);
         }
 
-        private void CreateAttack(Vector3 direction)
+        #endregion Public
+
+        #region Protected
+
+        protected override Sprite GetSprite()
         {
-            Attack attack = Bullet.Spawn(
-                _player,
-                Vector3.zero,
-                4F,
-                _attackTime,
-                1.25F,
-                _player.transform,
-                false);
-            attack.transform.localRotation = Quaternion.identity;
-            attack.SetNextID();
+            return Resources.Load<Sprite>("Sprites/Actions/Sword");
         }
 
-        private void MovePlayer(Vector3 direction)
-        {
-            new Task(MovePlayerCoroutine(direction));
-        }
+        #endregion Protected
+
+        #region Private
 
         private IEnumerator MovePlayerCoroutine(Vector3 direction)
         {
@@ -95,6 +77,26 @@ namespace Items
             _playerMovement.IsPendingAttack = false;
         }
 
+        private void CreateAttack(Vector3 direction)
+        {
+            Attack attack = Bullet.Spawn(
+                _player,
+                Vector3.zero,
+                4F,
+                _attackTime,
+                1.25F,
+                _player.transform,
+                false,
+                IncreaseSwordsSkill);
+            attack.transform.localRotation = Quaternion.identity;
+            attack.SetNextID();
+        }
+
+        private void MovePlayer(Vector3 direction)
+        {
+            new Task(MovePlayerCoroutine(direction));
+        }
+
         private void SetPlayerVelocity(Vector3 direction)
         {
             float ySpeed = _playerMovement.Rigidbody.velocity.y;
@@ -113,5 +115,25 @@ namespace Items
             slash.SetActive(false);
             slash.SetActive(true);
         }
+
+        private void IncreaseSwordsSkill()
+        {
+            Player.Instance.Stats.AddSkill("Swords", 1F);
+        }
+
+        private void Attack()
+        {
+            if (Cursor.ClearRaycastHit == null)
+                return;
+            Vector3 direction =
+                (Cursor.ClearRaycastHit.Value.point - _player.transform.position)
+                .normalized;
+            _playerMovement.RotateToCursor();
+            CreateAttack(direction);
+            TriggerVFX();
+            MovePlayer(direction);
+        }
+
+        #endregion Private
     }
 }

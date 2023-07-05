@@ -71,6 +71,11 @@ namespace Combat
             AlreadyUsedIDs[attack.ID] = attack.ID;
             CurrentHealth -= attack.Damage;
             CurrentHealth = CurrentHealth.Clamp(0F, float.PositiveInfinity);
+            if (attack.OnDamageDealt != null)
+            {
+                attack.OnDamageDealt();
+                attack.OnDamageDealt = null;
+            }
             GotHit.Invoke(attack);
         }
 

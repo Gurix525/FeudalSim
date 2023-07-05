@@ -17,7 +17,8 @@ public class Stats : MonoBehaviour
         { "Jumping", Skill.Zero },
         { "Woodcutting", Skill.Zero },
         { "Digging", Skill.Zero },
-        { "Sword", Skill.Zero },
+        { "Swords", Skill.Zero },
+        { "Bows", Skill.Zero },
         { "Parrying", Skill.Zero }
     };
 

@@ -24,6 +24,7 @@ namespace Combat
         public Component Sender { get; set; }
         public Component Target { get; set; }
         public float Damage { get; set; }
+        public Action OnDamageDealt { get; set; }
 
         public UnityEvent<Hitbox, Vector3> DealedHit { get; } = new();
 

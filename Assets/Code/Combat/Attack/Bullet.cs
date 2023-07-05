@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -34,7 +35,8 @@ namespace Combat
             float lifetime = 0.5F,
             float scale = 1F,
             Transform parent = null,
-            bool isWorldSpace = false)
+            bool isWorldSpace = false,
+            Action onDamageDealt = null)
         {
             Bullet bullet = _bullets.First?.Value;
             if (bullet != null)
@@ -52,6 +54,7 @@ namespace Combat
                 bullet.transform.position = position;
             else
                 bullet.transform.localPosition = position;
+            bullet.OnDamageDealt = onDamageDealt;
             return bullet;
         }
 

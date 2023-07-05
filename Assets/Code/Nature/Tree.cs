@@ -49,6 +49,7 @@ namespace Nature
                 200F);
             Destroy(transform.parent.gameObject);
             TerrainRenderer.MarkNavMeshToReload();
+            Player.Instance.Stats.AddSkill("Woodcutting", 1F);
         }
 
         #endregion Public
