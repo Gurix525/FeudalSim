@@ -8,6 +8,7 @@ namespace UI
     {
         private List<SkillSlot> _slots = new();
         private SkillSlot _slotPrefab;
+        private bool _hasInitialized;
 
         private void Awake()
         {
@@ -27,15 +28,20 @@ namespace UI
 
         private void ReloadSlots(IReadOnlyDictionary<string, Skill> skills)
         {
-            for (int i = 0; i < _slots.Count; i++)
+            if (!_hasInitialized)
             {
-                Destroy(_slots[i].gameObject);
+                foreach (var skill in skills)
+                {
+                    var slot = Instantiate(_slotPrefab, transform);
+                    _slots.Add(slot);
+                }
+                _hasInitialized = true;
             }
+            int index = 0;
             foreach (var skill in skills)
             {
-                var slot = Instantiate(_slotPrefab, transform);
-                slot.Initialize(skill);
-                _slots.Add(slot);
+                _slots[index].Set(skill);
+                index++;
             }
         }
     }

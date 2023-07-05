@@ -70,7 +70,7 @@ namespace PlayerControls
 
         public bool CanJump => IsGrounded && !IsPendingAttack && !IsStringingBow;
 
-        public bool CanSprint => !IsStringingBow;
+        public bool CanSprint => !IsStringingBow && IsGrounded;
 
         public bool IsGravityEnabled => true;
 
@@ -150,6 +150,14 @@ namespace PlayerControls
             Vector3 result = new Vector3(fullDirection.x, y, fullDirection.z);
             Quaternion rotation = Quaternion.AngleAxis(cameraAngle, Vector3.up);
             _rigidbody.velocity = rotation * result;
+            ImproveRunningSkill(direction);
+        }
+
+        private void ImproveRunningSkill(Vector2 direction)
+        {
+            if (direction == Vector2.zero || !IsSprinting)
+                return;
+            Player.Instance.Stats.AddSkill("Running", 0.25F * Time.fixedDeltaTime);
         }
 
         private void DoGravity()

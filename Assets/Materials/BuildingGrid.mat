@@ -54,5 +54,5 @@ Material:
     - _QueueControl: 0
     - _QueueOffset: 0
     m_Colors:
-    - _MousePosition: {r: 9.249674, g: 8, b: 6.039262, a: 0}
+    - _MousePosition: {r: 4.4074907, g: 6, b: 4.9844604, a: 0}
   m_BuildTextureStacks: []

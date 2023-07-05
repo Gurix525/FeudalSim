@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using PlayerControls;
 using Unity.VisualScripting.Antlr3.Runtime.Misc;
 using UnityEngine;
@@ -12,13 +13,12 @@ public class Stats : MonoBehaviour
 
     private Dictionary<string, Skill> _skills = new()
     {
-        { "Running", new(32) },
-        { "Jumping", new(10000)},
-        { "Woodcutting", new(5664)},
-        { "Digging", new(16)},
-        { "Sword", new(648)},
-        { "Parrying", new(51)},
-        { "Evading", new(8898)}
+        { "Running", Skill.Zero },
+        { "Jumping", Skill.Zero },
+        { "Woodcutting", Skill.Zero },
+        { "Digging", Skill.Zero },
+        { "Sword", Skill.Zero },
+        { "Parrying", Skill.Zero }
     };
 
     #endregion Fields
@@ -26,6 +26,7 @@ public class Stats : MonoBehaviour
     #region Properties
 
     public UnityEvent<IReadOnlyDictionary<string, Skill>> StatsChanged { get; } = new();
+
     public UnityEvent<string, Skill> SkillLevelIncreased { get; } = new();
 
     [field: SerializeField] public float CurrentHP { get; private set; }
@@ -47,7 +48,7 @@ public class Stats : MonoBehaviour
         return _skills[skill];
     }
 
-    public void ModifySkill(string skill, float xp)
+    public void AddSkill(string skill, float xp)
     {
         int previousLevel = _skills[skill].Level;
         _skills[skill] += xp;
