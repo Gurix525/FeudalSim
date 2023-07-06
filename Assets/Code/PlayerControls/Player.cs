@@ -48,8 +48,6 @@ namespace PlayerControls
 
         #endregion Properties
 
-
-
         #region Unity
 
         private void Awake()

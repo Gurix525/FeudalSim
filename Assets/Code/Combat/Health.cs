@@ -69,6 +69,8 @@ namespace Combat
             if (AlreadyUsedIDs.ContainsKey(attack.ID))
                 return;
             AlreadyUsedIDs[attack.ID] = attack.ID;
+            //if (attack.Damage >= 0.9F * CurrentHealth)
+            //    attack.Damage = CurrentHealth;
             CurrentHealth -= attack.Damage;
             CurrentHealth = CurrentHealth.Clamp(0F, float.PositiveInfinity);
             if (attack.OnDamageDealt != null)
