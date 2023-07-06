@@ -90,7 +90,7 @@ namespace PlayerControls
 
         private static float GetModifier(float level)
         {
-            return 5F / 6F * MathF.Log10(MathF.Pow((90F * level / 100F) + 10F, 2F) / 100F);
+            return MathF.Log10(MathF.Pow((90F * level / 100F) + 10F, 2F) / 100F);
         }
 
         private static float GetRequiredXP(float level)

@@ -5,6 +5,7 @@ using Cursor = Controls.Cursor;
 using System;
 using TaskManager;
 using System.Collections;
+using Extensions;
 
 namespace Items
 {
@@ -16,7 +17,15 @@ namespace Items
 
         private bool _isNextAttackQueued = false;
 
+        private System.Random _random = new();
+
         #endregion Fields
+
+        #region Properties
+
+        private float Randomization => _random.NextFloat(0.9F, 1.1F);
+
+        #endregion Properties
 
         #region Public
 
@@ -50,6 +59,63 @@ namespace Items
 
         #region Private
 
+        private void Attack()
+        {
+            if (Cursor.ClearRaycastHit == null)
+                return;
+            Vector3 direction =
+                (Cursor.ClearRaycastHit.Value.point - _player.transform.position)
+                .normalized;
+            _playerMovement.RotateToCursor();
+            CreateAttack(direction);
+            TriggerVFX();
+            MovePlayer(direction);
+        }
+
+        private void CreateAttack(Vector3 direction)
+        {
+            Attack attack = Bullet.Spawn(
+                _player,
+                Vector3.zero,
+                Randomization * (4F + 4F * Player.Instance.Stats.GetSkill("Swords").Modifier),
+                _attackTime,
+                1.25F + 0.25F * Player.Instance.Stats.GetSkill("Swords").Modifier,
+                _player.transform,
+                false,
+                IncreaseSwordsSkill);
+            attack.transform.localRotation = Quaternion.identity;
+            attack.SetNextID();
+        }
+
+        private void TriggerVFX()
+        {
+            GameObject slash = _playerMovement.AttackComboNumber switch
+            {
+                0 => _player.VFX.FirstSlash,
+                _ => _player.VFX.SecondSlash
+            };
+            slash.SetActive(false);
+            slash.SetActive(true);
+        }
+
+        private void MovePlayer(Vector3 direction)
+        {
+            new Task(MovePlayerCoroutine(direction));
+        }
+
+        private void SetPlayerVelocity(Vector3 direction)
+        {
+            float ySpeed = _playerMovement.Rigidbody.velocity.y;
+            float xSpeed = direction.x * _playerMovement.SprintSpeed * _playerMovement.AttackMoveSpeedMultiplier;
+            float zSpeed = direction.z * _playerMovement.SprintSpeed * _playerMovement.AttackMoveSpeedMultiplier;
+            _playerMovement.Rigidbody.velocity = new(xSpeed, ySpeed, zSpeed);
+        }
+
+        private void IncreaseSwordsSkill()
+        {
+            Player.Instance.Stats.AddSkill("Swords", 1F);
+        }
+
         private IEnumerator MovePlayerCoroutine(Vector3 direction)
         {
             _playerMovement.IsPendingAttack = true;
@@ -75,63 +141,6 @@ namespace Items
                 yield break;
             }
             _playerMovement.IsPendingAttack = false;
-        }
-
-        private void CreateAttack(Vector3 direction)
-        {
-            Attack attack = Bullet.Spawn(
-                _player,
-                Vector3.zero,
-                4F,
-                _attackTime,
-                1.25F,
-                _player.transform,
-                false,
-                IncreaseSwordsSkill);
-            attack.transform.localRotation = Quaternion.identity;
-            attack.SetNextID();
-        }
-
-        private void MovePlayer(Vector3 direction)
-        {
-            new Task(MovePlayerCoroutine(direction));
-        }
-
-        private void SetPlayerVelocity(Vector3 direction)
-        {
-            float ySpeed = _playerMovement.Rigidbody.velocity.y;
-            float xSpeed = direction.x * _playerMovement.SprintSpeed * _playerMovement.AttackMoveSpeedMultiplier;
-            float zSpeed = direction.z * _playerMovement.SprintSpeed * _playerMovement.AttackMoveSpeedMultiplier;
-            _playerMovement.Rigidbody.velocity = new(xSpeed, ySpeed, zSpeed);
-        }
-
-        private void TriggerVFX()
-        {
-            GameObject slash = _playerMovement.AttackComboNumber switch
-            {
-                0 => _player.VFX.FirstSlash,
-                _ => _player.VFX.SecondSlash
-            };
-            slash.SetActive(false);
-            slash.SetActive(true);
-        }
-
-        private void IncreaseSwordsSkill()
-        {
-            Player.Instance.Stats.AddSkill("Swords", 1F);
-        }
-
-        private void Attack()
-        {
-            if (Cursor.ClearRaycastHit == null)
-                return;
-            Vector3 direction =
-                (Cursor.ClearRaycastHit.Value.point - _player.transform.position)
-                .normalized;
-            _playerMovement.RotateToCursor();
-            CreateAttack(direction);
-            TriggerVFX();
-            MovePlayer(direction);
         }
 
         #endregion Private

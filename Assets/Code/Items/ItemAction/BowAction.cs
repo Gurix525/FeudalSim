@@ -1,5 +1,6 @@
 ﻿using System;
 using Combat;
+using Extensions;
 using PlayerControls;
 using UnityEngine;
 using Cursor = Controls.Cursor;
@@ -11,8 +12,15 @@ namespace Items
         #region Fields
 
         private GameObject _arrowPrefab;
+        private System.Random _random = new();
 
         #endregion Fields
+
+        #region Properties
+
+        private float Randomization => _random.NextFloat(0.9F, 1.1F);
+
+        #endregion Properties
 
         #region Public
 
@@ -46,7 +54,7 @@ namespace Items
                     Arrow.Spawn(
                         _player.AimCurve.Curve,
                         _player,
-                        4F,
+                        Randomization * (4F + 4F * Player.Instance.Stats.GetSkill("Bows").Modifier),
                         IncreaseBowsSkill);
             }
             _player.AimCurve.Disable();

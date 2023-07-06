@@ -80,7 +80,9 @@ namespace Combat
             Vector3 previousPosition = transform.position;
             _elapsedTime += Time.fixedDeltaTime;
             Vector3 nextPosition = _curve.EvaluatePosition(
-                    _elapsedTime * _moveSpeed / _curve.ApproximateLength);
+                    (_elapsedTime * _moveSpeed + 10F
+                    * PlayerControls.Player.Instance.Stats.GetSkill("Bows").Modifier)
+                    / _curve.ApproximateLength);
             bool oldQueriesSetings = Physics.queriesHitTriggers;
             Physics.queriesHitTriggers = true;
             var hitboxes = Physics.SphereCastAll(

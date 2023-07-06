@@ -45,11 +45,17 @@ namespace PlayerControls
 
         public Rigidbody Rigidbody => _rigidbody;
 
-        public float MoveSpeed => _moveSpeed * (IsStringingBow ? _stringingBowSpeedMultiplier : 1F);
+        public float MoveSpeed =>
+            _moveSpeed * (IsStringingBow ? _stringingBowSpeedMultiplier : 1F);
 
-        public float SprintSpeed => MoveSpeed * _sprintMultiplier;
+        public float SprintSpeed =>
+            MoveSpeed * (_sprintMultiplier + (_sprintMultiplier - 1F)
+            * Player.Instance.Stats.GetSkill("Running").Modifier);
 
         public float AttackMoveSpeedMultiplier => _attackMoveSpeedMultiplier;
+
+        public float JumpForce => _jumpForce
+            + 4F * Player.Instance.Stats.GetSkill("Jumping").Modifier;
 
         public Vector3 LeftHandIKGoal { get; set; }
 
@@ -228,7 +234,7 @@ namespace PlayerControls
         {
             if (!CanJump)
                 return;
-            _rigidbody.AddForce(Vector3.up * _jumpForce, ForceMode.VelocityChange);
+            _rigidbody.AddForce(Vector3.up * JumpForce, ForceMode.VelocityChange);
             Player.Instance.Stats.AddSkill("Jumping", 1F);
         }
 
