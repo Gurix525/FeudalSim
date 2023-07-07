@@ -74,12 +74,13 @@ namespace Items
 
         private void CreateAttack(Vector3 direction)
         {
+            float swordsModifier = _player.Stats.GetSkill("Swords").Modifier;
             Attack attack = Bullet.Spawn(
                 _player,
                 Vector3.zero,
-                Randomization * (4F + 4F * Player.Instance.Stats.GetSkill("Swords").Modifier),
+                Randomization * (4F + 4F * swordsModifier),
                 _attackTime,
-                1.25F + 0.25F * Player.Instance.Stats.GetSkill("Swords").Modifier,
+                1.25F + 0.25F * swordsModifier,
                 _player.transform,
                 false,
                 IncreaseSwordsSkill);

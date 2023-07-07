@@ -51,11 +51,15 @@ namespace Items
             if (_player.AimCurve.IsCurveEnabled)
             {
                 if (_player.AimCurve.Curve != null)
+                {
+                    float bowsModifier = _player.Stats.GetSkill("Bows").Modifier;
                     Arrow.Spawn(
                         _player.AimCurve.Curve,
                         _player,
-                        Randomization * (4F + 4F * Player.Instance.Stats.GetSkill("Bows").Modifier),
+                        Randomization * (4F + 4F * bowsModifier),
+                        20F + 10F * bowsModifier,
                         IncreaseBowsSkill);
+                }
             }
             _player.AimCurve.Disable();
             _playerMovement.IsStringingBow = false;

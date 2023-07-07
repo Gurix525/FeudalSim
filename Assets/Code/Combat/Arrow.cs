@@ -23,7 +23,7 @@ namespace Combat
 
         private float _elapsedTime = 0F;
 
-        private static readonly float _moveSpeed = 20F;
+        private float _moveSpeed = 20F;
 
         private static int? _hitboxLayerMask;
 
@@ -33,11 +33,12 @@ namespace Combat
 
         #region Public
 
-        public static Arrow Spawn(BezierCurve curve, Component sender, float damage, Action onDamageDealt = null)
+        public static Arrow Spawn(BezierCurve curve, Component sender, float damage, float moveSpeed = 20F, Action onDamageDealt = null)
         {
             Arrow arrow = _pool.Pull();
             arrow._elapsedTime = 0F;
             arrow._curve = curve;
+            arrow._moveSpeed = moveSpeed;
             arrow.transform.position = curve.EvaluatePosition(0F);
             arrow._attack.Sender = sender;
             arrow._attack.Damage = damage;
@@ -80,8 +81,7 @@ namespace Combat
             Vector3 previousPosition = transform.position;
             _elapsedTime += Time.fixedDeltaTime;
             Vector3 nextPosition = _curve.EvaluatePosition(
-                    (_elapsedTime * _moveSpeed + 10F
-                    * PlayerControls.Player.Instance.Stats.GetSkill("Bows").Modifier)
+                    (_elapsedTime * _moveSpeed)
                     / _curve.ApproximateLength);
             bool oldQueriesSetings = Physics.queriesHitTriggers;
             Physics.queriesHitTriggers = true;
