@@ -8,6 +8,7 @@ using TaskManager;
 using UnityEngine;
 using UnityEngine.Events;
 using VFX;
+using WorldUI;
 
 namespace AI
 {
@@ -21,8 +22,8 @@ namespace AI
     {
         #region Fields
 
-        [SerializeField]
-        private Attack[] _attacks;
+        [SerializeField] private Vector3 _healthBarOffset = Vector3.up;
+        [SerializeField] private Attack[] _attacks;
 
         private EntitiesDetector _detector;
         private Agent _agent;
@@ -50,6 +51,8 @@ namespace AI
             { MoveSpeedType.Chase, new(6F, 6F) },
             { MoveSpeedType.RunAway, new(8F, 8F) }
         };
+
+        private static AIHealthBar _healthBarPrefab;
 
         #endregion Fields
 
@@ -152,6 +155,7 @@ namespace AI
             _stats = GetComponent<Stats>();
             SetSpeed(MoveSpeedType.Walk);
             InitializeHealth();
+            InitializeHealthBar();
             InitializeDetector();
             InitializeAttacks();
             CreateAttitudeModels();
@@ -367,6 +371,15 @@ namespace AI
             _health = GetComponent<Health>();
             _health.Receiver = this;
             _health.GotHit.AddListener(OnGotHit);
+        }
+
+        private void InitializeHealthBar()
+        {
+            var healthBar = Instantiate(
+                _healthBarPrefab
+                ??= Resources.Load<AIHealthBar>("Prefabs/WorldUI/AIHealthBar"),
+                transform);
+            healthBar.Initialize(_stats, _healthBarOffset);
         }
 
         private void InitializeDetector()
