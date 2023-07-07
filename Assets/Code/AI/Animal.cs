@@ -16,6 +16,7 @@ namespace AI
     [RequireComponent(typeof(Agent))]
     [RequireComponent(typeof(Health))]
     [RequireComponent(typeof(Animator))]
+    [RequireComponent(typeof(Stats))]
     public abstract class Animal : MonoBehaviour, IDetectable
     {
         #region Fields
@@ -27,6 +28,7 @@ namespace AI
         private Agent _agent;
         private Health _health;
         private Animator _animator;
+        private Stats _stats;
         private System.Random _random = new();
         private List<Attitude> _attitudes = new();
         private List<AttitudeModel> _attitudeModels = new();
@@ -54,13 +56,10 @@ namespace AI
         #region Properties
 
         public UnityEvent<Hitbox> DealedHit { get; } = new();
-
         public Component Focus => HighestPriorityAttitude?.Component ?? this;
-
+        public Stats Stats => _stats;
         public IReadOnlyCollection<Attitude> Attitudes => _attitudes;
-
         public IReadOnlyCollection<Attack> Attacks => _attacks;
-
         public float MaxDetectingDistance => _detector.MaxDetectingDistance;
 
         public MoveSpeedType MoveSpeed
@@ -150,7 +149,7 @@ namespace AI
         {
             _agent = GetComponent<Agent>();
             _animator = GetComponent<Animator>();
-            //RandomizeSpeedValues();
+            _stats = GetComponent<Stats>();
             SetSpeed(MoveSpeedType.Walk);
             InitializeHealth();
             InitializeDetector();
@@ -351,7 +350,9 @@ namespace AI
             if (_isBeingDestroyed)
                 return;
             _knockbackTask?.Stop();
-            if (_health.CurrentHealth <= 0F)
+            _stats.CurrentHP -= attack.Damage;
+            _stats.CurrentHP = _stats.CurrentHP.Clamp(0F, _stats.MaxHP);
+            if (_stats.CurrentHP <= 0F)
             {
                 Effect.Spawn("DeathBloodCloud", transform.position + Vector3.up);
                 Effect.Spawn("DeathBloodSplatter", transform.position + Vector3.up);

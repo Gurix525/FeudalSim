@@ -38,7 +38,7 @@ public class Stats : MonoBehaviour
     public float CurrentHP
     {
         get => _currentHP;
-        private set
+        set
         {
             _currentHP = value;
             StatsChanged.Invoke(this);
@@ -58,7 +58,7 @@ public class Stats : MonoBehaviour
     public float CurrentStamina
     {
         get => _currentStamina;
-        private set
+        set
         {
             _currentStamina = value;
             StatsChanged.Invoke(this);
