@@ -143,11 +143,6 @@ namespace Input
             Action.canceled -= callback;
         }
 
-        internal void AddListener(object enableControlMode)
-        {
-            throw new NotImplementedException();
-        }
-
         #endregion Private
     }
 }

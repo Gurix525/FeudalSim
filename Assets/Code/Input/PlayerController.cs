@@ -48,6 +48,7 @@ namespace Input
         public static ModifiableInputAction MainLoad { get; } = new();
         public static ModifiableInputAction MainScroll { get; } = new();
         public static ModifiableInputAction MainMiddleMouseButton { get; } = new();
+        public static ModifiableInputAction MainSkills { get; } = new();
 
         // QuickMenu
         public static ModifiableInputAction QuickMenuQuickMenu { get; } = new();
@@ -104,6 +105,7 @@ namespace Input
             MainLoad.Action = Main.FindAction("Load");
             MainScroll.Action = Main.FindAction("Scroll");
             MainMiddleMouseButton.Action = Main.FindAction("MiddleMouseButton");
+            MainSkills.Action = Main.FindAction("Skills");
 
             // QuickMenu
             QuickMenuQuickMenu.Action = QuickMenu.FindAction("QuickMenu");

@@ -22,18 +22,60 @@ public class Stats : MonoBehaviour
         { "Parrying", Skill.Zero }
     };
 
+    private float _currentHP = 10F;
+    private float _maxHP = 10F;
+    private float _currentStamina = 10F;
+    private float _maxStamina = 10F;
+
     #endregion Fields
 
     #region Properties
 
-    public UnityEvent<IReadOnlyDictionary<string, Skill>> StatsChanged { get; } = new();
+    public UnityEvent<Stats> StatsChanged { get; } = new();
 
     public UnityEvent<string, Skill> SkillLevelIncreased { get; } = new();
 
-    [field: SerializeField] public float CurrentHP { get; private set; }
-    [field: SerializeField] public float MaxHP { get; private set; }
-    [field: SerializeField] public float CurrentStamina { get; private set; }
-    [field: SerializeField] public float MaxStamina { get; private set; }
+    public float CurrentHP
+    {
+        get => _currentHP;
+        private set
+        {
+            _currentHP = value;
+            StatsChanged.Invoke(this);
+        }
+    }
+
+    public float MaxHP
+    {
+        get => _maxHP;
+        private set
+        {
+            _maxHP = value;
+            StatsChanged.Invoke(this);
+        }
+    }
+
+    public float CurrentStamina
+    {
+        get => _currentStamina;
+        private set
+        {
+            _currentStamina = value;
+            StatsChanged.Invoke(this);
+        }
+    }
+
+    public float MaxStamina
+    {
+        get => _maxStamina;
+        private set
+        {
+            _maxStamina = value;
+            StatsChanged.Invoke(this);
+        }
+    }
+
+    public IReadOnlyDictionary<string, Skill> Skills => _skills;
 
     #endregion Properties
 
@@ -41,7 +83,7 @@ public class Stats : MonoBehaviour
 
     public void ReloadStats()
     {
-        StatsChanged.Invoke(_skills);
+        StatsChanged.Invoke(this);
     }
 
     public Skill GetSkill(string skill)
@@ -56,7 +98,7 @@ public class Stats : MonoBehaviour
         int currentLevel = _skills[skill].Level;
         if (currentLevel > previousLevel)
             SkillLevelIncreased.Invoke(skill, _skills[skill]);
-        StatsChanged.Invoke(_skills);
+        StatsChanged.Invoke(this);
     }
 
     #endregion Public
@@ -65,7 +107,7 @@ public class Stats : MonoBehaviour
 
     private void Start()
     {
-        StatsChanged.Invoke(_skills);
+        StatsChanged.Invoke(this);
     }
 
     #endregion Unity

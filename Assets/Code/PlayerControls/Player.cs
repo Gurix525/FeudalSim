@@ -42,9 +42,9 @@ namespace PlayerControls
         public LeftHandItemHook LeftHandItemHook => _leftHandItemHook;
         public RightHandItemHook RightHandItemHook => _rightHandItemHook;
 
-        public static Vector3 Position => Instance.transform.position;
-
         public static Player Instance { get; set; }
+
+        public static Vector3 Position => Instance.transform.position;
 
         #endregion Properties
 
