@@ -1,6 +1,8 @@
+using System;
 using AI;
 using Combat;
 using Controls;
+using Extensions;
 using Input;
 using StarterAssets;
 using UnityEngine;
@@ -53,8 +55,7 @@ namespace PlayerControls
         private void Awake()
         {
             Instance = this;
-            _health = GetComponent<Health>();
-            _health.Receiver = this;
+            InitializeHealth();
         }
 
         private void OnEnable()
@@ -100,6 +101,23 @@ namespace PlayerControls
         private void OnRightMouseButtonRelase(CallbackContext context)
         {
             Cursor.Action.OnRightMouseButtonRelase();
+        }
+
+        private void InitializeHealth()
+        {
+            _health = GetComponent<Health>();
+            _health.Receiver = this;
+            _health.GotHit.AddListener(OnGotHit);
+        }
+
+        private void OnGotHit(Attack attack)
+        {
+            _stats.CurrentHP -= attack.Damage;
+            if (_stats.CurrentHP <= 0F)
+            {
+                Debug.Log("Zabito gracza.");
+                _stats.CurrentHP = _stats.MaxHP;
+            }
         }
 
         #endregion Private

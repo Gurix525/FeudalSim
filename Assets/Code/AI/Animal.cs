@@ -351,7 +351,6 @@ namespace AI
                 return;
             _knockbackTask?.Stop();
             _stats.CurrentHP -= attack.Damage;
-            _stats.CurrentHP = _stats.CurrentHP.Clamp(0F, _stats.MaxHP);
             if (_stats.CurrentHP <= 0F)
             {
                 Effect.Spawn("DeathBloodCloud", transform.position + Vector3.up);

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using Extensions;
 using PlayerControls;
 using Unity.VisualScripting.Antlr3.Runtime.Misc;
 using UnityEngine;
@@ -40,7 +41,7 @@ public class Stats : MonoBehaviour
         get => _currentHP;
         set
         {
-            _currentHP = value;
+            _currentHP = value.Clamp(0F, MaxHP);
             StatsChanged.Invoke(this);
         }
     }
