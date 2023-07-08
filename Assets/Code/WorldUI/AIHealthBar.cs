@@ -10,12 +10,13 @@ namespace WorldUI
         [SerializeField] private Image _fill;
         [SerializeField] private Image _background;
 
-        private float _timeSinceHealthChange;
+        private float _timeSinceHealthChange = 5F;
 
         public void Initialize(Stats stats, Vector3 offset)
         {
             transform.localPosition = offset;
             stats.StatsChanged.AddListener(SetFill);
+            StartCoroutine(DisableBar());
         }
 
         private void FixedUpdate()
@@ -37,6 +38,12 @@ namespace WorldUI
         {
             _fill.fillAmount = stats.CurrentHP / stats.MaxHP;
             _timeSinceHealthChange = 0F;
+        }
+
+        private IEnumerator DisableBar()
+        {
+            yield return null;
+            _timeSinceHealthChange = 5F;
         }
     }
 }
