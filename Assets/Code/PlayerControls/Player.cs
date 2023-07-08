@@ -7,6 +7,7 @@ using Input;
 using StarterAssets;
 using UnityEngine;
 using UnityEngine.Events;
+using VFX;
 using static UnityEngine.InputSystem.InputAction;
 using Cursor = Controls.Cursor;
 
@@ -38,7 +39,7 @@ namespace PlayerControls
         #region Properties
 
         public PlayerMovement PlayerMovement => _playerMovement ??= GetComponent<PlayerMovement>();
-        public Stats Stats => _stats ??= GetComponent<Stats>();
+        public Stats Stats => _stats;
         public PlayerVFX VFX => _playerVFX ??= GetComponent<PlayerVFX>();
         public AimCurve AimCurve => _aimCurve ??= GetComponent<AimCurve>();
         public LeftHandItemHook LeftHandItemHook => _leftHandItemHook;
@@ -55,6 +56,7 @@ namespace PlayerControls
         private void Awake()
         {
             Instance = this;
+            InitializeStats();
             InitializeHealth();
         }
 
@@ -101,6 +103,17 @@ namespace PlayerControls
         private void OnRightMouseButtonRelase(CallbackContext context)
         {
             Cursor.Action.OnRightMouseButtonRelase();
+        }
+
+        private void InitializeStats()
+        {
+            _stats = GetComponent<Stats>();
+            _stats.SkillLevelIncreased.AddListener(SpawnSkillEffect);
+        }
+
+        private void SpawnSkillEffect(string name, Skill skill)
+        {
+            Effect.Spawn("SkillLevelUp", Vector3.up, transform);
         }
 
         private void InitializeHealth()

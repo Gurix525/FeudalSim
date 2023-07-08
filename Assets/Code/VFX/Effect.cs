@@ -30,14 +30,15 @@ namespace VFX
 
         #region Public
 
-        public static Effect Spawn(string name, Vector3 position)
+        public static Effect Spawn(string name, Vector3 position, Transform parent = null)
         {
             LoadPrefab(name);
             SpawnPool(name);
             Effect effect = _pools[name].Pull();
             effect.EffectFinished.AddListener(ReturnToPool);
             effect.name = name;
-            effect.transform.position = position;
+            effect.transform.SetParent(parent);
+            effect.transform.localPosition = position;
             effect.gameObject.SetActive(true);
             return effect;
         }
