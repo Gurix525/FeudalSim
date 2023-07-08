@@ -7,8 +7,8 @@ namespace World
 {
     public class GrassInstancer : MonoBehaviour
     {
-        [SerializeField] private float _noiseScale = 1F;
-        [SerializeField] private float _noiseMinimum = 0.5F;
+        [SerializeField] private float _noiseScale = 0.2F;
+        [SerializeField] private float _noiseMinimum = 0.25F;
 
         [SerializeField] private Transform _player;
         [SerializeField] private Mesh _mesh;
