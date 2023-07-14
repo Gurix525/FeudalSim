@@ -35,6 +35,7 @@ namespace PlayerControls
         private Animator _animator;
 
         private bool _isCursorRaycastNull = true;
+        private bool _isSprintPressed = false;
 
         private int _groundMask;
         private int _bowWalkingLayerIndex;
@@ -72,11 +73,13 @@ namespace PlayerControls
 
         #region Conditions
 
+        public bool HasStamina => Player.Instance.Stats.CurrentStamina > 0F;
+
         public bool CanMove => !IsPendingAttack;
 
-        public bool CanJump => IsGrounded && !IsPendingAttack && !IsStringingBow;
+        public bool CanJump => IsGrounded && !IsPendingAttack && !IsStringingBow && HasStamina;
 
-        public bool CanSprint => !IsStringingBow && IsGrounded;
+        public bool CanSprint => !IsStringingBow && IsGrounded && HasStamina;
 
         public bool IsGravityEnabled => true;
 
@@ -107,6 +110,8 @@ namespace PlayerControls
         private void OnEnable()
         {
             PlayerController.MainJump.AddListener(ActionType.Started, Jump);
+            PlayerController.MainRun.AddListener(ActionType.Started, SetSprintPressed);
+            Player.Instance.Stats.StaminaDepleted.AddListener(SetSprintUnpressed);
         }
 
         private void Update()
@@ -129,6 +134,7 @@ namespace PlayerControls
         private void OnDisable()
         {
             PlayerController.MainJump.RemoveListener(ActionType.Started, Jump);
+            PlayerController.MainRun.RemoveListener(ActionType.Started, SetSprintPressed);
         }
 
         private void OnAnimatorIK(int layerIndex)
@@ -156,14 +162,21 @@ namespace PlayerControls
             Vector3 result = new Vector3(fullDirection.x, y, fullDirection.z);
             Quaternion rotation = Quaternion.AngleAxis(cameraAngle, Vector3.up);
             _rigidbody.velocity = rotation * result;
-            ImproveRunningSkill(direction);
+            if (direction != Vector2.zero && IsSprinting)
+            {
+                ImproveRunningSkill(direction);
+                SubtractStamina(Time.fixedDeltaTime * 20F);
+            }
         }
 
         private void ImproveRunningSkill(Vector2 direction)
         {
-            if (direction == Vector2.zero || !IsSprinting)
-                return;
             Player.Instance.Stats.AddSkill("Running", 0.25F * Time.fixedDeltaTime);
+        }
+
+        private void SubtractStamina(float stamina)
+        {
+            Player.Instance.Stats.CurrentStamina -= stamina;
         }
 
         private void DoGravity()
@@ -212,7 +225,7 @@ namespace PlayerControls
         private void CheckSprint()
         {
             if (CanSprint)
-                if (PlayerController.MainRun.IsPressed())
+                if (_isSprintPressed)
                 {
                     IsSprinting = true;
                     return;
@@ -236,6 +249,25 @@ namespace PlayerControls
                 return;
             _rigidbody.AddForce(Vector3.up * JumpForce, ForceMode.VelocityChange);
             Player.Instance.Stats.AddSkill("Jumping", 1F);
+            SubtractStamina(15F);
+        }
+
+        private void SetSprintPressed(InputAction.CallbackContext context)
+        {
+            _isSprintPressed = true;
+            PlayerController.MainRun.AddListener(ActionType.Canceled, SetSprintUnpressed);
+        }
+
+        private void SetSprintUnpressed(InputAction.CallbackContext context)
+        {
+            _isSprintPressed = false;
+            PlayerController.MainRun.RemoveListener(ActionType.Canceled, SetSprintUnpressed);
+        }
+
+        private void SetSprintUnpressed()
+        {
+            _isSprintPressed = false;
+            PlayerController.MainRun.RemoveListener(ActionType.Canceled, SetSprintUnpressed);
         }
 
         #endregion Private

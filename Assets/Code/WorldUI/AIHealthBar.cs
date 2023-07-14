@@ -10,19 +10,20 @@ namespace WorldUI
         [SerializeField] private Image _fill;
         [SerializeField] private Image _background;
 
+        private float _barVisibleTime = 5F;
         private float _timeSinceHealthChange = 5F;
 
         public void Initialize(Stats stats, Vector3 offset)
         {
             transform.localPosition = offset;
             stats.StatsChanged.AddListener(SetFill);
-            StartCoroutine(DisableBar());
+            //StartCoroutine(DisableBar());
         }
 
         private void FixedUpdate()
         {
             _timeSinceHealthChange += Time.fixedDeltaTime;
-            if (_timeSinceHealthChange <= 5F)
+            if (_timeSinceHealthChange <= _barVisibleTime)
             {
                 _fill.gameObject.SetActive(true);
                 _background.gameObject.SetActive(true);
@@ -37,13 +38,14 @@ namespace WorldUI
         private void SetFill(Stats stats)
         {
             _fill.fillAmount = stats.CurrentHP / stats.MaxHP;
-            _timeSinceHealthChange = 0F;
+            if (_fill.fillAmount < 1F)
+                _timeSinceHealthChange = 0F;
         }
 
-        private IEnumerator DisableBar()
-        {
-            yield return null;
-            _timeSinceHealthChange = 5F;
-        }
+        //private IEnumerator DisableBar()
+        //{
+        //    yield return null;
+        //    _timeSinceHealthChange = _barVisibleTime;
+        //}
     }
 }
