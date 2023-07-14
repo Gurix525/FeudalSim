@@ -26,6 +26,8 @@ namespace Items
 
         public override void OnLeftMouseButton()
         {
+            if (_player.Stats.CurrentStamina <= 0F)
+                return;
             if (IsLeftClickPermitted)
             {
                 _player.AimCurve.Enable();
@@ -59,6 +61,7 @@ namespace Items
                         Randomization * (4F + 4F * bowsModifier),
                         20F + 10F * bowsModifier,
                         IncreaseBowsSkill);
+                    _player.Stats.CurrentStamina -= 20F;
                 }
             }
             _player.AimCurve.Disable();

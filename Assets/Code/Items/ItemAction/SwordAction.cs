@@ -31,6 +31,8 @@ namespace Items
 
         public override void OnLeftMouseButton()
         {
+            if (_player.Stats.CurrentStamina <= 0F)
+                return;
             if (!IsLeftClickPermitted)
             {
                 if (_playerMovement.IsPendingAttack)
@@ -70,6 +72,7 @@ namespace Items
             CreateAttack(direction);
             TriggerVFX();
             MovePlayer(direction);
+            _player.Stats.CurrentStamina -= 20F;
         }
 
         private void CreateAttack(Vector3 direction)
