@@ -81,7 +81,7 @@ namespace Combat
             Effect.Spawn("Hit", contact);
             Effect.Spawn("BloodCloud", contact);
             Effect.Spawn("BloodSplatter", contact);
-            Popup.Spawn("Damage", contact, Damage.ToString("0.0"));
+            Popup.Spawn("Damage", contact, ((int)Damage).ToString());
         }
 
         #endregion Private
