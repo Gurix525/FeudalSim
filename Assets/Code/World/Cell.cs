@@ -8,8 +8,6 @@ namespace World
     {
         #region Properties
 
-        private static Color _grassVerticeColor = new Color(0F, 0F, 0F, 0F);
-
         public Vector2Int Position { get; private set; }
         public int Height { get; private set; }
         public float Steepness { get; set; }
@@ -22,8 +20,11 @@ namespace World
         public bool HasGrass => !(
             Steepness > 0.4F
             || Height < 1F
-            || Color != _grassVerticeColor
+            || Color != GrassVerticeColor
             || FloorHeights.Contains(Height));
+
+        public static Color GrassVerticeColor { get; } = new Color(0.75F, 1F, 0.4F, 1F).linear;
+        public static Color SandVerticeColor { get; } = new Color(1F, 0.95F, 0.85F).linear;
 
         #endregion Properties
 

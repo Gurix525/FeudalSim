@@ -7,8 +7,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Terrain
-  m_Shader: {fileID: -6465566751694194690, guid: cf0410fda4fb69b4eac4fe6878d009c0,
+  m_Name: OldTerrain
+  m_Shader: {fileID: -6465566751694194690, guid: d7c56d1b30f659442a32f05768a2f453,
     type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
