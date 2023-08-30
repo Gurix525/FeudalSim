@@ -51,7 +51,7 @@ namespace World
             if (hasToChangeColor)
             {
                 foreach (var neighbour in neighbours)
-                    neighbour.Color = Color.red;
+                    neighbour.Color = Cell.PathVerticeColor;
             }
             if (hasToReload)
             {

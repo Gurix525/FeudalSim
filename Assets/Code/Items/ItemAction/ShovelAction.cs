@@ -73,13 +73,13 @@ namespace Items
         private void Plow()
         {
             if (Cursor.CellPosition != null)
-                World.Terrain.ChangeColor((Vector2Int)Cursor.CellPosition, Color.green);
+                World.Terrain.ChangeColor((Vector2Int)Cursor.CellPosition, Cell.PathVerticeColor);
         }
 
         private void Pathen()
         {
             if (Cursor.CellPosition != null)
-                World.Terrain.ChangeColor((Vector2Int)Cursor.CellPosition, Color.red);
+                World.Terrain.ChangeColor((Vector2Int)Cursor.CellPosition, Cell.PathVerticeColor);
         }
 
         private void ModifyTerrainHeight()

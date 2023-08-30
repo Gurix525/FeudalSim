@@ -25,6 +25,7 @@ namespace World
 
         public static Color GrassVerticeColor { get; } = new Color(0.75F, 1F, 0.4F, 1F).linear;
         public static Color SandVerticeColor { get; } = new Color(1F, 0.95F, 0.85F).linear;
+        public static Color PathVerticeColor { get; } = new Color(0.4F, 0.3F, 0.2F).linear;
 
         #endregion Properties
 
