@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Misc
@@ -39,11 +40,25 @@ namespace Misc
                     .Instantiate(_itemPrefab ??= Resources.Load<GameObject>(_prefabPath))
                     .GetComponent<T>();
                 item.gameObject.SetActive(false);
-                item.transform.SetParent(_pool ??= new GameObject(_itemPrefab.name + "s").transform);
-                _pool.SetParent(_parent ?? (_poolsParent ??= new GameObject("Pools").transform));
+                item.transform.SetParent(GetPool());
+                _pool.SetParent(_parent ?? (GetPoolsParent()));
             }
 
             return item;
+        }
+
+        private Transform GetPoolsParent()
+        {
+            if (_poolsParent == null)
+                _poolsParent = new GameObject("Pools").transform;
+            return _poolsParent;
+        }
+
+        private Transform GetPool()
+        {
+            if (_pool == null)
+                _pool = new GameObject(_itemPrefab.name + "s").transform;
+            return _pool;
         }
 
         public void Push(T item)

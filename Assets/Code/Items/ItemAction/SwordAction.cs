@@ -31,15 +31,15 @@ namespace Items
 
         public override void OnLeftMouseButton()
         {
-            if (_player.Stats.CurrentStamina <= 0F)
+            if (Player.Stats.CurrentStamina <= 0F)
                 return;
             if (!IsLeftClickPermitted)
             {
-                if (_playerMovement.IsPendingAttack)
+                if (PlayerMovement.IsPendingAttack)
                     _isNextAttackQueued = true;
                 return;
             }
-            _playerMovement.AttackComboNumber = 0;
+            PlayerMovement.AttackComboNumber = 0;
             Attack();
         }
 
@@ -66,25 +66,25 @@ namespace Items
             if (Cursor.ClearRaycastHit == null)
                 return;
             Vector3 direction =
-                (Cursor.ClearRaycastHit.Value.point - _player.transform.position)
+                (Cursor.ClearRaycastHit.Value.point - Player.transform.position)
                 .normalized;
-            _playerMovement.RotateToCursor();
+            PlayerMovement.RotateToCursor();
             CreateAttack(direction);
             TriggerVFX();
             MovePlayer(direction);
-            _player.Stats.CurrentStamina -= 20F;
+            Player.Stats.CurrentStamina -= 20F;
         }
 
         private void CreateAttack(Vector3 direction)
         {
-            float swordsModifier = _player.Stats.GetSkill("Swords").Modifier;
+            float swordsModifier = Player.Stats.GetSkill("Swords").Modifier;
             Attack attack = Bullet.Spawn(
-                _player,
+                Player,
                 Vector3.zero,
                 Randomization * (4F + 4F * swordsModifier),
                 _attackTime,
                 1.25F + 0.25F * swordsModifier,
-                _player.transform,
+                Player.transform,
                 false,
                 IncreaseSwordsSkill);
             attack.transform.localRotation = Quaternion.identity;
@@ -93,10 +93,10 @@ namespace Items
 
         private void TriggerVFX()
         {
-            GameObject slash = _playerMovement.AttackComboNumber switch
+            GameObject slash = PlayerMovement.AttackComboNumber switch
             {
-                0 => _player.VFX.FirstSlash,
-                _ => _player.VFX.SecondSlash
+                0 => Player.VFX.FirstSlash,
+                _ => Player.VFX.SecondSlash
             };
             slash.SetActive(false);
             slash.SetActive(true);
@@ -109,10 +109,10 @@ namespace Items
 
         private void SetPlayerVelocity(Vector3 direction)
         {
-            float ySpeed = _playerMovement.Rigidbody.velocity.y;
-            float xSpeed = direction.x * _playerMovement.SprintSpeed * _playerMovement.AttackMoveSpeedMultiplier;
-            float zSpeed = direction.z * _playerMovement.SprintSpeed * _playerMovement.AttackMoveSpeedMultiplier;
-            _playerMovement.Rigidbody.velocity = new(xSpeed, ySpeed, zSpeed);
+            float ySpeed = PlayerMovement.Rigidbody.velocity.y;
+            float xSpeed = direction.x * PlayerMovement.SprintSpeed * PlayerMovement.AttackMoveSpeedMultiplier;
+            float zSpeed = direction.z * PlayerMovement.SprintSpeed * PlayerMovement.AttackMoveSpeedMultiplier;
+            PlayerMovement.Rigidbody.velocity = new(xSpeed, ySpeed, zSpeed);
         }
 
         private void IncreaseSwordsSkill()
@@ -122,7 +122,7 @@ namespace Items
 
         private IEnumerator MovePlayerCoroutine(Vector3 direction)
         {
-            _playerMovement.IsPendingAttack = true;
+            PlayerMovement.IsPendingAttack = true;
             float elapsedTime = 0F;
             while (elapsedTime < _attackTime / 2F)
             {
@@ -140,11 +140,11 @@ namespace Items
             if (_isNextAttackQueued)
             {
                 _isNextAttackQueued = false;
-                _playerMovement.AttackComboNumber = _playerMovement.AttackComboNumber == 0 ? 1 : 0;
+                PlayerMovement.AttackComboNumber = PlayerMovement.AttackComboNumber == 0 ? 1 : 0;
                 Attack();
                 yield break;
             }
-            _playerMovement.IsPendingAttack = false;
+            PlayerMovement.IsPendingAttack = false;
         }
 
         #endregion Private

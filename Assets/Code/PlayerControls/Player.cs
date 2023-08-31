@@ -22,30 +22,30 @@ namespace PlayerControls
     {
         #region Fields
 
-        [SerializeField]
-        private RightHandItemHook _rightHandItemHook;
+        [SerializeField] private PlayerMovement _playerMovement;
+        [SerializeField] private PlayerVFX _vfx;
+        [SerializeField] private AimCurve _aimCurve;
 
-        [SerializeField]
-        private LeftHandItemHook _leftHandItemHook;
+        [SerializeField] private RightHandItemHook _rightHandItemHook;
+
+        [SerializeField] private LeftHandItemHook _leftHandItemHook;
 
         private Health _health;
-        private PlayerMovement _playerMovement;
-        private PlayerVFX _playerVFX;
-        private AimCurve _aimCurve;
         private Stats _stats;
 
         #endregion Fields
 
         #region Properties
 
-        public PlayerMovement PlayerMovement => _playerMovement ??= GetComponent<PlayerMovement>();
+        public static Player Instance { get; set; }
+
         public Stats Stats => _stats;
-        public PlayerVFX VFX => _playerVFX ??= GetComponent<PlayerVFX>();
-        public AimCurve AimCurve => _aimCurve ??= GetComponent<AimCurve>();
+        public PlayerMovement PlayerMovement => _playerMovement;
+        public PlayerVFX VFX => _vfx;
+        public AimCurve AimCurve => _aimCurve;
+
         public LeftHandItemHook LeftHandItemHook => _leftHandItemHook;
         public RightHandItemHook RightHandItemHook => _rightHandItemHook;
-
-        public static Player Instance { get; set; }
 
         public static Vector3 Position => Instance.transform.position;
 

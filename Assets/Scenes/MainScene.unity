@@ -3429,6 +3429,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5191a11cc0add3e4ebcb5e9797b5aacb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _playerMovement: {fileID: 744291015}
+  _vfx: {fileID: 744291017}
+  _aimCurve: {fileID: 744291018}
   _rightHandItemHook: {fileID: 2009601172}
   _leftHandItemHook: {fileID: 191239352}
 --- !u!95 &744291009

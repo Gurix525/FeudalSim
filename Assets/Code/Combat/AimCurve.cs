@@ -18,6 +18,9 @@ namespace Combat
 
         private LineRenderer _renderer;
 
+        private GameObject Marker => GetMarker();
+        private LineRenderer Renderer => GetLineRenderer();
+
         private Vector3 _markerPosition;
         private Vector3 _markerNormal;
 
@@ -38,30 +41,30 @@ namespace Combat
 
         public Vector3 GetNodePosition(int index)
         {
-            if (_renderer.positionCount <= index)
+            if (Renderer.positionCount <= index)
                 return Vector3.zero;
-            return _renderer.GetPosition(index);
+            return Renderer.GetPosition(index);
         }
 
         public Vector3[] GetLineNodes()
         {
             Vector3[] nodes = new Vector3[NodesCount];
-            _renderer.GetPositions(nodes);
+            Renderer.GetPositions(nodes);
             return nodes;
         }
 
         public void Enable()
         {
             IsCurveEnabled = true;
-            _renderer.enabled = true;
-            _marker.SetActive(true);
+            Renderer.enabled = true;
+            Marker.SetActive(true);
         }
 
         public void Disable()
         {
             IsCurveEnabled = false;
-            _renderer.enabled = false;
-            _marker.SetActive(false);
+            Renderer.enabled = false;
+            Marker.SetActive(false);
         }
 
         public void SetControlPoints(Vector3 start, Vector3 target, Vector3 targetNormal)
@@ -79,7 +82,7 @@ namespace Combat
         private void Awake()
         {
             _renderer = GetComponent<LineRenderer>();
-            _renderer.material.renderQueue = 3001;
+            Renderer.material.renderQueue = 3001;
         }
 
         private void Update()
@@ -90,8 +93,8 @@ namespace Combat
                 return;
             DrawLine();
             PlaceMarker();
-            _renderer.material.SetVector("_StartPosition", Curve.StartPosition);
-            _renderer.material.SetFloat("_CurveLength", Curve.ApproximateLength);
+            Renderer.material.SetVector("_StartPosition", Curve.StartPosition);
+            Renderer.material.SetFloat("_CurveLength", Curve.ApproximateLength);
         }
 
         #endregion Unity
@@ -109,14 +112,14 @@ namespace Combat
                 nodes[i] = Curve.EvaluatePosition(t);
             }
             nodes = FindEndOfCurve(nodes);
-            _renderer.positionCount = nodes.Length;
-            _renderer.SetPositions(nodes);
+            Renderer.positionCount = nodes.Length;
+            Renderer.SetPositions(nodes);
         }
 
         private void PlaceMarker()
         {
-            _marker.transform.position = _markerPosition + _markerNormal * 0.0001F;
-            _marker.transform.LookAt(_markerPosition - _markerNormal);
+            Marker.transform.position = _markerPosition + _markerNormal * 0.0001F;
+            Marker.transform.LookAt(_markerPosition - _markerNormal);
         }
 
         private Vector3[] FindEndOfCurve(Vector3[] nodes)
@@ -135,6 +138,20 @@ namespace Combat
                 }
             }
             return nodes;
+        }
+
+        private LineRenderer GetLineRenderer()
+        {
+            if (_renderer == null)
+                _renderer = GetComponent<LineRenderer>();
+            return _renderer;
+        }
+
+        private GameObject GetMarker()
+        {
+            if (_marker == null)
+                _marker = GameObject.Find("AimMarker");
+            return _marker;
         }
 
         #endregion Private

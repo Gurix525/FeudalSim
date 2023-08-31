@@ -24,15 +24,17 @@ namespace UI
             if (_nameInput.IsNameAllowed && !_isBusy)
             {
                 _isBusy = true;
-                _ = GenerateWorld();
+
+                new TaskManager.Task(GenerateWorld());
             }
         }
 
-        private async Task GenerateWorld()
+        private IEnumerator GenerateWorld()
         {
             AsyncOperation sceneLoading = SceneManager.LoadSceneAsync("MainScene", LoadSceneMode.Single);
             while (!sceneLoading.isDone)
-                await Task.Yield();
+                yield return null;
+            yield return null;
             NoiseSampler.SetSeed(_seedInput.Seed);
             GameManager.WorldName = _nameInput.Text;
             GameManager.WorldCreationTime = DateTime.Now.Ticks;

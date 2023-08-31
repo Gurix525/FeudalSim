@@ -14,8 +14,8 @@ namespace Items
         protected ILeftClickHandler _leftClickable;
         protected IRightClickHandler _rightclickable;
 
-        protected Player _player;
-        protected PlayerMovement _playerMovement;
+        protected Player Player => Player.Instance;
+        protected PlayerMovement PlayerMovement => Player.Instance.PlayerMovement;
 
         #endregion Fields
 
@@ -26,9 +26,9 @@ namespace Items
         public Sprite Sprite => GetSprite();
 
         protected bool IsLeftClickPermitted => !CursorRaycaster.IsPointerOverGameObject
-            && !_playerMovement.IsPendingAttack
-            && !_playerMovement.IsStringingBow
-            && _playerMovement.IsGrounded;
+            && !PlayerMovement.IsPendingAttack
+            && !PlayerMovement.IsStringingBow
+            && PlayerMovement.IsGrounded;
 
         #endregion Properties
 
@@ -37,8 +37,6 @@ namespace Items
         public ItemAction()
         {
             Cursor.Container.CollectionUpdated.AddListener(OnCursorCollectionUpdated);
-            _player = Player.Instance;
-            _playerMovement = _player.PlayerMovement;
         }
 
         ~ItemAction()

@@ -204,6 +204,7 @@ namespace TaskManager
             {
                 GameObject go = new GameObject("TaskManager");
                 singleton = go.AddComponent<TaskManager>();
+                DontDestroyOnLoad(go);
             }
             return new TaskState(coroutine);
         }

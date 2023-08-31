@@ -26,46 +26,46 @@ namespace Items
 
         public override void OnLeftMouseButton()
         {
-            if (_player.Stats.CurrentStamina <= 0F)
+            if (Player.Stats.CurrentStamina <= 0F)
                 return;
             if (IsLeftClickPermitted)
             {
-                _player.AimCurve.Enable();
-                _playerMovement.IsStringingBow = true;
+                Player.AimCurve.Enable();
+                PlayerMovement.IsStringingBow = true;
             }
         }
 
         public override void Update()
         {
-            if (Cursor.ClearRaycastHit == null || !_playerMovement.IsStringingBow)
+            if (Cursor.ClearRaycastHit == null || !PlayerMovement.IsStringingBow)
                 return;
             var hit = Cursor.ClearRaycastHit.Value;
-            Vector3 playerPosition = _player.transform.position;
-            _player.AimCurve.SetControlPoints(
-                _player.transform.position + Vector3.up * 1.3F,
+            Vector3 playerPosition = Player.transform.position;
+            Player.AimCurve.SetControlPoints(
+                Player.transform.position + Vector3.up * 1.3F,
                 hit.point,
                 hit.normal);
-            _playerMovement.LeftHandIKGoal = _player.AimCurve.GetNodePosition(5);
+            PlayerMovement.LeftHandIKGoal = Player.AimCurve.GetNodePosition(5);
         }
 
         public override void OnLeftMouseButtonRelase()
         {
-            if (_player.AimCurve.IsCurveEnabled)
+            if (Player.AimCurve.IsCurveEnabled)
             {
-                if (_player.AimCurve.Curve != null)
+                if (Player.AimCurve.Curve != null)
                 {
-                    float bowsModifier = _player.Stats.GetSkill("Bows").Modifier;
+                    float bowsModifier = Player.Stats.GetSkill("Bows").Modifier;
                     Arrow.Spawn(
-                        _player.AimCurve.Curve,
-                        _player,
+                        Player.AimCurve.Curve,
+                        Player,
                         Randomization * (4F + 4F * bowsModifier),
                         20F + 10F * bowsModifier,
                         IncreaseBowsSkill);
-                    _player.Stats.CurrentStamina -= 20F;
+                    Player.Stats.CurrentStamina -= 20F;
                 }
             }
-            _player.AimCurve.Disable();
-            _playerMovement.IsStringingBow = false;
+            Player.AimCurve.Disable();
+            PlayerMovement.IsStringingBow = false;
         }
 
         public override void OnRightMouseButton()
