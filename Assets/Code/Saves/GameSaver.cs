@@ -16,6 +16,15 @@ namespace Saves
 
         #endregion Fields
 
+        #region Public
+
+        public void SaveGame()
+        {
+            SaveGame(new());
+        }
+
+        #endregion Public
+
         #region Unity
 
         private void Awake()

@@ -20,6 +20,7 @@ namespace Input
 
         public static InputActionMap Main { get; private set; }
         public static InputActionMap QuickMenu { get; private set; }
+        public static InputActionMap PauseMenu { get; private set; }
 
         // Main
         public static ModifiableInputAction MainMove { get; } = new();
@@ -33,6 +34,7 @@ namespace Input
         public static ModifiableInputAction MainEscape { get; } = new();
         public static ModifiableInputAction MainMouseDelta { get; } = new();
         public static ModifiableInputAction MainQuickMenu { get; } = new();
+        public static ModifiableInputAction MainPauseMenu { get; } = new();
         public static ModifiableInputAction MainControl { get; } = new();
         public static ModifiableInputAction MainAlt { get; } = new();
         public static ModifiableInputAction MainTab { get; } = new();
@@ -55,6 +57,11 @@ namespace Input
 
         public static ModifiableInputAction QuickMenuMouseDelta { get; } = new();
 
+        // PauseMenu
+        public static ModifiableInputAction PauseMenuPauseMenu { get; } = new();
+
+        public static ModifiableInputAction PauseMenuLeftClick { get; } = new();
+
         #endregion Properties
 
         #region Public
@@ -75,8 +82,13 @@ namespace Input
             // ActionMaps initialization
             PlayerInput.SwitchCurrentActionMap("QuickMenu");
             QuickMenu = PlayerInput.currentActionMap;
+
+            PlayerInput.SwitchCurrentActionMap("PauseMenu");
+            PauseMenu = PlayerInput.currentActionMap;
+
             PlayerInput.SwitchCurrentActionMap("Main");
             Main = PlayerInput.currentActionMap;
+
             QuickMenu.Enable();
 
             // Main
@@ -90,6 +102,7 @@ namespace Input
             MainEscape.Action = Main.FindAction("Escape");
             MainMouseDelta.Action = Main.FindAction("MouseDelta");
             MainQuickMenu.Action = Main.FindAction("QuickMenu");
+            MainPauseMenu.Action = Main.FindAction("PauseMenu");
             MainControl.Action = Main.FindAction("Control");
             MainTab.Action = Main.FindAction("Tab");
             MainAlt.Action = Main.FindAction("Alt");
@@ -110,6 +123,10 @@ namespace Input
             // QuickMenu
             QuickMenuQuickMenu.Action = QuickMenu.FindAction("QuickMenu");
             QuickMenuMouseDelta.Action = QuickMenu.FindAction("MouseDelta");
+
+            // PauseMenu
+            PauseMenuPauseMenu.Action = PauseMenu.FindAction("PauseMenu");
+            PauseMenuLeftClick.Action = PauseMenu.FindAction("LeftClick");
         }
 
         #endregion Public

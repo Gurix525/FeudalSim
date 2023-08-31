@@ -93,7 +93,7 @@ namespace UI
         {
             if (Cursor.Item == null)
                 return;
-            UnityEngine.Cursor.visible = false;
+            //UnityEngine.Cursor.visible = false;
             _quickMenu.SetActive(true);
             Initialize();
             PlayerController.Main.Disable();
@@ -107,7 +107,7 @@ namespace UI
                 Closed.Invoke(_slots[_slotNumber.Value].Action, _slotNumber.Value);
                 Cursor.Container.CollectionUpdated.Invoke();
             }
-            UnityEngine.Cursor.visible = true;
+            //UnityEngine.Cursor.visible = true;
             _quickMenu.SetActive(false);
             _mouseDeltas.Clear();
             ClearSlots();
