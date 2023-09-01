@@ -32,6 +32,7 @@ namespace UI
         {
             if (IsWorldDeleted)
                 yield break;
+            LoadingScreen.Enable();
             AsyncOperation sceneLoading = SceneManager.LoadSceneAsync("MainScene", LoadSceneMode.Single);
             while (!sceneLoading.isDone)
                 yield return null;

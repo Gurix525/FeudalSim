@@ -76,6 +76,7 @@ namespace Saves
             finally
             {
                 Directory.Delete(_savePath, true);
+                LoadingScreen.Disable();
             }
         }
 

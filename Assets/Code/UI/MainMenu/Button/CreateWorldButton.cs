@@ -31,6 +31,7 @@ namespace UI
 
         private IEnumerator GenerateWorld()
         {
+            LoadingScreen.Enable();
             AsyncOperation sceneLoading = SceneManager.LoadSceneAsync("MainScene", LoadSceneMode.Single);
             while (!sceneLoading.isDone)
                 yield return null;
@@ -44,8 +45,9 @@ namespace UI
             float originHeight = World.Terrain.GetHeight(new(0F, 0F));
             var player = References.GetReference("Player");
             player.SetActive(false);
-            player.transform.position = new(0F, originHeight, 0F);
+            player.transform.position = new(0F, originHeight + 2F, 0F);
             player.SetActive(true);
+            LoadingScreen.Disable();
         }
     }
 }
