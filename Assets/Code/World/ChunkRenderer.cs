@@ -178,7 +178,8 @@ namespace World
                     if (noise == 1F)
                     {
                         float height = Terrain.GetHeight(position);
-                        if (height > 0 && height <= 6)
+                        //if (height > 0 && height <= 6)
+                        if (height > 0)
                         {
                             var tree = Instantiate(treePrefab, new Vector3(
                                 position.x, height, position.y), Quaternion.identity, Trees);
