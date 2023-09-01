@@ -16,6 +16,11 @@ namespace World
 
         #region Public
 
+        public static void Reset()
+        {
+            Chunks.Clear();
+        }
+
         public static void ModifyHeight(
             Vector2Int cellPosition,
             int deltaHeight,

@@ -36,6 +36,7 @@ public class LoadingScreen : MonoBehaviour
             _instance = this;
             DontDestroyOnLoad(gameObject);
         }
+        GetComponent<Canvas>().sortingOrder = 1000;
         gameObject.SetActive(false);
     }
 

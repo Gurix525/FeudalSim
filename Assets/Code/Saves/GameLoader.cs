@@ -86,6 +86,7 @@ namespace Saves
 
         private void LoadWorld()
         {
+            Terrain.Reset();
             WorldInfo worldInfo = JsonUtility.FromJson<WorldInfo>(
                 File.ReadAllText(Path.Combine(_savePath, "World.txt")));
             NoiseSampler.SetSeed(worldInfo.Seed);
