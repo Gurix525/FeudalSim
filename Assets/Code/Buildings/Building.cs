@@ -95,22 +95,22 @@ namespace Buildings
 
         #region Unity
 
-        private void OnMouseEnter()
-        {
-            Cursor.Action.OnMouseEnter(this);
-            Cursor.Container.CollectionUpdated.AddListener(ResetItemAction);
-        }
+        //private void OnMouseEnter()
+        //{
+        //    Cursor.Action.OnMouseEnter(this);
+        //    Cursor.Container.CollectionUpdated.AddListener(ResetItemAction);
+        //}
 
-        private void OnMouseOver()
-        {
-            Cursor.Action.OnMouseOver(this);
-        }
+        //private void OnMouseOver()
+        //{
+        //    Cursor.Action.OnMouseOver(this);
+        //}
 
-        private void OnMouseExit()
-        {
-            Cursor.Action.OnMouseExit(this);
-            Cursor.Container.CollectionUpdated.RemoveListener(ResetItemAction);
-        }
+        //private void OnMouseExit()
+        //{
+        //    Cursor.Action.OnMouseExit(this);
+        //    Cursor.Container.CollectionUpdated.RemoveListener(ResetItemAction);
+        //}
 
         #endregion Unity
 

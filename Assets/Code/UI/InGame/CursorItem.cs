@@ -31,10 +31,10 @@ namespace UI
                 _image.enabled = false;
                 return;
             }
-            if (Cursor.Item.MaxStack == 1)
-                _text.text = string.Empty;
-            else
-                _text.text = Cursor.Item.Count.ToString();
+            //if (Cursor.Item.MaxStack == 1)
+            //    _text.text = string.Empty;
+            //else
+            _text.text = Cursor.Item.Count.ToString();
             _image.sprite = Cursor.Item.Sprite;
             _image.enabled = true;
         }

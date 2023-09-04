@@ -36,10 +36,6 @@ namespace Controls
         public static Item Item =>
             Container[0] ?? HotbarItem;
 
-        public static ItemAction Action => IsNoActionActive
-            ? ItemAction.NoAction
-            : (Item?.Action ?? ItemAction.NoAction);
-
         /// <summary>
         /// Do użycia w normalnych warunkach, jeśli potrzeba rzucić raycast
         /// w danej chwili to użyć CurrentRaycastHit

@@ -109,10 +109,10 @@ namespace UI
                 _image.enabled = false;
                 return;
             }
-            if (_container[_slotIndex].MaxStack == 1)
-                _text.text = string.Empty;
-            else
-                _text.text = _container[_slotIndex].Count.ToString();
+            //if (_container[_slotIndex].Count == 1)
+            //    _text.text = string.Empty;
+            //else
+            _text.text = _container[_slotIndex].Count.ToString();
             _image.sprite = _container[_slotIndex].Sprite;
             _image.enabled = true;
         }

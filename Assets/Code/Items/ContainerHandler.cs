@@ -86,16 +86,16 @@ namespace Items
                 HideContainer(new());
         }
 
-        private void OnMouseOver()
-        {
-            _isPointerOverGameObject = CursorRaycaster.IsPointerOverGameObject;
-            Cursor.Action.OnMouseOver(this);
-        }
+        //private void OnMouseOver()
+        //{
+        //    _isPointerOverGameObject = CursorRaycaster.IsPointerOverGameObject;
+        //    //Cursor.Action.OnMouseOver(this);
+        //}
 
-        private void OnMouseExit()
-        {
-            Cursor.Action.OnMouseExit(this);
-        }
+        //private void OnMouseExit()
+        //{
+        //    Cursor.Action.OnMouseExit(this);
+        //}
 
         private void OnDestroy()
         {

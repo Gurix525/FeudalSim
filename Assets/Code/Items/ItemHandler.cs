@@ -55,9 +55,7 @@ namespace Items
             }
             if (Cursor.Item.Name == Item.Name)
             {
-                int delta = Mathf.Min(Item.Count, Item.MaxStack - Cursor.Item.Count);
-                if (delta != 0)
-                    Cursor.Container.InsertAt(0, Container.ExtractAt(0, delta));
+                Cursor.Container.InsertAt(0, Container.ExtractAt(0));
             }
             if (Cursor.IsNoActionActive)
                 Equipment.Insert(Item);
@@ -71,48 +69,53 @@ namespace Items
 
         public void OnRightMouseButton()
         {
-            if (Item == null)
-                return;
-            if (Cursor.Item == null)
-            {
-                Cursor.Container.InsertAt(0, Container.ExtractAt(0, 1));
-                if (Item == null)
-                    Destroy(gameObject);
-                return;
-            }
-            if (Cursor.Item.Name == Item.Name)
-            {
-                if (Cursor.Item.Count < Item.MaxStack)
-                {
-                    Cursor.Container.InsertAt(0, Container.ExtractAt(0, 1));
-                }
-                else
-                {
-                    var item = Container.ExtractAt(0, 1);
-                    Equipment.Insert(item);
-                    if (item.Count > 0)
-                        Container.InsertAt(0, item);
-                }
-                if (Item == null)
-                    Destroy(gameObject);
-                return;
-            }
-            if (Cursor.IsNoActionActive)
-            {
-                var item = Container.ExtractAt(0, 1);
-                if (item == null)
-                    return;
-                Equipment.Insert(item);
-                if (item.Count > 0)
-                    Container.InsertAt(0, item);
-                if (Item != null)
-                    if (Item.Count == 0)
-                        Container[0] = null;
-                if (Item == null)
-                    Destroy(gameObject);
-            }
-            TerrainRenderer.MarkNavMeshToReload();
+            throw new System.NotImplementedException();
         }
+
+        //public void OnRightMouseButton()
+        //{
+        //    if (Item == null)
+        //        return;
+        //    if (Cursor.Item == null)
+        //    {
+        //        Cursor.Container.InsertAt(0, Container.ExtractAt(0, 1));
+        //        if (Item == null)
+        //            Destroy(gameObject);
+        //        return;
+        //    }
+        //    if (Cursor.Item.Name == Item.Name)
+        //    {
+        //        if (Cursor.Item.Count < Item.MaxStack)
+        //        {
+        //            Cursor.Container.InsertAt(0, Container.ExtractAt(0, 1));
+        //        }
+        //        else
+        //        {
+        //            var item = Container.ExtractAt(0, 1);
+        //            Equipment.Insert(item);
+        //            if (item.Count > 0)
+        //                Container.InsertAt(0, item);
+        //        }
+        //        if (Item == null)
+        //            Destroy(gameObject);
+        //        return;
+        //    }
+        //    if (Cursor.IsNoActionActive)
+        //    {
+        //        var item = Container.ExtractAt(0, 1);
+        //        if (item == null)
+        //            return;
+        //        Equipment.Insert(item);
+        //        if (item.Count > 0)
+        //            Container.InsertAt(0, item);
+        //        if (Item != null)
+        //            if (Item.Count == 0)
+        //                Container[0] = null;
+        //        if (Item == null)
+        //            Destroy(gameObject);
+        //    }
+        //    TerrainRenderer.MarkNavMeshToReload();
+        //}
 
         public void EnableOutline()
         {

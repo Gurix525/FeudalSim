@@ -117,41 +117,41 @@ namespace Items
             CollectionUpdated.Invoke();
         }
 
-        public void OnRightMouseButton(int slotIndex)
-        {
-            if (!IsArmorMatchingSlot(Cursor.Container[0], slotIndex))
-                return;
-            Item thisItem = ExtractAt(slotIndex);
-            Item cursorItem = Cursor.Container.ExtractAt(0);
-            if (thisItem == null && cursorItem == null)
-                return;
-            if (thisItem != null && cursorItem == null)
-            {
-                int delta = thisItem.Count / 2 + thisItem.Count % 2;
-                thisItem.Count -= delta;
-                Cursor.Container.InsertAt(0, thisItem.Clone(delta));
-                if (thisItem.Count == 0)
-                    thisItem = null;
-                InsertAt(slotIndex, thisItem);
-                CollectionUpdated.Invoke();
-                return;
-            }
-            if (thisItem == null || (thisItem.Name == cursorItem.Name && thisItem.Count < thisItem.MaxStack))
-            {
-                var change = cursorItem.Clone(1);
-                cursorItem.Count -= 1;
-                if (cursorItem.Count == 0)
-                    cursorItem = null;
-                InsertAt(slotIndex, thisItem);
-                InsertAt(slotIndex, change);
-                Cursor.Container.InsertAt(0, cursorItem);
-                CollectionUpdated.Invoke();
-                return;
-            }
-            InsertAt(slotIndex, thisItem);
-            Cursor.Container.InsertAt(0, cursorItem);
-            OnLeftMouseButton(slotIndex);
-        }
+        //public void OnRightMouseButton(int slotIndex)
+        //{
+        //    if (!IsArmorMatchingSlot(Cursor.Container[0], slotIndex))
+        //        return;
+        //    Item thisItem = ExtractAt(slotIndex);
+        //    Item cursorItem = Cursor.Container.ExtractAt(0);
+        //    if (thisItem == null && cursorItem == null)
+        //        return;
+        //    if (thisItem != null && cursorItem == null)
+        //    {
+        //        int delta = thisItem.Count / 2 + thisItem.Count % 2;
+        //        thisItem.Count -= delta;
+        //        Cursor.Container.InsertAt(0, thisItem.Clone(delta));
+        //        if (thisItem.Count == 0)
+        //            thisItem = null;
+        //        InsertAt(slotIndex, thisItem);
+        //        CollectionUpdated.Invoke();
+        //        return;
+        //    }
+        //    if (thisItem == null || thisItem.Name == cursorItem.Name)
+        //    {
+        //        var change = cursorItem.Clone(1);
+        //        cursorItem.Count -= 1;
+        //        if (cursorItem.Count == 0)
+        //            cursorItem = null;
+        //        InsertAt(slotIndex, thisItem);
+        //        InsertAt(slotIndex, change);
+        //        Cursor.Container.InsertAt(0, cursorItem);
+        //        CollectionUpdated.Invoke();
+        //        return;
+        //    }
+        //    InsertAt(slotIndex, thisItem);
+        //    Cursor.Container.InsertAt(0, cursorItem);
+        //    OnLeftMouseButton(slotIndex);
+        //}
 
         public void Sort(bool hasToStack = true)
         {
@@ -193,11 +193,10 @@ namespace Items
                 _items[index] = item.Clone();
                 item.Count = 0;
             }
-            else if (_items[index].Name == item.Name && _items[index].Count < item.MaxStack)
+            else if (_items[index].Name == item.Name)
             {
-                int delta = Math.Min(item.MaxStack - _items[index].Count, item.Count);
-                _items[index].Count += delta;
-                item.Count -= delta;
+                _items[index].Count += item.Count;
+                item.Count = 0;
             }
             CollectionUpdated.Invoke();
         }
@@ -215,14 +214,13 @@ namespace Items
                     nullIndexes.Add(i);
                     continue;
                 }
-                if (_items[i].Name == item.Name && _items[i].Count < item.MaxStack)
+                if (_items[i].Name == item.Name)
                     itemIndexes.Add(i);
             }
             foreach (int i in itemIndexes)
             {
-                int delta = Math.Min(item.Count, item.MaxStack - _items[i].Count);
-                _items[i].Count += delta;
-                item.Count -= delta;
+                _items[i].Count += item.Count;
+                item.Count = 0;
                 CollectionUpdated.Invoke();
                 if (item.Count == 0)
                     return;
@@ -297,8 +295,7 @@ namespace Items
         {
             if (thisItem == null || otherItem == null)
                 return false;
-            return thisItem.Name == otherItem.Name
-                && thisItem.Count < thisItem.MaxStack;
+            return thisItem.Name == otherItem.Name;
         }
 
         #endregion Private
