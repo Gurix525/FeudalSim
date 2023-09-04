@@ -5,60 +5,63 @@ using System.Threading.Tasks;
 using TMPro;
 using UnityEngine;
 
-public class LoadingScreen : MonoBehaviour
+namespace UI
 {
-    [SerializeField] private TextMeshProUGUI _text;
-
-    private static bool _isActive = false;
-    private static bool _hasToStop = false;
-    private static Task _loadingTask;
-
-    private static LoadingScreen _instance;
-
-    public static void Enable()
+    public class LoadingScreen : MonoBehaviour
     {
-        _instance.gameObject.SetActive(true);
-        _hasToStop = false;
-        if (_isActive == false)
-            _loadingTask = Show();
-    }
+        [SerializeField] private TextMeshProUGUI _text;
 
-    public static void Disable()
-    {
-        _instance.gameObject.SetActive(false);
-        _hasToStop = true;
-    }
+        private static bool _isActive = false;
+        private static bool _hasToStop = false;
+        private static Task _loadingTask;
 
-    private void Awake()
-    {
-        if (_instance == null)
+        private static LoadingScreen _instance;
+
+        public static void Enable()
         {
-            _instance = this;
-            DontDestroyOnLoad(gameObject);
+            _instance.gameObject.SetActive(true);
+            _hasToStop = false;
+            if (_isActive == false)
+                _loadingTask = Show();
         }
-        GetComponent<Canvas>().sortingOrder = 1000;
-        gameObject.SetActive(false);
-    }
 
-    private static async Task Show()
-    {
-        int i = 0;
-        _isActive = true;
-        while (!_hasToStop)
+        public static void Disable()
         {
-            _instance._text.text = "Loading" + GetDots(i++);
-            await Task.Yield();
+            _instance.gameObject.SetActive(false);
+            _hasToStop = true;
         }
-        _isActive = false;
-    }
 
-    private static string GetDots(int i)
-    {
-        string dots = "";
-        for (int j = 0; j < i % 5; j++)
+        private void Awake()
         {
-            dots += ".";
+            if (_instance == null)
+            {
+                _instance = this;
+                DontDestroyOnLoad(gameObject);
+            }
+            GetComponent<Canvas>().sortingOrder = 1000;
+            gameObject.SetActive(false);
         }
-        return dots;
+
+        private static async Task Show()
+        {
+            int i = 0;
+            _isActive = true;
+            while (!_hasToStop)
+            {
+                _instance._text.text = "Loading" + GetDots(i++);
+                await Task.Yield();
+            }
+            _isActive = false;
+        }
+
+        private static string GetDots(int i)
+        {
+            string dots = "";
+            for (int j = 0; j < i % 5; j++)
+            {
+                dots += ".";
+            }
+            return dots;
+        }
     }
 }
