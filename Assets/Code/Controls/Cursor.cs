@@ -13,15 +13,26 @@ namespace Controls
         #region Fields
 
         private static Vector2Int? _cellPosition;
+        private static bool _isCombatMode;
 
         #endregion Fields
 
         #region Properties
 
-        public static bool IsCombatMode { get; set; }
+        public static bool IsCombatMode
+        {
+            get => _isCombatMode;
+            set
+            {
+                _isCombatMode = value;
+                CombatModeSwitched.Invoke(value);
+            }
+        }
+
         public static bool IsAboveTerrain { get; private set; }
         public static float AlignmentMultiplier { get; set; } = 1F / 8F;
         public static Container Container { get; } = new(1);
+        public static UnityEvent<bool> CombatModeSwitched { get; } = new();
 
         public static Vector2Int? CellPosition
         {
