@@ -10,8 +10,15 @@ namespace Controls
 {
     public static class Cursor
     {
+        #region Fields
+
         private static Vector2Int? _cellPosition;
 
+        #endregion Fields
+
+        #region Properties
+
+        public static bool IsCombatMode { get; set; }
         public static bool IsAboveTerrain { get; private set; }
         public static float AlignmentMultiplier { get; set; } = 1F / 8F;
         public static Container Container { get; } = new(1);
@@ -33,8 +40,9 @@ namespace Controls
         /// Do użycia w normalnych warunkach, jeśli potrzeba rzucić raycast
         /// w danej chwili to użyć CurrentRaycastHit
         /// </summary>
-        public static RaycastHit? RaycastHit =>
-            CursorRaycaster.Hit;
+        public static RaycastHit? RaycastHit => IsCombatMode
+            ? null
+            : CursorRaycaster.Hit;
 
         public static RaycastHit? ClearRaycastHit =>
             CursorRaycaster.ClearHit;
@@ -43,8 +51,13 @@ namespace Controls
         /// Do użycia jeśli RaycastHit przekazuje nieaktualną wartość
         /// (np. kiedy event OnMouseEnter potrzebuje aktualnego hita)
         /// </summary>
-        public static RaycastHit? CurrentRaycastHit =>
-            CursorRaycaster.CurrentHit;
+        public static RaycastHit? CurrentRaycastHit => IsCombatMode
+            ? null
+            : CursorRaycaster.CurrentHit;
+
+        #endregion Properties
+
+        #region Public
 
         public static Vector3? GetPlaneHit(Vector3 normal, Vector3 point)
         {
@@ -64,7 +77,11 @@ namespace Controls
         {
             if (CurrentRaycastHit == null)
                 return;
-            RaycastHit.Value.collider.GetComponent<ILeftClickHandler>().OnLeftMouseButton();
+            RaycastHit.Value.collider.TryGetComponent(out ILeftClickHandler handler);
+            if (handler != null)
+                handler.OnLeftMouseButton();
         }
+
+        #endregion Public
     }
 }

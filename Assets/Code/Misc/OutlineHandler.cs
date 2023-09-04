@@ -13,9 +13,7 @@ namespace Misc
 
         public void EnableOutline()
         {
-            if (Vector3.Distance(Player.Position, transform.position)
-                <= CursorRaycaster.MaxCursorDistanceFromPlayer)
-                _outline.enabled = true;
+            _outline.enabled = true;
         }
 
         public void DisableOutline()
@@ -25,12 +23,13 @@ namespace Misc
 
         private void OnMouseOver()
         {
-            _isPointerOverGameObject = CursorRaycaster.IsPointerOverGameObject;
-            if (_isPointerOverGameObject || (Vector3.Distance(Player.Position, transform.position)
-                > CursorRaycaster.MaxCursorDistanceFromPlayer))
-                DisableOutline();
-            else
-                EnableOutline();
+            if (Cursor.CurrentRaycastHit != null)
+                if (Cursor.RaycastHit.Value.collider.gameObject == gameObject)
+                {
+                    EnableOutline();
+                    return;
+                }
+            DisableOutline();
         }
 
         private void OnMouseExit()

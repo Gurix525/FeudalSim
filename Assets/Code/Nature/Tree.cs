@@ -18,7 +18,7 @@ namespace Nature
         {
             if (this == null)
                 return;
-            Item item = Item.Create("Wood", 0);
+            Item item = Item.Create("Wood", 20);
             Equipment.Insert(item);
             if (item.Count > 0)
                 item.Drop(Player.Position);
