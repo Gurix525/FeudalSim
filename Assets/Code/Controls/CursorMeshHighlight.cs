@@ -97,10 +97,10 @@ namespace Controls
 
         private void Update()
         {
-            if (Cursor.Action is not BuildAction)
-            {
-                SetMesh(null);
-            }
+            //if (Cursor.Action is not BuildAction)
+            //{
+            //    SetMesh(null);
+            //}
             if (_mesh != _previousMesh)
             {
                 _filter.mesh = _mesh;

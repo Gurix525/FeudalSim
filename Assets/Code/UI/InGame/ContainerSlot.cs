@@ -77,7 +77,7 @@ namespace UI
 
         private void OnRightMouseButton(CallbackContext context)
         {
-            _container.OnRightMouseButton(_slotIndex);
+            //_container.OnRightMouseButton(_slotIndex);
         }
 
         private void OnCollectionUpdated()

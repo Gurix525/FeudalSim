@@ -9590,7 +9590,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &2050926478
 RectTransform:
   m_ObjectHideFlags: 0
@@ -9690,6 +9690,9 @@ MonoBehaviour:
   _quickMenu: {fileID: 1768197794}
   _cursorReplacement: {fileID: 530190841}
   _item: {fileID: 1222375876}
+  _slotPrefab: {fileID: 0}
+  _slots: []
+  _resetCounter: 0
 --- !u!1 &2064321169
 GameObject:
   m_ObjectHideFlags: 0

@@ -70,7 +70,7 @@ namespace PlayerControls
 
         private void Update()
         {
-            Cursor.Action.Update();
+            //Cursor.Action.Update();
         }
 
         private void OnDisable()
@@ -87,22 +87,22 @@ namespace PlayerControls
 
         private void OnLeftMouseButton(CallbackContext context)
         {
-            Cursor.Action.OnLeftMouseButton();
+            //Cursor.Action.OnLeftMouseButton();
         }
 
         private void OnLeftMouseButtonRelase(CallbackContext context)
         {
-            Cursor.Action.OnLeftMouseButtonRelase();
+            //Cursor.Action.OnLeftMouseButtonRelase();
         }
 
         private void OnRightMouseButton(CallbackContext context)
         {
-            Cursor.Action.OnRightMouseButton();
+            //Cursor.Action.OnRightMouseButton();
         }
 
         private void OnRightMouseButtonRelase(CallbackContext context)
         {
-            Cursor.Action.OnRightMouseButtonRelase();
+            //Cursor.Action.OnRightMouseButtonRelase();
         }
 
         private void InitializeStats()

@@ -118,8 +118,8 @@ namespace Buildings
 
         private void ResetItemAction()
         {
-            OnMouseExit();
-            OnMouseEnter();
+            //OnMouseExit();
+            //OnMouseEnter();
         }
 
         private void OnDestroy()

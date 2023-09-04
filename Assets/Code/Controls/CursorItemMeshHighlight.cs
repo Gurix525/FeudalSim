@@ -71,11 +71,11 @@ namespace Controls
 
         private void Update()
         {
-            if (Cursor.Action is not PutAction)
-            {
-                SetMesh(null);
-                return;
-            }
+            //if (Cursor.Action is not PutAction)
+            //{
+            //    SetMesh(null);
+            //    return;
+            //}
             if (_mesh != _previousMesh)
             {
                 _filter.mesh = _mesh;

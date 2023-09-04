@@ -21,7 +21,7 @@ namespace Items
 
         #region Properties
 
-        public static NoAction NoAction { get; } = new();
+        //public static NoAction NoAction { get; } = new();
 
         public Sprite Sprite => GetSprite();
 
