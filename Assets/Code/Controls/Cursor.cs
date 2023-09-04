@@ -12,16 +12,9 @@ namespace Controls
     {
         private static Vector2Int? _cellPosition;
 
-        public static UnityEvent<Item> ItemChanged { get; } = new();
-
-        public static bool IsNoActionActive { get; set; }
         public static bool IsAboveTerrain { get; private set; }
         public static float AlignmentMultiplier { get; set; } = 1F / 8F;
         public static Container Container { get; } = new(1);
-        public static Item HotbarItem { private get; set; }
-
-        public static bool IsItemFromHotbar =>
-            Container[0] == null && HotbarItem != null;
 
         public static Vector2Int? CellPosition
         {
@@ -34,7 +27,7 @@ namespace Controls
         }
 
         public static Item Item =>
-            Container[0] ?? HotbarItem;
+            Container[0];// ?? HotbarItem;
 
         /// <summary>
         /// Do użycia w normalnych warunkach, jeśli potrzeba rzucić raycast
@@ -65,6 +58,13 @@ namespace Controls
                 return position;
             Vector3 positionRounded = position.Round(AlignmentMultiplier);
             return new Vector3(positionRounded.x, position.y, positionRounded.z);
+        }
+
+        public static void OnLeftMouseButton()
+        {
+            if (CurrentRaycastHit == null)
+                return;
+            RaycastHit.Value.collider.GetComponent<ILeftClickHandler>().OnLeftMouseButton();
         }
     }
 }

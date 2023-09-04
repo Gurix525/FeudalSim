@@ -11,7 +11,8 @@ namespace PlayerControls
 
         private void Awake()
         {
-            Controls.Cursor.ItemChanged.AddListener(ChangeAssignedItem);
+            throw new NotImplementedException();
+            //Controls.Cursor.ItemChanged.AddListener(ChangeAssignedItem);
         }
 
         private void ChangeAssignedItem(Item item)

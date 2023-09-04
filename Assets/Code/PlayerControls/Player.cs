@@ -87,7 +87,7 @@ namespace PlayerControls
 
         private void OnLeftMouseButton(CallbackContext context)
         {
-            //Cursor.Action.OnLeftMouseButton();
+            Cursor.OnLeftMouseButton();
         }
 
         private void OnLeftMouseButtonRelase(CallbackContext context)

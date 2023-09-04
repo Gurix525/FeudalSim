@@ -29,7 +29,7 @@ namespace UI
             for (int i = 0; i < 100; i++)
             {
                 yield return new WaitForFixedUpdate();
-                _image.color = new(0F, 0F, 0F, 1F - (i / 100F));
+                _image.color = new(0F, 0F, 0F, (float)(1F - (Math.Pow(i / 100F, 3F))));
             }
             _canvas.sortingOrder = -2000;
         }

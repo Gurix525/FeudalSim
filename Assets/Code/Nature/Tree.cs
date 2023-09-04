@@ -10,25 +10,9 @@ using PlayerControls;
 namespace Nature
 {
     [RequireComponent(typeof(OutlineHandler))]
-    public class Tree : MonoBehaviour, ILeftClickHandler, IAxeActionOutline
+    public class Tree : MonoBehaviour, ILeftClickHandler
     {
-        #region Fields
-
-        private OutlineHandler _outlineHandler;
-
-        #endregion Fields
-
         #region Public
-
-        public void EnableOutline()
-        {
-            _outlineHandler.EnableOutline();
-        }
-
-        public void DisableOutline()
-        {
-            _outlineHandler.DisableOutline();
-        }
 
         public void OnLeftMouseButton()
         {
@@ -53,24 +37,5 @@ namespace Nature
         }
 
         #endregion Public
-
-        #region Unity
-
-        private void Awake()
-        {
-            _outlineHandler = GetComponent<OutlineHandler>();
-        }
-
-        private void OnMouseOver()
-        {
-            //Cursor.Action.OnMouseOver(this);
-        }
-
-        private void OnMouseExit()
-        {
-            //Cursor.Action.OnMouseExit(this);
-        }
-
-        #endregion Unity
     }
 }

@@ -74,8 +74,9 @@ namespace UI
 
         private void SendHotbarItemToCursor()
         {
-            Cursor.HotbarItem = _slots[SelectedSlotIndex].Item;
-            Cursor.Container.CollectionUpdated.Invoke();
+            throw new NotImplementedException();
+            //Cursor.HotbarItem = _slots[SelectedSlotIndex].Item;
+            //Cursor.Container.CollectionUpdated.Invoke();
         }
 
         private IEnumerator DelayOnEnable()

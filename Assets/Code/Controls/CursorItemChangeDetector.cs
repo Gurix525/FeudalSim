@@ -1,10 +1,11 @@
+using System;
 using Items;
 using UnityEngine;
 using Cursor = Controls.Cursor;
 
 public class CursorItemChangeDetector : MonoBehaviour
 {
-    private ItemAction _previousAction;
+    //private ItemAction _previousAction;
     private Item _previousItem;
 
     private void Update()
@@ -12,7 +13,8 @@ public class CursorItemChangeDetector : MonoBehaviour
         if (Cursor.Item != _previousItem)
         {
             _previousItem = Cursor.Item;
-            Cursor.ItemChanged.Invoke(_previousItem);
+            throw new NotImplementedException();
+            //Cursor.ItemChanged.Invoke(_previousItem);
         }
         //if (Cursor.Action != _previousAction)
         //{

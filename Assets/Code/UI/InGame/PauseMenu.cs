@@ -21,12 +21,6 @@ namespace UI
 
         #endregion Fields
 
-        #region Properties
-
-        public static UnityEvent<ItemAction, int> Closed { get; } = new();
-
-        #endregion Properties
-
         #region Unity
 
         private void Start()

@@ -13,7 +13,7 @@ using PlayerControls;
 namespace Items
 {
     [RequireComponent(typeof(OutlineHandler))]
-    public class ContainerHandler : MonoBehaviour, IRightClickHandler, INoActionOutline
+    public class ContainerHandler : MonoBehaviour, ILeftClickHandler
     {
         #region Fields
 
@@ -23,36 +23,20 @@ namespace Items
         private GameObject _window;
         private GameObject[] _slots;
         private RectTransform _windowTransform;
-        private OutlineHandler _outlineHandler;
         private bool _isPointerOverGameObject;
 
         #endregion Fields
 
         #region Public
 
-        public void OnRightMouseButton()
+        public void OnLeftMouseButton()
         {
             SwitchContainerState();
-        }
-
-        public void EnableOutline()
-        {
-            _outlineHandler.EnableOutline();
-        }
-
-        public void DisableOutline()
-        {
-            _outlineHandler.DisableOutline();
         }
 
         #endregion Public
 
         #region Unity
-
-        private void Awake()
-        {
-            _outlineHandler = GetComponent<OutlineHandler>();
-        }
 
         private void Start()
         {
@@ -86,16 +70,10 @@ namespace Items
                 HideContainer(new());
         }
 
-        //private void OnMouseOver()
-        //{
-        //    _isPointerOverGameObject = CursorRaycaster.IsPointerOverGameObject;
-        //    //Cursor.Action.OnMouseOver(this);
-        //}
-
-        //private void OnMouseExit()
-        //{
-        //    Cursor.Action.OnMouseExit(this);
-        //}
+        private void OnMouseOver()
+        {
+            _isPointerOverGameObject = CursorRaycaster.IsPointerOverGameObject;
+        }
 
         private void OnDestroy()
         {

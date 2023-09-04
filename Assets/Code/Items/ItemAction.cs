@@ -1,96 +1,96 @@
-﻿using System;
-using Controls;
-using Misc;
-using PlayerControls;
-using UnityEngine;
-using Cursor = Controls.Cursor;
+﻿//using System;
+//using Controls;
+//using Misc;
+//using PlayerControls;
+//using UnityEngine;
+//using Cursor = Controls.Cursor;
 
-namespace Items
-{
-    public abstract class ItemAction
-    {
-        #region Fields
+//namespace Items
+//{
+//    public abstract class ItemAction
+//    {
+//        #region Fields
 
-        protected ILeftClickHandler _leftClickable;
-        protected IRightClickHandler _rightclickable;
+//        protected ILeftClickHandler _leftClickable;
+//        protected IRightClickHandler _rightclickable;
 
-        protected Player Player => Player.Instance;
-        protected PlayerMovement PlayerMovement => Player.Instance.PlayerMovement;
+//        protected Player Player => Player.Instance;
+//        protected PlayerMovement PlayerMovement => Player.Instance.PlayerMovement;
 
-        #endregion Fields
+//        #endregion Fields
 
-        #region Properties
+//        #region Properties
 
-        //public static NoAction NoAction { get; } = new();
+//        //public static NoAction NoAction { get; } = new();
 
-        public Sprite Sprite => GetSprite();
+//        public Sprite Sprite => GetSprite();
 
-        protected bool IsLeftClickPermitted => !CursorRaycaster.IsPointerOverGameObject
-            && !PlayerMovement.IsPendingAttack
-            && !PlayerMovement.IsStringingBow
-            && PlayerMovement.IsGrounded;
+//        protected bool IsLeftClickPermitted => !CursorRaycaster.IsPointerOverGameObject
+//            && !PlayerMovement.IsPendingAttack
+//            && !PlayerMovement.IsStringingBow
+//            && PlayerMovement.IsGrounded;
 
-        #endregion Properties
+//        #endregion Properties
 
-        #region Constructors
+//        #region Constructors
 
-        public ItemAction()
-        {
-            Cursor.Container.CollectionUpdated.AddListener(OnCursorCollectionUpdated);
-        }
+//        public ItemAction()
+//        {
+//            Cursor.Container.CollectionUpdated.AddListener(OnCursorCollectionUpdated);
+//        }
 
-        ~ItemAction()
-        {
-            Cursor.Container.CollectionUpdated.RemoveListener(OnCursorCollectionUpdated);
-        }
+//        ~ItemAction()
+//        {
+//            Cursor.Container.CollectionUpdated.RemoveListener(OnCursorCollectionUpdated);
+//        }
 
-        #endregion Constructors
+//        #endregion Constructors
 
-        #region Public
+//        #region Public
 
-        public virtual void OnLeftMouseButton()
-        { }
+//        public virtual void OnLeftMouseButton()
+//        { }
 
-        public virtual void OnLeftMouseButtonRelase()
-        { }
+//        public virtual void OnLeftMouseButtonRelase()
+//        { }
 
-        public virtual void OnRightMouseButton()
-        { }
+//        public virtual void OnRightMouseButton()
+//        { }
 
-        public virtual void OnRightMouseButtonRelase()
-        { }
+//        public virtual void OnRightMouseButtonRelase()
+//        { }
 
-        public virtual void Update()
-        { }
+//        public virtual void Update()
+//        { }
 
-        public virtual void OnMouseEnter(Component component)
-        { }
+//        public virtual void OnMouseEnter(Component component)
+//        { }
 
-        public virtual void OnMouseOver(Component component)
-        { }
+//        public virtual void OnMouseOver(Component component)
+//        { }
 
-        public virtual void OnMouseExit(Component component)
-        {
-            (component as IOutline)?.DisableOutline();
-        }
+//        public virtual void OnMouseExit(Component component)
+//        {
+//            (component as IOutline)?.DisableOutline();
+//        }
 
-        #endregion Public
+//        #endregion Public
 
-        #region Protected
+//        #region Protected
 
-        protected abstract Sprite GetSprite();
+//        protected abstract Sprite GetSprite();
 
-        #endregion Protected
+//        #endregion Protected
 
-        #region Private
+//        #region Private
 
-        private void OnCursorCollectionUpdated()
-        {
-            OnMouseExit(null);
-            OnLeftMouseButtonRelase();
-            OnRightMouseButtonRelase();
-        }
+//        private void OnCursorCollectionUpdated()
+//        {
+//            OnMouseExit(null);
+//            OnLeftMouseButtonRelase();
+//            OnRightMouseButtonRelase();
+//        }
 
-        #endregion Private
-    }
-}
+//        #endregion Private
+//    }
+//}
