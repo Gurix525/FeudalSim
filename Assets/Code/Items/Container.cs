@@ -97,23 +97,39 @@ namespace Items
 
         public void OnLeftMouseButton(int slotIndex)
         {
-            if (!IsArmorMatchingSlot(Cursor.Container[0], slotIndex))
+            //if (!IsArmorMatchingSlot(Cursor.Container[0], slotIndex))
+            //    return;
+            Cursor.Container.InsertAt(0, ExtractAt(slotIndex));
+            if (Cursor.Item == null)
                 return;
-            Item thisItem = ExtractAt(slotIndex);
-            Item cursorItem = Cursor.Container.ExtractAt(0);
-            if (IsPossibleToInsert(thisItem, cursorItem))
+            Cursor.SetPreviousContainer(this, slotIndex);
+            CollectionUpdated.Invoke();
+            //Item cursorItem = Cursor.Container.ExtractAt(0);
+            //if (IsPossibleToInsert(thisItem, cursorItem))
+            //{
+            //    _items[slotIndex] = thisItem;
+            //    InsertAt(slotIndex, cursorItem);
+            //    if (cursorItem.Count != 0)
+            //        Cursor.Container.InsertAt(0, cursorItem);
+            //    CollectionUpdated.Invoke();
+            //    return;
+            //}
+            //if (cursorItem != null)
+            //    _items[slotIndex] = cursorItem;
+            //if (thisItem != null)
+            //    Cursor.Container.InsertAt(0, thisItem);
+            //CollectionUpdated.Invoke();
+        }
+
+        public void OnLeftMouseButtonRelase(int slotIndex)
+        {
+            Item extractedItem = ExtractAt(slotIndex);
+            InsertAt(slotIndex, Cursor.Container.ExtractAt(0));
+            if (extractedItem != null)
             {
-                _items[slotIndex] = thisItem;
-                InsertAt(slotIndex, cursorItem);
-                if (cursorItem.Count != 0)
-                    Cursor.Container.InsertAt(0, cursorItem);
-                CollectionUpdated.Invoke();
-                return;
+                Cursor.ItemPreviousContainer
+                    .InsertAt(Cursor.ItemPreviousContainerSlot, extractedItem);
             }
-            if (cursorItem != null)
-                _items[slotIndex] = cursorItem;
-            if (thisItem != null)
-                Cursor.Container.InsertAt(0, thisItem);
             CollectionUpdated.Invoke();
         }
 

@@ -38,13 +38,15 @@ namespace UI
         public void OnPointerEnter(PointerEventData eventData)
         {
             PlayerController.MainLeftClick.AddListener(ActionType.Started, OnLeftMouseButton);
-            PlayerController.MainRightClick.AddListener(ActionType.Started, OnRightMouseButton);
+            PlayerController.MainLeftClick.AddListener(ActionType.Canceled, OnLeftMouseButtonRelase);
+            //PlayerController.MainRightClick.AddListener(ActionType.Started, OnRightMouseButton);
         }
 
         public void OnPointerExit(PointerEventData eventData)
         {
             PlayerController.MainLeftClick.RemoveListener(ActionType.Started, OnLeftMouseButton);
-            PlayerController.MainRightClick.RemoveListener(ActionType.Started, OnRightMouseButton);
+            PlayerController.MainLeftClick.RemoveListener(ActionType.Canceled, OnLeftMouseButtonRelase);
+            //PlayerController.MainRightClick.RemoveListener(ActionType.Started, OnRightMouseButton);
         }
 
         #endregion Public
@@ -75,10 +77,15 @@ namespace UI
             _container.OnLeftMouseButton(_slotIndex);
         }
 
-        private void OnRightMouseButton(CallbackContext context)
+        private void OnLeftMouseButtonRelase(CallbackContext context)
         {
-            //_container.OnRightMouseButton(_slotIndex);
+            _container.OnLeftMouseButtonRelase(_slotIndex);
         }
+
+        //private void OnRightMouseButton(CallbackContext context)
+        //{
+        //    //_container.OnRightMouseButton(_slotIndex);
+        //}
 
         private void OnCollectionUpdated()
         {

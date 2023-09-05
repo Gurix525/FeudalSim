@@ -14,6 +14,8 @@ namespace Controls
 
         private static Vector2Int? _cellPosition;
         private static bool _isCombatMode;
+        private static Container _itemPreviousContainer;
+        private static int _itemPreviousContainerSlot;
 
         #endregion Fields
 
@@ -47,6 +49,9 @@ namespace Controls
         public static Item Item =>
             Container[0];// ?? HotbarItem;
 
+        public static Container ItemPreviousContainer => _itemPreviousContainer;
+        public static int ItemPreviousContainerSlot => _itemPreviousContainerSlot;
+
         /// <summary>
         /// Do użycia w normalnych warunkach, jeśli potrzeba rzucić raycast
         /// w danej chwili to użyć CurrentRaycastHit
@@ -69,6 +74,14 @@ namespace Controls
         #endregion Properties
 
         #region Public
+
+        public static void SetPreviousContainer(Container container, int slot)
+        {
+            if (container == Container)
+                return;
+            _itemPreviousContainer = container;
+            _itemPreviousContainerSlot = slot;
+        }
 
         public static Vector3? GetPlaneHit(Vector3 normal, Vector3 point)
         {

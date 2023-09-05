@@ -4,6 +4,7 @@ using Combat;
 using Controls;
 using Extensions;
 using Input;
+using Items;
 using StarterAssets;
 using UnityEngine;
 using UnityEngine.Events;
@@ -92,7 +93,7 @@ namespace PlayerControls
 
         private void OnLeftMouseButtonRelase(CallbackContext context)
         {
-            //Cursor.Action.OnLeftMouseButtonRelase();
+            //PutItemBack();
         }
 
         private void OnRightMouseButton(CallbackContext context)
@@ -121,6 +122,13 @@ namespace PlayerControls
             _health = GetComponent<Health>();
             _health.Receiver = this;
             _health.GotHit.AddListener(OnGotHit);
+        }
+
+        private void PutItemBack()
+        {
+            Item item = Cursor.Container.ExtractAt(0);
+            Cursor.ItemPreviousContainer
+                .InsertAt(Cursor.ItemPreviousContainerSlot, item);
         }
 
         private void OnGotHit(Attack attack)

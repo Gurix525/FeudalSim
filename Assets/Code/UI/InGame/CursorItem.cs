@@ -26,19 +26,18 @@ namespace UI
 
         private void OnCollectionUpdated()
         {
-            throw new NotImplementedException();
-            //if (Cursor.Item == null || Cursor.IsItemFromHotbar)
-            //{
+            if (Cursor.Item == null)
+            {
+                _text.text = string.Empty;
+                _image.enabled = false;
+                return;
+            }
+            //if (Cursor.Item.MaxStack == 1)
             //    _text.text = string.Empty;
-            //    _image.enabled = false;
-            //    return;
-            //}
-            ////if (Cursor.Item.MaxStack == 1)
-            ////    _text.text = string.Empty;
-            ////else
-            //_text.text = Cursor.Item.Count.ToString();
-            //_image.sprite = Cursor.Item.Sprite;
-            //_image.enabled = true;
+            //else
+            _text.text = Cursor.Item.Count.ToString();
+            _image.sprite = Cursor.Item.Sprite;
+            _image.enabled = true;
         }
     }
 }
