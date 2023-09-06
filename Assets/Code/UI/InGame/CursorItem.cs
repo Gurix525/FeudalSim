@@ -1,5 +1,6 @@
 using System;
 using Input;
+using Items;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -16,7 +17,16 @@ namespace UI
         private void Awake()
         {
             _image = GetComponent<Image>();
-            Cursor.Container.CollectionUpdated.AddListener(OnCollectionUpdated);
+        }
+
+        private void OnEnable()
+        {
+            Cursor.ItemReferenceChanged.AddListener(OnCollectionUpdated);
+        }
+
+        private void OnDisable()
+        {
+            Cursor.ItemReferenceChanged.RemoveListener(OnCollectionUpdated);
         }
 
         private void Update()
@@ -24,9 +34,9 @@ namespace UI
             transform.position = PlayerController.MainPoint.ReadValue<Vector2>();
         }
 
-        private void OnCollectionUpdated()
+        private void OnCollectionUpdated(ItemReference item)
         {
-            if (Cursor.Item == null)
+            if (Cursor.ItemReference == null)
             {
                 _text.text = string.Empty;
                 _image.enabled = false;
@@ -35,8 +45,8 @@ namespace UI
             //if (Cursor.Item.MaxStack == 1)
             //    _text.text = string.Empty;
             //else
-            _text.text = Cursor.Item.Count.ToString();
-            _image.sprite = Cursor.Item.Sprite;
+            _text.text = Cursor.ItemReference.Item.Count.ToString();
+            _image.sprite = Cursor.ItemReference.Item.Sprite;
             _image.enabled = true;
         }
     }

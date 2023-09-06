@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using AI;
 using Controls;
 using UnityEngine;
 using UnityEngine.Events;
@@ -97,77 +98,28 @@ namespace Items
 
         public void OnLeftMouseButton(int slotIndex)
         {
-            //if (!IsArmorMatchingSlot(Cursor.Container[0], slotIndex))
-            //    return;
-            Cursor.Container.InsertAt(0, ExtractAt(slotIndex));
-            if (Cursor.Item == null)
+            if (_items[slotIndex] == null)
                 return;
-            Cursor.SetPreviousContainer(this, slotIndex);
+            Cursor.ItemReference = new(this, slotIndex);
             CollectionUpdated.Invoke();
-            //Item cursorItem = Cursor.Container.ExtractAt(0);
-            //if (IsPossibleToInsert(thisItem, cursorItem))
-            //{
-            //    _items[slotIndex] = thisItem;
-            //    InsertAt(slotIndex, cursorItem);
-            //    if (cursorItem.Count != 0)
-            //        Cursor.Container.InsertAt(0, cursorItem);
-            //    CollectionUpdated.Invoke();
-            //    return;
-            //}
-            //if (cursorItem != null)
-            //    _items[slotIndex] = cursorItem;
-            //if (thisItem != null)
-            //    Cursor.Container.InsertAt(0, thisItem);
-            //CollectionUpdated.Invoke();
         }
 
         public void OnLeftMouseButtonRelase(int slotIndex)
         {
-            Item extractedItem = ExtractAt(slotIndex);
-            InsertAt(slotIndex, Cursor.Container.ExtractAt(0));
-            if (extractedItem != null)
+            if (Cursor.ItemReference != null)
             {
-                Cursor.ItemPreviousContainer
-                    .InsertAt(Cursor.ItemPreviousContainerSlot, extractedItem);
+                Container other = Cursor.ItemReference.Container;
+                int otherIndex = Cursor.ItemReference.Index;
+                if (_items[slotIndex] == null)
+                    SwapItems(this, slotIndex, other, otherIndex);
+                else if (_items[slotIndex].Model == other[otherIndex].Model)
+                    MergeItems(other, otherIndex, this, slotIndex);
+                else
+                    SwapItems(this, slotIndex, other, otherIndex);
+                Cursor.ItemReference = null;
             }
             CollectionUpdated.Invoke();
         }
-
-        //public void OnRightMouseButton(int slotIndex)
-        //{
-        //    if (!IsArmorMatchingSlot(Cursor.Container[0], slotIndex))
-        //        return;
-        //    Item thisItem = ExtractAt(slotIndex);
-        //    Item cursorItem = Cursor.Container.ExtractAt(0);
-        //    if (thisItem == null && cursorItem == null)
-        //        return;
-        //    if (thisItem != null && cursorItem == null)
-        //    {
-        //        int delta = thisItem.Count / 2 + thisItem.Count % 2;
-        //        thisItem.Count -= delta;
-        //        Cursor.Container.InsertAt(0, thisItem.Clone(delta));
-        //        if (thisItem.Count == 0)
-        //            thisItem = null;
-        //        InsertAt(slotIndex, thisItem);
-        //        CollectionUpdated.Invoke();
-        //        return;
-        //    }
-        //    if (thisItem == null || thisItem.Name == cursorItem.Name)
-        //    {
-        //        var change = cursorItem.Clone(1);
-        //        cursorItem.Count -= 1;
-        //        if (cursorItem.Count == 0)
-        //            cursorItem = null;
-        //        InsertAt(slotIndex, thisItem);
-        //        InsertAt(slotIndex, change);
-        //        Cursor.Container.InsertAt(0, cursorItem);
-        //        CollectionUpdated.Invoke();
-        //        return;
-        //    }
-        //    InsertAt(slotIndex, thisItem);
-        //    Cursor.Container.InsertAt(0, cursorItem);
-        //    OnLeftMouseButton(slotIndex);
-        //}
 
         public void Sort(bool hasToStack = true)
         {
@@ -265,6 +217,27 @@ namespace Items
         IEnumerator IEnumerable.GetEnumerator()
         {
             return GetEnumerator();
+        }
+
+        public static void SwapItems(Container left, int leftIndex, Container right, int rightIndex)
+        {
+            if (left[leftIndex] == right[rightIndex])
+                return;
+            Item temp = left[leftIndex];
+            left[leftIndex] = right[rightIndex];
+            right[rightIndex] = temp;
+            left.CollectionUpdated.Invoke();
+            right.CollectionUpdated.Invoke();
+        }
+
+        public static void MergeItems(Container source, int sourceIndex, Container destination, int destinationIndex)
+        {
+            if (source[sourceIndex] == destination[destinationIndex])
+                return;
+            destination[destinationIndex].Count += source[sourceIndex].Count;
+            source[sourceIndex] = null;
+            source.CollectionUpdated.Invoke();
+            destination.CollectionUpdated.Invoke();
         }
 
         #endregion Public

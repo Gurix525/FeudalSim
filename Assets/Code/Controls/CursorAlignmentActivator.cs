@@ -20,7 +20,8 @@ namespace Controls
         {
             Cursor.AlignmentMultiplier
                 *= Cursor.AlignmentMultiplier > 1F / 8F ? 1F / 2F : 8F;
-            Cursor.Container.CollectionUpdated.Invoke();
+            Debug.LogWarning("Not implemented.");
+            //Cursor.Container.CollectionUpdated.Invoke();
         }
     }
 }

@@ -14,8 +14,7 @@ namespace Controls
 
         private static Vector2Int? _cellPosition;
         private static bool _isCombatMode;
-        private static Container _itemPreviousContainer;
-        private static int _itemPreviousContainerSlot;
+        private static ItemReference _itemReference;
 
         #endregion Fields
 
@@ -33,8 +32,8 @@ namespace Controls
 
         public static bool IsAboveTerrain { get; private set; }
         public static float AlignmentMultiplier { get; set; } = 1F / 8F;
-        public static Container Container { get; } = new(1);
         public static UnityEvent<bool> CombatModeSwitched { get; } = new();
+        public static UnityEvent<ItemReference> ItemReferenceChanged { get; } = new();
 
         public static Vector2Int? CellPosition
         {
@@ -46,11 +45,15 @@ namespace Controls
             }
         }
 
-        public static Item Item =>
-            Container[0];// ?? HotbarItem;
-
-        public static Container ItemPreviousContainer => _itemPreviousContainer;
-        public static int ItemPreviousContainerSlot => _itemPreviousContainerSlot;
+        public static ItemReference ItemReference
+        {
+            get => _itemReference;
+            set
+            {
+                _itemReference = value;
+                ItemReferenceChanged.Invoke(_itemReference);
+            }
+        }
 
         /// <summary>
         /// Do użycia w normalnych warunkach, jeśli potrzeba rzucić raycast
@@ -74,14 +77,6 @@ namespace Controls
         #endregion Properties
 
         #region Public
-
-        public static void SetPreviousContainer(Container container, int slot)
-        {
-            if (container == Container)
-                return;
-            _itemPreviousContainer = container;
-            _itemPreviousContainerSlot = slot;
-        }
 
         public static Vector3? GetPlaneHit(Vector3 normal, Vector3 point)
         {

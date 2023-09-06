@@ -97,54 +97,55 @@ namespace Controls
 
         private void Update()
         {
+            Debug.LogWarning("NotImplemented");
             //if (Cursor.Action is not BuildAction)
             //{
             //    SetMesh(null);
             //}
-            if (_mesh != _previousMesh)
-            {
-                _filter.mesh = _mesh;
-                _previousMesh = _mesh;
-            }
-            if (_previousMaterial != _notBlockedMaterial && !IsBlocked && Cursor.Item != null ? Cursor.Item.Count >= RequiredItemCount : false)
-            {
-                _renderer.material = _notBlockedMaterial;
-                _previousMaterial = _notBlockedMaterial;
-            }
-            else if (_previousMaterial != _blockedMaterial && (IsBlocked || (Cursor.Item != null ? Cursor.Item.Count < RequiredItemCount : false)))
-            {
-                _renderer.material = _blockedMaterial;
-                _previousMaterial = _blockedMaterial;
-            }
-            Vector3? planeHit = Cursor.GetPlaneHit(Vector3.up, Vector3.up * CursorMeshHighlight.Height);
-            if (_mesh != null && planeHit != null)
-            {
-                _grid.Enable();
-                _grid.SetMousePosition(planeHit.Value);
-                _renderer.enabled = true;
-                _renderer.material.renderQueue = 3002;
-                var calibratedPosition = _positionFinder.GetPosition(Height, _meshRotation, planeHit.Value, _buildingMode);
-                _highlight.transform.SetPositionAndRotation(
-                    calibratedPosition,
-                    Quaternion.Euler(0, _meshRotation, 0));
-                if (calibratedPosition != Position)
-                {
-                    Position = calibratedPosition;
-                    bool isBuildingPossible = Terrain.IsBuildingPossible(
-                        calibratedPosition,
-                        _buildingMode,
-                        _meshRotation);
-                    if (isBuildingPossible)
-                        IsBlocked = false;
-                    else
-                        IsBlocked = true;
-                }
-            }
-            else
-            {
-                _renderer.enabled = false;
-                _grid.Disable();
-            }
+            //if (_mesh != _previousMesh)
+            //{
+            //    _filter.mesh = _mesh;
+            //    _previousMesh = _mesh;
+            //}
+            //if (_previousMaterial != _notBlockedMaterial && !IsBlocked && Cursor.Item != null ? Cursor.Item.Count >= RequiredItemCount : false)
+            //{
+            //    _renderer.material = _notBlockedMaterial;
+            //    _previousMaterial = _notBlockedMaterial;
+            //}
+            //else if (_previousMaterial != _blockedMaterial && (IsBlocked || (Cursor.Item != null ? Cursor.Item.Count < RequiredItemCount : false)))
+            //{
+            //    _renderer.material = _blockedMaterial;
+            //    _previousMaterial = _blockedMaterial;
+            //}
+            //Vector3? planeHit = Cursor.GetPlaneHit(Vector3.up, Vector3.up * CursorMeshHighlight.Height);
+            //if (_mesh != null && planeHit != null)
+            //{
+            //    _grid.Enable();
+            //    _grid.SetMousePosition(planeHit.Value);
+            //    _renderer.enabled = true;
+            //    _renderer.material.renderQueue = 3002;
+            //    var calibratedPosition = _positionFinder.GetPosition(Height, _meshRotation, planeHit.Value, _buildingMode);
+            //    _highlight.transform.SetPositionAndRotation(
+            //        calibratedPosition,
+            //        Quaternion.Euler(0, _meshRotation, 0));
+            //    if (calibratedPosition != Position)
+            //    {
+            //        Position = calibratedPosition;
+            //        bool isBuildingPossible = Terrain.IsBuildingPossible(
+            //            calibratedPosition,
+            //            _buildingMode,
+            //            _meshRotation);
+            //        if (isBuildingPossible)
+            //            IsBlocked = false;
+            //        else
+            //            IsBlocked = true;
+            //    }
+            //}
+            //else
+            //{
+            //    _renderer.enabled = false;
+            //    _grid.Disable();
+            //}
         }
 
         #endregion Unity

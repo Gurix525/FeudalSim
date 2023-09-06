@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using AI;
 using Combat;
 using Controls;
@@ -93,7 +94,7 @@ namespace PlayerControls
 
         private void OnLeftMouseButtonRelase(CallbackContext context)
         {
-            //PutItemBack();
+            StartCoroutine(PutItemBack());
         }
 
         private void OnRightMouseButton(CallbackContext context)
@@ -124,11 +125,10 @@ namespace PlayerControls
             _health.GotHit.AddListener(OnGotHit);
         }
 
-        private void PutItemBack()
+        private IEnumerator PutItemBack()
         {
-            Item item = Cursor.Container.ExtractAt(0);
-            Cursor.ItemPreviousContainer
-                .InsertAt(Cursor.ItemPreviousContainerSlot, item);
+            yield return null;
+            Cursor.ItemReference = null;
         }
 
         private void OnGotHit(Attack attack)
