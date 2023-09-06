@@ -376,8 +376,8 @@ namespace AI
         private void InitializeHealthBar()
         {
             var healthBar = Instantiate(
-                _healthBarPrefab
-                ??= Resources.Load<AIHealthBar>("Prefabs/WorldUI/AIHealthBar"),
+                _healthBarPrefab ??=
+                Resources.Load<AIHealthBar>("Prefabs/WorldUI/AIHealthBar"),
                 transform);
             healthBar.Initialize(_stats, _healthBarOffset);
         }
