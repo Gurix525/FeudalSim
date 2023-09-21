@@ -14,7 +14,7 @@ namespace Items
         #region Fields
 
         private Container _armorContainer = new(4, isArmor: true);
-        private Container _inventoryContainer = new(4);
+        private Container _inventoryContainer = new(40);
         private GameObject[] _armorSlots;
         private GameObject _armorWindow;
         private GameObject[] _inventorySlots = new GameObject[0];
@@ -24,22 +24,22 @@ namespace Items
 
         #region Properties
 
-        private int InventorySlotCount
-        {
-            get
-            {
-                int count = 0;
-                foreach (var item in _armorContainer)
-                {
-                    if (item == null)
-                        continue;
-                    item.Stats.TryGetValue("InventorySlots", out string value);
-                    if (value != null)
-                        count += int.Parse(value);
-                }
-                return 4 + count;
-            }
-        }
+        //private int InventorySlotCount
+        //{
+        //    get
+        //    {
+        //        int count = 0;
+        //        foreach (var item in _armorContainer)
+        //        {
+        //            if (item == null)
+        //                continue;
+        //            item.Stats.TryGetValue("InventorySlots", out string value);
+        //            if (value != null)
+        //                count += int.Parse(value);
+        //        }
+        //        return 4 + count;
+        //    }
+        //}
 
         public static bool IsVisible => Instance._inventoryWindow.activeInHierarchy;
         public static Container InventoryContainer => Instance._inventoryContainer;
@@ -129,19 +129,21 @@ namespace Items
 
         private void OnArmorCollectionUpdated()
         {
-            _inventoryContainer.ChangeSize(InventorySlotCount, transform.position);
-            for (int i = 0; i < _inventorySlots.Length; i++)
-            {
-                _inventorySlots[i].GetComponent<ContainerSlot>().Clear();
-                Destroy(_inventorySlots[i]);
-            }
-            CreateInventorySlots();
+            Debug.LogWarning("Not implemented.");
+            //_inventoryContainer.ChangeSize(InventorySlotCount, transform.position);
+            //for (int i = 0; i < _inventorySlots.Length; i++)
+            //{
+            //    _inventorySlots[i].GetComponent<ContainerSlot>().Clear();
+            //    Destroy(_inventorySlots[i]);
+            //}
+            //CreateInventorySlots();
         }
 
         private void CreateInventorySlots()
         {
-            _inventorySlots = new GameObject[InventorySlotCount];
-            for (int i = 0; i < InventorySlotCount; i++)
+            Debug.LogWarning("Not implemented.");
+            _inventorySlots = new GameObject[40];
+            for (int i = 0; i < 40; i++)
             {
                 _inventorySlots[i] = Instantiate(
                     Resources.Load<GameObject>("Prefabs/UI/ContainerSlot"),
