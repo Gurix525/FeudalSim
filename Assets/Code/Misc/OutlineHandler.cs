@@ -1,7 +1,5 @@
-using Controls;
 using UnityEngine;
 using Cursor = Controls.Cursor;
-using PlayerControls;
 
 namespace Misc
 {
@@ -54,6 +52,11 @@ namespace Misc
         }
 
         private void OnDisable()
+        {
+            DisableOutline();
+        }
+
+        private void OnDestroy()
         {
             DisableOutline();
         }
