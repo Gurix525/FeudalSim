@@ -1,5 +1,5 @@
 using UnityEngine;
-using Cursor = Controls.Cursor;
+using Cursor = Controls.PlayerCursor;
 
 namespace Misc
 {
@@ -26,16 +26,17 @@ namespace Misc
             UnityEngine.Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
         }
 
-        private void OnMouseOver()
-        {
-            if (Cursor.CurrentRaycastHit != null)
-                if (Cursor.RaycastHit.Value.collider.gameObject == gameObject)
-                {
-                    EnableOutline();
-                    return;
-                }
-            DisableOutline();
-        }
+        // To be added
+        //private void OnMouseOver()
+        //{
+        //    if (Cursor.CurrentRaycastHit != null)
+        //        if (Cursor.RaycastHit.Value.collider.gameObject == gameObject)
+        //        {
+        //            EnableOutline();
+        //            return;
+        //        }
+        //    DisableOutline();
+        //}
 
         private void OnMouseExit()
         {

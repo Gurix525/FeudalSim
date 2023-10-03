@@ -1,6 +1,6 @@
 using System.IO;
 using System.IO.Compression;
-using Input;
+ 
 using UnityEngine;
 using World;
 using static UnityEngine.InputSystem.InputAction;
@@ -32,16 +32,17 @@ namespace Saves
             _allSavesPath = Path.Combine(Application.persistentDataPath, "Saves");
         }
 
-        private void OnEnable()
-        {
-            PlayerController.MainSave.AddListener(ActionType.Started, SaveGame);
-        }
+        // To be added
+        //private void OnEnable()
+        //{
+        //    PlayerController.MainSave.AddListener(ActionType.Started, SaveGame);
+        //}
 
-        private void OnDisable()
+        //private void OnDisable()
 
-        {
-            PlayerController.MainSave.RemoveListener(ActionType.Started, SaveGame);
-        }
+        //{
+        //    PlayerController.MainSave.RemoveListener(ActionType.Started, SaveGame);
+        //}
 
         #endregion Unity
 

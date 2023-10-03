@@ -13,7 +13,7 @@ namespace World
     [RequireComponent(typeof(MeshRenderer))]
     [RequireComponent(typeof(MeshFilter))]
     [RequireComponent(typeof(MeshCollider))]
-    [RequireComponent(typeof(CursorCellPositionFinder))]
+    //[RequireComponent(typeof(CursorCellPositionFinder))]
     public class ChunkRenderer : MonoBehaviour
     {
         #region Fields

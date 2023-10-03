@@ -2,18 +2,18 @@ using System;
 using Misc;
 using UnityEngine;
 using UnityEngine.UI;
-using Input;
+ 
 using static UnityEngine.InputSystem.InputAction;
 using UnityEngine.EventSystems;
 using UI;
 using Controls;
-using Cursor = Controls.Cursor;
+using Cursor = Controls.PlayerCursor;
 using PlayerControls;
 
 namespace Items
 {
     [RequireComponent(typeof(OutlineHandler))]
-    public class ContainerHandler : MonoBehaviour, ILeftClickHandler
+    public class ContainerHandler : MonoBehaviour, ILeftMouseButtonHandler
     {
         #region Fields
 
@@ -63,17 +63,17 @@ namespace Items
             StartTest();
         }
 
-        private void FixedUpdate()
-        {
-            if (Vector3.Distance(Player.Position, transform.position)
-                > CursorRaycaster.MaxCursorDistanceFromPlayer)
-                HideContainer(new());
-        }
+        //private void FixedUpdate()
+        //{
+        //    if (Vector3.Distance(Player.Position, transform.position)
+        //        > CursorRaycaster.MaxCursorDistanceFromPlayer)
+        //        HideContainer(new());
+        //}
 
-        private void OnMouseOver()
-        {
-            _isPointerOverGameObject = CursorRaycaster.IsPointerOverGameObject;
-        }
+        //private void OnMouseOver()
+        //{
+        //    _isPointerOverGameObject = CursorRaycaster.IsPointerOverGameObject;
+        //}
 
         private void OnDestroy()
         {
@@ -110,8 +110,9 @@ namespace Items
             if (!_isPointerOverGameObject)
             {
                 _window.SetActive(true);
-                PlayerController.MainEscape.AddListener(ActionType.Started, HideContainer);
-                PlayerController.MainTab.AddListener(ActionType.Started, HideContainer);
+                // To be added
+                //PlayerController.MainEscape.AddListener(ActionType.Started, HideContainer);
+                //PlayerController.MainTab.AddListener(ActionType.Started, HideContainer);
             }
         }
 
@@ -121,8 +122,9 @@ namespace Items
                 if (context.action.ToString() == "Main/Tab[/Keyboard/tab]"
                     && Equipment.IsVisible)
                     return;
-            PlayerController.MainEscape.RemoveListener(ActionType.Started, HideContainer);
-            PlayerController.MainTab.RemoveListener(ActionType.Started, HideContainer);
+            // To be added
+            //PlayerController.MainEscape.RemoveListener(ActionType.Started, HideContainer);
+            //PlayerController.MainTab.RemoveListener(ActionType.Started, HideContainer);
             _window.SetActive(false);
         }
 

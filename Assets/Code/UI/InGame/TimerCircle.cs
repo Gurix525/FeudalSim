@@ -17,7 +17,8 @@ public class TimerCircle : MonoBehaviour
         _image.fillClockwise = true;
         _image.fillAmount = 0F;
         _parent = transform.parent.GetComponent<RectTransform>();
-        ActionTimer.TimerSet.AddListener(StartMeasuring);
+        // To be added
+        //ActionTimer.TimerSet.AddListener(StartMeasuring);
     }
 
     private void Update()

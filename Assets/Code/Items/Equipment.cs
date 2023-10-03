@@ -1,11 +1,11 @@
 using System;
 using System.Linq;
-using Input;
+ 
 using Misc;
 using UI;
 using UnityEngine;
 using static UnityEngine.InputSystem.InputAction;
-using Cursor = Controls.Cursor;
+using Cursor = Controls.PlayerCursor;
 
 namespace Items
 {
@@ -113,15 +113,16 @@ namespace Items
             CreateInventorySlots();
         }
 
-        private void OnEnable()
-        {
-            PlayerController.MainTab.AddListener(ActionType.Started, SwitchEquipmentState);
-        }
+        // To be added
+        //private void OnEnable()
+        //{
+        //    PlayerController.MainTab.AddListener(ActionType.Started, SwitchEquipmentState);
+        //}
 
-        private void OnDisable()
-        {
-            PlayerController.MainTab.RemoveListener(ActionType.Started, SwitchEquipmentState);
-        }
+        //private void OnDisable()
+        //{
+        //    PlayerController.MainTab.RemoveListener(ActionType.Started, SwitchEquipmentState);
+        //}
 
         #endregion Unity
 
@@ -153,29 +154,30 @@ namespace Items
             }
         }
 
-        private void SwitchEquipmentState(CallbackContext context)
-        {
-            if (_armorWindow.activeInHierarchy)
-                HideEquipment(new());
-            else
-                ShowEquipment();
-        }
+        // To be added
+        //private void SwitchEquipmentState(CallbackContext context)
+        //{
+        //    if (_armorWindow.activeInHierarchy)
+        //        HideEquipment(new());
+        //    else
+        //        ShowEquipment();
+        //}
 
-        private void ShowEquipment()
-        {
-            _inventoryWindow.SetActive(true);
-            _armorWindow.SetActive(true);
-            PlayerController.MainEscape.AddListener(ActionType.Started, HideEquipment);
-            PlayerController.MainTab.AddListener(ActionType.Started, HideEquipment);
-        }
+        //private void ShowEquipment()
+        //{
+        //    _inventoryWindow.SetActive(true);
+        //    _armorWindow.SetActive(true);
+        //    PlayerController.MainEscape.AddListener(ActionType.Started, HideEquipment);
+        //    PlayerController.MainTab.AddListener(ActionType.Started, HideEquipment);
+        //}
 
-        private void HideEquipment(CallbackContext context)
-        {
-            PlayerController.MainEscape.RemoveListener(ActionType.Started, HideEquipment);
-            PlayerController.MainTab.RemoveListener(ActionType.Started, HideEquipment);
-            _armorWindow.SetActive(false);
-            _inventoryWindow.SetActive(false);
-        }
+        //private void HideEquipment(CallbackContext context)
+        //{
+        //    PlayerController.MainEscape.RemoveListener(ActionType.Started, HideEquipment);
+        //    PlayerController.MainTab.RemoveListener(ActionType.Started, HideEquipment);
+        //    _armorWindow.SetActive(false);
+        //    _inventoryWindow.SetActive(false);
+        //}
 
         #endregion Private
     }

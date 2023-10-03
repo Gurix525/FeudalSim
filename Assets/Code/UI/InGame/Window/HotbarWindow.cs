@@ -1,11 +1,11 @@
 using System;
 using System.Collections;
-using Input;
+ 
 using Items;
 using UnityEngine;
 using UnityEngine.Events;
 using static UnityEngine.InputSystem.InputAction;
-using Cursor = Controls.Cursor;
+using Cursor = Controls.PlayerCursor;
 
 namespace UI
 {
@@ -50,23 +50,24 @@ namespace UI
             }
         }
 
-        private void OnEnable()
-        {
-            StartCoroutine(DelayOnEnable());
-        }
+        //private void OnEnable()
+        //{
+        //    StartCoroutine(DelayOnEnable());
+        //}
 
-        private void OnDisable()
-        {
-            Equipment.InventoryContainer.CollectionUpdated.RemoveListener(SendHotbarItemToCursor);
-            PlayerController.MainHotbar1.RemoveListener(ActionType.Started, OnHotbar1);
-            PlayerController.MainHotbar2.RemoveListener(ActionType.Started, OnHotbar2);
-            PlayerController.MainHotbar3.RemoveListener(ActionType.Started, OnHotbar3);
-            PlayerController.MainHotbar4.RemoveListener(ActionType.Started, OnHotbar4);
-            PlayerController.MainHotbar5.RemoveListener(ActionType.Started, OnHotbar5);
-            PlayerController.MainHotbar6.RemoveListener(ActionType.Started, OnHotbar6);
-            PlayerController.MainHotbar7.RemoveListener(ActionType.Started, OnHotbar7);
-            PlayerController.MainHotbar8.RemoveListener(ActionType.Started, OnHotbar8);
-        }
+        // To be added
+        //private void OnDisable()
+        //{
+        //    Equipment.InventoryContainer.CollectionUpdated.RemoveListener(SendHotbarItemToCursor);
+        //    PlayerController.MainHotbar1.RemoveListener(ActionType.Started, OnHotbar1);
+        //    PlayerController.MainHotbar2.RemoveListener(ActionType.Started, OnHotbar2);
+        //    PlayerController.MainHotbar3.RemoveListener(ActionType.Started, OnHotbar3);
+        //    PlayerController.MainHotbar4.RemoveListener(ActionType.Started, OnHotbar4);
+        //    PlayerController.MainHotbar5.RemoveListener(ActionType.Started, OnHotbar5);
+        //    PlayerController.MainHotbar6.RemoveListener(ActionType.Started, OnHotbar6);
+        //    PlayerController.MainHotbar7.RemoveListener(ActionType.Started, OnHotbar7);
+        //    PlayerController.MainHotbar8.RemoveListener(ActionType.Started, OnHotbar8);
+        //}
 
         #endregion Unity
 
@@ -79,19 +80,20 @@ namespace UI
             //Cursor.Container.CollectionUpdated.Invoke();
         }
 
-        private IEnumerator DelayOnEnable()
-        {
-            yield return null;
-            Equipment.InventoryContainer.CollectionUpdated.AddListener(SendHotbarItemToCursor);
-            PlayerController.MainHotbar1.AddListener(ActionType.Started, OnHotbar1);
-            PlayerController.MainHotbar2.AddListener(ActionType.Started, OnHotbar2);
-            PlayerController.MainHotbar3.AddListener(ActionType.Started, OnHotbar3);
-            PlayerController.MainHotbar4.AddListener(ActionType.Started, OnHotbar4);
-            PlayerController.MainHotbar5.AddListener(ActionType.Started, OnHotbar5);
-            PlayerController.MainHotbar6.AddListener(ActionType.Started, OnHotbar6);
-            PlayerController.MainHotbar7.AddListener(ActionType.Started, OnHotbar7);
-            PlayerController.MainHotbar8.AddListener(ActionType.Started, OnHotbar8);
-        }
+        // To be added
+        //private IEnumerator DelayOnEnable()
+        //{
+        //    yield return null;
+        //    Equipment.InventoryContainer.CollectionUpdated.AddListener(SendHotbarItemToCursor);
+        //    PlayerController.MainHotbar1.AddListener(ActionType.Started, OnHotbar1);
+        //    PlayerController.MainHotbar2.AddListener(ActionType.Started, OnHotbar2);
+        //    PlayerController.MainHotbar3.AddListener(ActionType.Started, OnHotbar3);
+        //    PlayerController.MainHotbar4.AddListener(ActionType.Started, OnHotbar4);
+        //    PlayerController.MainHotbar5.AddListener(ActionType.Started, OnHotbar5);
+        //    PlayerController.MainHotbar6.AddListener(ActionType.Started, OnHotbar6);
+        //    PlayerController.MainHotbar7.AddListener(ActionType.Started, OnHotbar7);
+        //    PlayerController.MainHotbar8.AddListener(ActionType.Started, OnHotbar8);
+        //}
 
         private void OnHotbar1(CallbackContext context)
         {

@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using Input;
 using PlayerControls;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -16,7 +15,8 @@ namespace UI
         private void Awake()
         {
             _slotPrefab = Resources.Load<SkillSlot>("Prefabs/UI/SkillSlot");
-            PlayerController.MainSkills.AddListener(ActionType.Started, OpenClose);
+            // To be added
+            //PlayerController.MainSkills.AddListener(ActionType.Started, OpenClose);
             gameObject.SetActive(false);
         }
 
@@ -50,9 +50,9 @@ namespace UI
             }
         }
 
-        private void OpenClose(InputAction.CallbackContext context)
-        {
-            gameObject.SetActive(gameObject.activeSelf ^ true);
-        }
+        //private void OpenClose(InputAction.CallbackContext context)
+        //{
+        //    gameObject.SetActive(gameObject.activeSelf ^ true);
+        //}
     }
 }

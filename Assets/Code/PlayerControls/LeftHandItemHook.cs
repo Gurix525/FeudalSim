@@ -9,15 +9,15 @@ namespace PlayerControls
     {
         private GameObject _assignedItem;
 
-        private void Awake()
-        {
-            Controls.Cursor.CombatModeSwitched.AddListener(ChangeAssignedItem);
-        }
+        //private void Awake()
+        //{
+        //    Controls.PlayerCursor.CombatModeSwitched.AddListener(ChangeAssignedItem);
+        //}
 
-        private void ChangeAssignedItem(bool combatState)
-        {
-            throw new NotImplementedException();
-        }
+        //private void ChangeAssignedItem(bool combatState)
+        //{
+        //    throw new NotImplementedException();
+        //}
 
         //private void ChangeAssignedItem(Item item)
         //{

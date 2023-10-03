@@ -1,5 +1,5 @@
 using Misc;
-using Cursor = Controls.Cursor;
+using Cursor = Controls.PlayerCursor;
 using Task = System.Threading.Tasks.Task;
 using UnityEngine;
 using Controls;
@@ -11,7 +11,7 @@ using System;
 namespace Items
 {
     [RequireComponent(typeof(OutlineHandler))]
-    public class ItemHandler : MonoBehaviour, ILeftClickHandler, IRightClickHandler, IDetectable
+    public class ItemHandler : MonoBehaviour, ILeftMouseButtonHandler, IRightMouseButtonHandler, IDetectable
     {
         #region Fields
 

@@ -1,5 +1,5 @@
 using System;
-using Input;
+ 
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
@@ -25,15 +25,17 @@ namespace UI
 
         public void OnPointerEnter(PointerEventData eventData)
         {
-            PlayerController.MainLeftClick.AddListener(ActionType.Started, OnLeftMouseButton);
-            PlayerController.PauseMenuLeftClick.AddListener(ActionType.Started, OnLeftMouseButton);
+            // To be added
+            //PlayerController.MainLeftClick.AddListener(ActionType.Started, OnLeftMouseButton);
+            //PlayerController.PauseMenuLeftClick.AddListener(ActionType.Started, OnLeftMouseButton);
             Image.color = new Color(0.8F, 0.9F, 0.9F, _originalColor.a);
         }
 
         public void OnPointerExit(PointerEventData eventData)
         {
-            PlayerController.MainLeftClick.RemoveListener(ActionType.Started, OnLeftMouseButton);
-            PlayerController.PauseMenuLeftClick.RemoveListener(ActionType.Started, OnLeftMouseButton);
+            // To be added
+            //PlayerController.MainLeftClick.RemoveListener(ActionType.Started, OnLeftMouseButton);
+            //PlayerController.PauseMenuLeftClick.RemoveListener(ActionType.Started, OnLeftMouseButton);
             Image.color = _originalColor;
         }
 

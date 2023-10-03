@@ -1,10 +1,10 @@
 using System;
-using Input;
+ 
 using Items;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using Cursor = Controls.Cursor;
+using PlayerCursor = Controls.PlayerCursor;
 
 namespace UI
 {
@@ -21,22 +21,23 @@ namespace UI
 
         private void OnEnable()
         {
-            Cursor.ItemReferenceChanged.AddListener(OnCollectionUpdated);
+            PlayerCursor.ItemReferenceChanged.AddListener(OnCollectionUpdated);
         }
 
         private void OnDisable()
         {
-            Cursor.ItemReferenceChanged.RemoveListener(OnCollectionUpdated);
+            PlayerCursor.ItemReferenceChanged.RemoveListener(OnCollectionUpdated);
         }
 
         private void Update()
         {
-            transform.position = PlayerController.MainPoint.ReadValue<Vector2>();
+            // To be added
+            //transform.position = PlayerController.MainPoint.ReadValue<Vector2>();
         }
 
         private void OnCollectionUpdated(ItemReference item)
         {
-            if (Cursor.ItemReference == null)
+            if (PlayerCursor.ItemReference == null)
             {
                 _text.text = string.Empty;
                 _image.enabled = false;
@@ -45,8 +46,8 @@ namespace UI
             //if (Cursor.Item.MaxStack == 1)
             //    _text.text = string.Empty;
             //else
-            _text.text = Cursor.ItemReference.Item.Count.ToString();
-            _image.sprite = Cursor.ItemReference.Item.Sprite;
+            _text.text = PlayerCursor.ItemReference.Item.Count.ToString();
+            _image.sprite = PlayerCursor.ItemReference.Item.Sprite;
             _image.enabled = true;
         }
     }

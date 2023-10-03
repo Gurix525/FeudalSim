@@ -1,6 +1,6 @@
 ﻿namespace Controls
 {
-    public interface IRightClickHandler
+    public interface IRightMouseButtonHandler
     {
         public void OnRightMouseButton();
     }

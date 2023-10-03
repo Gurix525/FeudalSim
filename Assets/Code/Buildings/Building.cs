@@ -4,7 +4,7 @@ using Extensions;
 using Items;
 using UnityEngine;
 using static UnityEngine.InputSystem.InputAction;
-using Cursor = Controls.Cursor;
+using Cursor = Controls.PlayerCursor;
 using Terrain = World.Terrain;
 
 namespace Buildings

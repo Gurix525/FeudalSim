@@ -3,7 +3,7 @@ using System.Linq;
 using Misc;
 using UI;
 using UnityEngine;
-using Cursor = Controls.Cursor;
+using Cursor = Controls.PlayerCursor;
 
 namespace Items
 {

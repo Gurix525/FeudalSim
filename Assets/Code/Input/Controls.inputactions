@@ -6,34 +6,7 @@
             "id": "db3c3319-ce52-4ffd-a79a-a90aef1c2f1b",
             "actions": [
                 {
-                    "name": "Move",
-                    "type": "Value",
-                    "id": "132a81bb-cb12-44bb-bfec-3ae30aaeee46",
-                    "expectedControlType": "Vector2",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": true
-                },
-                {
-                    "name": "Run",
-                    "type": "Value",
-                    "id": "bd5746a9-075a-4266-8492-98f88a76dc9e",
-                    "expectedControlType": "Axis",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": true
-                },
-                {
-                    "name": "Jump",
-                    "type": "Button",
-                    "id": "ffd25ca0-6109-4fbb-b53b-ef11fb9bc1fe",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "LeftClick",
+                    "name": "LeftMouseButton",
                     "type": "Button",
                     "id": "f32de7b7-3b8e-49d1-889a-9d73b2cd6178",
                     "expectedControlType": "Button",
@@ -42,25 +15,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Point",
-                    "type": "Value",
-                    "id": "7fd8ef28-2c45-4e7e-88a3-736f6f5757e6",
-                    "expectedControlType": "Vector2",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": true
-                },
-                {
-                    "name": "Change",
-                    "type": "Button",
-                    "id": "8b2c73c3-a4a0-43b2-acfa-fdb59d8d9734",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "RightClick",
+                    "name": "RightMouseButton",
                     "type": "Button",
                     "id": "48686ca1-b29d-40c6-8c29-fbf909307a1d",
                     "expectedControlType": "Button",
@@ -69,12 +24,12 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Escape",
+                    "name": "MiddleMouseButton",
                     "type": "Button",
-                    "id": "28bbb408-d006-4605-ba57-0e3a904a2766",
+                    "id": "ede4e8f3-3942-4b37-bb58-bb90a524dae3",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": "",
+                    "interactions": "Press(behavior=2)",
                     "initialStateCheck": false
                 },
                 {
@@ -87,9 +42,63 @@
                     "initialStateCheck": true
                 },
                 {
-                    "name": "QuickMenu",
+                    "name": "MousePosition",
+                    "type": "Value",
+                    "id": "7fd8ef28-2c45-4e7e-88a3-736f6f5757e6",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "MouseScroll",
+                    "type": "Value",
+                    "id": "62040998-8f6a-42a1-b843-2684099ecbdc",
+                    "expectedControlType": "Axis",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "Move",
+                    "type": "Value",
+                    "id": "132a81bb-cb12-44bb-bfec-3ae30aaeee46",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "Sprint",
                     "type": "Button",
-                    "id": "9c84985a-8cce-415b-905a-781ac4c41344",
+                    "id": "bd5746a9-075a-4266-8492-98f88a76dc9e",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Press(behavior=2)",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "Jump",
+                    "type": "Button",
+                    "id": "ffd25ca0-6109-4fbb-b53b-ef11fb9bc1fe",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Change",
+                    "type": "Button",
+                    "id": "8b2c73c3-a4a0-43b2-acfa-fdb59d8d9734",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Escape",
+                    "type": "Button",
+                    "id": "28bbb408-d006-4605-ba57-0e3a904a2766",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -117,6 +126,42 @@
                     "name": "Alt",
                     "type": "Button",
                     "id": "024dc7d8-32c3-42c2-bfef-9e85b19fe00b",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Save",
+                    "type": "Button",
+                    "id": "3d5d7a52-5823-485c-aa98-ea1116439662",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Load",
+                    "type": "Button",
+                    "id": "0e5dfbd6-6957-4fe9-bb77-e9d59cef9d7d",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Roll",
+                    "type": "Button",
+                    "id": "d1eafc3e-aff9-4c53-a66c-c10d235d1f3b",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "SkillsList",
+                    "type": "Button",
+                    "id": "1ad7dd19-171b-4080-9507-1c304d229751",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -193,69 +238,6 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
-                },
-                {
-                    "name": "Save",
-                    "type": "Button",
-                    "id": "3d5d7a52-5823-485c-aa98-ea1116439662",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "Load",
-                    "type": "Button",
-                    "id": "0e5dfbd6-6957-4fe9-bb77-e9d59cef9d7d",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "Roll",
-                    "type": "Button",
-                    "id": "d1eafc3e-aff9-4c53-a66c-c10d235d1f3b",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "Scroll",
-                    "type": "Value",
-                    "id": "62040998-8f6a-42a1-b843-2684099ecbdc",
-                    "expectedControlType": "Axis",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": true
-                },
-                {
-                    "name": "MiddleMouseButton",
-                    "type": "Button",
-                    "id": "ede4e8f3-3942-4b37-bb58-bb90a524dae3",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "Skills",
-                    "type": "Button",
-                    "id": "1ad7dd19-171b-4080-9507-1c304d229751",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "PauseMenu",
-                    "type": "Button",
-                    "id": "57e165cb-6c4c-4128-a831-ed7d9bf55212",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -321,7 +303,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Run",
+                    "action": "Sprint",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -338,28 +320,6 @@
                 },
                 {
                     "name": "",
-                    "id": "c3a3cda1-e193-4597-96fb-360b34a2f156",
-                    "path": "<Mouse>/leftButton",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "LeftClick",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "16e22f1c-65f2-4291-b725-74fa16336ebb",
-                    "path": "<Mouse>/position",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Point",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
                     "id": "48521ab1-7603-49f7-a255-b40561a72cea",
                     "path": "<Keyboard>/r",
                     "interactions": "",
@@ -371,45 +331,12 @@
                 },
                 {
                     "name": "",
-                    "id": "fccf51b4-d6f7-40b6-b95c-9dc8b5acd0e0",
-                    "path": "<Mouse>/rightButton",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "RightClick",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
                     "id": "335e2853-56bc-4bcc-9cae-cdc7ef4affd4",
                     "path": "<Keyboard>/escape",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
                     "action": "Escape",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "ea6632d1-cb9a-4723-802b-f045400827ed",
-                    "path": "<Mouse>/delta",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "MouseDelta",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "49c5ccc5-0707-40b5-b2a8-f6d0e0a76dc0",
-                    "path": "<Keyboard>/q",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "QuickMenu",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -536,6 +463,61 @@
                 },
                 {
                     "name": "",
+                    "id": "c3a3cda1-e193-4597-96fb-360b34a2f156",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "LeftMouseButton",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "fccf51b4-d6f7-40b6-b95c-9dc8b5acd0e0",
+                    "path": "<Mouse>/rightButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "RightMouseButton",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "ea6632d1-cb9a-4723-802b-f045400827ed",
+                    "path": "<Mouse>/delta",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "MouseDelta",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "0cdee5b5-53b9-45ed-bc00-cb052a87ed61",
+                    "path": "<Mouse>/middleButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "MiddleMouseButton",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "16e22f1c-65f2-4291-b725-74fa16336ebb",
+                    "path": "<Mouse>/position",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "MousePosition",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "50df225c-ca41-4ffa-b2f8-11aefb0f9cdd",
                     "path": "<Keyboard>/f5",
                     "interactions": "",
@@ -574,18 +556,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Scroll",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "0cdee5b5-53b9-45ed-bc00-cb052a87ed61",
-                    "path": "<Mouse>/middleButton",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "MiddleMouseButton",
+                    "action": "MouseScroll",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -596,114 +567,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Skills",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "6a0742bd-cf52-432b-877d-ab4ed7b73638",
-                    "path": "<Keyboard>/escape",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "PauseMenu",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                }
-            ]
-        },
-        {
-            "name": "QuickMenu",
-            "id": "28836959-70a3-4f86-bd79-d010c284d862",
-            "actions": [
-                {
-                    "name": "QuickMenu",
-                    "type": "Button",
-                    "id": "96b5d34b-d78b-4c60-923a-889ceea8c28a",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "MouseDelta",
-                    "type": "Value",
-                    "id": "cf4e3c49-1dac-42ea-bf75-10a31969f2d9",
-                    "expectedControlType": "Vector2",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": true
-                }
-            ],
-            "bindings": [
-                {
-                    "name": "",
-                    "id": "33bcf686-74cc-4252-ae40-7acb54c858fd",
-                    "path": "<Keyboard>/q",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "QuickMenu",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "9d41a1c9-a34f-4614-940c-9a7f19dc7b89",
-                    "path": "<Mouse>/delta",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "MouseDelta",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                }
-            ]
-        },
-        {
-            "name": "PauseMenu",
-            "id": "9a826b46-16d9-4aa2-bb57-bb19ee234b66",
-            "actions": [
-                {
-                    "name": "PauseMenu",
-                    "type": "Button",
-                    "id": "9f7e47d9-9cbf-4ec8-8a4b-ac8342f3b4ce",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "LeftClick",
-                    "type": "Button",
-                    "id": "5e0d82b7-87c5-4103-a467-6e46c9987b00",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                }
-            ],
-            "bindings": [
-                {
-                    "name": "",
-                    "id": "aefcc157-107e-462d-b531-bf5fca706924",
-                    "path": "<Keyboard>/escape",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "PauseMenu",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "7b691855-17f2-487d-8d19-dda770a3036b",
-                    "path": "<Mouse>/leftButton",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "LeftClick",
+                    "action": "SkillsList",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

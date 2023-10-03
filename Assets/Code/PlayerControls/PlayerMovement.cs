@@ -1,7 +1,4 @@
-using System;
-using System.Collections;
 using Extensions;
-using Input;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -33,6 +30,8 @@ namespace PlayerControls
 
         private Rigidbody _rigidbody;
         private Animator _animator;
+
+        private Vector2 _inputVelocity = Vector2.zero;
 
         private bool _isCursorRaycastNull = true;
         private bool _isSprintPressed = false;
@@ -91,7 +90,7 @@ namespace PlayerControls
 
         public void RotateToCursor()
         {
-            transform.LookAt(Controls.Cursor.ClearRaycastHit.Value.point);
+            transform.LookAt(Controls.PlayerCursor.ClearRaycastHit.Value.point);
             transform.rotation = Quaternion.Euler(0F, transform.eulerAngles.y, 0F);
         }
 
@@ -109,9 +108,12 @@ namespace PlayerControls
 
         private void OnEnable()
         {
-            PlayerController.MainJump.AddListener(ActionType.Started, Jump);
-            PlayerController.MainRun.AddListener(ActionType.Started, SetSprintPressed);
-            Player.Instance.Stats.StaminaDepleted.AddListener(SetSprintUnpressed);
+            Player.Instance.Stats.StaminaDepleted.AddListener(() => _isSprintPressed = false);
+        }
+
+        private void OnDisable()
+        {
+            Player.Instance.Stats.StaminaDepleted.RemoveAllListeners();
         }
 
         private void Update()
@@ -123,18 +125,11 @@ namespace PlayerControls
         {
             CheckConditions();
             CheckSprint();
-            if (CanMove)
-                Move();
+            Move();
             if (IsGravityEnabled)
                 DoGravity();
             if (CanRotateToCursor)
                 RotateToCursor();
-        }
-
-        private void OnDisable()
-        {
-            PlayerController.MainJump.RemoveListener(ActionType.Started, Jump);
-            PlayerController.MainRun.RemoveListener(ActionType.Started, SetSprintPressed);
         }
 
         private void OnAnimatorIK(int layerIndex)
@@ -148,13 +143,15 @@ namespace PlayerControls
 
         private void CheckConditions()
         {
-            _isCursorRaycastNull = Controls.Cursor.ClearRaycastHit == null;
+            _isCursorRaycastNull = Controls.PlayerCursor.ClearRaycastHit == null;
             IsGrounded = Physics.CheckSphere(transform.position, 0.24F, _groundMask);
         }
 
         private void Move()
         {
-            Vector2 direction = PlayerController.MainMove.ReadValue<Vector2>();
+            if (!CanMove)
+                return;
+            Vector2 direction = _inputVelocity;
             direction *= MoveSpeed * (IsSprinting ? _sprintMultiplier : 1F);
             Vector3 fullDirection = new(direction.x, 0F, direction.y);
             float cameraAngle = Camera.main.transform.eulerAngles.y;
@@ -167,6 +164,25 @@ namespace PlayerControls
                 ImproveRunningSkill(direction);
                 SubtractStamina(Time.fixedDeltaTime * 20F);
             }
+        }
+
+        private void OnMove(InputValue value)
+        {
+            _inputVelocity = value.Get<Vector2>();
+        }
+
+        private void OnJump(InputValue value)
+        {
+            if (!CanJump)
+                return;
+            _rigidbody.AddForce(Vector3.up * JumpForce, ForceMode.VelocityChange);
+            Player.Instance.Stats.AddSkill("Jumping", 1F);
+            SubtractStamina(15F);
+        }
+
+        private void OnSprint(InputValue value)
+        {
+            _isSprintPressed = value.isPressed;
         }
 
         private void ImproveRunningSkill(Vector2 direction)
@@ -235,39 +251,12 @@ namespace PlayerControls
 
         private Vector2 GetLookDirection()
         {
-            if (Controls.Cursor.ClearRaycastHit == null)
+            if (Controls.PlayerCursor.ClearRaycastHit == null)
                 return Vector2.zero;
-            Vector3 cursorPosition = Controls.Cursor.ClearRaycastHit.Value.point;
+            Vector3 cursorPosition = Controls.PlayerCursor.ClearRaycastHit.Value.point;
             Vector2 transformPosition = new(transform.position.x, transform.position.z);
             Vector2 targetPosition = new(cursorPosition.x, cursorPosition.z);
             return targetPosition - transformPosition;
-        }
-
-        private void Jump(InputAction.CallbackContext context)
-        {
-            if (!CanJump)
-                return;
-            _rigidbody.AddForce(Vector3.up * JumpForce, ForceMode.VelocityChange);
-            Player.Instance.Stats.AddSkill("Jumping", 1F);
-            SubtractStamina(15F);
-        }
-
-        private void SetSprintPressed(InputAction.CallbackContext context)
-        {
-            _isSprintPressed = true;
-            PlayerController.MainRun.AddListener(ActionType.Canceled, SetSprintUnpressed);
-        }
-
-        private void SetSprintUnpressed(InputAction.CallbackContext context)
-        {
-            _isSprintPressed = false;
-            PlayerController.MainRun.RemoveListener(ActionType.Canceled, SetSprintUnpressed);
-        }
-
-        private void SetSprintUnpressed()
-        {
-            _isSprintPressed = false;
-            PlayerController.MainRun.RemoveListener(ActionType.Canceled, SetSprintUnpressed);
         }
 
         #endregion Private

@@ -1,4 +1,4 @@
-using Input;
+ 
 using UnityEngine;
 using UnityEngine.EventSystems;
 using static UnityEngine.InputSystem.InputAction;
@@ -8,7 +8,7 @@ using Items;
 
 namespace UI
 {
-    public class ContainerSlot : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
+    public class ContainerSlot : MonoBehaviour//, IPointerEnterHandler, IPointerExitHandler
     {
         #region Fields
 
@@ -35,19 +35,20 @@ namespace UI
             _container.CollectionUpdated.RemoveListener(OnCollectionUpdated);
         }
 
-        public void OnPointerEnter(PointerEventData eventData)
-        {
-            PlayerController.MainLeftClick.AddListener(ActionType.Started, OnLeftMouseButton);
-            PlayerController.MainLeftClick.AddListener(ActionType.Canceled, OnLeftMouseButtonRelase);
-            //PlayerController.MainRightClick.AddListener(ActionType.Started, OnRightMouseButton);
-        }
+        // To be added
+        //public void OnPointerEnter(PointerEventData eventData)
+        //{
+        //    PlayerController.MainLeftClick.AddListener(ActionType.Started, OnLeftMouseButton);
+        //    PlayerController.MainLeftClick.AddListener(ActionType.Canceled, OnLeftMouseButtonRelase);
+        //    //PlayerController.MainRightClick.AddListener(ActionType.Started, OnRightMouseButton);
+        //}
 
-        public void OnPointerExit(PointerEventData eventData)
-        {
-            PlayerController.MainLeftClick.RemoveListener(ActionType.Started, OnLeftMouseButton);
-            PlayerController.MainLeftClick.RemoveListener(ActionType.Canceled, OnLeftMouseButtonRelase);
-            //PlayerController.MainRightClick.RemoveListener(ActionType.Started, OnRightMouseButton);
-        }
+        //public void OnPointerExit(PointerEventData eventData)
+        //{
+        //    PlayerController.MainLeftClick.RemoveListener(ActionType.Started, OnLeftMouseButton);
+        //    PlayerController.MainLeftClick.RemoveListener(ActionType.Canceled, OnLeftMouseButtonRelase);
+        //    //PlayerController.MainRightClick.RemoveListener(ActionType.Started, OnRightMouseButton);
+        //}
 
         #endregion Public
 
@@ -65,7 +66,8 @@ namespace UI
         private void OnDisable()
         {
             _container.CollectionUpdated.RemoveListener(OnCollectionUpdated);
-            OnPointerExit(null);
+            // To be added
+            //OnPointerExit(null);
         }
 
         #endregion Unity

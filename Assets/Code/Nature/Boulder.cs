@@ -4,13 +4,13 @@ using Items;
 using Misc;
 using UnityEngine;
 using World;
-using Cursor = Controls.Cursor;
+using Cursor = Controls.PlayerCursor;
 using PlayerControls;
 
 namespace Nature
 {
     [RequireComponent(typeof(OutlineHandler))]
-    public class Boulder : MonoBehaviour, ILeftClickHandler
+    public class Boulder : MonoBehaviour, ILeftMouseButtonHandler
     {
         #region Public
 

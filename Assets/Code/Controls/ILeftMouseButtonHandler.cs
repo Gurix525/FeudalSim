@@ -1,6 +1,6 @@
 ﻿namespace Controls
 {
-    public interface ILeftClickHandler
+    public interface ILeftMouseButtonHandler
     {
         public void OnLeftMouseButton();
     }

@@ -4,14 +4,14 @@ using AI;
 using Combat;
 using Controls;
 using Extensions;
-using Input;
+ 
 using Items;
 using StarterAssets;
 using UnityEngine;
 using UnityEngine.Events;
 using VFX;
 using static UnityEngine.InputSystem.InputAction;
-using Cursor = Controls.Cursor;
+using PlayerCursor = Controls.PlayerCursor;
 
 namespace PlayerControls
 {
@@ -64,10 +64,11 @@ namespace PlayerControls
 
         private void OnEnable()
         {
-            PlayerController.MainLeftClick.AddListener(ActionType.Started, OnLeftMouseButton);
-            PlayerController.MainRightClick.AddListener(ActionType.Started, OnRightMouseButton);
-            PlayerController.MainLeftClick.AddListener(ActionType.Canceled, OnLeftMouseButtonRelase);
-            PlayerController.MainRightClick.AddListener(ActionType.Canceled, OnRightMouseButtonRelase);
+            // To be added
+            //PlayerController.MainLeftClick.AddListener(ActionType.Started, OnLeftMouseButton);
+            //PlayerController.MainRightClick.AddListener(ActionType.Started, OnRightMouseButton);
+            //PlayerController.MainLeftClick.AddListener(ActionType.Canceled, OnLeftMouseButtonRelase);
+            //PlayerController.MainRightClick.AddListener(ActionType.Canceled, OnRightMouseButtonRelase);
         }
 
         private void Update()
@@ -75,22 +76,23 @@ namespace PlayerControls
             //Cursor.Action.Update();
         }
 
-        private void OnDisable()
-        {
-            PlayerController.MainLeftClick.RemoveListener(ActionType.Started, OnLeftMouseButton);
-            PlayerController.MainRightClick.RemoveListener(ActionType.Started, OnRightMouseButton);
-            PlayerController.MainLeftClick.RemoveListener(ActionType.Canceled, OnLeftMouseButtonRelase);
-            PlayerController.MainRightClick.RemoveListener(ActionType.Canceled, OnRightMouseButtonRelase);
-        }
+        //private void OnDisable()
+        //{
+        //    PlayerController.MainLeftClick.RemoveListener(ActionType.Started, OnLeftMouseButton);
+        //    PlayerController.MainRightClick.RemoveListener(ActionType.Started, OnRightMouseButton);
+        //    PlayerController.MainLeftClick.RemoveListener(ActionType.Canceled, OnLeftMouseButtonRelase);
+        //    PlayerController.MainRightClick.RemoveListener(ActionType.Canceled, OnRightMouseButtonRelase);
+        //}
 
         #endregion Unity
 
         #region Private
 
-        private void OnLeftMouseButton(CallbackContext context)
-        {
-            Cursor.OnLeftMouseButton();
-        }
+        // To be added
+        //private void OnLeftMouseButton(CallbackContext context)
+        //{
+        //    Cursor.OnLeftMouseButton();
+        //}
 
         private void OnLeftMouseButtonRelase(CallbackContext context)
         {
@@ -128,7 +130,7 @@ namespace PlayerControls
         private IEnumerator PutItemBack()
         {
             yield return null;
-            Cursor.ItemReference = null;
+            PlayerCursor.ItemReference = null;
         }
 
         private void OnGotHit(Attack attack)
