@@ -1,3 +1,4 @@
+using Controls;
 using Extensions;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -9,6 +10,8 @@ namespace PlayerControls
     public class PlayerMovement : MonoBehaviour
     {
         #region Fields
+
+        [SerializeField] private PlayerCursor _cursor;
 
         [SerializeField]
         private float _moveSpeed = 6F;
@@ -33,7 +36,6 @@ namespace PlayerControls
 
         private Vector2 _inputVelocity = Vector2.zero;
 
-        private bool _isCursorRaycastNull = true;
         private bool _isSprintPressed = false;
 
         private int _groundMask;
@@ -82,7 +84,7 @@ namespace PlayerControls
 
         public bool IsGravityEnabled => true;
 
-        public bool CanRotateToCursor => !_isCursorRaycastNull && !IsPendingAttack;
+        public bool CanRotateToCursor => !IsPendingAttack;
 
         #endregion Conditions
 
@@ -90,7 +92,7 @@ namespace PlayerControls
 
         public void RotateToCursor()
         {
-            transform.LookAt(Controls.PlayerCursor.ClearRaycastHit.Value.point);
+            transform.LookAt(_cursor.WorldPosition);
             transform.rotation = Quaternion.Euler(0F, transform.eulerAngles.y, 0F);
         }
 
@@ -143,7 +145,6 @@ namespace PlayerControls
 
         private void CheckConditions()
         {
-            _isCursorRaycastNull = Controls.PlayerCursor.ClearRaycastHit == null;
             IsGrounded = Physics.CheckSphere(transform.position, 0.24F, _groundMask);
         }
 
@@ -251,9 +252,7 @@ namespace PlayerControls
 
         private Vector2 GetLookDirection()
         {
-            if (Controls.PlayerCursor.ClearRaycastHit == null)
-                return Vector2.zero;
-            Vector3 cursorPosition = Controls.PlayerCursor.ClearRaycastHit.Value.point;
+            Vector3 cursorPosition = _cursor.WorldPosition;
             Vector2 transformPosition = new(transform.position.x, transform.position.z);
             Vector2 targetPosition = new(cursorPosition.x, cursorPosition.z);
             return targetPosition - transformPosition;

@@ -10,6 +10,7 @@ namespace UI
 {
     public class CursorItem : MonoBehaviour
     {
+        [SerializeField] private PlayerCursor _cursor;
         [SerializeField] private TextMeshProUGUI _text;
 
         private Image _image;
@@ -21,12 +22,12 @@ namespace UI
 
         private void OnEnable()
         {
-            PlayerCursor.ItemReferenceChanged.AddListener(OnCollectionUpdated);
+            _cursor.ItemReferenceChanged.AddListener(OnCollectionUpdated);
         }
 
         private void OnDisable()
         {
-            PlayerCursor.ItemReferenceChanged.RemoveListener(OnCollectionUpdated);
+            _cursor.ItemReferenceChanged.RemoveListener(OnCollectionUpdated);
         }
 
         private void Update()
@@ -37,7 +38,7 @@ namespace UI
 
         private void OnCollectionUpdated(ItemReference item)
         {
-            if (PlayerCursor.ItemReference == null)
+            if (_cursor.ItemReference == null)
             {
                 _text.text = string.Empty;
                 _image.enabled = false;
@@ -46,8 +47,8 @@ namespace UI
             //if (Cursor.Item.MaxStack == 1)
             //    _text.text = string.Empty;
             //else
-            _text.text = PlayerCursor.ItemReference.Item.Count.ToString();
-            _image.sprite = PlayerCursor.ItemReference.Item.Sprite;
+            _text.text = _cursor.ItemReference.Item.Count.ToString();
+            _image.sprite = _cursor.ItemReference.Item.Sprite;
             _image.enabled = true;
         }
     }

@@ -2,13 +2,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using AI;
 using Controls;
 using UnityEngine;
 using UnityEngine.Events;
-using World;
-using PlayerCursor = Controls.PlayerCursor;
-using Terrain = World.Terrain;
 
 namespace Items
 {
@@ -98,27 +94,29 @@ namespace Items
 
         public void OnLeftMouseButton(int slotIndex)
         {
-            if (_items[slotIndex] == null)
-                return;
-            PlayerCursor.ItemReference = new(this, slotIndex);
-            CollectionUpdated.Invoke();
+            // To be added
+            //if (_items[slotIndex] == null)
+            //    return;
+            //PlayerCursor.ItemReference = new(this, slotIndex);
+            //CollectionUpdated.Invoke();
         }
 
         public void OnLeftMouseButtonRelase(int slotIndex)
         {
-            if (PlayerCursor.ItemReference != null)
-            {
-                Container other = PlayerCursor.ItemReference.Container;
-                int otherIndex = PlayerCursor.ItemReference.Index;
-                if (_items[slotIndex] == null)
-                    SwapItems(this, slotIndex, other, otherIndex);
-                else if (_items[slotIndex].Model == other[otherIndex].Model)
-                    MergeItems(other, otherIndex, this, slotIndex);
-                else
-                    SwapItems(this, slotIndex, other, otherIndex);
-                PlayerCursor.ItemReference = null;
-            }
-            CollectionUpdated.Invoke();
+            // To be added
+            //if (PlayerCursor.ItemReference != null)
+            //{
+            //    Container other = PlayerCursor.ItemReference.Container;
+            //    int otherIndex = PlayerCursor.ItemReference.Index;
+            //    if (_items[slotIndex] == null)
+            //        SwapItems(this, slotIndex, other, otherIndex);
+            //    else if (_items[slotIndex].Model == other[otherIndex].Model)
+            //        MergeItems(other, otherIndex, this, slotIndex);
+            //    else
+            //        SwapItems(this, slotIndex, other, otherIndex);
+            //    PlayerCursor.ItemReference = null;
+            //}
+            //CollectionUpdated.Invoke();
         }
 
         public void Sort(bool hasToStack = true)

@@ -24,6 +24,8 @@ namespace PlayerControls
     {
         #region Fields
 
+        [SerializeField] private PlayerCursor _cursor;
+
         [SerializeField] private PlayerMovement _playerMovement;
         [SerializeField] private PlayerVFX _vfx;
         [SerializeField] private AimCurve _aimCurve;
@@ -94,20 +96,20 @@ namespace PlayerControls
         //    Cursor.OnLeftMouseButton();
         //}
 
-        private void OnLeftMouseButtonRelase(CallbackContext context)
-        {
-            StartCoroutine(PutItemBack());
-        }
+        //private void OnLeftMouseButtonRelase(CallbackContext context)
+        //{
+        //    StartCoroutine(PutItemBack());
+        //}
 
-        private void OnRightMouseButton(CallbackContext context)
-        {
-            //Cursor.Action.OnRightMouseButton();
-        }
+        //private void OnRightMouseButton(CallbackContext context)
+        //{
+        //    //Cursor.Action.OnRightMouseButton();
+        //}
 
-        private void OnRightMouseButtonRelase(CallbackContext context)
-        {
-            //Cursor.Action.OnRightMouseButtonRelase();
-        }
+        //private void OnRightMouseButtonRelase(CallbackContext context)
+        //{
+        //    //Cursor.Action.OnRightMouseButtonRelase();
+        //}
 
         private void InitializeStats()
         {
@@ -130,7 +132,7 @@ namespace PlayerControls
         private IEnumerator PutItemBack()
         {
             yield return null;
-            PlayerCursor.ItemReference = null;
+            _cursor.ItemReference = null;
         }
 
         private void OnGotHit(Attack attack)
