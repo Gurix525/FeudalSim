@@ -1,3 +1,4 @@
+using System;
 using Controls;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -7,10 +8,13 @@ namespace UI
 {
     public abstract class Button : MonoBehaviour, ILeftMouseButtonHandler, IPointerEnterHandler, IPointerExitHandler
     {
+        public event EventHandler Clicked;
+
         private Image _image;
         private Color _originalColor;
 
         private Image Image => _image ?? GetComponent<Image>();
+
 
         private void Awake()
         {
@@ -30,6 +34,7 @@ namespace UI
         public void OnLeftMouseButton()
         {
             Execute();
+            Clicked?.Invoke(this, EventArgs.Empty);
         }
 
         protected void OnDisable()

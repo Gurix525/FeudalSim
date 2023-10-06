@@ -43,7 +43,6 @@ namespace Controls
 
         private void OnLeftMouseButton(InputValue value)
         {
-            Debug.Log(GetObjectUnderCursor());
             GetObjectUnderCursor()?
             .GetComponent<ILeftMouseButtonHandler>()?
             .OnLeftMouseButton();
