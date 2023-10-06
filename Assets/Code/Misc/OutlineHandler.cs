@@ -1,44 +1,21 @@
+using Controls;
 using UnityEngine;
-using Cursor = Controls.PlayerCursor;
 
 namespace Misc
 {
     [RequireComponent(typeof(Outline))]
-    public class OutlineHandler : MonoBehaviour
+    public class OutlineHandler : MonoBehaviour, IMouseHoverHandler
     {
         [SerializeField] private Texture2D _cursor;
 
         private Outline _outline;
-        private bool _isOutlineEnabled = false;
 
-        public void EnableOutline()
+        public void StartHover()
         {
-            _outline.enabled = true;
-            _isOutlineEnabled = true;
-            if (_cursor != null)
-                UnityEngine.Cursor.SetCursor(_cursor, Vector2.zero, CursorMode.Auto);
+            EnableOutline();
         }
 
-        public void DisableOutline()
-        {
-            _outline.enabled = false;
-            _isOutlineEnabled = false;
-            UnityEngine.Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
-        }
-
-        // To be added
-        //private void OnMouseOver()
-        //{
-        //    if (Cursor.CurrentRaycastHit != null)
-        //        if (Cursor.RaycastHit.Value.collider.gameObject == gameObject)
-        //        {
-        //            EnableOutline();
-        //            return;
-        //        }
-        //    DisableOutline();
-        //}
-
-        private void OnMouseExit()
+        public void EndHover()
         {
             DisableOutline();
         }
@@ -60,6 +37,19 @@ namespace Misc
         private void OnDestroy()
         {
             DisableOutline();
+        }
+
+        private void EnableOutline()
+        {
+            _outline.enabled = true;
+            if (_cursor != null)
+                Cursor.SetCursor(_cursor, Vector2.zero, CursorMode.Auto);
+        }
+
+        private void DisableOutline()
+        {
+            _outline.enabled = false;
+            Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
         }
     }
 }

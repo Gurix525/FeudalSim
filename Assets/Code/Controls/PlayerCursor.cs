@@ -1,6 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Items;
-using UnityEditor.PackageManager;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
@@ -11,16 +11,37 @@ namespace Controls
 {
     public class PlayerCursor : MonoBehaviour
     {
+        #region Events
+
+        public event EventHandler<ObjectChangedEventArgs> ObjectUnderCursorChanged;
+
+        #endregion Events
+
         #region Fields
 
         [SerializeField] private GameObject _canvasesParent;
 
         private ItemReference _itemReference;
         private LayerMask _layerMask;
+        private GameObject _objectUnderCursor;
 
         #endregion Fields
 
         #region Properties
+
+        public GameObject ObjectUnderCursor
+        {
+            get => _objectUnderCursor;
+            set
+            {
+                if (_objectUnderCursor != value)
+                {
+                    ObjectChangedEventArgs args = new(_objectUnderCursor, value);
+                    _objectUnderCursor = value;
+                    ObjectUnderCursorChanged?.Invoke(this, args);
+                }
+            }
+        }
 
         public Vector3 WorldPosition { get; private set; }
         public Vector2 ScreenPosition { get; private set; }
@@ -43,14 +64,14 @@ namespace Controls
 
         private void OnLeftMouseButton(InputValue value)
         {
-            GetObjectUnderCursor()?
-            .GetComponent<ILeftMouseButtonHandler>()?
-            .OnLeftMouseButton();
+            ObjectUnderCursor?
+                .GetComponent<ILeftMouseButtonHandler>()?
+                .OnLeftMouseButton();
         }
 
         private void OnRightMouseButton(InputValue value)
         {
-            GetObjectUnderCursor()?
+            ObjectUnderCursor?
                 .GetComponent<IRightMouseButtonHandler>()?
                 .OnRightMouseButton();
         }
@@ -67,16 +88,38 @@ namespace Controls
         private void Awake()
         {
             _layerMask = ~LayerMask.GetMask("Player", "Hitbox", "Attack");
+            ObjectUnderCursorChanged += PlayerCursor_ObjectUnderCursorChanged;
+        }
+
+        private void PlayerCursor_ObjectUnderCursorChanged(object sender, ObjectChangedEventArgs e)
+        {
+            if (e == null)
+                return;
+            e.PreviousObject?.GetComponent<IMouseHoverHandler>()?.EndHover();
+            e.NewObject?.GetComponent<IMouseHoverHandler>()?.StartHover();
         }
 
         private void Update()
         {
             UpdateWorldPosition();
+            UpdateObjectUnderCursor();
         }
 
         #endregion Unity
 
         #region Private
+
+        private void UpdateWorldPosition()
+        {
+            Ray ray = Camera.main.ScreenPointToRay(ScreenPosition);
+            if (Physics.Raycast(ray, out RaycastHit hit, float.PositiveInfinity, _layerMask))
+                WorldPosition = hit.point;
+        }
+
+        private void UpdateObjectUnderCursor()
+        {
+            ObjectUnderCursor = GetObjectUnderCursor();
+        }
 
         private GameObject GetObjectUnderCursor()
         {
@@ -107,13 +150,18 @@ namespace Controls
             return null;
         }
 
-        private void UpdateWorldPosition()
-        {
-            Ray ray = Camera.main.ScreenPointToRay(ScreenPosition);
-            if (Physics.Raycast(ray, out RaycastHit hit, float.PositiveInfinity, _layerMask))
-                WorldPosition = hit.point;
-        }
-
         #endregion Private
+
+        public class ObjectChangedEventArgs : EventArgs
+        {
+            public GameObject PreviousObject { get; }
+            public GameObject NewObject { get; }
+
+            public ObjectChangedEventArgs(GameObject previousObject, GameObject newObject)
+            {
+                PreviousObject = previousObject;
+                NewObject = newObject;
+            }
+        }
     }
 }
