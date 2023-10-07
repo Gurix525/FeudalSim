@@ -11,7 +11,7 @@ using System;
 namespace Items
 {
     [RequireComponent(typeof(OutlineHandler))]
-    public class ItemHandler : MonoBehaviour, ILeftMouseButtonHandler, IRightMouseButtonHandler, IDetectable
+    public class ItemHandler : MonoBehaviour, IMouseHandler, IDetectable
     {
         #region Fields
 

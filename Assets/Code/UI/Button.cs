@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 namespace UI
 {
-    public abstract class Button : MonoBehaviour, ILeftMouseButtonHandler, IPointerEnterHandler, IPointerExitHandler
+    public abstract class Button : MonoBehaviour, IMouseHandler, IPointerEnterHandler, IPointerExitHandler
     {
         public event EventHandler Clicked;
 

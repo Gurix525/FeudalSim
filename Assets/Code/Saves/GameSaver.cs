@@ -1,9 +1,9 @@
 using System.IO;
 using System.IO.Compression;
- 
+
 using UnityEngine;
+using UnityEngine.InputSystem;
 using World;
-using static UnityEngine.InputSystem.InputAction;
 
 namespace Saves
 {
@@ -20,36 +20,6 @@ namespace Saves
 
         public void SaveGame()
         {
-            SaveGame(new());
-        }
-
-        #endregion Public
-
-        #region Unity
-
-        private void Awake()
-        {
-            _allSavesPath = Path.Combine(Application.persistentDataPath, "Saves");
-        }
-
-        // To be added
-        //private void OnEnable()
-        //{
-        //    PlayerController.MainSave.AddListener(ActionType.Started, SaveGame);
-        //}
-
-        //private void OnDisable()
-
-        //{
-        //    PlayerController.MainSave.RemoveListener(ActionType.Started, SaveGame);
-        //}
-
-        #endregion Unity
-
-        #region Private
-
-        private void SaveGame(CallbackContext context)
-        {
             Directory.CreateDirectory(_allSavesPath);
             _worldPath = Path.Combine(_allSavesPath, Controls.GameManager.WorldName);
             Directory.CreateDirectory(_worldPath);
@@ -60,6 +30,28 @@ namespace Saves
             ZipFile.CreateFromDirectory(_worldPath, _worldPath + ".zip");
             Directory.Delete(_worldPath, true);
         }
+
+        #endregion Public
+
+        #region Input
+
+        private void OnSave(InputValue value)
+        {
+            SaveGame();
+        }
+
+        #endregion Input
+
+        #region Unity
+
+        private void Awake()
+        {
+            _allSavesPath = Path.Combine(Application.persistentDataPath, "Saves");
+        }
+
+        #endregion Unity
+
+        #region Private
 
         private void SaveWorldInfo()
         {

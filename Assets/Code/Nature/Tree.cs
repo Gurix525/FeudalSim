@@ -10,7 +10,7 @@ using PlayerControls;
 namespace Nature
 {
     [RequireComponent(typeof(OutlineHandler))]
-    public class Tree : MonoBehaviour, ILeftMouseButtonHandler
+    public class Tree : MonoBehaviour, IMouseHandler
     {
         #region Public
 

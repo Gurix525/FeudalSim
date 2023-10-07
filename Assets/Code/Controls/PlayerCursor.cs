@@ -64,16 +64,34 @@ namespace Controls
 
         private void OnLeftMouseButton(InputValue value)
         {
-            ObjectUnderCursor?
-                .GetComponent<ILeftMouseButtonHandler>()?
-                .OnLeftMouseButton();
+            if (value.isPressed)
+            {
+                ObjectUnderCursor?
+                    .GetComponent<IMouseHandler>()?
+                    .OnLeftMouseButton();
+            }
+            else
+            {
+                ObjectUnderCursor?
+                    .GetComponent<IMouseHandler>()?
+                    .OnLeftMouseButtonRelase();
+            }
         }
 
         private void OnRightMouseButton(InputValue value)
         {
-            ObjectUnderCursor?
-                .GetComponent<IRightMouseButtonHandler>()?
-                .OnRightMouseButton();
+            if (value.isPressed)
+            {
+                ObjectUnderCursor?
+                    .GetComponent<IMouseHandler>()?
+                    .OnRightMouseButton();
+            }
+            else
+            {
+                ObjectUnderCursor?
+                .GetComponent<IMouseHandler>()?
+                .OnRightMouseButtonRelase();
+            }
         }
 
         private void OnMousePosition(InputValue value)
@@ -89,14 +107,6 @@ namespace Controls
         {
             _layerMask = ~LayerMask.GetMask("Player", "Hitbox", "Attack");
             ObjectUnderCursorChanged += PlayerCursor_ObjectUnderCursorChanged;
-        }
-
-        private void PlayerCursor_ObjectUnderCursorChanged(object sender, ObjectChangedEventArgs e)
-        {
-            if (e == null)
-                return;
-            e.PreviousObject?.GetComponent<IMouseHoverHandler>()?.EndHover();
-            e.NewObject?.GetComponent<IMouseHoverHandler>()?.StartHover();
         }
 
         private void Update()
@@ -146,8 +156,18 @@ namespace Controls
             Ray ray = Camera.main.ScreenPointToRay(ScreenPosition);
             Physics.Raycast(ray, out RaycastHit hit, float.PositiveInfinity, _layerMask);
             if (hit.collider != null)
-                return hit.collider.gameObject;
+                return hit.collider?.gameObject;
             return null;
+        }
+
+        private void PlayerCursor_ObjectUnderCursorChanged(object sender, ObjectChangedEventArgs e)
+        {
+            if (e == null)
+                return;
+            if (e.PreviousObject != null)
+                e.PreviousObject.GetComponent<IMouseHandler>()?.OnHoverEnd();
+            if (e.NewObject != null)
+                e.NewObject.GetComponent<IMouseHandler>()?.OnHoverStart();
         }
 
         #endregion Private

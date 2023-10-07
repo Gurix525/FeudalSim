@@ -13,7 +13,7 @@ using PlayerControls;
 namespace Items
 {
     [RequireComponent(typeof(OutlineHandler))]
-    public class ContainerHandler : MonoBehaviour, ILeftMouseButtonHandler
+    public class ContainerHandler : MonoBehaviour, IMouseHandler
     {
         #region Fields
 

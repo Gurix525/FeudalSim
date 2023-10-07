@@ -4,18 +4,18 @@ using UnityEngine;
 namespace Misc
 {
     [RequireComponent(typeof(Outline))]
-    public class OutlineHandler : MonoBehaviour, IMouseHoverHandler
+    public class OutlineHandler : MonoBehaviour, IMouseHandler
     {
         [SerializeField] private Texture2D _cursor;
 
         private Outline _outline;
 
-        public void StartHover()
+        public void OnHoverStart()
         {
             EnableOutline();
         }
 
-        public void EndHover()
+        public void OnHoverEnd()
         {
             DisableOutline();
         }
