@@ -1,11 +1,14 @@
 ﻿using System;
+using System.Linq;
 using System.Collections.Generic;
+using System.Collections;
 using Items;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
+using Unity.XR.OpenVR;
 
 namespace Controls
 {
@@ -24,10 +27,13 @@ namespace Controls
         private ItemReference _itemReference;
         private LayerMask _layerMask;
         private GameObject _objectUnderCursor;
+        private GameObject _draggedObject;
 
         #endregion Fields
 
         #region Properties
+
+        public static PlayerCursor Current { get; private set; }
 
         public GameObject ObjectUnderCursor
         {
@@ -67,14 +73,18 @@ namespace Controls
             if (value.isPressed)
             {
                 ObjectUnderCursor?
-                    .GetComponent<IMouseHandler>()?
-                    .OnLeftMouseButton();
+                    .GetComponents<IMouseHandler>()
+                    .ToList()
+                    .ForEach(handler => handler.OnLeftMouseButton(ScreenPosition));
+                SetDraggedObject(ObjectUnderCursor);
             }
             else
             {
                 ObjectUnderCursor?
                     .GetComponent<IMouseHandler>()?
                     .OnLeftMouseButtonRelase();
+                RelaseItemReference();
+                SetDraggedObject(null);
             }
         }
 
@@ -97,6 +107,16 @@ namespace Controls
         private void OnMousePosition(InputValue value)
         {
             ScreenPosition = value.Get<Vector2>();
+            _draggedObject?
+                .GetComponents<IMouseHandler>().ToList()
+                .ForEach(handler => handler.OnMousePosition(ScreenPosition));
+        }
+
+        private void OnMouseDelta(InputValue value)
+        {
+            _draggedObject?
+                .GetComponents<IMouseHandler>().ToList()
+                .ForEach(handler => handler.OnMouseDelta(value.Get<Vector2>()));
         }
 
         #endregion Input
@@ -107,6 +127,7 @@ namespace Controls
         {
             _layerMask = ~LayerMask.GetMask("Player", "Hitbox", "Attack");
             ObjectUnderCursorChanged += PlayerCursor_ObjectUnderCursorChanged;
+            Current = this;
         }
 
         private void Update()
@@ -168,6 +189,21 @@ namespace Controls
                 e.PreviousObject.GetComponent<IMouseHandler>()?.OnHoverEnd();
             if (e.NewObject != null)
                 e.NewObject.GetComponent<IMouseHandler>()?.OnHoverStart();
+        }
+        private void SetDraggedObject(GameObject value)
+        {
+            if (value != null)
+                if (value.TryGetComponent(out IMouseHandler handler))
+                {
+                    _draggedObject = gameObject;
+                    return;
+                }
+            _draggedObject = null;
+        }
+
+        private void RelaseItemReference()
+        {
+            ItemReference = null;
         }
 
         #endregion Private

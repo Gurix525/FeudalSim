@@ -18,16 +18,11 @@ namespace UI
             _rectTransform = GetComponent<RectTransform>();
         }
 
-        private void Update()
+        private void OnEnable()
         {
-            _rectTransform.position =
-                (Vector2)Camera.main.WorldToScreenPoint(_containerHandler.transform.position)
-                + CurrentOffset;
-        }
-
-        private void OnDisable()
-        {
-            CurrentOffset = _originalOffset;
+            if (_containerHandler != null)
+                transform.position = Camera.main.WorldToScreenPoint(_containerHandler.transform.position);
+            transform.position += (Vector3)_offset;
         }
     }
 }

@@ -29,7 +29,7 @@ namespace Items
 
         #region Public
 
-        public void OnLeftMouseButton()
+        public void OnLeftMouseButton(Vector2 position)
         {
             SwitchContainerState();
         }

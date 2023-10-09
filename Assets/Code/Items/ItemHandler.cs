@@ -44,7 +44,7 @@ namespace Items
             TerrainRenderer.MarkNavMeshToReload();
         }
 
-        public void OnLeftMouseButton()
+        public void OnLeftMouseButton(Vector2 position)
         {
             throw new NotImplementedException();
             //if (Item == null)

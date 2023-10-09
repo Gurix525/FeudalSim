@@ -1,8 +1,7 @@
-using System;
- 
 using Items;
 using TMPro;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.UI;
 using PlayerCursor = Controls.PlayerCursor;
 
@@ -14,6 +13,11 @@ namespace UI
         [SerializeField] private TextMeshProUGUI _text;
 
         private Image _image;
+
+        private void OnMousePosition(InputValue value)
+        {
+            transform.position = value.Get<Vector2>();
+        }
 
         private void Awake()
         {
@@ -28,12 +32,6 @@ namespace UI
         private void OnDisable()
         {
             _cursor.ItemReferenceChanged.RemoveListener(OnCollectionUpdated);
-        }
-
-        private void Update()
-        {
-            // To be added
-            //transform.position = PlayerController.MainPoint.ReadValue<Vector2>();
         }
 
         private void OnCollectionUpdated(ItemReference item)

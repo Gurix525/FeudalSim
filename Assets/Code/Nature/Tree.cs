@@ -14,7 +14,7 @@ namespace Nature
     {
         #region Public
 
-        public void OnLeftMouseButton()
+        public void OnLeftMouseButton(Vector2 position)
         {
             if (this == null)
                 return;

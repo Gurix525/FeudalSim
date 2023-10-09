@@ -94,29 +94,27 @@ namespace Items
 
         public void OnLeftMouseButton(int slotIndex)
         {
-            // To be added
-            //if (_items[slotIndex] == null)
-            //    return;
-            //PlayerCursor.ItemReference = new(this, slotIndex);
-            //CollectionUpdated.Invoke();
+            if (_items[slotIndex] == null)
+                return;
+            PlayerCursor.Current.ItemReference = new(this, slotIndex);
+            CollectionUpdated.Invoke();
         }
 
         public void OnLeftMouseButtonRelase(int slotIndex)
         {
-            // To be added
-            //if (PlayerCursor.ItemReference != null)
-            //{
-            //    Container other = PlayerCursor.ItemReference.Container;
-            //    int otherIndex = PlayerCursor.ItemReference.Index;
-            //    if (_items[slotIndex] == null)
-            //        SwapItems(this, slotIndex, other, otherIndex);
-            //    else if (_items[slotIndex].Model == other[otherIndex].Model)
-            //        MergeItems(other, otherIndex, this, slotIndex);
-            //    else
-            //        SwapItems(this, slotIndex, other, otherIndex);
-            //    PlayerCursor.ItemReference = null;
-            //}
-            //CollectionUpdated.Invoke();
+            if (PlayerCursor.Current.ItemReference != null)
+            {
+                Container other = PlayerCursor.Current.ItemReference.Container;
+                int otherIndex = PlayerCursor.Current.ItemReference.Index;
+                if (_items[slotIndex] == null)
+                    SwapItems(this, slotIndex, other, otherIndex);
+                else if (_items[slotIndex].Model == other[otherIndex].Model)
+                    MergeItems(other, otherIndex, this, slotIndex);
+                else
+                    SwapItems(this, slotIndex, other, otherIndex);
+                PlayerCursor.Current.ItemReference = null;
+            }
+            CollectionUpdated.Invoke();
         }
 
         public void Sort(bool hasToStack = true)

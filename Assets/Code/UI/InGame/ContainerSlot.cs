@@ -49,15 +49,13 @@ namespace UI
         private void OnDisable()
         {
             _container.CollectionUpdated.RemoveListener(OnCollectionUpdated);
-            // To be added
-            //OnPointerExit(null);
         }
 
         #endregion Unity
 
         #region Private
 
-        public void OnLeftMouseButton()
+        public void OnLeftMouseButton(Vector2 position)
         {
             _container.OnLeftMouseButton(_slotIndex);
         }

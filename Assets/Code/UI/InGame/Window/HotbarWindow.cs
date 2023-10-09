@@ -50,23 +50,10 @@ namespace UI
             }
         }
 
+        //To be added
         //private void OnEnable()
         //{
         //    StartCoroutine(DelayOnEnable());
-        //}
-
-        // To be added
-        //private void OnDisable()
-        //{
-        //    Equipment.InventoryContainer.CollectionUpdated.RemoveListener(SendHotbarItemToCursor);
-        //    PlayerController.MainHotbar1.RemoveListener(ActionType.Started, OnHotbar1);
-        //    PlayerController.MainHotbar2.RemoveListener(ActionType.Started, OnHotbar2);
-        //    PlayerController.MainHotbar3.RemoveListener(ActionType.Started, OnHotbar3);
-        //    PlayerController.MainHotbar4.RemoveListener(ActionType.Started, OnHotbar4);
-        //    PlayerController.MainHotbar5.RemoveListener(ActionType.Started, OnHotbar5);
-        //    PlayerController.MainHotbar6.RemoveListener(ActionType.Started, OnHotbar6);
-        //    PlayerController.MainHotbar7.RemoveListener(ActionType.Started, OnHotbar7);
-        //    PlayerController.MainHotbar8.RemoveListener(ActionType.Started, OnHotbar8);
         //}
 
         #endregion Unity

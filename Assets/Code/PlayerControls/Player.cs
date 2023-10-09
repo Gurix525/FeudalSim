@@ -1,16 +1,7 @@
-using System;
-using System.Collections;
 using AI;
 using Combat;
-using Controls;
-using Extensions;
- 
-using Items;
-using StarterAssets;
 using UnityEngine;
-using UnityEngine.Events;
 using VFX;
-using static UnityEngine.InputSystem.InputAction;
 using PlayerCursor = Controls.PlayerCursor;
 
 namespace PlayerControls
@@ -64,52 +55,9 @@ namespace PlayerControls
             InitializeHealth();
         }
 
-        private void OnEnable()
-        {
-            // To be added
-            //PlayerController.MainLeftClick.AddListener(ActionType.Started, OnLeftMouseButton);
-            //PlayerController.MainRightClick.AddListener(ActionType.Started, OnRightMouseButton);
-            //PlayerController.MainLeftClick.AddListener(ActionType.Canceled, OnLeftMouseButtonRelase);
-            //PlayerController.MainRightClick.AddListener(ActionType.Canceled, OnRightMouseButtonRelase);
-        }
-
-        private void Update()
-        {
-            //Cursor.Action.Update();
-        }
-
-        //private void OnDisable()
-        //{
-        //    PlayerController.MainLeftClick.RemoveListener(ActionType.Started, OnLeftMouseButton);
-        //    PlayerController.MainRightClick.RemoveListener(ActionType.Started, OnRightMouseButton);
-        //    PlayerController.MainLeftClick.RemoveListener(ActionType.Canceled, OnLeftMouseButtonRelase);
-        //    PlayerController.MainRightClick.RemoveListener(ActionType.Canceled, OnRightMouseButtonRelase);
-        //}
-
         #endregion Unity
 
         #region Private
-
-        // To be added
-        //private void OnLeftMouseButton(CallbackContext context)
-        //{
-        //    Cursor.OnLeftMouseButton();
-        //}
-
-        //private void OnLeftMouseButtonRelase(CallbackContext context)
-        //{
-        //    StartCoroutine(PutItemBack());
-        //}
-
-        //private void OnRightMouseButton(CallbackContext context)
-        //{
-        //    //Cursor.Action.OnRightMouseButton();
-        //}
-
-        //private void OnRightMouseButtonRelase(CallbackContext context)
-        //{
-        //    //Cursor.Action.OnRightMouseButtonRelase();
-        //}
 
         private void InitializeStats()
         {
@@ -127,12 +75,6 @@ namespace PlayerControls
             _health = GetComponent<Health>();
             _health.Receiver = this;
             _health.GotHit.AddListener(OnGotHit);
-        }
-
-        private IEnumerator PutItemBack()
-        {
-            yield return null;
-            _cursor.ItemReference = null;
         }
 
         private void OnGotHit(Attack attack)

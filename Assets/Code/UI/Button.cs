@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 namespace UI
 {
-    public abstract class Button : MonoBehaviour, IMouseHandler, IPointerEnterHandler, IPointerExitHandler
+    public abstract class Button : MonoBehaviour, IMouseHandler
     {
         public event EventHandler Clicked;
 
@@ -21,17 +21,17 @@ namespace UI
             _originalColor = Image.color;
         }
 
-        public void OnPointerEnter(PointerEventData eventData)
+        public void OnHoverStart()
         {
             Image.color = new Color(0.8F, 0.9F, 0.9F, _originalColor.a);
         }
 
-        public void OnPointerExit(PointerEventData eventData)
+        public void OnHoverEnd()
         {
             Image.color = _originalColor;
         }
 
-        public void OnLeftMouseButton()
+        public void OnLeftMouseButton(Vector2 position)
         {
             Execute();
             Clicked?.Invoke(this, EventArgs.Empty);
@@ -39,7 +39,7 @@ namespace UI
 
         protected void OnDisable()
         {
-            OnPointerExit(null);
+            OnHoverEnd();
         }
 
         protected abstract void Execute();
