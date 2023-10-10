@@ -1,14 +1,12 @@
 ﻿using System;
-using System.Linq;
 using System.Collections.Generic;
-using System.Collections;
+using System.Linq;
 using Items;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
-using Unity.XR.OpenVR;
 
 namespace Controls
 {
@@ -81,8 +79,9 @@ namespace Controls
             else
             {
                 ObjectUnderCursor?
-                    .GetComponent<IMouseHandler>()?
-                    .OnLeftMouseButtonRelase();
+                    .GetComponents<IMouseHandler>()
+                    .ToList()
+                    .ForEach(handler => handler.OnLeftMouseButtonRelase());
                 RelaseItemReference();
                 SetDraggedObject(null);
             }
@@ -91,17 +90,15 @@ namespace Controls
         private void OnRightMouseButton(InputValue value)
         {
             if (value.isPressed)
-            {
                 ObjectUnderCursor?
-                    .GetComponent<IMouseHandler>()?
-                    .OnRightMouseButton();
-            }
+                    .GetComponents<IMouseHandler>()
+                    .ToList()
+                    .ForEach(handler => handler.OnRightMouseButton());
             else
-            {
                 ObjectUnderCursor?
-                .GetComponent<IMouseHandler>()?
-                .OnRightMouseButtonRelase();
-            }
+                    .GetComponents<IMouseHandler>()
+                    .ToList()
+                    .ForEach(handler => handler.OnRightMouseButtonRelase());
         }
 
         private void OnMousePosition(InputValue value)
@@ -114,9 +111,10 @@ namespace Controls
 
         private void OnMouseDelta(InputValue value)
         {
+            Vector2 delta = value.Get<Vector2>();
             _draggedObject?
                 .GetComponents<IMouseHandler>().ToList()
-                .ForEach(handler => handler.OnMouseDelta(value.Get<Vector2>()));
+                .ForEach(handler => handler.OnMouseDelta(delta));
         }
 
         #endregion Input
@@ -186,19 +184,27 @@ namespace Controls
             if (e == null)
                 return;
             if (e.PreviousObject != null)
-                e.PreviousObject.GetComponent<IMouseHandler>()?.OnHoverEnd();
+                e.PreviousObject
+                    .GetComponents<IMouseHandler>()
+                    .ToList()
+                    .ForEach(handler => handler.OnHoverEnd());
             if (e.NewObject != null)
-                e.NewObject.GetComponent<IMouseHandler>()?.OnHoverStart();
+                e.NewObject
+                    .GetComponents<IMouseHandler>()
+                    .ToList()
+                    .ForEach(handler => handler.OnHoverStart());
         }
+
         private void SetDraggedObject(GameObject value)
         {
-            if (value != null)
-                if (value.TryGetComponent(out IMouseHandler handler))
-                {
-                    _draggedObject = gameObject;
-                    return;
-                }
-            _draggedObject = null;
+            _draggedObject = value;
+            //if (value != null)
+            //    if (value.TryGetComponent(out IMouseHandler handler))
+            //    {
+            //        _draggedObject = gameObject;
+            //        return;
+            //    }
+            //_draggedObject = null;
         }
 
         private void RelaseItemReference()

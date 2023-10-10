@@ -1895,6 +1895,7 @@ GameObject:
   - component: {fileID: 373362930}
   - component: {fileID: 373362929}
   - component: {fileID: 373362928}
+  - component: {fileID: 373362931}
   m_Layer: 5
   m_Name: Header
   m_TagString: Untagged
@@ -1979,6 +1980,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 373362926}
   m_CullTransparentMesh: 1
+--- !u!114 &373362931
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 373362926}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 37404573f3d62f543ae44fd4ac6ba6f5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _window: {fileID: 1235760493}
 --- !u!1 &380476228
 GameObject:
   m_ObjectHideFlags: 0
@@ -2881,6 +2895,7 @@ GameObject:
   - component: {fileID: 508407979}
   - component: {fileID: 508407985}
   - component: {fileID: 508407984}
+  - component: {fileID: 508407986}
   m_Layer: 0
   m_Name: Chest
   m_TagString: Untagged
@@ -3017,6 +3032,37 @@ MonoBehaviour:
   precomputeOutline: 0
   bakeKeys: []
   bakeValues: []
+--- !u!114 &508407986
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 508407978}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Actions: {fileID: -944628639613478452, guid: 57b45698bef79a846b0ded32dc0aee05,
+    type: 3}
+  m_NotificationBehavior: 0
+  m_UIInputModule: {fileID: 0}
+  m_DeviceLostEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_DeviceRegainedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ControlsChangedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ActionEvents: []
+  m_NeverAutoSwitchControlSchemes: 0
+  m_DefaultControlScheme: 
+  m_DefaultActionMap: Main
+  m_SplitScreenIndex: -1
+  m_Camera: {fileID: 0}
 --- !u!1 &530190841
 GameObject:
   m_ObjectHideFlags: 0
@@ -6203,6 +6249,8 @@ GameObject:
   - component: {fileID: 1283489908}
   - component: {fileID: 1283489907}
   - component: {fileID: 1283489906}
+  - component: {fileID: 1283489910}
+  - component: {fileID: 1283489909}
   m_Layer: 0
   m_Name: InventoryCanvas
   m_TagString: Untagged
@@ -6295,6 +6343,49 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: 1
   m_TargetDisplay: 0
+--- !u!114 &1283489909
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1283489904}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Actions: {fileID: -944628639613478452, guid: 57b45698bef79a846b0ded32dc0aee05,
+    type: 3}
+  m_NotificationBehavior: 0
+  m_UIInputModule: {fileID: 0}
+  m_DeviceLostEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_DeviceRegainedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ControlsChangedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ActionEvents: []
+  m_NeverAutoSwitchControlSchemes: 0
+  m_DefaultControlScheme: 
+  m_DefaultActionMap: Main
+  m_SplitScreenIndex: -1
+  m_Camera: {fileID: 0}
+--- !u!114 &1283489910
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1283489904}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 995c474f98aca9343972fdd42715e7f2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1285388150
 GameObject:
   m_ObjectHideFlags: 0
@@ -7604,7 +7695,6 @@ GameObject:
   - component: {fileID: 1612806888}
   - component: {fileID: 1612806892}
   - component: {fileID: 1612806897}
-  - component: {fileID: 1612806899}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -7685,18 +7775,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 55738c5fbd17a554e9b5537755a84d37, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &1612806899
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1612806885}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 995c474f98aca9343972fdd42715e7f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!114 &1612806900
@@ -8350,6 +8428,7 @@ GameObject:
   - component: {fileID: 1798125553}
   - component: {fileID: 1798125559}
   - component: {fileID: 1798125558}
+  - component: {fileID: 1798125560}
   m_Layer: 0
   m_Name: Chest (1)
   m_TagString: Untagged
@@ -8486,6 +8565,37 @@ MonoBehaviour:
   precomputeOutline: 0
   bakeKeys: []
   bakeValues: []
+--- !u!114 &1798125560
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1798125551}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Actions: {fileID: -944628639613478452, guid: 57b45698bef79a846b0ded32dc0aee05,
+    type: 3}
+  m_NotificationBehavior: 0
+  m_UIInputModule: {fileID: 0}
+  m_DeviceLostEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_DeviceRegainedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ControlsChangedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ActionEvents: []
+  m_NeverAutoSwitchControlSchemes: 0
+  m_DefaultControlScheme: 
+  m_DefaultActionMap: Main
+  m_SplitScreenIndex: -1
+  m_Camera: {fileID: 0}
 --- !u!1 &1804100511
 GameObject:
   m_ObjectHideFlags: 0
@@ -10055,6 +10165,7 @@ GameObject:
   - component: {fileID: 7712252458235796977}
   - component: {fileID: 854452794314750150}
   - component: {fileID: 2321837102410516405}
+  - component: {fileID: 7712252458235796978}
   m_Layer: 5
   m_Name: Header
   m_TagString: Untagged
@@ -10725,6 +10836,7 @@ GameObject:
   - component: {fileID: 3371835536777128578}
   - component: {fileID: 5627219678055944117}
   - component: {fileID: 7346660421121929414}
+  - component: {fileID: 7984955192203233235}
   m_Layer: 5
   m_Name: Header
   m_TagString: Untagged
@@ -10962,6 +11074,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 747643444530023315}
   m_CullTransparentMesh: 1
+--- !u!114 &7712252458235796978
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 747643444530023315}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 37404573f3d62f543ae44fd4ac6ba6f5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _window: {fileID: 3794430514262176832}
 --- !u!224 &7984955192203233234
 RectTransform:
   m_ObjectHideFlags: 0
@@ -10981,6 +11106,19 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 16}
   m_SizeDelta: {x: 0, y: 16}
   m_Pivot: {x: 0.5, y: 1}
+--- !u!114 &7984955192203233235
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5741086709697232096}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 37404573f3d62f543ae44fd4ac6ba6f5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _window: {fileID: 8170867019606606676}
 --- !u!224 &8109690292523256311
 RectTransform:
   m_ObjectHideFlags: 0
