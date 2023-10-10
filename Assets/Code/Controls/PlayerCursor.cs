@@ -70,18 +70,20 @@ namespace Controls
         {
             if (value.isPressed)
             {
-                ObjectUnderCursor?
-                    .GetComponents<IMouseHandler>()
-                    .ToList()
-                    .ForEach(handler => handler.OnLeftMouseButton(ScreenPosition));
+                if (ObjectUnderCursor)
+                    ObjectUnderCursor
+                        .GetComponents<IMouseHandler>()
+                        .ToList()
+                        .ForEach(handler => handler.OnLeftMouseButton(ScreenPosition));
                 SetDraggedObject(ObjectUnderCursor);
             }
             else
             {
-                ObjectUnderCursor?
-                    .GetComponents<IMouseHandler>()
-                    .ToList()
-                    .ForEach(handler => handler.OnLeftMouseButtonRelase());
+                if (ObjectUnderCursor)
+                    ObjectUnderCursor
+                        .GetComponents<IMouseHandler>()
+                        .ToList()
+                        .ForEach(handler => handler.OnLeftMouseButtonRelase());
                 RelaseItemReference();
                 SetDraggedObject(null);
             }
@@ -90,31 +92,39 @@ namespace Controls
         private void OnRightMouseButton(InputValue value)
         {
             if (value.isPressed)
-                ObjectUnderCursor?
-                    .GetComponents<IMouseHandler>()
-                    .ToList()
-                    .ForEach(handler => handler.OnRightMouseButton());
+            {
+                if (ObjectUnderCursor)
+                    ObjectUnderCursor
+                        .GetComponents<IMouseHandler>()
+                        .ToList()
+                        .ForEach(handler => handler.OnRightMouseButton());
+            }
             else
-                ObjectUnderCursor?
-                    .GetComponents<IMouseHandler>()
-                    .ToList()
-                    .ForEach(handler => handler.OnRightMouseButtonRelase());
+            {
+                if (ObjectUnderCursor)
+                    ObjectUnderCursor
+                        .GetComponents<IMouseHandler>()
+                        .ToList()
+                        .ForEach(handler => handler.OnRightMouseButtonRelase());
+            }
         }
 
         private void OnMousePosition(InputValue value)
         {
             ScreenPosition = value.Get<Vector2>();
-            _draggedObject?
-                .GetComponents<IMouseHandler>().ToList()
-                .ForEach(handler => handler.OnMousePosition(ScreenPosition));
+            if (_draggedObject)
+                _draggedObject
+                    .GetComponents<IMouseHandler>().ToList()
+                    .ForEach(handler => handler.OnMousePosition(ScreenPosition));
         }
 
         private void OnMouseDelta(InputValue value)
         {
             Vector2 delta = value.Get<Vector2>();
-            _draggedObject?
-                .GetComponents<IMouseHandler>().ToList()
-                .ForEach(handler => handler.OnMouseDelta(delta));
+            if (_draggedObject)
+                _draggedObject
+                    .GetComponents<IMouseHandler>().ToList()
+                    .ForEach(handler => handler.OnMouseDelta(delta));
         }
 
         #endregion Input
@@ -183,12 +193,12 @@ namespace Controls
         {
             if (e == null)
                 return;
-            if (e.PreviousObject != null)
+            if (e.PreviousObject)
                 e.PreviousObject
                     .GetComponents<IMouseHandler>()
                     .ToList()
                     .ForEach(handler => handler.OnHoverEnd());
-            if (e.NewObject != null)
+            if (e.NewObject)
                 e.NewObject
                     .GetComponents<IMouseHandler>()
                     .ToList()
