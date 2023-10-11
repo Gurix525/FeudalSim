@@ -1,25 +1,23 @@
 using Controls;
 using UnityEngine;
-using Cursor = Controls.Cursor;
-using PlayerControls;
 
 namespace Misc
 {
     [RequireComponent(typeof(Outline))]
-    public class OutlineHandler : MonoBehaviour
+    public class OutlineHandler : MonoBehaviour, IMouseHandler
     {
+        [SerializeField] private Texture2D _cursor;
+
         private Outline _outline;
 
-        public void EnableOutline()
+        public void OnHoverStart()
         {
-            if (Vector3.Distance(Player.Position, transform.position)
-                <= CursorRaycaster.MaxCursorDistanceFromPlayer)
-                _outline.enabled = true;
+            EnableOutline();
         }
 
-        public void DisableOutline()
+        public void OnHoverEnd()
         {
-            _outline.enabled = false;
+            DisableOutline();
         }
 
         private void Awake()
@@ -28,7 +26,30 @@ namespace Misc
             _outline.enabled = false;
             _outline.OutlineMode = Outline.Mode.OutlineVisible;
             _outline.OutlineColor = new(1F, 3F, 2F, 1F);
-            _outline.OutlineWidth = 0.5F;
+            _outline.OutlineWidth = 1F;
+        }
+
+        private void OnDisable()
+        {
+            DisableOutline();
+        }
+
+        private void OnDestroy()
+        {
+            DisableOutline();
+        }
+
+        private void EnableOutline()
+        {
+            _outline.enabled = true;
+            if (_cursor != null)
+                Cursor.SetCursor(_cursor, Vector2.zero, CursorMode.Auto);
+        }
+
+        private void DisableOutline()
+        {
+            _outline.enabled = false;
+            Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
         }
     }
 }

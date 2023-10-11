@@ -1,6 +1,5 @@
 using Cinemachine;
 using Extensions;
-using Input;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -51,27 +50,10 @@ namespace Controls
                 .GetCinemachineComponent<CinemachineFramingTransposer>();
         }
 
-        private void OnEnable()
-        {
-            PlayerController.MainMiddleMouseButton.AddListener(ActionType.Started, EnableCameraSteering);
-            PlayerController.MainMiddleMouseButton.AddListener(ActionType.Canceled, DisableCameraSteering);
-        }
-
-        private void FixedUpdate()
-        {
-            SteerCamera();
-        }
-
         //private void FixedUpdate()
         //{
         //    AdjustAngle();
         //}
-
-        private void OnDisable()
-        {
-            PlayerController.MainMiddleMouseButton.RemoveListener(ActionType.Started, EnableCameraSteering);
-            PlayerController.MainMiddleMouseButton.RemoveListener(ActionType.Canceled, DisableCameraSteering);
-        }
 
         #endregion Unity
 
@@ -89,23 +71,22 @@ namespace Controls
         //    AdjustZoom();
         //}
 
-        private void EnableCameraSteering(InputAction.CallbackContext context)
+        private void EnableCameraSteering()
         {
-            if (CursorRaycaster.IsPointerOverGameObject)
-                return;
+            //if (CursorRaycaster.IsPointerOverGameObject)
+            //    return;
             _canSteer = true;
         }
 
-        private void DisableCameraSteering(InputAction.CallbackContext context)
+        private void DisableCameraSteering()
         {
             _canSteer = false;
         }
 
-        private void SteerCamera()
+        private void SteerCamera(Vector2 mouseDelta)
         {
             if (!_canSteer)
                 return;
-            Vector2 mouseDelta = PlayerController.MainMouseDelta.ReadValue<Vector2>();
             SetTargetAngle(mouseDelta.x);
             SetTargetZoom(mouseDelta.y);
             AdjustRotation();
@@ -135,21 +116,17 @@ namespace Controls
                 .ToQuaternion();
         }
 
-        //private void AdjustZoom()
-        //{
-        //    _targetZoom = _targetZoom.Clamp(_minZoom, _maxZoom);
-        //    _framingTransposer.m_CameraDistance = _targetZoom;
+        private void OnMiddleMouseButton(InputValue value)
+        {
+            if (value.isPressed)
+                EnableCameraSteering();
+            else DisableCameraSteering();
+        }
 
-        //    _targetAngle = Mathf.Lerp(_minCameraAngle, _maxCameraAngle,
-        //        _targetZoom.Remap(_minZoom, _maxZoom, 0F, 1F));
-        //}
-
-        //private void AdjustAngle()
-        //{
-        //    Vector3 oldRotation = transform.eulerAngles;
-        //    float newAngle = Mathf.Lerp(transform.eulerAngles.x, _targetAngle, _angleAdjustingSpeed);
-        //    transform.rotation = Quaternion.Euler(newAngle, oldRotation.y, oldRotation.z);
-        //}
+        private void OnMouseDelta(InputValue value)
+        {
+            SteerCamera(value.Get<Vector2>());
+        }
 
         #endregion Private
     }

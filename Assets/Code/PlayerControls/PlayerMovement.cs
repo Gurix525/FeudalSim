@@ -1,7 +1,5 @@
-using System;
-using System.Collections;
+using Controls;
 using Extensions;
-using Input;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -12,6 +10,8 @@ namespace PlayerControls
     public class PlayerMovement : MonoBehaviour
     {
         #region Fields
+
+        [SerializeField] private PlayerCursor _cursor;
 
         [SerializeField]
         private float _moveSpeed = 6F;
@@ -34,7 +34,9 @@ namespace PlayerControls
         private Rigidbody _rigidbody;
         private Animator _animator;
 
-        private bool _isCursorRaycastNull = true;
+        private Vector2 _inputVelocity = Vector2.zero;
+
+        private bool _isSprintPressed = false;
 
         private int _groundMask;
         private int _bowWalkingLayerIndex;
@@ -72,15 +74,17 @@ namespace PlayerControls
 
         #region Conditions
 
+        public bool HasStamina => Player.Instance.Stats.CurrentStamina > 0F;
+
         public bool CanMove => !IsPendingAttack;
 
-        public bool CanJump => IsGrounded && !IsPendingAttack && !IsStringingBow;
+        public bool CanJump => IsGrounded && !IsPendingAttack && !IsStringingBow && HasStamina;
 
-        public bool CanSprint => !IsStringingBow && IsGrounded;
+        public bool CanSprint => !IsStringingBow && IsGrounded && HasStamina;
 
         public bool IsGravityEnabled => true;
 
-        public bool CanRotateToCursor => !_isCursorRaycastNull && !IsPendingAttack;
+        public bool CanRotateToCursor => !IsPendingAttack;
 
         #endregion Conditions
 
@@ -88,7 +92,7 @@ namespace PlayerControls
 
         public void RotateToCursor()
         {
-            transform.LookAt(Controls.Cursor.ClearRaycastHit.Value.point);
+            transform.LookAt(_cursor.WorldPosition);
             transform.rotation = Quaternion.Euler(0F, transform.eulerAngles.y, 0F);
         }
 
@@ -106,7 +110,12 @@ namespace PlayerControls
 
         private void OnEnable()
         {
-            PlayerController.MainJump.AddListener(ActionType.Started, Jump);
+            Player.Instance.Stats.StaminaDepleted.AddListener(() => _isSprintPressed = false);
+        }
+
+        private void OnDisable()
+        {
+            Player.Instance.Stats.StaminaDepleted.RemoveAllListeners();
         }
 
         private void Update()
@@ -118,17 +127,11 @@ namespace PlayerControls
         {
             CheckConditions();
             CheckSprint();
-            if (CanMove)
-                Move();
+            Move();
             if (IsGravityEnabled)
                 DoGravity();
             if (CanRotateToCursor)
                 RotateToCursor();
-        }
-
-        private void OnDisable()
-        {
-            PlayerController.MainJump.RemoveListener(ActionType.Started, Jump);
         }
 
         private void OnAnimatorIK(int layerIndex)
@@ -142,13 +145,14 @@ namespace PlayerControls
 
         private void CheckConditions()
         {
-            _isCursorRaycastNull = Controls.Cursor.ClearRaycastHit == null;
             IsGrounded = Physics.CheckSphere(transform.position, 0.24F, _groundMask);
         }
 
         private void Move()
         {
-            Vector2 direction = PlayerController.MainMove.ReadValue<Vector2>();
+            if (!CanMove)
+                return;
+            Vector2 direction = _inputVelocity;
             direction *= MoveSpeed * (IsSprinting ? _sprintMultiplier : 1F);
             Vector3 fullDirection = new(direction.x, 0F, direction.y);
             float cameraAngle = Camera.main.transform.eulerAngles.y;
@@ -156,14 +160,40 @@ namespace PlayerControls
             Vector3 result = new Vector3(fullDirection.x, y, fullDirection.z);
             Quaternion rotation = Quaternion.AngleAxis(cameraAngle, Vector3.up);
             _rigidbody.velocity = rotation * result;
-            ImproveRunningSkill(direction);
+            if (direction != Vector2.zero && IsSprinting)
+            {
+                ImproveRunningSkill(direction);
+                SubtractStamina(Time.fixedDeltaTime * 20F);
+            }
+        }
+
+        private void OnMove(InputValue value)
+        {
+            _inputVelocity = value.Get<Vector2>();
+        }
+
+        private void OnJump(InputValue value)
+        {
+            if (!CanJump)
+                return;
+            _rigidbody.AddForce(Vector3.up * JumpForce, ForceMode.VelocityChange);
+            Player.Instance.Stats.AddSkill("Jumping", 1F);
+            SubtractStamina(15F);
+        }
+
+        private void OnSprint(InputValue value)
+        {
+            _isSprintPressed = value.isPressed;
         }
 
         private void ImproveRunningSkill(Vector2 direction)
         {
-            if (direction == Vector2.zero || !IsSprinting)
-                return;
             Player.Instance.Stats.AddSkill("Running", 0.25F * Time.fixedDeltaTime);
+        }
+
+        private void SubtractStamina(float stamina)
+        {
+            Player.Instance.Stats.CurrentStamina -= stamina;
         }
 
         private void DoGravity()
@@ -212,7 +242,7 @@ namespace PlayerControls
         private void CheckSprint()
         {
             if (CanSprint)
-                if (PlayerController.MainRun.IsPressed())
+                if (_isSprintPressed)
                 {
                     IsSprinting = true;
                     return;
@@ -222,20 +252,10 @@ namespace PlayerControls
 
         private Vector2 GetLookDirection()
         {
-            if (Controls.Cursor.ClearRaycastHit == null)
-                return Vector2.zero;
-            Vector3 cursorPosition = Controls.Cursor.ClearRaycastHit.Value.point;
+            Vector3 cursorPosition = _cursor.WorldPosition;
             Vector2 transformPosition = new(transform.position.x, transform.position.z);
             Vector2 targetPosition = new(cursorPosition.x, cursorPosition.z);
             return targetPosition - transformPosition;
-        }
-
-        private void Jump(InputAction.CallbackContext context)
-        {
-            if (!CanJump)
-                return;
-            _rigidbody.AddForce(Vector3.up * JumpForce, ForceMode.VelocityChange);
-            Player.Instance.Stats.AddSkill("Jumping", 1F);
         }
 
         #endregion Private

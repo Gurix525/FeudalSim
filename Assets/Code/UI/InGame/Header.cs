@@ -1,52 +1,25 @@
-using Input;
+using Controls;
 using UnityEngine;
-using UnityEngine.EventSystems;
-using static UnityEngine.InputSystem.InputAction;
 
 namespace UI
 {
-    public class Header : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
+    public class Header : Button, IMouseHandler
     {
         [SerializeField] private Window _window;
-        private bool _isDragging = false;
-        private Vector2 _initialMousePosition;
 
-        public void OnPointerEnter(PointerEventData eventData)
+        private Vector2 _handleOffset;
+
+        protected override void Execute()
+        { }
+
+        public new void OnLeftMouseButton(Vector2 position)
         {
-            PlayerController.MainLeftClick.AddListener(ActionType.Started, StartDraggingWindow);
+            _handleOffset = (Vector2)_window.transform.position - position;
         }
 
-        public void OnPointerExit(PointerEventData eventData)
+        public void OnMousePosition(Vector2 position)
         {
-            PlayerController.MainLeftClick.RemoveListener(ActionType.Started, StartDraggingWindow);
-        }
-
-        private void Update()
-        {
-            if (_isDragging)
-            {
-                Vector2 currentMousePosition = PlayerController.MainPoint.ReadValue<Vector2>();
-                _window.CurrentOffset += currentMousePosition - _initialMousePosition;
-                _initialMousePosition = currentMousePosition;
-            }
-        }
-
-        private void OnDisable()
-        {
-            OnPointerExit(null);
-        }
-
-        private void StartDraggingWindow(CallbackContext context)
-        {
-            _isDragging = true;
-            _initialMousePosition = PlayerController.MainPoint.ReadValue<Vector2>();
-            PlayerController.MainLeftClick.AddListener(ActionType.Canceled, StopDraggingWindow);
-        }
-
-        private void StopDraggingWindow(CallbackContext obj)
-        {
-            _isDragging = false;
-            PlayerController.MainLeftClick.RemoveListener(ActionType.Canceled, StopDraggingWindow);
+            _window.transform.position = _handleOffset + position;
         }
     }
 }

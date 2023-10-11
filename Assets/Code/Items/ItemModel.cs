@@ -3,7 +3,7 @@ using System.Linq;
 using Misc;
 using UI;
 using UnityEngine;
-using Cursor = Controls.Cursor;
+using Cursor = Controls.PlayerCursor;
 
 namespace Items
 {
@@ -14,8 +14,6 @@ namespace Items
         private Mesh[] _buildingMeshes;
         private Mesh _mesh;
         private Material _material;
-        private ItemAction _currentAction;
-        private ItemAction[] _actions;
         private GameObject _weaponPrefab;
 
         #endregion Fields
@@ -24,34 +22,12 @@ namespace Items
 
         public string Name { get; }
         public string Description { get; }
-        public int MaxStack { get; }
         public Sprite Sprite { get; }
         public Dictionary<string, string> Stats { get; }
         public Material Material => _material ??= Materials.GetMaterial(Name) ?? Materials.DefaultMaterial;
-        public ItemAction Action => _currentAction;
 
         public GameObject WeaponPrefab =>
             _weaponPrefab ??= Resources.Load<GameObject>("Prefabs/Weapons/" + Name);
-
-        public ItemAction[] Actions
-        {
-            get
-            {
-                List<ItemAction> actions = new();
-                foreach (var action in _actions)
-                {
-                    if (action is BuildAction)
-                        for (int i = 0; i < 5; i++)
-                            actions.Add(new BuildAction());
-                    else if (action is ShovelAction)
-                        for (int i = 0; i < 4; i++)
-                            actions.Add(new ShovelAction());
-                    else
-                        actions.Add(action);
-                }
-                return actions.ToArray();
-            }
-        }
 
         public Mesh[] BuildingMeshes =>
             _buildingMeshes ??=
@@ -78,46 +54,15 @@ namespace Items
 
         public ItemModel(
             string name,
-            int maxStack = 10,
             string description = "",
-            Dictionary<string, string> stats = null,
-            ItemAction[] actions = null)
+            Dictionary<string, string> stats = null)
         {
             Name = name;
             Description = description;
-            MaxStack = maxStack;
             Stats = stats ?? new();
             Sprite = Resources.Load<Sprite>("Sprites/Items/" + name);
-            if (actions == null)
-            {
-                _actions = new ItemAction[] { new PutAction(), new NoAction() };
-                _currentAction = _actions[0];
-            }
-            else
-            {
-                var newActions = actions.ToList();
-                newActions.Insert(0, new PutAction());
-                newActions.Add(new NoAction());
-                _actions = newActions.ToArray();
-                _currentAction = _actions[1];
-            }
-            QuickMenu.Closed.AddListener(ChangeAction);
         }
 
         #endregion Constructors
-
-        #region Private
-
-        private void ChangeAction(ItemAction action, int slotNumber)
-        {
-            if (Cursor.Item == null)
-                return;
-            if (Cursor.Item.Model != this)
-                return;
-            _currentAction = action;
-            (_currentAction as BuildAction)?.ReloadCursorMeshHighlight();
-        }
-
-        #endregion Private
     }
 }

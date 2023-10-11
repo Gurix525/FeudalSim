@@ -26,12 +26,9 @@ namespace World
 
         public static Chunk ActiveChunk
         {
-            get => Instance._activeChunk;
-            set => Instance._activeChunk = value;
+            get => _instance._activeChunk;
+            set => _instance._activeChunk = value;
         }
-
-        private static TerrainRenderer Instance =>
-            _instance ??= FindObjectOfType<TerrainRenderer>();
 
         public static UnityEvent<Vector2> TerrainUpdating { get; private set; } = new();
 
@@ -49,25 +46,25 @@ namespace World
             yield return null;
             GenerateChunks(position);
             ActiveChunk = Terrain.Chunks[position];
-            yield return Instance.StartCoroutine(Reload());
+            yield return _instance.StartCoroutine(Reload());
             LoadingImage.Disable();
         }
 
         public static void GenerateWorld(Vector2Int startChunkPosition)
         {
             GenerateChunks(startChunkPosition);
-            Instance.StartCoroutine(Reload());
+            _instance.StartCoroutine(Reload());
         }
 
         public static void ReloadChunk(Vector2Int position)
         {
-            Instance._chunks[position].GenerateMesh();
+            _instance._chunks[position].GenerateMesh();
             TerrainUpdating.Invoke(ActiveChunk.Position);
         }
 
         public static IEnumerator Reload()
         {
-            foreach (var chunk in Instance._chunks)
+            foreach (var chunk in _instance._chunks)
             {
                 if (Vector2Int.Distance(chunk.Value.Position, ActiveChunk.Position) < 2F)
                 {
@@ -84,7 +81,7 @@ namespace World
 
         public static ChunkRenderer GetChunkRenderer(Vector2Int chunkPosition)
         {
-            Instance._chunks.TryGetValue(
+            _instance._chunks.TryGetValue(
                 Terrain.GetChunkCoordinates(chunkPosition), out ChunkRenderer renderer);
             return renderer;
         }
@@ -96,7 +93,7 @@ namespace World
 
         public static ChunkRenderer GetChunkRenderer(Chunk chunk)
         {
-            Instance._chunks.TryGetValue(chunk.Position, out ChunkRenderer renderer);
+            _instance._chunks.TryGetValue(chunk.Position, out ChunkRenderer renderer);
             return renderer;
         }
 
@@ -111,6 +108,7 @@ namespace World
 
         private void Awake()
         {
+            _instance = this;
             InitializeNavMesh();
         }
 
@@ -140,12 +138,12 @@ namespace World
 
             for (int z = activePosition.y - 1; z <= activePosition.y + 1; z++)
                 for (int x = activePosition.x - 1; x <= activePosition.x + 1; x++)
-                    if (!Instance._chunks.ContainsKey(new(x, z)))
+                    if (!_instance._chunks.ContainsKey(new(x, z)))
                         GenerateChunk(x, z);
 
             foreach (var chunk in Terrain.Chunks.Values)
             {
-                if (chunk.IsNatureSpawned && !Instance._chunks
+                if (chunk.IsNatureSpawned && !_instance._chunks
                     .ContainsKey(new(chunk.Position.x, chunk.Position.y)))
                     GenerateChunk(chunk.Position.x, chunk.Position.y);
             }
@@ -156,19 +154,19 @@ namespace World
         private static void GenerateChunk(int x, int z)
         {
             GameObject chunk = new GameObject();
-            chunk.transform.parent = Instance.transform;
+            chunk.transform.parent = _instance.transform;
             chunk.gameObject.name = new Vector2Int(x, z).ToString();
             chunk.AddComponent<ChunkRenderer>();
-            chunk.GetComponent<MeshRenderer>().material = Instance._material;
+            chunk.GetComponent<MeshRenderer>().material = _instance._material;
             var chunkRenderer = chunk.GetComponent<ChunkRenderer>();
             chunkRenderer.SetPosition(new(x, z));
-            Instance._chunks.Add(new(x, z), chunkRenderer);
+            _instance._chunks.Add(new(x, z), chunkRenderer);
             chunkRenderer.GenerateMesh();
         }
 
         private static void InitializeNavMesh()
         {
-            NavMeshSurface = Instance.GetComponent<NavMeshSurface>();
+            NavMeshSurface = _instance.GetComponent<NavMeshSurface>();
         }
 
         private static void RebuildNavMesh()

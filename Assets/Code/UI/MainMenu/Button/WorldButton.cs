@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Threading.Tasks;
 using Misc;
 using Saves;
@@ -24,16 +25,18 @@ namespace UI
 
         protected override void Execute()
         {
-            _ = LoadWorld();
+            new TaskManager.Task(LoadWorld());
         }
 
-        private async Task LoadWorld()
+        private IEnumerator LoadWorld()
         {
             if (IsWorldDeleted)
-                return;
+                yield break;
+            LoadingScreen.Enable();
             AsyncOperation sceneLoading = SceneManager.LoadSceneAsync("MainScene", LoadSceneMode.Single);
             while (!sceneLoading.isDone)
-                await Task.Yield();
+                yield return null;
+            yield return null;
             GameLoader gameLoader = new(_nameText.text);
             _ = gameLoader.LoadGame();
         }

@@ -8,6 +8,7 @@ using Controls;
 using Items;
 using Misc;
 using Nature;
+using UI;
 using Unity.VisualScripting.Antlr3.Runtime.Tree;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -76,6 +77,7 @@ namespace Saves
             finally
             {
                 Directory.Delete(_savePath, true);
+                LoadingScreen.Disable();
             }
         }
 
@@ -85,6 +87,7 @@ namespace Saves
 
         private void LoadWorld()
         {
+            Terrain.Reset();
             WorldInfo worldInfo = JsonUtility.FromJson<WorldInfo>(
                 File.ReadAllText(Path.Combine(_savePath, "World.txt")));
             NoiseSampler.SetSeed(worldInfo.Seed);
@@ -104,11 +107,6 @@ namespace Saves
             player.SetActive(true);
             Equipment.SetInventoryContainer((Container)playerInfo.InventoryContainer);
             Equipment.SetArmorContainer((Container)playerInfo.ArmorContainer);
-            try
-            {
-                Controls.Cursor.Container[0] = (Item)playerInfo.CursorItem;
-            }
-            catch (ArgumentNullException) { }
             return playerInfo;
         }
 

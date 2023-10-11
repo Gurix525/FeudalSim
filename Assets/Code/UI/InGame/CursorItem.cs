@@ -1,41 +1,52 @@
-using Input;
+using Items;
 using TMPro;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.UI;
-using Cursor = Controls.Cursor;
+using PlayerCursor = Controls.PlayerCursor;
 
 namespace UI
 {
     public class CursorItem : MonoBehaviour
     {
+        [SerializeField] private PlayerCursor _cursor;
         [SerializeField] private TextMeshProUGUI _text;
 
         private Image _image;
 
+        private void OnMousePosition(InputValue value)
+        {
+            transform.position = value.Get<Vector2>();
+        }
+
         private void Awake()
         {
             _image = GetComponent<Image>();
-            Cursor.Container.CollectionUpdated.AddListener(OnCollectionUpdated);
         }
 
-        private void Update()
+        private void OnEnable()
         {
-            transform.position = PlayerController.MainPoint.ReadValue<Vector2>();
+            _cursor.ItemReferenceChanged.AddListener(OnCollectionUpdated);
         }
 
-        private void OnCollectionUpdated()
+        private void OnDisable()
         {
-            if (Cursor.Item == null || Cursor.IsItemFromHotbar)
+            _cursor.ItemReferenceChanged.RemoveListener(OnCollectionUpdated);
+        }
+
+        private void OnCollectionUpdated(ItemReference item)
+        {
+            if (_cursor.ItemReference == null)
             {
                 _text.text = string.Empty;
                 _image.enabled = false;
                 return;
             }
-            if (Cursor.Item.MaxStack == 1)
-                _text.text = string.Empty;
-            else
-                _text.text = Cursor.Item.Count.ToString();
-            _image.sprite = Cursor.Item.Sprite;
+            //if (Cursor.Item.MaxStack == 1)
+            //    _text.text = string.Empty;
+            //else
+            _text.text = _cursor.ItemReference.Item.Count.ToString();
+            _image.sprite = _cursor.ItemReference.Item.Sprite;
             _image.enabled = true;
         }
     }

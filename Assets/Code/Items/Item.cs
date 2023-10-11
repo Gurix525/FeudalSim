@@ -17,15 +17,15 @@ namespace Items
 
         private static Dictionary<string, ItemModel> _itemModels = new()
         {
-            { "Stone", new("Stone", actions: new ItemAction[] {new BuildAction()})},
-            { "Wood", new("Wood", 20, actions: new ItemAction[] {new BuildAction()}) },
-            { "Plank", new("Plank", 20, actions: new ItemAction[] {new BuildAction()}) },
-            { "Sword", new("Sword", 1, actions: new ItemAction[] {new SwordAction()}) },
-            { "Bow", new("Bow", 1, actions: new ItemAction[] {new BowAction()}) },
-            { "Axe", new("Axe", 1, actions: new ItemAction[] {new AxeAction(),  new DestroyAction()}) },
-            { "Pickaxe", new("Pickaxe", 1, actions: new ItemAction[] {new PickaxeAction() }) },
-            { "Shovel", new("Shovel", 1, actions: new ItemAction[] {new ShovelAction()}) },
-            { "Workbench", new("Workbench", 1)},
+            { "Stone", new("Stone")},
+            { "Wood", new("Wood")},
+            { "Plank", new("Plank") },
+            { "Sword", new("Sword") },
+            { "Bow", new("Bow") },
+            { "Axe", new("Axe") },
+            { "Pickaxe", new("Pickaxe") },
+            { "Shovel", new("Shovel") },
+            { "Workbench", new("Workbench")},
             { "Helmet", new ("Helmet", stats: new(){ { "ArmorType", "Head" }, { "InventorySlots", "3"} }) }
         };
 
@@ -37,13 +37,10 @@ namespace Items
         public string Name => _model.Name;
         public string Description => _model.Description;
         public ItemModel Model => _model;
-        public int MaxStack => _model.MaxStack;
         public Sprite Sprite => _model.Sprite;
         public Material Material => _model.Material;
         public Mesh[] BuildingMeshes => _model.BuildingMeshes;
         public Mesh Mesh => _model.Mesh;
-        public ItemAction Action => _model.Action;
-        public ItemAction[] Actions => _model.Actions;
         public bool HasSpecificStats => _stats != null;
         public GameObject WeaponPrefab => _model.WeaponPrefab;
 
@@ -65,9 +62,11 @@ namespace Items
 
         private Item(ItemModel model, int count = 1, Dictionary<string, string> stats = null)
         {
+            if (count < 1)
+                throw new ArgumentOutOfRangeException("Liczba przedmiotów nie może" +
+                    "być mniejsza niż 1.");
             _model = model;
-            count = count > model.MaxStack ? model.MaxStack : count;
-            Count = count == 0 ? model.MaxStack : count;
+            Count = count;
             _stats = stats;
         }
 

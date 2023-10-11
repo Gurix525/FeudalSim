@@ -1,19 +1,15 @@
 using System;
-using Misc;
-using UnityEngine;
-using UnityEngine.UI;
-using Input;
-using static UnityEngine.InputSystem.InputAction;
-using UnityEngine.EventSystems;
-using UI;
 using Controls;
-using Cursor = Controls.Cursor;
-using PlayerControls;
+using Misc;
+using UI;
+using UnityEngine;
+using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
 namespace Items
 {
     [RequireComponent(typeof(OutlineHandler))]
-    public class ContainerHandler : MonoBehaviour, IRightClickHandler, INoActionOutline
+    public class ContainerHandler : MonoBehaviour, IMouseHandler
     {
         #region Fields
 
@@ -23,36 +19,31 @@ namespace Items
         private GameObject _window;
         private GameObject[] _slots;
         private RectTransform _windowTransform;
-        private OutlineHandler _outlineHandler;
-        private bool _isPointerOverGameObject;
 
         #endregion Fields
 
         #region Public
 
-        public void OnRightMouseButton()
+        public void OnLeftMouseButton(InputValue value) { }
+
+        public void OnLeftMouseButton(Vector2 position)
         {
             SwitchContainerState();
         }
 
-        public void EnableOutline()
-        {
-            _outlineHandler.EnableOutline();
-        }
-
-        public void DisableOutline()
-        {
-            _outlineHandler.DisableOutline();
-        }
-
         #endregion Public
 
-        #region Unity
+        #region Input
 
-        private void Awake()
+        private void OnTab(InputValue value)
         {
-            _outlineHandler = GetComponent<OutlineHandler>();
+            if (Equipment.IsVisible)
+                HideContainer();
         }
+
+        #endregion
+
+        #region Unity
 
         private void Start()
         {
@@ -79,23 +70,17 @@ namespace Items
             StartTest();
         }
 
-        private void FixedUpdate()
-        {
-            if (Vector3.Distance(Player.Position, transform.position)
-                > CursorRaycaster.MaxCursorDistanceFromPlayer)
-                HideContainer(new());
-        }
+        //private void FixedUpdate()
+        //{
+        //    if (Vector3.Distance(Player.Position, transform.position)
+        //        > CursorRaycaster.MaxCursorDistanceFromPlayer)
+        //        HideContainer(new());
+        //}
 
-        private void OnMouseOver()
-        {
-            _isPointerOverGameObject = CursorRaycaster.IsPointerOverGameObject;
-            Cursor.Action.OnMouseOver(this);
-        }
-
-        private void OnMouseExit()
-        {
-            Cursor.Action.OnMouseExit(this);
-        }
+        //private void OnMouseOver()
+        //{
+        //    _isPointerOverGameObject = CursorRaycaster.IsPointerOverGameObject;
+        //}
 
         private void OnDestroy()
         {
@@ -122,29 +107,18 @@ namespace Items
         private void SwitchContainerState()
         {
             if (_window.activeInHierarchy)
-                HideContainer(new());
+                HideContainer();
             else
                 ShowContainer();
         }
 
         private void ShowContainer()
         {
-            if (!_isPointerOverGameObject)
-            {
-                _window.SetActive(true);
-                PlayerController.MainEscape.AddListener(ActionType.Started, HideContainer);
-                PlayerController.MainTab.AddListener(ActionType.Started, HideContainer);
-            }
+            _window.SetActive(true);
         }
 
-        private void HideContainer(CallbackContext context)
+        private void HideContainer()
         {
-            if (context.action != null)
-                if (context.action.ToString() == "Main/Tab[/Keyboard/tab]"
-                    && Equipment.IsVisible)
-                    return;
-            PlayerController.MainEscape.RemoveListener(ActionType.Started, HideContainer);
-            PlayerController.MainTab.RemoveListener(ActionType.Started, HideContainer);
             _window.SetActive(false);
         }
 

@@ -1,0 +1,107 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: OldTerrain
+  m_Shader: {fileID: -6465566751694194690, guid: d7c56d1b30f659442a32f05768a2f453,
+    type: 3}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
+  m_ValidKeywords: []
+  m_InvalidKeywords: []
+  m_LightmapFlags: 2
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_LockedProperties: 
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _DirtNormalmap:
+        m_Texture: {fileID: 2800000, guid: 694d75e245b81cb4fb7a9c18b94bad3a, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _GrassNormalmap:
+        m_Texture: {fileID: 2800000, guid: 31095e42d1b107e4186e970303ddc4a4, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SandNormalmap:
+        m_Texture: {fileID: 2800000, guid: b4d135d252ff9e441bc2b71a3a1558f3, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _StoneNormalmap:
+        m_Texture: {fileID: 2800000, guid: dbc9dc49b250dad4a806e8b814e48d0a, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_Lightmaps:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_LightmapsInd:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_ShadowMasks:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats:
+    - _DetailScale: 12
+    - _DirtNormalStrength: 0.61
+    - _DirtNormalTiling: 0.02
+    - _Displacement: 0.05
+    - _DisplacementNoiseScale: 100
+    - _FarmNormalStrength: 2.5
+    - _FarmNormalTiling: 0.05
+    - _GrassNormalStrength: 0.4
+    - _GrassNormalTiling: 0.025
+    - _NormalRandomizationScale: 0.15
+    - _PathNormalStrength: 0.4
+    - _PathNormalTiling: 0.05
+    - _Pixelation: 15
+    - _QueueControl: 0
+    - _QueueOffset: 0
+    - _SandNormalStrength: 0.8
+    - _SandNormalTiling: 0.035
+    - _StoneLerpValue: 1
+    - _StoneMinimumHeight: 6
+    - _StoneNoiseScale: 0.5
+    - _StoneNormalStrength: 0.7
+    - _StoneNormalTiling: 0.05
+    m_Colors:
+    - _Color: {r: 0.75, g: 1, b: 0.4, a: 0}
+    - _DirtColor1: {r: 0.41568628, g: 0.29803923, b: 0.22745098, a: 0}
+    - _DirtColor2: {r: 0.34901962, g: 0.3019608, b: 0.25882354, a: 0}
+    - _DryColor: {r: 1, g: 0.9001926, b: 0.2216981, a: 0}
+    - _FarmColor1: {r: 0.3584906, g: 0.19084616, b: 0.021982923, a: 0}
+    - _FarmColor2: {r: 0.2924528, g: 0.1296236, b: 0.0013794977, a: 0}
+    - _PathColor1: {r: 0.41509432, g: 0.29852107, b: 0.22908507, a: 0}
+    - _PathColor2: {r: 0.3490566, g: 0.30029508, b: 0.25849947, a: 0}
+    - _PrimaryColor: {r: 0, g: 1, b: 0.062745094, a: 0}
+    - _SandColor1: {r: 1, g: 1, b: 1, a: 0}
+    - _SandColor2: {r: 1, g: 0.932783, b: 0.7311321, a: 0}
+    - _SecondaryColor: {r: 0.402, g: 1, b: 0, a: 0}
+    - _StoneColor1: {r: 1, g: 1, b: 1, a: 0}
+    - _StoneColor2: {r: 0.8962264, g: 0.8962264, b: 0.8962264, a: 0}
+  m_BuildTextureStacks: []
+--- !u!114 &6304450723835276025
+MonoBehaviour:
+  m_ObjectHideFlags: 11
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0353a89b1f911e48b9e16bdc9f2e058, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  version: 7

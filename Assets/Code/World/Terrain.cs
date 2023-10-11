@@ -16,6 +16,11 @@ namespace World
 
         #region Public
 
+        public static void Reset()
+        {
+            Chunks.Clear();
+        }
+
         public static void ModifyHeight(
             Vector2Int cellPosition,
             int deltaHeight,
@@ -51,7 +56,7 @@ namespace World
             if (hasToChangeColor)
             {
                 foreach (var neighbour in neighbours)
-                    neighbour.Color = Color.red;
+                    neighbour.Color = Cell.PathVerticeColor;
             }
             if (hasToReload)
             {

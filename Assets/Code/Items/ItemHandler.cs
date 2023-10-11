@@ -1,20 +1,21 @@
 using Misc;
-using Cursor = Controls.Cursor;
+using Cursor = Controls.PlayerCursor;
 using Task = System.Threading.Tasks.Task;
 using UnityEngine;
 using Controls;
 using System.Threading.Tasks;
 using World;
 using AI;
+using System;
 
 namespace Items
 {
     [RequireComponent(typeof(OutlineHandler))]
-    public class ItemHandler : MonoBehaviour, ILeftClickHandler, IRightClickHandler, INoActionOutline, IDetectable
+    public class ItemHandler : MonoBehaviour, IMouseHandler, IDetectable
     {
         #region Fields
 
-        private OutlineHandler _outlineHandler;
+        //private OutlineHandler _outlineHandler;
 
         #endregion Fields
 
@@ -43,86 +44,80 @@ namespace Items
             TerrainRenderer.MarkNavMeshToReload();
         }
 
-        public void OnLeftMouseButton()
+        public void OnLeftMouseButton(Vector2 position)
         {
-            if (Item == null)
-                return;
-            if (Cursor.Item == null)
-            {
-                Cursor.Container.InsertAt(0, Container.ExtractAt(0));
-                Destroy(gameObject);
-                return;
-            }
-            if (Cursor.Item.Name == Item.Name)
-            {
-                int delta = Mathf.Min(Item.Count, Item.MaxStack - Cursor.Item.Count);
-                if (delta != 0)
-                    Cursor.Container.InsertAt(0, Container.ExtractAt(0, delta));
-            }
-            if (Cursor.IsNoActionActive)
-                Equipment.Insert(Item);
-            if (Item != null)
-                if (Item.Count == 0)
-                    Container[0] = null;
-            if (Item == null)
-                Destroy(gameObject);
-            TerrainRenderer.MarkNavMeshToReload();
+            throw new NotImplementedException();
+            //if (Item == null)
+            //    return;
+            //if (Cursor.Item == null)
+            //{
+            //    Cursor.Container.InsertAt(0, Container.ExtractAt(0));
+            //    Destroy(gameObject);
+            //    return;
+            //}
+            //if (Cursor.Item.Name == Item.Name)
+            //{
+            //    Cursor.Container.InsertAt(0, Container.ExtractAt(0));
+            //}
+            //if (Cursor.IsNoActionActive)
+            //    Equipment.Insert(Item);
+            //if (Item != null)
+            //    if (Item.Count == 0)
+            //        Container[0] = null;
+            //if (Item == null)
+            //    Destroy(gameObject);
+            //TerrainRenderer.MarkNavMeshToReload();
         }
 
         public void OnRightMouseButton()
         {
-            if (Item == null)
-                return;
-            if (Cursor.Item == null)
-            {
-                Cursor.Container.InsertAt(0, Container.ExtractAt(0, 1));
-                if (Item == null)
-                    Destroy(gameObject);
-                return;
-            }
-            if (Cursor.Item.Name == Item.Name)
-            {
-                if (Cursor.Item.Count < Item.MaxStack)
-                {
-                    Cursor.Container.InsertAt(0, Container.ExtractAt(0, 1));
-                }
-                else
-                {
-                    var item = Container.ExtractAt(0, 1);
-                    Equipment.Insert(item);
-                    if (item.Count > 0)
-                        Container.InsertAt(0, item);
-                }
-                if (Item == null)
-                    Destroy(gameObject);
-                return;
-            }
-            if (Cursor.IsNoActionActive)
-            {
-                var item = Container.ExtractAt(0, 1);
-                if (item == null)
-                    return;
-                Equipment.Insert(item);
-                if (item.Count > 0)
-                    Container.InsertAt(0, item);
-                if (Item != null)
-                    if (Item.Count == 0)
-                        Container[0] = null;
-                if (Item == null)
-                    Destroy(gameObject);
-            }
-            TerrainRenderer.MarkNavMeshToReload();
+            throw new System.NotImplementedException();
         }
 
-        public void EnableOutline()
-        {
-            _outlineHandler.EnableOutline();
-        }
-
-        public void DisableOutline()
-        {
-            _outlineHandler.DisableOutline();
-        }
+        //public void OnRightMouseButton()
+        //{
+        //    if (Item == null)
+        //        return;
+        //    if (Cursor.Item == null)
+        //    {
+        //        Cursor.Container.InsertAt(0, Container.ExtractAt(0, 1));
+        //        if (Item == null)
+        //            Destroy(gameObject);
+        //        return;
+        //    }
+        //    if (Cursor.Item.Name == Item.Name)
+        //    {
+        //        if (Cursor.Item.Count < Item.MaxStack)
+        //        {
+        //            Cursor.Container.InsertAt(0, Container.ExtractAt(0, 1));
+        //        }
+        //        else
+        //        {
+        //            var item = Container.ExtractAt(0, 1);
+        //            Equipment.Insert(item);
+        //            if (item.Count > 0)
+        //                Container.InsertAt(0, item);
+        //        }
+        //        if (Item == null)
+        //            Destroy(gameObject);
+        //        return;
+        //    }
+        //    if (Cursor.IsNoActionActive)
+        //    {
+        //        var item = Container.ExtractAt(0, 1);
+        //        if (item == null)
+        //            return;
+        //        Equipment.Insert(item);
+        //        if (item.Count > 0)
+        //            Container.InsertAt(0, item);
+        //        if (Item != null)
+        //            if (Item.Count == 0)
+        //                Container[0] = null;
+        //        if (Item == null)
+        //            Destroy(gameObject);
+        //    }
+        //    TerrainRenderer.MarkNavMeshToReload();
+        //}
 
         #endregion Public
 
@@ -130,7 +125,7 @@ namespace Items
 
         private void Awake()
         {
-            _outlineHandler = GetComponent<OutlineHandler>();
+            //_outlineHandler = GetComponent<OutlineHandler>();
         }
 
         private void OnEnable()
@@ -145,12 +140,12 @@ namespace Items
 
         private void OnMouseOver()
         {
-            Cursor.Action.OnMouseOver(this);
+            //Cursor.Action.OnMouseOver(this);
         }
 
         private void OnMouseExit()
         {
-            Cursor.Action.OnMouseExit(this);
+            //Cursor.Action.OnMouseExit(this);
         }
 
         #endregion Unity

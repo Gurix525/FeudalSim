@@ -1,14 +1,12 @@
-using Input;
-using UnityEngine;
-using UnityEngine.EventSystems;
-using static UnityEngine.InputSystem.InputAction;
-using TMPro;
-using UnityEngine.UI;
+using Controls;
 using Items;
+using TMPro;
+using UnityEngine;
+using UnityEngine.UI;
 
 namespace UI
 {
-    public class ContainerSlot : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
+    public class ContainerSlot : MonoBehaviour, IMouseHandler
     {
         #region Fields
 
@@ -35,18 +33,6 @@ namespace UI
             _container.CollectionUpdated.RemoveListener(OnCollectionUpdated);
         }
 
-        public void OnPointerEnter(PointerEventData eventData)
-        {
-            PlayerController.MainLeftClick.AddListener(ActionType.Started, OnLeftMouseButton);
-            PlayerController.MainRightClick.AddListener(ActionType.Started, OnRightMouseButton);
-        }
-
-        public void OnPointerExit(PointerEventData eventData)
-        {
-            PlayerController.MainLeftClick.RemoveListener(ActionType.Started, OnLeftMouseButton);
-            PlayerController.MainRightClick.RemoveListener(ActionType.Started, OnRightMouseButton);
-        }
-
         #endregion Public
 
         #region Unity
@@ -63,21 +49,20 @@ namespace UI
         private void OnDisable()
         {
             _container.CollectionUpdated.RemoveListener(OnCollectionUpdated);
-            OnPointerExit(null);
         }
 
         #endregion Unity
 
         #region Private
 
-        private void OnLeftMouseButton(CallbackContext context)
+        public void OnLeftMouseButton(Vector2 position)
         {
             _container.OnLeftMouseButton(_slotIndex);
         }
 
-        private void OnRightMouseButton(CallbackContext context)
+        public void OnLeftMouseButtonRelase()
         {
-            _container.OnRightMouseButton(_slotIndex);
+            _container.OnLeftMouseButtonRelase(_slotIndex);
         }
 
         private void OnCollectionUpdated()
@@ -88,10 +73,10 @@ namespace UI
                 _image.enabled = false;
                 return;
             }
-            if (_container[_slotIndex].MaxStack == 1)
-                _text.text = string.Empty;
-            else
-                _text.text = _container[_slotIndex].Count.ToString();
+            //if (_container[_slotIndex].MaxStack == 1)
+            //    _text.text = string.Empty;
+            //else
+            _text.text = _container[_slotIndex].Count.ToString();
             _image.sprite = _container[_slotIndex].Sprite;
             _image.enabled = true;
         }

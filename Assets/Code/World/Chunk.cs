@@ -82,16 +82,23 @@ namespace World
         {
             for (int z = 0; z < 50; z++)
                 for (int x = 0; x < 50; x++)
+                {
+                    var cellPosition = new Vector2Int(
+                                Position.x * 50 + x,
+                                Position.y * 50 + z);
+                    var cellHeight = NoiseSampler.GetHeight(
+                                Position.x * 50 + x,
+                                Position.y * 50 + z);
+                    Color cellColor = GetCellColor(cellPosition, cellHeight);
                     Cells.Add(
-                        new(x, z),
-                        new Cell(
-                            new Vector2Int(
-                                Position.x * 50 + x,
-                                Position.y * 50 + z),
-                            NoiseSampler.GetHeight(
-                                Position.x * 50 + x,
-                                Position.y * 50 + z)
-                            ));
+                        new Vector2Int(x, z),
+                        new Cell(cellPosition, cellHeight, color: cellColor));
+                }
+        }
+
+        private Color GetCellColor(Vector2Int cellPosition, int cellHeight)
+        {
+            return cellHeight > 0 ? Cell.GrassVerticeColor : Cell.SandVerticeColor;
         }
 
         private void LoadHeights(ChunkInfo chunkInfo)

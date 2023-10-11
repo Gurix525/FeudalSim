@@ -4,37 +4,21 @@ using Items;
 using Misc;
 using UnityEngine;
 using World;
-using Cursor = Controls.Cursor;
+using Cursor = Controls.PlayerCursor;
 using PlayerControls;
 
 namespace Nature
 {
     [RequireComponent(typeof(OutlineHandler))]
-    public class Tree : MonoBehaviour, ILeftClickHandler, IAxeActionOutline
+    public class Tree : MonoBehaviour, IMouseHandler
     {
-        #region Fields
-
-        private OutlineHandler _outlineHandler;
-
-        #endregion Fields
-
         #region Public
 
-        public void EnableOutline()
-        {
-            _outlineHandler.EnableOutline();
-        }
-
-        public void DisableOutline()
-        {
-            _outlineHandler.DisableOutline();
-        }
-
-        public void OnLeftMouseButton()
+        public void OnLeftMouseButton(Vector2 position)
         {
             if (this == null)
                 return;
-            Item item = Item.Create("Wood", 0);
+            Item item = Item.Create("Wood", 20);
             Equipment.Insert(item);
             if (item.Count > 0)
                 item.Drop(Player.Position);
@@ -53,24 +37,5 @@ namespace Nature
         }
 
         #endregion Public
-
-        #region Unity
-
-        private void Awake()
-        {
-            _outlineHandler = GetComponent<OutlineHandler>();
-        }
-
-        private void OnMouseOver()
-        {
-            Cursor.Action.OnMouseOver(this);
-        }
-
-        private void OnMouseExit()
-        {
-            Cursor.Action.OnMouseExit(this);
-        }
-
-        #endregion Unity
     }
 }

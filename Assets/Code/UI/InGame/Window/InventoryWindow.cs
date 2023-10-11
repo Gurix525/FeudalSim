@@ -17,10 +17,5 @@ namespace UI
             _sortButton.Initialize(container);
             _rectTransform = GetComponent<RectTransform>();
         }
-
-        private void OnDisable()
-        {
-            CurrentOffset = _originalOffset;
-        }
     }
 }

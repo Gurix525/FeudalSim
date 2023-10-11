@@ -5,9 +5,6 @@ using System.Linq;
 using Controls;
 using UnityEngine;
 using UnityEngine.Events;
-using World;
-using Cursor = Controls.Cursor;
-using Terrain = World.Terrain;
 
 namespace Items
 {
@@ -97,60 +94,27 @@ namespace Items
 
         public void OnLeftMouseButton(int slotIndex)
         {
-            if (!IsArmorMatchingSlot(Cursor.Container[0], slotIndex))
+            if (_items[slotIndex] == null)
                 return;
-            Item thisItem = ExtractAt(slotIndex);
-            Item cursorItem = Cursor.Container.ExtractAt(0);
-            if (IsPossibleToInsert(thisItem, cursorItem))
-            {
-                _items[slotIndex] = thisItem;
-                InsertAt(slotIndex, cursorItem);
-                if (cursorItem.Count != 0)
-                    Cursor.Container.InsertAt(0, cursorItem);
-                CollectionUpdated.Invoke();
-                return;
-            }
-            if (cursorItem != null)
-                _items[slotIndex] = cursorItem;
-            if (thisItem != null)
-                Cursor.Container.InsertAt(0, thisItem);
+            PlayerCursor.Current.ItemReference = new(this, slotIndex);
             CollectionUpdated.Invoke();
         }
 
-        public void OnRightMouseButton(int slotIndex)
+        public void OnLeftMouseButtonRelase(int slotIndex)
         {
-            if (!IsArmorMatchingSlot(Cursor.Container[0], slotIndex))
-                return;
-            Item thisItem = ExtractAt(slotIndex);
-            Item cursorItem = Cursor.Container.ExtractAt(0);
-            if (thisItem == null && cursorItem == null)
-                return;
-            if (thisItem != null && cursorItem == null)
+            if (PlayerCursor.Current.ItemReference != null)
             {
-                int delta = thisItem.Count / 2 + thisItem.Count % 2;
-                thisItem.Count -= delta;
-                Cursor.Container.InsertAt(0, thisItem.Clone(delta));
-                if (thisItem.Count == 0)
-                    thisItem = null;
-                InsertAt(slotIndex, thisItem);
-                CollectionUpdated.Invoke();
-                return;
+                Container other = PlayerCursor.Current.ItemReference.Container;
+                int otherIndex = PlayerCursor.Current.ItemReference.Index;
+                if (_items[slotIndex] == null)
+                    SwapItems(this, slotIndex, other, otherIndex);
+                else if (_items[slotIndex].Model == other[otherIndex].Model)
+                    MergeItems(other, otherIndex, this, slotIndex);
+                else
+                    SwapItems(this, slotIndex, other, otherIndex);
+                PlayerCursor.Current.ItemReference = null;
             }
-            if (thisItem == null || (thisItem.Name == cursorItem.Name && thisItem.Count < thisItem.MaxStack))
-            {
-                var change = cursorItem.Clone(1);
-                cursorItem.Count -= 1;
-                if (cursorItem.Count == 0)
-                    cursorItem = null;
-                InsertAt(slotIndex, thisItem);
-                InsertAt(slotIndex, change);
-                Cursor.Container.InsertAt(0, cursorItem);
-                CollectionUpdated.Invoke();
-                return;
-            }
-            InsertAt(slotIndex, thisItem);
-            Cursor.Container.InsertAt(0, cursorItem);
-            OnLeftMouseButton(slotIndex);
+            CollectionUpdated.Invoke();
         }
 
         public void Sort(bool hasToStack = true)
@@ -193,11 +157,10 @@ namespace Items
                 _items[index] = item.Clone();
                 item.Count = 0;
             }
-            else if (_items[index].Name == item.Name && _items[index].Count < item.MaxStack)
+            else if (_items[index].Name == item.Name)
             {
-                int delta = Math.Min(item.MaxStack - _items[index].Count, item.Count);
-                _items[index].Count += delta;
-                item.Count -= delta;
+                _items[index].Count += item.Count;
+                item.Count = 0;
             }
             CollectionUpdated.Invoke();
         }
@@ -215,14 +178,13 @@ namespace Items
                     nullIndexes.Add(i);
                     continue;
                 }
-                if (_items[i].Name == item.Name && _items[i].Count < item.MaxStack)
+                if (_items[i].Name == item.Name)
                     itemIndexes.Add(i);
             }
             foreach (int i in itemIndexes)
             {
-                int delta = Math.Min(item.Count, item.MaxStack - _items[i].Count);
-                _items[i].Count += delta;
-                item.Count -= delta;
+                _items[i].Count += item.Count;
+                item.Count = 0;
                 CollectionUpdated.Invoke();
                 if (item.Count == 0)
                     return;
@@ -251,6 +213,27 @@ namespace Items
         IEnumerator IEnumerable.GetEnumerator()
         {
             return GetEnumerator();
+        }
+
+        public static void SwapItems(Container left, int leftIndex, Container right, int rightIndex)
+        {
+            if (left[leftIndex] == right[rightIndex])
+                return;
+            Item temp = left[leftIndex];
+            left[leftIndex] = right[rightIndex];
+            right[rightIndex] = temp;
+            left.CollectionUpdated.Invoke();
+            right.CollectionUpdated.Invoke();
+        }
+
+        public static void MergeItems(Container source, int sourceIndex, Container destination, int destinationIndex)
+        {
+            if (source[sourceIndex] == destination[destinationIndex])
+                return;
+            destination[destinationIndex].Count += source[sourceIndex].Count;
+            source[sourceIndex] = null;
+            source.CollectionUpdated.Invoke();
+            destination.CollectionUpdated.Invoke();
         }
 
         #endregion Public
@@ -297,8 +280,7 @@ namespace Items
         {
             if (thisItem == null || otherItem == null)
                 return false;
-            return thisItem.Name == otherItem.Name
-                && thisItem.Count < thisItem.MaxStack;
+            return thisItem.Name == otherItem.Name;
         }
 
         #endregion Private

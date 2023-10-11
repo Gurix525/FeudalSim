@@ -14,10 +14,5 @@ namespace UI
             _equipment = equipment;
             _rectTransform = GetComponent<RectTransform>();
         }
-
-        private void OnDisable()
-        {
-            CurrentOffset = _originalOffset;
-        }
     }
 }
