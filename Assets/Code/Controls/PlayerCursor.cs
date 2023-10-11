@@ -3,35 +3,55 @@ using System.Collections.Generic;
 using System.Linq;
 using Items;
 using UnityEngine;
-using UnityEngine.Events;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 namespace Controls
 {
-    public class PlayerCursor : MonoBehaviour
+    public partial class PlayerCursor : MonoBehaviour
     {
         #region Events
 
         public event EventHandler<ObjectChangedEventArgs> ObjectUnderCursorChanged;
+
+        public event EventHandler<ItemReferenceChangedEventArgs> ItemReferenceChanged;
+
+        public event EventHandler<PositionChangedEventArgs> WorldPositionChanged;
 
         #endregion Events
 
         #region Fields
 
         [SerializeField] private GameObject _canvasesParent;
+        [SerializeField] private MeshHighlight _meshHighlight;
 
         private ItemReference _itemReference;
-        private LayerMask _layerMask;
         private GameObject _objectUnderCursor;
         private GameObject _draggedObject;
+        private LayerMask _layerMask;
+        private Vector3 _worldPosition;
 
         #endregion Fields
 
         #region Properties
 
         public static PlayerCursor Current { get; private set; }
+
+        public Vector2 ScreenPosition { get; private set; }
+        public Vector3 WorldPosition 
+        { 
+            get => _worldPosition;
+            private set
+            {
+                if (_worldPosition != value)
+                {
+                    PositionChangedEventArgs args = new(_worldPosition, value);
+                    _worldPosition = value;
+                    WorldPositionChanged?.Invoke(this, args);
+                }
+            }
+        }
 
         public GameObject ObjectUnderCursor
         {
@@ -47,20 +67,19 @@ namespace Controls
             }
         }
 
-        public Vector3 WorldPosition { get; private set; }
-        public Vector2 ScreenPosition { get; private set; }
-
         public ItemReference ItemReference
         {
             get => _itemReference;
             set
             {
-                _itemReference = value;
-                ItemReferenceChanged.Invoke(_itemReference);
+                if (_itemReference != value)
+                {
+                    ItemReferenceChangedEventArgs args = new(_itemReference, value);
+                    _itemReference = value;
+                    ItemReferenceChanged?.Invoke(this, args);
+                }
             }
         }
-
-        public UnityEvent<ItemReference> ItemReferenceChanged { get; } = new();
 
         #endregion Properties
 
@@ -222,18 +241,6 @@ namespace Controls
             ItemReference = null;
         }
 
-        #endregion Private
-
-        public class ObjectChangedEventArgs : EventArgs
-        {
-            public GameObject PreviousObject { get; }
-            public GameObject NewObject { get; }
-
-            public ObjectChangedEventArgs(GameObject previousObject, GameObject newObject)
-            {
-                PreviousObject = previousObject;
-                NewObject = newObject;
-            }
-        }
+#endregion Private
     }
 }

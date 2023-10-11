@@ -26,17 +26,17 @@ namespace UI
 
         private void OnEnable()
         {
-            _cursor.ItemReferenceChanged.AddListener(OnCollectionUpdated);
+            _cursor.ItemReferenceChanged += Cursor_ItemReferenceChanged;
         }
 
         private void OnDisable()
         {
-            _cursor.ItemReferenceChanged.RemoveListener(OnCollectionUpdated);
+            _cursor.ItemReferenceChanged -= Cursor_ItemReferenceChanged;
         }
 
-        private void OnCollectionUpdated(ItemReference item)
+        private void Cursor_ItemReferenceChanged(object sender, Controls.ItemReferenceChangedEventArgs e)
         {
-            if (_cursor.ItemReference == null)
+            if (e.NewReference == null)
             {
                 _text.text = string.Empty;
                 _image.enabled = false;

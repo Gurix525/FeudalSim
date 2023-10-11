@@ -863,6 +863,7 @@ GameObject:
   - component: {fileID: 191494608}
   - component: {fileID: 191494610}
   - component: {fileID: 191494609}
+  - component: {fileID: 191494611}
   m_Layer: 0
   m_Name: MeshHighlight
   m_TagString: Untagged
@@ -878,12 +879,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 191494607}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 1612806887}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!23 &191494609
 MeshRenderer:
@@ -934,7 +935,20 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 191494607}
-  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+  m_Mesh: {fileID: 0}
+--- !u!114 &191494611
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 191494607}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 71ae309883f020d48a9f81a80b8c6e55, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _cursor: {fileID: 1243102505}
 --- !u!1 &191750772
 GameObject:
   m_ObjectHideFlags: 0
@@ -5940,6 +5954,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _canvasesParent: {fileID: 2033370605}
+  _meshHighlight: {fileID: 191494611}
 --- !u!114 &1243102506
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7708,6 +7723,7 @@ Transform:
   - {fileID: 410087041}
   - {fileID: 832575519}
   - {fileID: 1243102504}
+  - {fileID: 191494608}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1612806888
@@ -11392,4 +11408,3 @@ SceneRoots:
   - {fileID: 1607212427}
   - {fileID: 716980178}
   - {fileID: 744291010}
-  - {fileID: 191494608}
