@@ -74,12 +74,12 @@ namespace Items
 
         #region Public
 
-        public void Drop(Vector3 dropPosition, bool scatter = true)
+        public void Drop(Vector3 dropPosition, bool hasToScatter = true)
         {
-            Drop(dropPosition, Quaternion.identity, scatter);
+            Drop(dropPosition, Quaternion.identity, hasToScatter);
         }
 
-        public void Drop(Vector3 dropPosition, Quaternion rotation, bool scatter = true)
+        public void Drop(Vector3 dropPosition, Quaternion rotation, bool hasToScatter = true)
         {
             GameObject prefab = Resources.Load<GameObject>("Prefabs/Items/" + Name);
             if (prefab == null)
@@ -92,7 +92,7 @@ namespace Items
             ScatterItem(itemHandler);
             itemHandler.Container.InsertAt(0, this);
             itemHandler.transform.SetPositionAndRotation(
-                dropPosition + (scatter ? GetRandomScatterOffset() : Vector3.zero),
+                dropPosition + (hasToScatter ? GetRandomScatterOffset() : Vector3.zero),
                 rotation);
         }
 

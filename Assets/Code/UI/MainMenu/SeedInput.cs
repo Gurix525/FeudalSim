@@ -18,7 +18,7 @@ public class SeedInput : MonoBehaviour
         {
             int.TryParse(_seedInput.text, out int parsed);
             if (parsed == 0)
-                return new System.Random().Next();
+                return new System.Random().Next(0, 9999999);
             return parsed;
         }
     }
@@ -31,8 +31,8 @@ public class SeedInput : MonoBehaviour
     {
         _seedInput = GetComponent<TMP_InputField>();
         _seedInput.characterValidation =
-            TMP_InputField.CharacterValidation.Integer;
-        _seedInput.characterLimit = 9;
+            TMP_InputField.CharacterValidation.Digit;
+        _seedInput.characterLimit = 7;
     }
 
     private void OnEnable()

@@ -31,6 +31,7 @@ namespace Controls
         private GameObject _draggedObject;
         private LayerMask _layerMask;
         private RaycastHit _worldRaycastHit;
+        private bool _isShiftPressed;
 
         #endregion Fields
 
@@ -104,7 +105,19 @@ namespace Controls
                     ObjectUnderCursor
                         .GetComponents<IMouseHandler>()
                         .ToList()
-                        .ForEach(handler => handler.OnLeftMouseButton(ScreenPosition));
+                        .ForEach(handler =>
+                        {
+                            switch (_isShiftPressed)
+                            {
+                                case true:
+                                    handler.OnShiftLeftMouseButton(ScreenPosition);
+                                    break;
+
+                                default:
+                                    handler.OnLeftMouseButton(ScreenPosition);
+                                    break;
+                            }
+                        });
                 SetDraggedObject(ObjectUnderCursor);
             }
             // On relased
@@ -115,7 +128,19 @@ namespace Controls
                     ObjectUnderCursor
                         .GetComponents<IMouseHandler>()
                         .ToList()
-                        .ForEach(handler => handler.OnLeftMouseButtonRelase());
+                        .ForEach(handler =>
+                        {
+                            switch (_isShiftPressed)
+                            {
+                                case true:
+                                    handler.OnShiftLeftMouseButtonRelase();
+                                    break;
+
+                                default:
+                                    handler.OnLeftMouseButtonRelase();
+                                    break;
+                            }
+                        });
                     if (ItemReference != null && !ObjectUnderCursor
                             .TryGetComponent(out RectTransform rectTransform))
                         PutItem();
@@ -163,6 +188,11 @@ namespace Controls
                 _draggedObject
                     .GetComponents<IMouseHandler>().ToList()
                     .ForEach(handler => handler.OnMouseDelta(delta));
+        }
+
+        private void OnShift(InputValue value)
+        {
+            _isShiftPressed = value.isPressed;
         }
 
         #endregion Input

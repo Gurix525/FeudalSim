@@ -94,7 +94,7 @@ namespace Items
             Item dropItem = ExtractAt(index, count);
             if (dropItem == null)
                 return;
-            dropItem.Drop(dropPosition, rotation);
+            dropItem.Drop(dropPosition, rotation, scatter);
         }
 
         public void OnLeftMouseButton(int slotIndex)

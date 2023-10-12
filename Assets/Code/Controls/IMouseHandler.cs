@@ -7,7 +7,11 @@ namespace Controls
     {
         public virtual void OnLeftMouseButton(Vector2 position) { }
 
+        public virtual void OnShiftLeftMouseButton(Vector2 position) { }
+
         public virtual void OnLeftMouseButtonRelase() { }
+
+        public virtual void OnShiftLeftMouseButtonRelase() { }
 
         public virtual void OnRightMouseButton() { }
 
