@@ -1,12 +1,11 @@
+using System;
+using AI;
+using Controls;
 using Misc;
+using UnityEngine;
+using World;
 using Cursor = Controls.PlayerCursor;
 using Task = System.Threading.Tasks.Task;
-using UnityEngine;
-using Controls;
-using System.Threading.Tasks;
-using World;
-using AI;
-using System;
 
 namespace Items
 {
@@ -15,13 +14,13 @@ namespace Items
     {
         #region Fields
 
-        //private OutlineHandler _outlineHandler;
+        private bool _isClicked = false;
 
-        #endregion Fields
+        #endregion
 
         #region Properties
 
-        public Container Container = new(1);
+        public Container Container { get; } = new(1);
 
         public Item Item => Container[0];
 
@@ -46,33 +45,55 @@ namespace Items
 
         public void OnLeftMouseButton(Vector2 position)
         {
-            throw new NotImplementedException();
-            //if (Item == null)
-            //    return;
-            //if (Cursor.Item == null)
-            //{
-            //    Cursor.Container.InsertAt(0, Container.ExtractAt(0));
-            //    Destroy(gameObject);
-            //    return;
-            //}
-            //if (Cursor.Item.Name == Item.Name)
-            //{
-            //    Cursor.Container.InsertAt(0, Container.ExtractAt(0));
-            //}
-            //if (Cursor.IsNoActionActive)
-            //    Equipment.Insert(Item);
-            //if (Item != null)
-            //    if (Item.Count == 0)
-            //        Container[0] = null;
-            //if (Item == null)
-            //    Destroy(gameObject);
-            //TerrainRenderer.MarkNavMeshToReload();
+            _isClicked = true;
         }
 
-        public void OnRightMouseButton()
+        public void OnMousePosition(Vector2 position)
         {
-            throw new System.NotImplementedException();
+            if (Item == null)
+                return;
+            _isClicked = false;
+            Cursor.Current.ItemReference = new(Container, 0);
         }
+
+        public void OnLeftMouseButtonRelase()
+        {
+            if (!_isClicked)
+                return;
+            _isClicked = false;
+            Cursor.Current.RelaseItemReference();
+            Item item = Container.ExtractAt(0);
+            Equipment.InventoryContainer.Insert(item);
+        }
+
+        public void OnHoverEnd()
+        {
+            _isClicked = false;
+        }
+
+        //public void OnLeftMouseButton(Vector2 position)
+        //{
+        //    if (Item == null)
+        //        return;
+        //    if (Cursor.Item == null)
+        //    {
+        //        Cursor.Container.InsertAt(0, Container.ExtractAt(0));
+        //        Destroy(gameObject);
+        //        return;
+        //    }
+        //    if (Cursor.Item.Name == Item.Name)
+        //    {
+        //        Cursor.Container.InsertAt(0, Container.ExtractAt(0));
+        //    }
+        //    if (Cursor.IsNoActionActive)
+        //        Equipment.Insert(Item);
+        //    if (Item != null)
+        //        if (Item.Count == 0)
+        //            Container[0] = null;
+        //    if (Item == null)
+        //        Destroy(gameObject);
+        //    TerrainRenderer.MarkNavMeshToReload();
+        //}
 
         //public void OnRightMouseButton()
         //{
@@ -123,11 +144,6 @@ namespace Items
 
         #region Unity
 
-        private void Awake()
-        {
-            //_outlineHandler = GetComponent<OutlineHandler>();
-        }
-
         private void OnEnable()
         {
             Container.CollectionUpdated.AddListener(OnCollectionUpdated);
@@ -136,16 +152,6 @@ namespace Items
         private void OnDisable()
         {
             Container.CollectionUpdated.RemoveListener(OnCollectionUpdated);
-        }
-
-        private void OnMouseOver()
-        {
-            //Cursor.Action.OnMouseOver(this);
-        }
-
-        private void OnMouseExit()
-        {
-            //Cursor.Action.OnMouseExit(this);
         }
 
         #endregion Unity

@@ -84,6 +84,15 @@ namespace Controls
 
         #endregion Properties
 
+        #region Public
+
+        public void RelaseItemReference()
+        {
+            ItemReference = null;
+        }
+
+        #endregion Public
+
         #region Input
 
         private void OnLeftMouseButton(InputValue value)
@@ -256,11 +265,6 @@ namespace Controls
                     WorldRaycastHit.point,
                     _meshHighlight.transform.rotation,
                     scatter: false);
-        }
-
-        private void RelaseItemReference()
-        {
-            ItemReference = null;
         }
 
         #endregion Private
