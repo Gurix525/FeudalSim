@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.ProBuilder;
 
 namespace Controls
 {
@@ -27,11 +28,13 @@ namespace Controls
             _cursor.WorldPositionChanged -= Cursor_WorldPositionChanged;
         }
 
-        private void Cursor_WorldPositionChanged(object sender, PositionChangedEventArgs e)
+        private void Cursor_WorldPositionChanged(object sender, RaycastHitChangedEventArgs e)
         {
-            if (e.NewPosition != null)
+            if (e.NewRaycastHit != null)
             {
-                transform.position = e.NewPosition.Value;
+                transform.position = e.NewRaycastHit.Value.point;
+                transform.rotation = Quaternion
+                    .FromToRotation(Vector3.up, e.NewRaycastHit.Value.normal);
             }
         }
 

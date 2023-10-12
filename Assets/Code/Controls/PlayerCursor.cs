@@ -17,7 +17,7 @@ namespace Controls
 
         public event EventHandler<ItemReferenceChangedEventArgs> ItemReferenceChanged;
 
-        public event EventHandler<PositionChangedEventArgs> WorldPositionChanged;
+        public event EventHandler<RaycastHitChangedEventArgs> WorldPositionChanged;
 
         #endregion Events
 
@@ -30,7 +30,7 @@ namespace Controls
         private GameObject _objectUnderCursor;
         private GameObject _draggedObject;
         private LayerMask _layerMask;
-        private Vector3 _worldPosition;
+        private RaycastHit _worldRaycastHit;
 
         #endregion Fields
 
@@ -39,15 +39,16 @@ namespace Controls
         public static PlayerCursor Current { get; private set; }
 
         public Vector2 ScreenPosition { get; private set; }
-        public Vector3 WorldPosition 
-        { 
-            get => _worldPosition;
+
+        public RaycastHit WorldRaycastHit
+        {
+            get => _worldRaycastHit;
             private set
             {
-                if (_worldPosition != value)
+                if (_worldRaycastHit.point != value.point)
                 {
-                    PositionChangedEventArgs args = new(_worldPosition, value);
-                    _worldPosition = value;
+                    RaycastHitChangedEventArgs args = new(_worldRaycastHit, value);
+                    _worldRaycastHit = value;
                     WorldPositionChanged?.Invoke(this, args);
                 }
             }
@@ -171,7 +172,9 @@ namespace Controls
         {
             Ray ray = Camera.main.ScreenPointToRay(ScreenPosition);
             if (Physics.Raycast(ray, out RaycastHit hit, float.PositiveInfinity, _layerMask))
-                WorldPosition = hit.point;
+            {
+                WorldRaycastHit = hit;
+            }
         }
 
         private void UpdateObjectUnderCursor()
@@ -241,6 +244,6 @@ namespace Controls
             ItemReference = null;
         }
 
-#endregion Private
+        #endregion Private
     }
 }

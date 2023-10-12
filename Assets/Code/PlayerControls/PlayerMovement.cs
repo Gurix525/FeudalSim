@@ -92,7 +92,7 @@ namespace PlayerControls
 
         public void RotateToCursor()
         {
-            transform.LookAt(_cursor.WorldPosition);
+            transform.LookAt(_cursor.WorldRaycastHit.point);
             transform.rotation = Quaternion.Euler(0F, transform.eulerAngles.y, 0F);
         }
 
@@ -252,7 +252,7 @@ namespace PlayerControls
 
         private Vector2 GetLookDirection()
         {
-            Vector3 cursorPosition = _cursor.WorldPosition;
+            Vector3 cursorPosition = _cursor.WorldRaycastHit.point;
             Vector2 transformPosition = new(transform.position.x, transform.position.z);
             Vector2 targetPosition = new(cursorPosition.x, cursorPosition.z);
             return targetPosition - transformPosition;
