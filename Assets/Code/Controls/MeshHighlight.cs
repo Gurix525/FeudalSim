@@ -18,17 +18,17 @@ namespace Controls
 
         private void OnEnable()
         {
-            _cursor.ItemReferenceChanged += Cursor_ItemReferenceChanged;
-            _cursor.WorldPositionChanged += Cursor_WorldPositionChanged;
+            _cursor.ItemReferenceChanged += _cursor_ItemReferenceChanged;
+            _cursor.WorldPositionChanged += _cursor_WorldPositionChanged;
         }
 
         private void OnDisable()
         {
-            _cursor.ItemReferenceChanged -= Cursor_ItemReferenceChanged;
-            _cursor.WorldPositionChanged -= Cursor_WorldPositionChanged;
+            _cursor.ItemReferenceChanged -= _cursor_ItemReferenceChanged;
+            _cursor.WorldPositionChanged -= _cursor_WorldPositionChanged;
         }
 
-        private void Cursor_WorldPositionChanged(object sender, RaycastHitChangedEventArgs e)
+        private void _cursor_WorldPositionChanged(object sender, RaycastHitChangedEventArgs e)
         {
             if (e.NewRaycastHit != null)
             {
@@ -38,7 +38,7 @@ namespace Controls
             }
         }
 
-        private void Cursor_ItemReferenceChanged(object sender, ItemReferenceChangedEventArgs e)
+        private void _cursor_ItemReferenceChanged(object sender, ItemReferenceChangedEventArgs e)
         {
             if (e.NewReference != null)
             {

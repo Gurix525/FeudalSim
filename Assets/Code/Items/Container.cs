@@ -84,7 +84,7 @@ namespace Items
             }
         }
 
-        public void DropAt(int index, Vector3 dropPosition, int count = 0)
+        public void DropAt(int index, Vector3 dropPosition, int count = 0, bool scatter = true)
         {
             Item dropItem = ExtractAt(index, count);
             if (dropItem == null)

@@ -74,7 +74,7 @@ namespace Items
 
         #region Public
 
-        public void Drop(Vector3 dropPosition)
+        public void Drop(Vector3 dropPosition, bool scatter = true)
         {
             GameObject prefab = Resources.Load<GameObject>("Prefabs/Items/" + Name);
             if (prefab == null)
@@ -87,7 +87,7 @@ namespace Items
             ScatterItem(itemHandler);
             itemHandler.Container.InsertAt(0, this);
             itemHandler.transform.SetPositionAndRotation(
-                dropPosition + GetRandomScatterOffset(),
+                dropPosition + (scatter ? GetRandomScatterOffset() : Vector3.zero),
                 Quaternion.identity);
         }
 

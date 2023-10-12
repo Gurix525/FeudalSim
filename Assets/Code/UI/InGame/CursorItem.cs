@@ -1,4 +1,3 @@
-using Items;
 using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -26,15 +25,15 @@ namespace UI
 
         private void OnEnable()
         {
-            _cursor.ItemReferenceChanged += Cursor_ItemReferenceChanged;
+            _cursor.ItemReferenceChanged += _cursor_ItemReferenceChanged;
         }
 
         private void OnDisable()
         {
-            _cursor.ItemReferenceChanged -= Cursor_ItemReferenceChanged;
+            _cursor.ItemReferenceChanged -= _cursor_ItemReferenceChanged;
         }
 
-        private void Cursor_ItemReferenceChanged(object sender, Controls.ItemReferenceChangedEventArgs e)
+        private void _cursor_ItemReferenceChanged(object sender, Controls.ItemReferenceChangedEventArgs e)
         {
             if (e.NewReference == null)
             {
@@ -42,12 +41,15 @@ namespace UI
                 _image.enabled = false;
                 return;
             }
+            else
+            {
+                _text.text = e.NewReference.Item.Count.ToString();
+                _image.sprite = e.NewReference.Item.Sprite;
+                _image.enabled = true;
+            }
             //if (Cursor.Item.MaxStack == 1)
             //    _text.text = string.Empty;
             //else
-            _text.text = _cursor.ItemReference.Item.Count.ToString();
-            _image.sprite = _cursor.ItemReference.Item.Sprite;
-            _image.enabled = true;
         }
     }
 }

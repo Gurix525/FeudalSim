@@ -88,6 +88,7 @@ namespace Controls
 
         private void OnLeftMouseButton(InputValue value)
         {
+            // On pressed
             if (value.isPressed)
             {
                 if (ObjectUnderCursor)
@@ -97,13 +98,19 @@ namespace Controls
                         .ForEach(handler => handler.OnLeftMouseButton(ScreenPosition));
                 SetDraggedObject(ObjectUnderCursor);
             }
+            // On relased
             else
             {
                 if (ObjectUnderCursor)
+                {
                     ObjectUnderCursor
                         .GetComponents<IMouseHandler>()
                         .ToList()
                         .ForEach(handler => handler.OnLeftMouseButtonRelase());
+                    if (ItemReference != null && !ObjectUnderCursor
+                            .TryGetComponent(out RectTransform rectTransform))
+                        PutItem();
+                }
                 RelaseItemReference();
                 SetDraggedObject(null);
             }
@@ -111,6 +118,7 @@ namespace Controls
 
         private void OnRightMouseButton(InputValue value)
         {
+            // On pressed
             if (value.isPressed)
             {
                 if (ObjectUnderCursor)
@@ -119,6 +127,7 @@ namespace Controls
                         .ToList()
                         .ForEach(handler => handler.OnRightMouseButton());
             }
+            // On relased
             else
             {
                 if (ObjectUnderCursor)
@@ -237,6 +246,12 @@ namespace Controls
             //        return;
             //    }
             //_draggedObject = null;
+        }
+
+        private void PutItem()
+        {
+            ItemReference.Container
+                .DropAt(ItemReference.Index, WorldRaycastHit.point, scatter: false);
         }
 
         private void RelaseItemReference()
