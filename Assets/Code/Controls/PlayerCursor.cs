@@ -250,8 +250,12 @@ namespace Controls
 
         private void PutItem()
         {
-            ItemReference.Container
-                .DropAt(ItemReference.Index, WorldRaycastHit.point, scatter: false);
+            if (ItemReference.Item.Mesh != null)
+                ItemReference.Container.DropAt(
+                    ItemReference.Index,
+                    WorldRaycastHit.point,
+                    _meshHighlight.transform.rotation,
+                    scatter: false);
         }
 
         private void RelaseItemReference()

@@ -76,6 +76,11 @@ namespace Items
 
         public void Drop(Vector3 dropPosition, bool scatter = true)
         {
+            Drop(dropPosition, Quaternion.identity, scatter);
+        }
+
+        public void Drop(Vector3 dropPosition, Quaternion rotation, bool scatter = true)
+        {
             GameObject prefab = Resources.Load<GameObject>("Prefabs/Items/" + Name);
             if (prefab == null)
                 return;
@@ -88,7 +93,7 @@ namespace Items
             itemHandler.Container.InsertAt(0, this);
             itemHandler.transform.SetPositionAndRotation(
                 dropPosition + (scatter ? GetRandomScatterOffset() : Vector3.zero),
-                Quaternion.identity);
+                rotation);
         }
 
         public Item Clone(int count = 0)

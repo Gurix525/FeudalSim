@@ -86,10 +86,15 @@ namespace Items
 
         public void DropAt(int index, Vector3 dropPosition, int count = 0, bool scatter = true)
         {
+            DropAt(index, dropPosition, Quaternion.identity, count, scatter);
+        }
+
+        public void DropAt(int index, Vector3 dropPosition, Quaternion rotation, int count = 0, bool scatter = true)
+        {
             Item dropItem = ExtractAt(index, count);
             if (dropItem == null)
                 return;
-            dropItem.Drop(dropPosition);
+            dropItem.Drop(dropPosition, rotation);
         }
 
         public void OnLeftMouseButton(int slotIndex)
