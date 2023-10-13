@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Controls;
+using UI;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -133,9 +134,19 @@ namespace Items
             Container other = PlayerCursor.Current.ItemReference.Container;
             int otherIndex = PlayerCursor.Current.ItemReference.Index;
             if (_items[slotIndex] == null)
-                PushItemDestructive(other, otherIndex, this, slotIndex, PlayerCursor.Current.ItemReference.Item.Count / 2);
+            {
+                if (other[otherIndex].Count == 1)
+                    PushItemDestructive(other, otherIndex, this, slotIndex);
+                else
+                    QuantityMenu.Current.Show(other, otherIndex, this, slotIndex, PlayerCursor.Current.ScreenPosition);
+            }
             else if (_items[slotIndex].Model == other[otherIndex].Model)
-                MergeItems(other, otherIndex, this, slotIndex, other[otherIndex].Count / 2);
+            {
+                if (other[otherIndex].Count == 1)
+                    MergeItems(other, otherIndex, this, slotIndex);
+                else
+                    QuantityMenu.Current.Show(other, otherIndex, this, slotIndex, PlayerCursor.Current.ScreenPosition);
+            }
             else
                 SwapItems(this, slotIndex, other, otherIndex);
             PlayerCursor.Current.RelaseItemReference();

@@ -1,4 +1,5 @@
 using System;
+using Items;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -18,6 +19,11 @@ namespace UI
 
         private float _quantity;
         private int _maxQuantity = 2;
+
+        private Container _sourceContainer;
+        private Container _destinationContainer;
+        private int _sourceIndex;
+        private int _destinationIndex;
 
         public float Quantity
         {
@@ -47,15 +53,24 @@ namespace UI
             }
         }
 
-        public void Show(Vector2 screenPosition, int maxQuantity)
+        public static QuantityMenu Current { get; private set; }
+
+        public void Show(Container source, int sourceIndex, Container destination, int destinationIndex, Vector2 screenPosition)
         {
             transform.position = screenPosition;
             gameObject.SetActive(true);
-            _maxQuantity = maxQuantity;
+            _maxQuantity = source[sourceIndex].Count;
+            _slider.maxValue = _maxQuantity;
+            _slider.value = _maxQuantity / 2;
+            _sourceContainer = source;
+            _destinationContainer = destination;
+            _sourceIndex = sourceIndex;
+            _destinationIndex = destinationIndex;
         }
 
         private void Awake()
         {
+            Current = this;
             _inputField.characterValidation = TMP_InputField.CharacterValidation.Digit;
             _inputField.characterLimit = 4;
             _slider.maxValue = _maxQuantity;
@@ -65,6 +80,7 @@ namespace UI
             _cancelButton.Clicked += _cancelButton_Clicked;
             QuantityChanged += QuantityMenu_QuantityChanged;
             MaxQuantityChanged += QuantityMenu_MaxQuantityChanged;
+            gameObject.SetActive(false);
         }
 
         private void _inputField_onValueChanged(string value)
@@ -92,12 +108,16 @@ namespace UI
 
         private void _confirmButton_Clicked(object sender, EventArgs e)
         {
-            throw new NotImplementedException();
+            if (_destinationContainer[_destinationIndex] == null)
+                Container.PushItemDestructive(_sourceContainer, _sourceIndex, _destinationContainer, _destinationIndex, (int)Quantity);
+            else
+                Container.MergeItems(_sourceContainer, _sourceIndex, _destinationContainer, _destinationIndex, (int)Quantity);
+            gameObject.SetActive(false);
         }
 
         private void _cancelButton_Clicked(object sender, EventArgs e)
         {
-            throw new NotImplementedException();
+            gameObject.SetActive(false);
         }
 
         private void QuantityMenu_QuantityChanged(object sender, FloatChangedEventArgs e)
