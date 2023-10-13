@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Items;
+using UI;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
@@ -290,12 +291,17 @@ namespace Controls
         private void PutItem()
         {
             if (ItemReference.Item.Mesh != null)
-                ItemReference.Container.DropAt(
-                    ItemReference.Index,
-                    WorldRaycastHit.point,
-                    _meshHighlight.transform.rotation,
-                    count: _isShiftPressed ? ItemReference.Item.Count / 2 : 0,
-                    scatter: false);
+            {
+                if (_isShiftPressed && ItemReference.Item.Count > 1)
+                    QuantityMenu.Current.Show(ItemReference, ScreenPosition, WorldRaycastHit.point, _meshHighlight.transform.rotation);
+                else
+                    ItemReference.Container.DropAt(
+                        ItemReference.Index,
+                        WorldRaycastHit.point,
+                        _meshHighlight.transform.rotation,
+                        count: 0,
+                        scatter: false);
+            }
         }
 
         #endregion Private

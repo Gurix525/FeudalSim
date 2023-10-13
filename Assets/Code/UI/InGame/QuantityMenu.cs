@@ -19,6 +19,9 @@ namespace UI
 
         private float _quantity;
         private int _maxQuantity = 2;
+        private bool _hasToDrop;
+        private Vector3 _dropPosition;
+        private Quaternion _dropRotation;
 
         private Container _sourceContainer;
         private Container _destinationContainer;
@@ -57,15 +60,16 @@ namespace UI
 
         public void Show(Container source, int sourceIndex, Container destination, int destinationIndex, Vector2 screenPosition)
         {
-            transform.position = screenPosition;
-            gameObject.SetActive(true);
-            _maxQuantity = source[sourceIndex].Count;
-            _slider.maxValue = _maxQuantity;
-            _slider.value = _maxQuantity / 2;
-            _sourceContainer = source;
-            _destinationContainer = destination;
-            _sourceIndex = sourceIndex;
-            _destinationIndex = destinationIndex;
+            _hasToDrop = false;
+            Initialize(source, sourceIndex, destination, destinationIndex, screenPosition);
+        }
+
+        public void Show(ItemReference itemReference, Vector2 screenPosition, Vector3 dropPosition, Quaternion dropRotation)
+        {
+            _hasToDrop = true;
+            _dropPosition = dropPosition;
+            _dropRotation = dropRotation;
+            Initialize(itemReference.Container, itemReference.Index, null, 0, screenPosition);
         }
 
         private void Awake()
@@ -81,6 +85,19 @@ namespace UI
             QuantityChanged += QuantityMenu_QuantityChanged;
             MaxQuantityChanged += QuantityMenu_MaxQuantityChanged;
             gameObject.SetActive(false);
+        }
+
+        private void Initialize(Container source, int sourceIndex, Container destination, int destinationIndex, Vector2 screenPosition)
+        {
+            transform.position = screenPosition;
+            gameObject.SetActive(true);
+            _maxQuantity = source[sourceIndex].Count;
+            _slider.maxValue = _maxQuantity;
+            _slider.value = _maxQuantity / 2;
+            _sourceContainer = source;
+            _destinationContainer = destination;
+            _sourceIndex = sourceIndex;
+            _destinationIndex = destinationIndex;
         }
 
         private void _inputField_onValueChanged(string value)
@@ -108,10 +125,22 @@ namespace UI
 
         private void _confirmButton_Clicked(object sender, EventArgs e)
         {
-            if (_destinationContainer[_destinationIndex] == null)
-                Container.PushItemDestructive(_sourceContainer, _sourceIndex, _destinationContainer, _destinationIndex, (int)Quantity);
+            if (_hasToDrop)
+            {
+                _sourceContainer.DropAt(
+                    _sourceIndex,
+                    _dropPosition,
+                    _dropRotation,
+                    count: (int)Quantity,
+                    scatter: false);
+            }
             else
-                Container.MergeItems(_sourceContainer, _sourceIndex, _destinationContainer, _destinationIndex, (int)Quantity);
+            {
+                if (_destinationContainer[_destinationIndex] == null)
+                    Container.PushItemDestructive(_sourceContainer, _sourceIndex, _destinationContainer, _destinationIndex, (int)Quantity);
+                else
+                    Container.MergeItems(_sourceContainer, _sourceIndex, _destinationContainer, _destinationIndex, (int)Quantity);
+            }
             gameObject.SetActive(false);
         }
 
