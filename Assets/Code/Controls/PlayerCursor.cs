@@ -294,6 +294,7 @@ namespace Controls
                     ItemReference.Index,
                     WorldRaycastHit.point,
                     _meshHighlight.transform.rotation,
+                    count: _isShiftPressed ? ItemReference.Item.Count / 2 : 0,
                     scatter: false);
         }
 
