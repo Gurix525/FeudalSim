@@ -85,15 +85,17 @@ namespace Items
             if (prefab == null)
                 return;
             ItemHandler itemHandler = GameObject
-                .Instantiate(prefab, TerrainRenderer.GetChunkRenderer(
-                        Terrain.GetChunkCoordinates(
-                            dropPosition)).ItemHandlers)
+                .Instantiate(
+                prefab, 
+                TerrainRenderer.GetChunkRenderer(
+                    Terrain.GetChunkCoordinates(
+                        new Vector2(dropPosition.x, dropPosition.z))).ItemHandlers)
                 .GetComponent<ItemHandler>();
-            ScatterItem(itemHandler);
             itemHandler.Container.InsertAt(0, this);
             itemHandler.transform.SetPositionAndRotation(
                 dropPosition + (hasToScatter ? GetRandomScatterOffset() : Vector3.zero),
                 rotation);
+            ScatterItem(itemHandler);
         }
 
         public Item Clone(int count = 0)
@@ -124,9 +126,10 @@ namespace Items
 
         private void ScatterItem(ItemHandler itemHandler)
         {
+            Vector2 position = new(itemHandler.transform.position.x, itemHandler.transform.position.z);
             Transform parent = TerrainRenderer.GetChunkRenderer(
                 Terrain.GetChunkCoordinates(
-                    itemHandler.transform.position)).ItemHandlers;
+                    position)).ItemHandlers;
             foreach (Transform child in parent)
                 _ = child.GetComponent<ItemHandler>().ScatterItem();
         }

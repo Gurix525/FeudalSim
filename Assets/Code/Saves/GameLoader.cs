@@ -7,14 +7,11 @@ using Buildings;
 using Controls;
 using Items;
 using Misc;
-using Nature;
 using UI;
-using Unity.VisualScripting.Antlr3.Runtime.Tree;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using World;
 using Terrain = World.Terrain;
-using Tree = Nature.Tree;
 
 namespace Saves
 {
@@ -63,7 +60,7 @@ namespace Saves
                 var playerinfo = LoadPlayer();
                 ChunkInfo[] chunkInfos = LoadChunks();
                 TerrainRenderer.GenerateWorld(Terrain.GetChunkCoordinates(
-                    playerinfo.Position));
+                    new Vector2(playerinfo.Position.x, playerinfo.Position.z)));
                 LoadChunkRenderers(chunkInfos);
                 GrassInstancer.MarkToReload();
             }

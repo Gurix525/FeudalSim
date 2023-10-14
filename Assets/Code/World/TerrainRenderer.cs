@@ -1,10 +1,8 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using Misc;
 using Unity.AI.Navigation;
 using UnityEngine;
-using UnityEngine.AI;
 using UnityEngine.Events;
 
 namespace World
@@ -82,7 +80,8 @@ namespace World
         public static ChunkRenderer GetChunkRenderer(Vector2Int chunkPosition)
         {
             _instance._chunks.TryGetValue(
-                Terrain.GetChunkCoordinates(chunkPosition), out ChunkRenderer renderer);
+                Terrain.GetChunkCoordinates(chunkPosition),
+                out ChunkRenderer renderer);
             return renderer;
         }
 
