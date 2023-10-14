@@ -19,6 +19,8 @@ namespace UI
             new TaskManager.Task(Exit());
         }
 
+        private void OnLeftMouseButton(InputValue value) { }
+
         private IEnumerator Exit()
         {
             LoadingScreen.Enable();
