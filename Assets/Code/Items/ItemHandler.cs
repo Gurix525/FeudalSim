@@ -14,6 +14,7 @@ namespace Items
         #region Fields
 
         private bool _isClicked = false;
+        private bool _isScattering = false;
 
         #endregion Fields
 
@@ -29,6 +30,9 @@ namespace Items
 
         public async Task ScatterItem()
         {
+            if (_isScattering)
+                return;
+            _isScattering = true;
             var meshCollider = GetComponent<MeshCollider>();
             meshCollider.convex = true;
             var rigidbody = gameObject.AddComponent<Rigidbody>();
@@ -40,6 +44,7 @@ namespace Items
             Destroy(rigidbody);
             meshCollider.convex = false;
             TerrainRenderer.MarkNavMeshToReload();
+            _isScattering = false;
         }
 
         public void OnShiftLeftMouseButton(Vector2 position)

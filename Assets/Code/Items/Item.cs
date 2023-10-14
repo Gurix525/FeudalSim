@@ -124,7 +124,11 @@ namespace Items
 
         private void ScatterItem(ItemHandler itemHandler)
         {
-            _ = itemHandler.ScatterItem();
+            Transform parent = TerrainRenderer.GetChunkRenderer(
+                Terrain.GetChunkCoordinates(
+                    itemHandler.transform.position)).ItemHandlers;
+            foreach (Transform child in parent)
+                _ = child.GetComponent<ItemHandler>().ScatterItem();
         }
 
         private Vector3 GetRandomScatterOffset()
