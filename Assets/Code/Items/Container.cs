@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Controls;
+using UI;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -84,12 +85,17 @@ namespace Items
             }
         }
 
-        public void DropAt(int index, Vector3 dropPosition, int count = 0)
+        public void DropAt(int index, Vector3 dropPosition, int count = 0, bool scatter = true)
+        {
+            DropAt(index, dropPosition, Quaternion.identity, count, scatter);
+        }
+
+        public void DropAt(int index, Vector3 dropPosition, Quaternion rotation, int count = 0, bool scatter = true)
         {
             Item dropItem = ExtractAt(index, count);
             if (dropItem == null)
                 return;
-            dropItem.Drop(dropPosition);
+            dropItem.Drop(dropPosition, rotation, scatter);
         }
 
         public void OnLeftMouseButton(int slotIndex)
@@ -100,20 +106,50 @@ namespace Items
             CollectionUpdated.Invoke();
         }
 
+        public void OnShiftLeftMouseButton(int slotIndex)
+        {
+            OnLeftMouseButton(slotIndex);
+        }
+
         public void OnLeftMouseButtonRelase(int slotIndex)
         {
-            if (PlayerCursor.Current.ItemReference != null)
+            if (PlayerCursor.Current.ItemReference == null)
+                return;
+            Container other = PlayerCursor.Current.ItemReference.Container;
+            int otherIndex = PlayerCursor.Current.ItemReference.Index;
+            if (_items[slotIndex] == null)
+                SwapItems(this, slotIndex, other, otherIndex);
+            else if (_items[slotIndex].Model == other[otherIndex].Model)
+                MergeItems(other, otherIndex, this, slotIndex);
+            else
+                SwapItems(this, slotIndex, other, otherIndex);
+            PlayerCursor.Current.RelaseItemReference();
+            CollectionUpdated.Invoke();
+        }
+
+        public void OnShiftLeftMouseButtonRelase(int slotIndex)
+        {
+            if (PlayerCursor.Current.ItemReference == null)
+                return;
+            Container other = PlayerCursor.Current.ItemReference.Container;
+            int otherIndex = PlayerCursor.Current.ItemReference.Index;
+            if (_items[slotIndex] == null)
             {
-                Container other = PlayerCursor.Current.ItemReference.Container;
-                int otherIndex = PlayerCursor.Current.ItemReference.Index;
-                if (_items[slotIndex] == null)
-                    SwapItems(this, slotIndex, other, otherIndex);
-                else if (_items[slotIndex].Model == other[otherIndex].Model)
+                if (other[otherIndex].Count == 1)
+                    PushItemDestructive(other, otherIndex, this, slotIndex);
+                else
+                    QuantityMenu.Current.Show(other, otherIndex, this, slotIndex, PlayerCursor.Current.ScreenPosition);
+            }
+            else if (_items[slotIndex].Model == other[otherIndex].Model)
+            {
+                if (other[otherIndex].Count == 1)
                     MergeItems(other, otherIndex, this, slotIndex);
                 else
-                    SwapItems(this, slotIndex, other, otherIndex);
-                PlayerCursor.Current.ItemReference = null;
+                    QuantityMenu.Current.Show(other, otherIndex, this, slotIndex, PlayerCursor.Current.ScreenPosition);
             }
+            else
+                SwapItems(this, slotIndex, other, otherIndex);
+            PlayerCursor.Current.RelaseItemReference();
             CollectionUpdated.Invoke();
         }
 
@@ -215,6 +251,14 @@ namespace Items
             return GetEnumerator();
         }
 
+        public static void PushItemDestructive(Container source, int sourceIndex, Container destination, int destinationIndex, int count = 0)
+        {
+            Item item = source.ExtractAt(sourceIndex, count);
+            destination[destinationIndex] = item;
+            source.CollectionUpdated.Invoke();
+            destination.CollectionUpdated.Invoke();
+        }
+
         public static void SwapItems(Container left, int leftIndex, Container right, int rightIndex)
         {
             if (left[leftIndex] == right[rightIndex])
@@ -226,12 +270,17 @@ namespace Items
             right.CollectionUpdated.Invoke();
         }
 
-        public static void MergeItems(Container source, int sourceIndex, Container destination, int destinationIndex)
+        public static void MergeItems(Container source, int sourceIndex, Container destination, int destinationIndex, int count = 0)
         {
+            if (count > source[sourceIndex].Count)
+                throw new ArgumentOutOfRangeException("Count must not be greater than source count.");
             if (source[sourceIndex] == destination[destinationIndex])
                 return;
-            destination[destinationIndex].Count += source[sourceIndex].Count;
-            source[sourceIndex] = null;
+            count = count == 0 ? source[sourceIndex].Count : count;
+            destination[destinationIndex].Count += count;
+            source[sourceIndex].Count -= count;
+            if (source[sourceIndex].Count == 0)
+                source[sourceIndex] = null;
             source.CollectionUpdated.Invoke();
             destination.CollectionUpdated.Invoke();
         }

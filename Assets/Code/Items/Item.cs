@@ -74,7 +74,12 @@ namespace Items
 
         #region Public
 
-        public void Drop(Vector3 dropPosition)
+        public void Drop(Vector3 dropPosition, bool hasToScatter = true)
+        {
+            Drop(dropPosition, Quaternion.identity, hasToScatter);
+        }
+
+        public void Drop(Vector3 dropPosition, Quaternion rotation, bool hasToScatter = true)
         {
             GameObject prefab = Resources.Load<GameObject>("Prefabs/Items/" + Name);
             if (prefab == null)
@@ -87,8 +92,8 @@ namespace Items
             ScatterItem(itemHandler);
             itemHandler.Container.InsertAt(0, this);
             itemHandler.transform.SetPositionAndRotation(
-                dropPosition + GetRandomScatterOffset(),
-                Quaternion.identity);
+                dropPosition + (hasToScatter ? GetRandomScatterOffset() : Vector3.zero),
+                rotation);
         }
 
         public Item Clone(int count = 0)
@@ -119,7 +124,11 @@ namespace Items
 
         private void ScatterItem(ItemHandler itemHandler)
         {
-            _ = itemHandler.ScatterItem();
+            Transform parent = TerrainRenderer.GetChunkRenderer(
+                Terrain.GetChunkCoordinates(
+                    itemHandler.transform.position)).ItemHandlers;
+            foreach (Transform child in parent)
+                _ = child.GetComponent<ItemHandler>().ScatterItem();
         }
 
         private Vector3 GetRandomScatterOffset()

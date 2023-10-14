@@ -114,6 +114,15 @@
                     "initialStateCheck": false
                 },
                 {
+                    "name": "Shift",
+                    "type": "Button",
+                    "id": "9b34c997-b9c7-49b3-a1d4-9fef18b438ab",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Press(behavior=2)",
+                    "initialStateCheck": false
+                },
+                {
                     "name": "Tab",
                     "type": "Button",
                     "id": "1f952503-5975-4682-bcb6-93cc2336900f",
@@ -568,6 +577,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "SkillsList",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "8f6a78fa-1ff5-41b0-81e8-ea58a8aaf730",
+                    "path": "<Keyboard>/shift",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Shift",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

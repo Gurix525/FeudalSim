@@ -2,36 +2,59 @@
 using System.Collections.Generic;
 using System.Linq;
 using Items;
+using UI;
 using UnityEngine;
-using UnityEngine.Events;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 namespace Controls
 {
-    public class PlayerCursor : MonoBehaviour
+    public partial class PlayerCursor : MonoBehaviour
     {
         #region Events
 
         public event EventHandler<ObjectChangedEventArgs> ObjectUnderCursorChanged;
+
+        public event EventHandler<ItemReferenceChangedEventArgs> ItemReferenceChanged;
+
+        public event EventHandler<RaycastHitChangedEventArgs> WorldPositionChanged;
 
         #endregion Events
 
         #region Fields
 
         [SerializeField] private GameObject _canvasesParent;
+        [SerializeField] private MeshHighlight _meshHighlight;
 
         private ItemReference _itemReference;
-        private LayerMask _layerMask;
         private GameObject _objectUnderCursor;
         private GameObject _draggedObject;
+        private LayerMask _layerMask;
+        private RaycastHit _worldRaycastHit;
+        private bool _isShiftPressed;
 
         #endregion Fields
 
         #region Properties
 
         public static PlayerCursor Current { get; private set; }
+
+        public Vector2 ScreenPosition { get; private set; }
+
+        public RaycastHit WorldRaycastHit
+        {
+            get => _worldRaycastHit;
+            private set
+            {
+                if (_worldRaycastHit.point != value.point)
+                {
+                    RaycastHitChangedEventArgs args = new(_worldRaycastHit, value);
+                    _worldRaycastHit = value;
+                    WorldPositionChanged?.Invoke(this, args);
+                }
+            }
+        }
 
         public GameObject ObjectUnderCursor
         {
@@ -47,43 +70,82 @@ namespace Controls
             }
         }
 
-        public Vector3 WorldPosition { get; private set; }
-        public Vector2 ScreenPosition { get; private set; }
-
         public ItemReference ItemReference
         {
             get => _itemReference;
             set
             {
-                _itemReference = value;
-                ItemReferenceChanged.Invoke(_itemReference);
+                if (_itemReference != value)
+                {
+                    ItemReferenceChangedEventArgs args = new(_itemReference, value);
+                    _itemReference = value;
+                    ItemReferenceChanged?.Invoke(this, args);
+                }
             }
         }
 
-        public UnityEvent<ItemReference> ItemReferenceChanged { get; } = new();
-
         #endregion Properties
+
+        #region Public
+
+        public void RelaseItemReference()
+        {
+            ItemReference = null;
+        }
+
+        #endregion Public
 
         #region Input
 
         private void OnLeftMouseButton(InputValue value)
         {
+            // On pressed
             if (value.isPressed)
             {
                 if (ObjectUnderCursor)
                     ObjectUnderCursor
                         .GetComponents<IMouseHandler>()
                         .ToList()
-                        .ForEach(handler => handler.OnLeftMouseButton(ScreenPosition));
+                        .ForEach(handler =>
+                        {
+                            switch (_isShiftPressed)
+                            {
+                                case true:
+                                    handler.OnShiftLeftMouseButton(ScreenPosition);
+                                    break;
+
+                                default:
+                                    handler.OnLeftMouseButton(ScreenPosition);
+                                    break;
+                            }
+                        });
                 SetDraggedObject(ObjectUnderCursor);
             }
+            // On relased
             else
             {
                 if (ObjectUnderCursor)
+                {
                     ObjectUnderCursor
                         .GetComponents<IMouseHandler>()
                         .ToList()
-                        .ForEach(handler => handler.OnLeftMouseButtonRelase());
+                        .ForEach(handler =>
+                        {
+                            switch (_isShiftPressed)
+                            {
+                                case true:
+                                    handler.OnShiftLeftMouseButtonRelase();
+                                    break;
+
+                                default:
+                                    handler.OnLeftMouseButtonRelase();
+                                    break;
+                            }
+                        });
+                    if (ItemReference != null && !ObjectUnderCursor
+                            .TryGetComponent(out RectTransform rectTransform))
+                        PutItem();
+                }
                 RelaseItemReference();
                 SetDraggedObject(null);
             }
@@ -91,6 +153,7 @@ namespace Controls
 
         private void OnRightMouseButton(InputValue value)
         {
+            // On pressed
             if (value.isPressed)
             {
                 if (ObjectUnderCursor)
@@ -99,6 +162,7 @@ namespace Controls
                         .ToList()
                         .ForEach(handler => handler.OnRightMouseButton());
             }
+            // On relased
             else
             {
                 if (ObjectUnderCursor)
@@ -127,6 +191,11 @@ namespace Controls
                     .ForEach(handler => handler.OnMouseDelta(delta));
         }
 
+        private void OnShift(InputValue value)
+        {
+            _isShiftPressed = value.isPressed;
+        }
+
         #endregion Input
 
         #region Unity
@@ -152,7 +221,9 @@ namespace Controls
         {
             Ray ray = Camera.main.ScreenPointToRay(ScreenPosition);
             if (Physics.Raycast(ray, out RaycastHit hit, float.PositiveInfinity, _layerMask))
-                WorldPosition = hit.point;
+            {
+                WorldRaycastHit = hit;
+            }
         }
 
         private void UpdateObjectUnderCursor()
@@ -217,23 +288,22 @@ namespace Controls
             //_draggedObject = null;
         }
 
-        private void RelaseItemReference()
+        private void PutItem()
         {
-            ItemReference = null;
+            if (ItemReference.Item.Mesh != null)
+            {
+                if (_isShiftPressed && ItemReference.Item.Count > 1)
+                    QuantityMenu.Current.Show(ItemReference, ScreenPosition, WorldRaycastHit.point, _meshHighlight.transform.rotation);
+                else
+                    ItemReference.Container.DropAt(
+                        ItemReference.Index,
+                        WorldRaycastHit.point,
+                        _meshHighlight.transform.rotation,
+                        count: 0,
+                        scatter: false);
+            }
         }
 
         #endregion Private
-
-        public class ObjectChangedEventArgs : EventArgs
-        {
-            public GameObject PreviousObject { get; }
-            public GameObject NewObject { get; }
-
-            public ObjectChangedEventArgs(GameObject previousObject, GameObject newObject)
-            {
-                PreviousObject = previousObject;
-                NewObject = newObject;
-            }
-        }
     }
 }

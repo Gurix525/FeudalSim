@@ -28,6 +28,26 @@ namespace UI
             OnCollectionUpdated();
         }
 
+        public void OnLeftMouseButton(Vector2 position)
+        {
+            _container.OnLeftMouseButton(_slotIndex);
+        }
+
+        public void OnShiftLeftMouseButton(Vector2 position)
+        {
+            _container.OnShiftLeftMouseButton(_slotIndex);
+        }
+
+        public void OnLeftMouseButtonRelase()
+        {
+            _container.OnLeftMouseButtonRelase(_slotIndex);
+        }
+
+        public void OnShiftLeftMouseButtonRelase()
+        {
+            _container.OnShiftLeftMouseButtonRelase(_slotIndex);
+        }
+
         public void Clear()
         {
             _container.CollectionUpdated.RemoveListener(OnCollectionUpdated);
@@ -54,16 +74,6 @@ namespace UI
         #endregion Unity
 
         #region Private
-
-        public void OnLeftMouseButton(Vector2 position)
-        {
-            _container.OnLeftMouseButton(_slotIndex);
-        }
-
-        public void OnLeftMouseButtonRelase()
-        {
-            _container.OnLeftMouseButtonRelase(_slotIndex);
-        }
 
         private void OnCollectionUpdated()
         {

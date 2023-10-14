@@ -1,12 +1,11 @@
 using System;
 using Controls;
 using UnityEngine;
-using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 namespace UI
 {
-    public abstract class Button : MonoBehaviour, IMouseHandler
+    public class Button : MonoBehaviour, IMouseHandler
     {
         public event EventHandler Clicked;
 
@@ -14,7 +13,6 @@ namespace UI
         private Color _originalColor;
 
         private Image Image => _image ?? GetComponent<Image>();
-
 
         private void Awake()
         {
@@ -42,6 +40,7 @@ namespace UI
             OnHoverEnd();
         }
 
-        protected abstract void Execute();
+        protected virtual void Execute()
+        { }
     }
 }
