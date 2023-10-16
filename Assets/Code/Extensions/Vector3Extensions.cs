@@ -4,6 +4,11 @@ namespace Extensions
 {
     public static class Vector3Extensions
     {
+        public static float GetVolume(this Vector3 v)
+        {
+            return v.x * v.y * v.z;
+        }
+
         public static Vector3 Average(this Vector3 a, Vector3 b)
         {
             return new((a.x + b.x) / 2F, (a.y + b.y) / 2F, (a.z + b.z) / 2F);

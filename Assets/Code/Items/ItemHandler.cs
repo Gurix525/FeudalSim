@@ -1,5 +1,6 @@
 using AI;
 using Controls;
+using Extensions;
 using Misc;
 using UnityEngine;
 using World;
@@ -36,6 +37,8 @@ namespace Items
             var meshCollider = GetComponent<MeshCollider>();
             meshCollider.convex = true;
             var rigidbody = gameObject.AddComponent<Rigidbody>();
+            rigidbody.mass = meshCollider.bounds.size.GetVolume() * 5F;
+            rigidbody.mass = rigidbody.mass.Clamp(1F, float.PositiveInfinity);
             while (!rigidbody.IsSleeping())
             {
                 await Task.Yield();
