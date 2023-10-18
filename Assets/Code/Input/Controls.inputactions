@@ -177,6 +177,15 @@
                     "initialStateCheck": false
                 },
                 {
+                    "name": "Building",
+                    "type": "Button",
+                    "id": "0def65b1-128d-42f1-bccf-40d10985aeff",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
                     "name": "Hotbar1",
                     "type": "Button",
                     "id": "23c62c16-bd7e-43a1-9112-6c73f2217117",
@@ -588,6 +597,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "Shift",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "c8989a17-b7b2-481a-bc44-191c99976fe6",
+                    "path": "<Keyboard>/b",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Building",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

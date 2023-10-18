@@ -20,6 +20,8 @@ namespace Controls
 
         public event EventHandler<RaycastHitChangedEventArgs> WorldPositionChanged;
 
+        public event EventHandler<PassedRotationEventArgs> PassedRotation;
+
         #endregion Events
 
         #region Fields
@@ -33,6 +35,7 @@ namespace Controls
         private LayerMask _layerMask;
         private RaycastHit _worldRaycastHit;
         private bool _isShiftPressed;
+        private bool _isRightMouseButtonPressed;
 
         #endregion Fields
 
@@ -156,6 +159,7 @@ namespace Controls
             // On pressed
             if (value.isPressed)
             {
+                _isRightMouseButtonPressed = true;
                 if (ObjectUnderCursor)
                     ObjectUnderCursor
                         .GetComponents<IMouseHandler>()
@@ -165,6 +169,7 @@ namespace Controls
             // On relased
             else
             {
+                _isRightMouseButtonPressed = false;
                 if (ObjectUnderCursor)
                     ObjectUnderCursor
                         .GetComponents<IMouseHandler>()
@@ -189,6 +194,10 @@ namespace Controls
                 _draggedObject
                     .GetComponents<IMouseHandler>().ToList()
                     .ForEach(handler => handler.OnMouseDelta(delta));
+            if (_isRightMouseButtonPressed)
+            {
+                PassRotation(delta);
+            }
         }
 
         private void OnShift(InputValue value)
@@ -286,6 +295,15 @@ namespace Controls
             //        return;
             //    }
             //_draggedObject = null;
+        }
+
+        private void PassRotation(Vector2 delta)
+        {
+            Vector3 right = Camera.main.transform.TransformDirection(delta);
+            Vector3 forward = Camera.main.transform.forward;
+            Vector3 axis = Vector3.Cross(right, forward);
+            PassedRotationEventArgs eventArgs = new(delta.x, delta.y, axis);
+            PassedRotation.Invoke(this, eventArgs);
         }
 
         private void PutItem()
