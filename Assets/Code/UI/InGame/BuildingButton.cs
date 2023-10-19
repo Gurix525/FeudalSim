@@ -1,3 +1,4 @@
+using Buildings;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -13,6 +14,7 @@ namespace UI
         public void Initialize(GameObject buildingPrefab)
         {
             BuildingPrefab = buildingPrefab;
+            _buildingImage.sprite = buildingPrefab.GetComponent<Building>().RenderSprite;
         }
     }
 }

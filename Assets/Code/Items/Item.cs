@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Extensions;
 using UnityEngine;
 using World;
@@ -15,19 +16,20 @@ namespace Items
         private ItemModel _model;
         private Dictionary<string, string> _stats;
 
-        private static Dictionary<string, ItemModel> _itemModels = new()
-        {
-            { "Stone", new("Stone")},
-            { "Wood", new("Wood")},
-            { "Plank", new("Plank") },
-            { "Sword", new("Sword") },
-            { "Bow", new("Bow") },
-            { "Axe", new("Axe") },
-            { "Pickaxe", new("Pickaxe") },
-            { "Shovel", new("Shovel") },
-            { "Workbench", new("Workbench")},
-            { "Helmet", new ("Helmet", stats: new(){ { "ArmorType", "Head" }, { "InventorySlots", "3"} }) }
-        };
+        private static Dictionary<string, ItemModel> _itemModels = new();
+        //private static Dictionary<string, ItemModel> _itemModels = new()
+        //{
+        //    { "Stone", new("Stone")},
+        //    { "Wood", new("Wood")},
+        //    { "Plank", new("Plank") },
+        //    { "Sword", new("Sword") },
+        //    { "Bow", new("Bow") },
+        //    { "Axe", new("Axe") },
+        //    { "Pickaxe", new("Pickaxe") },
+        //    { "Shovel", new("Shovel") },
+        //    { "Workbench", new("Workbench")},
+        //    { "Helmet", new ("Helmet", stats: new(){ { "ArmorType", "Head" }, { "InventorySlots", "3"} }) }
+        //};
 
         #endregion Fields
 
@@ -141,6 +143,13 @@ namespace Items
             float y = ((float)random.NextDouble()).Remap(0F, 1F, 0.1F, 0.2F);
             float z = ((float)random.NextDouble()).Remap(0F, 1F, -0.3F, 0.3F);
             return new Vector3(x, y, z);
+        }
+
+        public static void LoadResources()
+        {
+            _itemModels = Resources
+                .LoadAll<ItemScriptableObject>("ScriptableObjects/Items")
+                .ToDictionary(item => item.name, item => new ItemModel(item.name));
         }
 
         #endregion Private

@@ -1,4 +1,5 @@
 ﻿using System;
+using Buildings;
 using UnityEngine;
 
 namespace UI
@@ -8,6 +9,8 @@ namespace UI
         [SerializeField] private Button _structuresButton;
         [SerializeField] private Button _furtnitureButton;
         [SerializeField] private Transform _structuresList;
+
+        private GameObject _buildingButtonPrefab;
 
         #region Public
 
@@ -22,6 +25,7 @@ namespace UI
 
         private void Awake()
         {
+            _buildingButtonPrefab = Resources.Load<GameObject>("Prefabs/UI/BuildingButton");
             _structuresButton.Clicked += _structuresButton_Clicked;
             _furtnitureButton.Clicked += _furtnitureButton_Clicked;
         }
@@ -35,24 +39,37 @@ namespace UI
 
         #region Private
 
-        private void _structuresButton_Clicked(object sender, System.EventArgs e)
+        private void _structuresButton_Clicked(object sender, EventArgs e)
         {
             LoadStructures();
         }
 
-        private void _furtnitureButton_Clicked(object sender, System.EventArgs e)
+        private void _furtnitureButton_Clicked(object sender, EventArgs e)
         {
             LoadFurniture();
         }
 
         private void LoadStructures()
         {
-
+            ClearButtons();
+            foreach (var structure in Building.Structures)
+            {
+                GameObject button = Instantiate(_buildingButtonPrefab, _structuresList);
+                button.GetComponent<BuildingButton>().Initialize(structure);
+            }
         }
 
         private void LoadFurniture()
         {
 
+        }
+
+        private void ClearButtons()
+        {
+            for (int i = 0; i < _structuresList.childCount; i++)
+            {
+                Destroy(_structuresList.GetChild(i).gameObject);
+            }
         }
 
         #endregion Private
