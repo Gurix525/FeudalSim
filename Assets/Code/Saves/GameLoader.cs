@@ -139,16 +139,17 @@ namespace Saves
 
         private void LoadBuildings(ChunkInfo chunkInfo, ChunkRenderer chunkRenderer)
         {
-            foreach (var buildingInfo in chunkInfo.Buildings)
-            {
-                GameObject prefab = BuildingPrefabs[(int)buildingInfo.BuildingMode];
-                GameObject building = GameObject.Instantiate(
-                    prefab, chunkRenderer.Buildings);
-                building.transform.SetPositionAndRotation(
-                    buildingInfo.Position, buildingInfo.Rotation);
-                building.GetComponent<Building>().
-                Initialize((Item)buildingInfo.BackingItem, buildingInfo.BuildingMode);
-            }
+            // To be added
+            //foreach (var buildingInfo in chunkInfo.Buildings)
+            //{
+            //    GameObject prefab = BuildingPrefabs[(int)buildingInfo.BuildingMode];
+            //    GameObject building = GameObject.Instantiate(
+            //        prefab, chunkRenderer.Buildings);
+            //    building.transform.SetPositionAndRotation(
+            //        buildingInfo.Position, buildingInfo.Rotation);
+            //    building.GetComponent<Building>().
+            //    Initialize((Item)buildingInfo.BackingItem, buildingInfo.BuildingMode);
+            //}
         }
 
         private void LoadItemHandlers(ChunkInfo chunkInfo, ChunkRenderer chunkRenderer)
