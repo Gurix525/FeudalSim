@@ -22,12 +22,15 @@ namespace Controls
 
         public event EventHandler<PassedRotationEventArgs> PassedRotation;
 
+        public event EventHandler<bool> OverUIStateChanged;
+
         #endregion Events
 
         #region Fields
 
         [SerializeField] private GameObject _canvasesParent;
         [SerializeField] private MeshHighlight _meshHighlight;
+        [SerializeField] private GameObject _buildingCursor;
 
         private ItemReference _itemReference;
         private GameObject _objectUnderCursor;
@@ -36,6 +39,7 @@ namespace Controls
         private RaycastHit _worldRaycastHit;
         private bool _isShiftPressed;
         private bool _isRightMouseButtonPressed;
+        private bool _isOverUI;
 
         #endregion Fields
 
@@ -44,6 +48,19 @@ namespace Controls
         public static PlayerCursor Current { get; private set; }
 
         public Vector2 ScreenPosition { get; private set; }
+
+        public bool IsOverUI
+        {
+            get => _isOverUI;
+            set
+            {
+                if (value != _isOverUI)
+                {
+                    _isOverUI = value;
+                    OverUIStateChanged?.Invoke(this, value);
+                }
+            }
+        }
 
         public RaycastHit WorldRaycastHit
         {
@@ -88,6 +105,14 @@ namespace Controls
         }
 
         #endregion Properties
+
+        #region Conditions
+
+        private bool CanInteractWithWorld => !_buildingCursor.activeInHierarchy;
+
+        private bool CanInteractWithUI => true;
+
+        #endregion Conditions
 
         #region Public
 
@@ -219,7 +244,8 @@ namespace Controls
         private void Update()
         {
             UpdateWorldPosition();
-            UpdateObjectUnderCursor();
+            ObjectUnderCursor = GetObjectUnderCursor();
+            IsOverUI = CheckIfOverUI();
         }
 
         #endregion Unity
@@ -233,11 +259,6 @@ namespace Controls
             {
                 WorldRaycastHit = hit;
             }
-        }
-
-        private void UpdateObjectUnderCursor()
-        {
-            ObjectUnderCursor = GetObjectUnderCursor();
         }
 
         private GameObject GetObjectUnderCursor()
@@ -262,6 +283,8 @@ namespace Controls
             {
                 return results[0].gameObject;
             }
+            if (!CanInteractWithWorld)
+                return null;
             Ray ray = Camera.main.ScreenPointToRay(ScreenPosition);
             Physics.Raycast(ray, out RaycastHit hit, float.PositiveInfinity, _layerMask);
             if (hit.collider != null)
@@ -320,6 +343,13 @@ namespace Controls
                         count: 0,
                         scatter: false);
             }
+        }
+
+        private bool CheckIfOverUI()
+        {
+            if (ObjectUnderCursor == null)
+                return false;
+            return ObjectUnderCursor.TryGetComponent(out RectTransform _);
         }
 
         #endregion Private

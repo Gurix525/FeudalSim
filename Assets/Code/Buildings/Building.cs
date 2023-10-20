@@ -7,6 +7,8 @@ namespace Buildings
     {
         [field: SerializeField] public Recipe Recipe { get; set; }
         [field: SerializeField] public Sprite RenderSprite { get; set; }
+        [field: SerializeField] public Vector3 PivotOffset { get; set; }
+        [field: SerializeField] public bool IsMultipleMode { get; set; }
 
         public static GameObject[] Structures { get; private set; }
         public static GameObject[] Furniture { get; private set; }

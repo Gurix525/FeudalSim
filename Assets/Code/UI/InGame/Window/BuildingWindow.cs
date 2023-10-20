@@ -1,5 +1,6 @@
 ﻿using System;
 using Buildings;
+using Controls;
 using UnityEngine;
 
 namespace UI
@@ -33,6 +34,14 @@ namespace UI
         private void OnEnable()
         {
             LoadStructures();
+            if (BuildingCursor.Current != null)
+                BuildingCursor.Current.gameObject.SetActive(true);
+        }
+
+        private void OnDisable()
+        {
+            if (BuildingCursor.Current != null)
+                BuildingCursor.Current.gameObject.SetActive(false);
         }
 
         #endregion Unity
@@ -61,7 +70,6 @@ namespace UI
 
         private void LoadFurniture()
         {
-
         }
 
         private void ClearButtons()

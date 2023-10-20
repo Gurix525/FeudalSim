@@ -103,6 +103,8 @@ MonoBehaviour:
         type: 2}
       <Count>k__BackingField: 1
   <RenderSprite>k__BackingField: {fileID: 0}
+  <PivotOffset>k__BackingField: {x: 0.5, y: 0, z: 0.5}
+  <IsMultipleMode>k__BackingField: 1
 --- !u!65 &2100567339869397822
 BoxCollider:
   m_ObjectHideFlags: 0

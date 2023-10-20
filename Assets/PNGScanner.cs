@@ -18,7 +18,7 @@ public class PNGScanner : MonoBehaviour
         Bounds bounds = clone.GetComponent<MeshRenderer>().bounds;
         clone.transform.position -= bounds.center - clone.transform.position;
         float max = Mathf.Max(bounds.size.x, bounds.size.y, bounds.size.z);
-        Current._camera.orthographicSize = max * 0.75F;
+        Current._camera.orthographicSize = max * 0.6F * Mathf.Sqrt(2F);
         Current._light.SetActive(true);
         RenderPipelineManager.endCameraRendering += RenderPipelineManager_endCameraRendering;
         Current._camera.Render();
