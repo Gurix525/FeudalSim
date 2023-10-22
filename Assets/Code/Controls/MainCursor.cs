@@ -10,7 +10,7 @@ using UnityEngine.UI;
 
 namespace Controls
 {
-    public partial class PlayerCursor : MonoBehaviour
+    public partial class MainCursor : MonoBehaviour
     {
         #region Events
 
@@ -45,7 +45,7 @@ namespace Controls
 
         #region Properties
 
-        public static PlayerCursor Current { get; private set; }
+        public static MainCursor Current { get; private set; }
 
         public Vector2 ScreenPosition { get; private set; }
 

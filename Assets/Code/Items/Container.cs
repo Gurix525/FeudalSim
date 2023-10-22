@@ -102,7 +102,7 @@ namespace Items
         {
             if (_items[slotIndex] == null)
                 return;
-            PlayerCursor.Current.ItemReference = new(this, slotIndex);
+            MainCursor.Current.ItemReference = new(this, slotIndex);
             CollectionUpdated.Invoke();
         }
 
@@ -113,43 +113,43 @@ namespace Items
 
         public void OnLeftMouseButtonRelase(int slotIndex)
         {
-            if (PlayerCursor.Current.ItemReference == null)
+            if (MainCursor.Current.ItemReference == null)
                 return;
-            Container other = PlayerCursor.Current.ItemReference.Container;
-            int otherIndex = PlayerCursor.Current.ItemReference.Index;
+            Container other = MainCursor.Current.ItemReference.Container;
+            int otherIndex = MainCursor.Current.ItemReference.Index;
             if (_items[slotIndex] == null)
                 SwapItems(this, slotIndex, other, otherIndex);
             else if (_items[slotIndex].Model == other[otherIndex].Model)
                 MergeItems(other, otherIndex, this, slotIndex);
             else
                 SwapItems(this, slotIndex, other, otherIndex);
-            PlayerCursor.Current.RelaseItemReference();
+            MainCursor.Current.RelaseItemReference();
             CollectionUpdated.Invoke();
         }
 
         public void OnShiftLeftMouseButtonRelase(int slotIndex)
         {
-            if (PlayerCursor.Current.ItemReference == null)
+            if (MainCursor.Current.ItemReference == null)
                 return;
-            Container other = PlayerCursor.Current.ItemReference.Container;
-            int otherIndex = PlayerCursor.Current.ItemReference.Index;
+            Container other = MainCursor.Current.ItemReference.Container;
+            int otherIndex = MainCursor.Current.ItemReference.Index;
             if (_items[slotIndex] == null)
             {
                 if (other[otherIndex].Count == 1)
                     PushItemDestructive(other, otherIndex, this, slotIndex);
                 else
-                    QuantityMenu.Current.Show(other, otherIndex, this, slotIndex, PlayerCursor.Current.ScreenPosition);
+                    QuantityMenu.Current.Show(other, otherIndex, this, slotIndex, MainCursor.Current.ScreenPosition);
             }
             else if (_items[slotIndex].Model == other[otherIndex].Model)
             {
                 if (other[otherIndex].Count == 1)
                     MergeItems(other, otherIndex, this, slotIndex);
                 else
-                    QuantityMenu.Current.Show(other, otherIndex, this, slotIndex, PlayerCursor.Current.ScreenPosition);
+                    QuantityMenu.Current.Show(other, otherIndex, this, slotIndex, MainCursor.Current.ScreenPosition);
             }
             else
                 SwapItems(this, slotIndex, other, otherIndex);
-            PlayerCursor.Current.RelaseItemReference();
+            MainCursor.Current.RelaseItemReference();
             CollectionUpdated.Invoke();
         }
 

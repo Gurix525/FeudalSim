@@ -2,7 +2,7 @@ using AI;
 using Combat;
 using UnityEngine;
 using VFX;
-using PlayerCursor = Controls.PlayerCursor;
+using MainCursor = Controls.MainCursor;
 
 namespace PlayerControls
 {
@@ -15,7 +15,7 @@ namespace PlayerControls
     {
         #region Fields
 
-        [SerializeField] private PlayerCursor _cursor;
+        [SerializeField] private MainCursor _cursor;
 
         [SerializeField] private PlayerMovement _playerMovement;
         [SerializeField] private PlayerVFX _vfx;

@@ -1,9 +1,7 @@
 using System;
-using System.Collections;
 using Maths;
 using Misc;
 using UnityEngine;
-using UnityEngine.Events;
 
 namespace Combat
 {

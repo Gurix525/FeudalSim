@@ -24,7 +24,8 @@ namespace Items
 
         #region Public
 
-        public void OnLeftMouseButton(InputValue value) { }
+        public void OnLeftMouseButton(InputValue value)
+        { }
 
         public void OnLeftMouseButton(Vector2 position)
         {
@@ -41,7 +42,7 @@ namespace Items
                 HideContainer();
         }
 
-        #endregion
+        #endregion Input
 
         #region Unity
 

@@ -16,7 +16,7 @@ namespace Controls
 
         #region Fields
 
-        [SerializeField] private PlayerCursor _playerCursor;
+        [SerializeField] private MainCursor _mainCursor;
         [SerializeField] private GameObject _meshHighlight;
 
         private GameObject _buildingPrefab;
@@ -64,8 +64,8 @@ namespace Controls
         private void Awake()
         {
             Current = this;
-            _playerCursor.WorldPositionChanged += _playerCursor_WorldPositionChanged;
-            _playerCursor.OverUIStateChanged += _playerCursor_OverUIStateChanged;
+            _mainCursor.WorldPositionChanged += _mainCursor_WorldPositionChanged;
+            _mainCursor.OverUIStateChanged += _mainCursor_OverUIStateChanged;
             BuildingPrefabChanged += BuildingCursor_BuildingPrefabChanged;
             gameObject.SetActive(false);
         }
@@ -79,14 +79,14 @@ namespace Controls
 
         #region Private
 
-        private void _playerCursor_OverUIStateChanged(object sender, bool e)
+        private void _mainCursor_OverUIStateChanged(object sender, bool e)
         {
             _isOverUI = e;
             if (_isOverUI)
                 OnLeftMouseButtonRelase();
         }
 
-        private void _playerCursor_WorldPositionChanged(object sender, RaycastHitChangedEventArgs e)
+        private void _mainCursor_WorldPositionChanged(object sender, RaycastHitChangedEventArgs e)
         {
             _cursorWorldPosition = e.NewRaycastHit.Value.point;
             _adjustedWorldPosition = _cursorWorldPosition.Floor() + _pivotOffset;

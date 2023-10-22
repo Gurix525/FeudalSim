@@ -1,6 +1,5 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
-using static UnityEngine.InputSystem.InputAction;
 
 namespace UI
 {
@@ -24,7 +23,7 @@ namespace UI
                 OpenPauseMenu();
         }
 
-        #endregion
+        #endregion Input
 
         #region Unity
 

@@ -1,4 +1,3 @@
-using Unity.VisualScripting.Dependencies.NCalc;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -6,7 +5,7 @@ namespace Controls
 {
     public class MeshHighlight : MonoBehaviour
     {
-        [SerializeField] private PlayerCursor _cursor;
+        [SerializeField] private MainCursor _cursor;
 
         private MeshFilter _meshFilter;
         private PlayerInput _playerInput;

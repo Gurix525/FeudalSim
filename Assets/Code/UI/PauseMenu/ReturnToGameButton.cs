@@ -1,7 +1,4 @@
-﻿using System;
-using UnityEngine;
-
-namespace UI
+﻿namespace UI
 {
     public class ReturnToGameButton : Button
     {

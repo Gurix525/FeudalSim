@@ -14,6 +14,6 @@ namespace UI
             _buildingWindow.SwitchActive();
         }
 
-        #endregion
+        #endregion Input
     }
 }

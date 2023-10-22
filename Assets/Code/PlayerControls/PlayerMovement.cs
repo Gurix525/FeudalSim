@@ -11,7 +11,7 @@ namespace PlayerControls
     {
         #region Fields
 
-        [SerializeField] private PlayerCursor _cursor;
+        [SerializeField] private MainCursor _cursor;
 
         [SerializeField]
         private float _moveSpeed = 6F;

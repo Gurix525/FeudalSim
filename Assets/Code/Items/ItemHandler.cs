@@ -4,7 +4,7 @@ using Extensions;
 using Misc;
 using UnityEngine;
 using World;
-using Cursor = Controls.PlayerCursor;
+using Cursor = Controls.MainCursor;
 using Task = System.Threading.Tasks.Task;
 
 namespace Items

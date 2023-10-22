@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections;
-using System.Threading.Tasks;
- 
+﻿using System.Collections;
+
 using Saves;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -19,7 +17,8 @@ namespace UI
             new TaskManager.Task(Exit());
         }
 
-        private void OnLeftMouseButton(InputValue value) { }
+        private void OnLeftMouseButton(InputValue value)
+        { }
 
         private IEnumerator Exit()
         {

@@ -1,13 +1,8 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
 using Extensions;
- 
+
 using UnityEngine;
-using UnityEngine.UIElements;
 using World;
-using static UnityEngine.InputSystem.InputAction;
 using Random = System.Random;
 
 public class NoiseVisualisation : MonoBehaviour
@@ -31,7 +26,7 @@ public class NoiseVisualisation : MonoBehaviour
 
     private Mesh _mesh;
 
-    public void GenerateMesh(CallbackContext context)
+    public void GenerateMesh()
     {
         Vector3[] vertices = new Vector3[10201];
         for (int z = 0; z < 101; z++)
@@ -104,6 +99,6 @@ public class NoiseVisualisation : MonoBehaviour
         _mesh = new();
         _filter.sharedMesh = _mesh;
         _mesh.indexFormat = UnityEngine.Rendering.IndexFormat.UInt32;
-        GenerateMesh(new());
+        GenerateMesh();
     }
 }

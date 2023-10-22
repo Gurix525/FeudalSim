@@ -88,7 +88,7 @@ namespace Items
                 return;
             ItemHandler itemHandler = GameObject
                 .Instantiate(
-                prefab, 
+                prefab,
                 TerrainRenderer.GetChunkRenderer(
                     Terrain.GetChunkCoordinates(
                         new Vector2(dropPosition.x, dropPosition.z))).ItemHandlers)

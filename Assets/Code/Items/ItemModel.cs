@@ -1,9 +1,6 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using Misc;
-using UI;
 using UnityEngine;
-using Cursor = Controls.PlayerCursor;
 
 namespace Items
 {

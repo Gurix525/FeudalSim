@@ -1,6 +1,3 @@
-using System;
-using Combat;
-using Items;
 using UnityEngine;
 
 namespace PlayerControls

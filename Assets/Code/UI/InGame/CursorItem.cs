@@ -2,13 +2,13 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
-using PlayerCursor = Controls.PlayerCursor;
+using MainCursor = Controls.MainCursor;
 
 namespace UI
 {
     public class CursorItem : MonoBehaviour
     {
-        [SerializeField] private PlayerCursor _cursor;
+        [SerializeField] private MainCursor _cursor;
         [SerializeField] private TextMeshProUGUI _text;
 
         private Image _image;
