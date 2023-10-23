@@ -17,7 +17,7 @@ namespace Controls
         #region Fields
 
         [SerializeField] private MainCursor _mainCursor;
-        [SerializeField] private GameObject _meshHighlight;
+        //[SerializeField] private GameObject _meshHighlight;
 
         private GameObject _buildingPrefab;
         private Vector3 _pivotOffset;
@@ -88,20 +88,20 @@ namespace Controls
 
         private void _mainCursor_WorldPositionChanged(object sender, RaycastHitChangedEventArgs e)
         {
-            _cursorWorldPosition = e.NewRaycastHit.Value.point;
-            _adjustedWorldPosition = _cursorWorldPosition.Floor() + _pivotOffset;
-            _meshHighlight.transform.position = _adjustedWorldPosition;
+            //_cursorWorldPosition = e.NewRaycastHit.Value.point;
+            //_adjustedWorldPosition = _cursorWorldPosition.Floor() + _pivotOffset;
+            //_meshHighlight.transform.position = _adjustedWorldPosition;
         }
 
         private void BuildingCursor_BuildingPrefabChanged(object sender, ObjectChangedEventArgs e)
         {
-            if (e.NewObject != null)
-            {
-                _pivotOffset = e.NewObject.GetComponent<Building>().PivotOffset;
-                _meshHighlight.GetComponent<MeshFilter>().sharedMesh = e.NewObject.GetComponent<MeshFilter>().sharedMesh;
-            }
-            else
-                _meshHighlight.GetComponent<MeshFilter>().sharedMesh = null;
+            //if (e.NewObject != null)
+            //{
+            //    _pivotOffset = e.NewObject.GetComponent<Building>().PivotOffset;
+            //    _meshHighlight.GetComponent<MeshFilter>().sharedMesh = e.NewObject.GetComponent<MeshFilter>().sharedMesh;
+            //}
+            //else
+            //    _meshHighlight.GetComponent<MeshFilter>().sharedMesh = null;
         }
 
         private void OnLeftMouseButtonPress()

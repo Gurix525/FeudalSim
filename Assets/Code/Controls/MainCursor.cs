@@ -326,7 +326,7 @@ namespace Controls
             Vector3 forward = Camera.main.transform.forward;
             Vector3 axis = Vector3.Cross(right, forward);
             PassedRotationEventArgs eventArgs = new(delta.x, delta.y, axis);
-            PassedRotation.Invoke(this, eventArgs);
+            PassedRotation?.Invoke(this, eventArgs);
         }
 
         private void PutItem()
