@@ -168,6 +168,69 @@ namespace Items
             CollectionUpdated.Invoke();
         }
 
+        public void RemoveRecipeItems(Recipe recipe, bool isCheckNeccessary = false)
+        {
+            if (isCheckNeccessary)
+            {
+                if (!MatchesRecipe(recipe))
+                    return;
+            }
+            foreach (var item in recipe.Items)
+            {
+                ItemModel model = Item.GetModel(item.Item.name);
+                Extract(model, item.Count);
+            }
+        }
+
+        public bool MatchesRecipe(Recipe recipe)
+        {
+            foreach (var item in recipe.Items)
+            {
+                if (!Contains(Item.GetModel(item.Item.name), item.Count))
+                    return false;
+            }
+            return true;
+        }
+
+        public bool Contains(ItemModel model, int count)
+        {
+            int foundCount = 0;
+            foreach (var item in _items)
+            {
+                if (item == null)
+                    continue;
+                if (item.Model == model)
+                    foundCount += item.Count;
+            }
+            return foundCount >= count;
+        }
+
+        public Item Extract(ItemModel model, int count = 0)
+        {
+            if (count == 0)
+                count = int.MaxValue;
+            int initialValue = count;
+            for (int i = _items.Length - 1; i >= 0; i--)
+            {
+                if (_items[i] == null)
+                    continue;
+                if (_items[i].Model == model)
+                {
+                    int currentItemCount = _items[i].Count;
+                    int greater = Math.Min(currentItemCount, count);
+                    _items[i].Count -= greater;
+                    count -= greater;
+                    if (_items[i].Count <= 0)
+                        _items[i] = null;
+                    if (count <= 0)
+                        break;
+                }
+            }
+            int extractedCount = initialValue - count;
+            CollectionUpdated.Invoke();
+            return Item.Create(model.Name, extractedCount);
+        }
+
         public Item ExtractAt(int index, int count = 0)
         {
             if (_items[index] == null)

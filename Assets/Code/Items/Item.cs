@@ -58,6 +58,8 @@ namespace Items
             }
         }
 
+        public static IEnumerable<ItemModel> ItemModels => _itemModels.Values;
+
         #endregion Properties
 
         #region Constructors
@@ -120,6 +122,12 @@ namespace Items
             if (!_itemModels.TryGetValue(name, out ItemModel itemModel))
                 return null;
             return new(itemModel, count, stats);
+        }
+
+        public static ItemModel GetModel(string name)
+        {
+            _itemModels.TryGetValue(name, out ItemModel itemModel);
+            return itemModel;
         }
 
         #endregion Public
