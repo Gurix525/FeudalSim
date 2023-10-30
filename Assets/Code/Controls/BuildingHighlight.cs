@@ -130,7 +130,21 @@ namespace Controls
             if (_buildingPrefab == null)
                 return;
             _cursorWorldHit = e.NewRaycastHit.Value;
-            transform.position = (_cursorWorldHit.point + Vector3.up * 0.001F).Floor() + _buildingPrefab.PivotOffset;
+            transform.position = (_cursorWorldHit.point + _cursorWorldHit.normal * 0.01F).Floor() + _buildingPrefab.PivotOffset;
+            transform.position = new Vector3(transform.position.x, (_cursorWorldHit.point.y + 0.01F).Round(), transform.position.z);
+            // Obliczam różnicę między środkiem struktury a kursorem
+            if (_cursorWorldHit.collider.TryGetComponent(out Building building))
+            {
+                if (building.Name == _buildingPrefab.Name)
+                {
+                    var otherPosition = _cursorWorldHit.collider.transform.position;
+                    var cursorPosition = _cursorWorldHit.point;
+                    var difference = cursorPosition - otherPosition;
+                    difference = difference.Round();
+                    transform.position += difference;
+                        transform.position = new(transform.position.x, transform.position.y + _cursorWorldHit.normal.y.Round(), transform.position.z);
+                }
+            }
             if (_isPlacing)
             {
                 //PlaceGrid();

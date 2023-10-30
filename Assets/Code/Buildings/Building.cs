@@ -9,6 +9,7 @@ namespace Buildings
         [field: SerializeField] public Sprite RenderSprite { get; set; }
         [field: SerializeField] public Vector3 PivotOffset { get; set; }
         [field: SerializeField] public bool IsMultipleMode { get; set; }
+        [field: SerializeField] public string Name { get; private set; }
 
         public static GameObject[] Structures { get; private set; }
         public static GameObject[] Furniture { get; private set; }
@@ -18,7 +19,11 @@ namespace Buildings
             Structures = Resources.LoadAll<GameObject>("Prefabs/Buildings/Structures");
             Furniture = Resources.LoadAll<GameObject>("Prefabs/Buildings/Furniture");
             foreach (GameObject structure in Structures)
-                structure.GetComponent<Building>().RenderSprite = PNGScanner.RenderSprite(structure);
+            {
+                var building = structure.GetComponent<Building>();
+                building.RenderSprite = PNGScanner.RenderSprite(structure);
+                building.Name = structure.name;
+            }
         }
     }
 }
