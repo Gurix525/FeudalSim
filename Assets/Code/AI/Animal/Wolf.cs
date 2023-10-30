@@ -1,6 +1,6 @@
-using PlayerControls;
 using System.Collections;
 using Extensions;
+using PlayerControls;
 using UnityEngine;
 
 namespace AI

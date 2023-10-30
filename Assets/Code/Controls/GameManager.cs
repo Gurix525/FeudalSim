@@ -1,4 +1,5 @@
-using System;
+using Buildings;
+using Items;
 using UnityEngine;
 
 namespace Controls
@@ -10,9 +11,20 @@ namespace Controls
         public static long FullTimeInWorld { get; set; }
         public static long LastPlayedTime { get; set; }
 
+        private void Start()
+        {
+            LoadResources();
+        }
+
         private void FixedUpdate()
         {
             FullTimeInWorld += (long)(Time.fixedDeltaTime * 10000000);
+        }
+
+        private void LoadResources()
+        {
+            Item.LoadResources();
+            Building.LoadResources();
         }
     }
 }

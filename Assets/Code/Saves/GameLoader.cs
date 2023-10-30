@@ -3,18 +3,14 @@ using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
 using System.Threading.Tasks;
-using Buildings;
 using Controls;
 using Items;
 using Misc;
-using Nature;
 using UI;
-using Unity.VisualScripting.Antlr3.Runtime.Tree;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using World;
 using Terrain = World.Terrain;
-using Tree = Nature.Tree;
 
 namespace Saves
 {
@@ -63,7 +59,7 @@ namespace Saves
                 var playerinfo = LoadPlayer();
                 ChunkInfo[] chunkInfos = LoadChunks();
                 TerrainRenderer.GenerateWorld(Terrain.GetChunkCoordinates(
-                    playerinfo.Position));
+                    new Vector2(playerinfo.Position.x, playerinfo.Position.z)));
                 LoadChunkRenderers(chunkInfos);
                 GrassInstancer.MarkToReload();
             }
@@ -142,16 +138,17 @@ namespace Saves
 
         private void LoadBuildings(ChunkInfo chunkInfo, ChunkRenderer chunkRenderer)
         {
-            foreach (var buildingInfo in chunkInfo.Buildings)
-            {
-                GameObject prefab = BuildingPrefabs[(int)buildingInfo.BuildingMode];
-                GameObject building = GameObject.Instantiate(
-                    prefab, chunkRenderer.Buildings);
-                building.transform.SetPositionAndRotation(
-                    buildingInfo.Position, buildingInfo.Rotation);
-                building.GetComponent<Building>().
-                Initialize((Item)buildingInfo.BackingItem, buildingInfo.BuildingMode);
-            }
+            // To be added
+            //foreach (var buildingInfo in chunkInfo.Buildings)
+            //{
+            //    GameObject prefab = BuildingPrefabs[(int)buildingInfo.BuildingMode];
+            //    GameObject building = GameObject.Instantiate(
+            //        prefab, chunkRenderer.Buildings);
+            //    building.transform.SetPositionAndRotation(
+            //        buildingInfo.Position, buildingInfo.Rotation);
+            //    building.GetComponent<Building>().
+            //    Initialize((Item)buildingInfo.BackingItem, buildingInfo.BuildingMode);
+            //}
         }
 
         private void LoadItemHandlers(ChunkInfo chunkInfo, ChunkRenderer chunkRenderer)

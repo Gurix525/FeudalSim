@@ -1,7 +1,4 @@
 using Items;
-using UnityEngine;
-using UnityEngine.EventSystems;
-using static UnityEngine.InputSystem.InputAction;
 
 namespace UI
 {

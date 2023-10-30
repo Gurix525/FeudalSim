@@ -1,8 +1,8 @@
 ﻿using System.Collections;
 using System.Linq;
 using Extensions;
-using UnityEngine;
 using PlayerControls;
+using UnityEngine;
 
 namespace AI
 {

@@ -1,19 +1,12 @@
-using System;
-using System.Collections;
 using System.Linq;
-using System.Threading.Tasks;
-using Controls;
 using Misc;
 using UnityEngine;
-using Unity.AI.Navigation;
-using UnityEngine.AI;
 
 namespace World
 {
     [RequireComponent(typeof(MeshRenderer))]
     [RequireComponent(typeof(MeshFilter))]
     [RequireComponent(typeof(MeshCollider))]
-    //[RequireComponent(typeof(CursorCellPositionFinder))]
     public class ChunkRenderer : MonoBehaviour
     {
         #region Fields

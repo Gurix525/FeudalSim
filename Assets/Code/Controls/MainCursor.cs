@@ -10,7 +10,7 @@ using UnityEngine.UI;
 
 namespace Controls
 {
-    public partial class PlayerCursor : MonoBehaviour
+    public partial class MainCursor : MonoBehaviour
     {
         #region Events
 
@@ -20,12 +20,17 @@ namespace Controls
 
         public event EventHandler<RaycastHitChangedEventArgs> WorldPositionChanged;
 
+        public event EventHandler<PassedRotationEventArgs> PassedRotation;
+
+        public event EventHandler<bool> OverUIStateChanged;
+
         #endregion Events
 
         #region Fields
 
         [SerializeField] private GameObject _canvasesParent;
         [SerializeField] private MeshHighlight _meshHighlight;
+        [SerializeField] private GameObject _buildingCursor;
 
         private ItemReference _itemReference;
         private GameObject _objectUnderCursor;
@@ -33,14 +38,29 @@ namespace Controls
         private LayerMask _layerMask;
         private RaycastHit _worldRaycastHit;
         private bool _isShiftPressed;
+        private bool _isRightMouseButtonPressed;
+        private bool _isOverUI;
 
         #endregion Fields
 
         #region Properties
 
-        public static PlayerCursor Current { get; private set; }
+        public static MainCursor Current { get; private set; }
 
         public Vector2 ScreenPosition { get; private set; }
+
+        public bool IsOverUI
+        {
+            get => _isOverUI;
+            set
+            {
+                if (value != _isOverUI)
+                {
+                    _isOverUI = value;
+                    OverUIStateChanged?.Invoke(this, value);
+                }
+            }
+        }
 
         public RaycastHit WorldRaycastHit
         {
@@ -85,6 +105,14 @@ namespace Controls
         }
 
         #endregion Properties
+
+        #region Conditions
+
+        private bool CanInteractWithWorld => !_buildingCursor.activeInHierarchy;
+
+        private bool CanInteractWithUI => true;
+
+        #endregion Conditions
 
         #region Public
 
@@ -156,6 +184,7 @@ namespace Controls
             // On pressed
             if (value.isPressed)
             {
+                _isRightMouseButtonPressed = true;
                 if (ObjectUnderCursor)
                     ObjectUnderCursor
                         .GetComponents<IMouseHandler>()
@@ -165,6 +194,7 @@ namespace Controls
             // On relased
             else
             {
+                _isRightMouseButtonPressed = false;
                 if (ObjectUnderCursor)
                     ObjectUnderCursor
                         .GetComponents<IMouseHandler>()
@@ -189,6 +219,10 @@ namespace Controls
                 _draggedObject
                     .GetComponents<IMouseHandler>().ToList()
                     .ForEach(handler => handler.OnMouseDelta(delta));
+            if (_isRightMouseButtonPressed)
+            {
+                PassRotation(delta);
+            }
         }
 
         private void OnShift(InputValue value)
@@ -210,7 +244,8 @@ namespace Controls
         private void Update()
         {
             UpdateWorldPosition();
-            UpdateObjectUnderCursor();
+            ObjectUnderCursor = GetObjectUnderCursor();
+            IsOverUI = CheckIfOverUI();
         }
 
         #endregion Unity
@@ -224,11 +259,6 @@ namespace Controls
             {
                 WorldRaycastHit = hit;
             }
-        }
-
-        private void UpdateObjectUnderCursor()
-        {
-            ObjectUnderCursor = GetObjectUnderCursor();
         }
 
         private GameObject GetObjectUnderCursor()
@@ -253,6 +283,8 @@ namespace Controls
             {
                 return results[0].gameObject;
             }
+            if (!CanInteractWithWorld)
+                return null;
             Ray ray = Camera.main.ScreenPointToRay(ScreenPosition);
             Physics.Raycast(ray, out RaycastHit hit, float.PositiveInfinity, _layerMask);
             if (hit.collider != null)
@@ -288,6 +320,15 @@ namespace Controls
             //_draggedObject = null;
         }
 
+        private void PassRotation(Vector2 delta)
+        {
+            Vector3 right = Camera.main.transform.TransformDirection(delta);
+            Vector3 forward = Camera.main.transform.forward;
+            Vector3 axis = Vector3.Cross(right, forward);
+            PassedRotationEventArgs eventArgs = new(delta.x, delta.y, axis);
+            PassedRotation?.Invoke(this, eventArgs);
+        }
+
         private void PutItem()
         {
             if (ItemReference.Item.Mesh != null)
@@ -302,6 +343,13 @@ namespace Controls
                         count: 0,
                         scatter: false);
             }
+        }
+
+        private bool CheckIfOverUI()
+        {
+            if (ObjectUnderCursor == null)
+                return false;
+            return ObjectUnderCursor.TryGetComponent(out RectTransform _);
         }
 
         #endregion Private

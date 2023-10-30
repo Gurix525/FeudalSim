@@ -1,4 +1,6 @@
-﻿/// TaskManager.cs
+﻿using System.Collections;
+
+/// TaskManager.cs
 ///
 /// This is a convenient coroutine API for Unity.
 ///
@@ -31,7 +33,6 @@
 /// for Tasks is done through this component.
 
 using UnityEngine;
-using System.Collections;
 
 namespace TaskManager
 {

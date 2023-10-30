@@ -1,7 +1,6 @@
 ﻿using System;
 using Buildings;
 using Controls;
-using UnityEngine;
 
 namespace Saves
 {
@@ -22,9 +21,10 @@ namespace Saves
 
         public void Initialize(Building building)
         {
-            base.Initialize(building);
-            BackingItem = new(building.BackingItem);
-            BuildingMode = building.BuildingMode;
+            // To be added
+            //base.Initialize(building);
+            //BackingItem = new(building.BackingItem);
+            //BuildingMode = building.BuildingMode;
         }
     }
 }

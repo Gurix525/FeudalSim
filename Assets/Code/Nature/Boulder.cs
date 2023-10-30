@@ -1,11 +1,9 @@
-using AI;
 using Controls;
 using Items;
 using Misc;
+using PlayerControls;
 using UnityEngine;
 using World;
-using Cursor = Controls.PlayerCursor;
-using PlayerControls;
 
 namespace Nature
 {

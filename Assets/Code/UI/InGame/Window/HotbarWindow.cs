@@ -1,11 +1,9 @@
 using System;
-using System.Collections;
- 
+
 using Items;
 using UnityEngine;
 using UnityEngine.Events;
 using static UnityEngine.InputSystem.InputAction;
-using Cursor = Controls.PlayerCursor;
 
 namespace UI
 {
