@@ -23,13 +23,13 @@ namespace UI
 
         private void OnEnable()
         {
-            Player.Instance.Stats.StatsChanged.AddListener(ReloadSlots);
-            Player.Instance.Stats.ReloadStats();
+            Player.Current.Stats.StatsChanged.AddListener(ReloadSlots);
+            Player.Current.Stats.ReloadStats();
         }
 
         private void OnDisable()
         {
-            Player.Instance.Stats.StatsChanged.RemoveListener(ReloadSlots);
+            Player.Current.Stats.StatsChanged.RemoveListener(ReloadSlots);
         }
 
         private void ReloadSlots(Stats stats)

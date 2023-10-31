@@ -52,12 +52,12 @@ namespace PlayerControls
 
         public float SprintSpeed =>
             MoveSpeed * (_sprintMultiplier + (_sprintMultiplier - 1F)
-            * Player.Instance.Stats.GetSkill("Running").Modifier);
+            * Player.Current.Stats.GetSkill("Running").Modifier);
 
         public float AttackMoveSpeedMultiplier => _attackMoveSpeedMultiplier;
 
         public float JumpForce => _jumpForce
-            + 4F * Player.Instance.Stats.GetSkill("Jumping").Modifier;
+            + 4F * Player.Current.Stats.GetSkill("Jumping").Modifier;
 
         public Vector3 LeftHandIKGoal { get; set; }
 
@@ -70,11 +70,17 @@ namespace PlayerControls
         public bool IsGrounded { get; private set; }
         public bool IsSprinting { get; private set; }
 
+        public static PlayerMovement Current { get; private set; }
+
         #endregion Properties
 
         #region Conditions
 
-        public bool HasStamina => Player.Instance.Stats.CurrentStamina > 0F;
+        public bool HasStamina => Player.Current.Stats.CurrentStamina > 0F;
+
+        public bool CanAttack => !IsPendingAttack
+            && !IsStringingBow
+            && IsGrounded;
 
         public bool CanMove => !IsPendingAttack;
 
@@ -102,6 +108,7 @@ namespace PlayerControls
 
         private void Awake()
         {
+            Current = this;
             _rigidbody = GetComponent<Rigidbody>();
             _animator = GetComponent<Animator>();
             _groundMask = ~LayerMask.GetMask("Player");
@@ -110,12 +117,12 @@ namespace PlayerControls
 
         private void OnEnable()
         {
-            Player.Instance.Stats.StaminaDepleted.AddListener(() => _isSprintPressed = false);
+            Player.Current.Stats.StaminaDepleted.AddListener(() => _isSprintPressed = false);
         }
 
         private void OnDisable()
         {
-            Player.Instance.Stats.StaminaDepleted.RemoveAllListeners();
+            Player.Current.Stats.StaminaDepleted.RemoveAllListeners();
         }
 
         private void Update()
@@ -177,7 +184,7 @@ namespace PlayerControls
             if (!CanJump)
                 return;
             _rigidbody.AddForce(Vector3.up * JumpForce, ForceMode.VelocityChange);
-            Player.Instance.Stats.AddSkill("Jumping", 1F);
+            Player.Current.Stats.AddSkill("Jumping", 1F);
             SubtractStamina(15F);
         }
 
@@ -188,12 +195,12 @@ namespace PlayerControls
 
         private void ImproveRunningSkill(Vector2 direction)
         {
-            Player.Instance.Stats.AddSkill("Running", 0.25F * Time.fixedDeltaTime);
+            Player.Current.Stats.AddSkill("Running", 0.25F * Time.fixedDeltaTime);
         }
 
         private void SubtractStamina(float stamina)
         {
-            Player.Instance.Stats.CurrentStamina -= stamina;
+            Player.Current.Stats.CurrentStamina -= stamina;
         }
 
         private void DoGravity()

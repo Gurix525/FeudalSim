@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Combat;
+using UnityEngine;
 using UnityEngine.InputSystem;
 
 namespace Controls
@@ -11,6 +12,7 @@ namespace Controls
 
         private Vector3 _cursorWorldPosition;
         private bool _isOverUI;
+        private CombatAction _combatAction;
 
         #endregion Fields
 
@@ -41,6 +43,7 @@ namespace Controls
         private void Awake()
         {
             Current = this;
+            _combatAction = new NormalAttackCombatAction();
             _mainCursor.OverUIStateChanged += _mainCursor_OverUIStateChanged;
             gameObject.SetActive(false);
         }
@@ -58,6 +61,7 @@ namespace Controls
 
         private void OnLeftMouseButtonPress()
         {
+            _combatAction.Execute();
         }
 
         private void OnLeftMouseButtonRelase()

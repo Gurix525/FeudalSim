@@ -32,8 +32,6 @@ namespace PlayerControls
 
         #region Properties
 
-        public static Player Instance { get; set; }
-
         public Stats Stats => _stats;
         public PlayerMovement PlayerMovement => _playerMovement;
         public PlayerVFX VFX => _vfx;
@@ -42,7 +40,8 @@ namespace PlayerControls
         public LeftHandItemHook LeftHandItemHook => _leftHandItemHook;
         public RightHandItemHook RightHandItemHook => _rightHandItemHook;
 
-        public static Vector3 Position => Instance.transform.position;
+        public static Player Current { get; set; }
+        public static Vector3 Position => Current.transform.position;
 
         #endregion Properties
 
@@ -50,7 +49,7 @@ namespace PlayerControls
 
         private void Awake()
         {
-            Instance = this;
+            Current = this;
             InitializeStats();
             InitializeHealth();
         }

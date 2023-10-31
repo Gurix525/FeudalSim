@@ -21,7 +21,7 @@ namespace Nature
             if (item.Count > 0)
                 item.Drop(Player.Position);
             Destroy(gameObject);
-            Player.Instance.Stats.AddSkill("Digging", 1F);
+            Player.Current.Stats.AddSkill("Digging", 1F);
             TerrainRenderer.MarkNavMeshToReload();
         }
 

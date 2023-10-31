@@ -76,7 +76,7 @@ namespace Combat
 
         private void PlayAttackEffects(Hitbox hitbox, Vector3 contact)
         {
-            if (Sender == PlayerControls.Player.Instance)
+            if (Sender == PlayerControls.Player.Current)
                 CameraShake.ShakeCamera(Damage);
             Effect.Spawn("Hit", contact);
             Effect.Spawn("BloodCloud", contact);

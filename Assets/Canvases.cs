@@ -6,33 +6,34 @@ public class Canvases : MonoBehaviour
 {
     public event EventHandler<string> CommandPassed;
 
-    private string _lastCommand = "Inventory";
-
-    private void Awake()
-    {
-        CommandPassed += Canvases_CommandPassed;
-    }
+    private string _lastCommand = "Clear";
 
     private void OnBuilding(InputValue value)
     {
-        CommandPassed?.Invoke(this, "Building");
+        SendCommand("Building");
     }
 
     private void OnChange(InputValue value)
     {
-        CommandPassed?.Invoke(this, "Combat");
+        SendCommand("Combat");
     }
 
     private void OnTab(InputValue value)
     {
-        if (_lastCommand == "Inventory")
-            CommandPassed?.Invoke(this, "Inventory");
-        else
-            CommandPassed?.Invoke(this, "Clear");
+        SendCommand("Inventory");
     }
 
-    private void Canvases_CommandPassed(object sender, string e)
+    private void SendCommand(string command)
     {
-        _lastCommand = e == "Clear" ? "Inventory" : e;
+        if (_lastCommand == command)
+        {
+            CommandPassed?.Invoke(this, "Clear");
+            _lastCommand = "Clear";
+        }
+        else
+        {
+            CommandPassed?.Invoke(this, command);
+            _lastCommand = command;// == "Clear" ? "Inventory" : command;
+        }
     }
 }

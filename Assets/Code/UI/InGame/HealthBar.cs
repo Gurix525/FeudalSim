@@ -11,7 +11,7 @@ namespace UI
 
         private void Start()
         {
-            PlayerControls.Player.Instance.Stats.StatsChanged.AddListener(SetFill);
+            PlayerControls.Player.Current.Stats.StatsChanged.AddListener(SetFill);
         }
 
         private void SetFill(Stats stats)
