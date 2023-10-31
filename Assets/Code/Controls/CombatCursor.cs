@@ -1,7 +1,4 @@
-﻿using System;
-using Buildings;
-using Extensions;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.InputSystem;
 
 namespace Controls
@@ -28,7 +25,11 @@ namespace Controls
         private void OnLeftMouseButton(InputValue value)
         {
             if (value.isPressed)
+            {
+                if (_isOverUI)
+                    return;
                 OnLeftMouseButtonPress();
+            }
             else
                 OnLeftMouseButtonRelase();
         }
