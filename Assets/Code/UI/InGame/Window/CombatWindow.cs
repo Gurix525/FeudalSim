@@ -18,7 +18,7 @@ namespace UI
             if (CombatCursor.Current != null)
                 CombatCursor.Current.gameObject.SetActive(true);
             if (_rightHandItemHook != null)
-                _rightHandItemHook.gameObject.SetActive(true);
+                _rightHandItemHook.SetItemActive("Sword", true);
         }
 
         private void OnDisable()
@@ -26,7 +26,7 @@ namespace UI
             if (CombatCursor.Current != null)
                 CombatCursor.Current.gameObject.SetActive(false);
             if (_rightHandItemHook != null)
-                _rightHandItemHook.gameObject.SetActive(false);
+                _rightHandItemHook.SetItemActive("Sword", false);
         }
     }
 }
