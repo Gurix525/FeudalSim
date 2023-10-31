@@ -4,7 +4,12 @@ namespace PlayerControls
 {
     public class RightHandItemHook : MonoBehaviour
     {
-        private GameObject _assignedItem;
+        [SerializeField] private GameObject _assignedItem;
+
+        public void SwitchActive()
+        {
+            gameObject.SetActive(!gameObject.activeInHierarchy);
+        }
 
         //private void Awake()
         //{

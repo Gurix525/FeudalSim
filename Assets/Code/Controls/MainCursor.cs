@@ -31,6 +31,7 @@ namespace Controls
         [SerializeField] private GameObject _canvasesParent;
         [SerializeField] private MeshHighlight _meshHighlight;
         [SerializeField] private GameObject _buildingCursor;
+        [SerializeField] private GameObject _combatCursor;
 
         private ItemReference _itemReference;
         private GameObject _objectUnderCursor;
@@ -108,7 +109,9 @@ namespace Controls
 
         #region Conditions
 
-        private bool CanInteractWithWorld => !_buildingCursor.activeInHierarchy;
+        private bool CanInteractWithWorld => 
+            !_buildingCursor.activeInHierarchy
+            && !_combatCursor.activeInHierarchy;
 
         private bool CanInteractWithUI => true;
 

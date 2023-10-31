@@ -2,10 +2,9 @@
 
 namespace UI
 {
-    public class BuildingCanvas : MonoBehaviour
+    public class DefaultCanvas : MonoBehaviour
     {
         [SerializeField] private Canvases _canvases;
-        [SerializeField] private BuildingWindow _buildingWindow;
 
         private void OnEnable()
         {
@@ -19,10 +18,9 @@ namespace UI
 
         private void _canvases_CommandPassed(object sender, string e)
         {
-            if (e == "Building")
-                _buildingWindow.SwitchActive();
-            else
-                _buildingWindow.gameObject.SetActive(false);
+            if (e != "Inventory")
+                foreach (Transform child in transform)
+                    child.gameObject.SetActive(false);
         }
     }
 }

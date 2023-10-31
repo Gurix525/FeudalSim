@@ -2,10 +2,10 @@
 
 namespace UI
 {
-    public class BuildingCanvas : MonoBehaviour
+    public class CombatCanvas : MonoBehaviour
     {
         [SerializeField] private Canvases _canvases;
-        [SerializeField] private BuildingWindow _buildingWindow;
+        [SerializeField] private CombatWindow _combatWindow;
 
         private void OnEnable()
         {
@@ -19,10 +19,10 @@ namespace UI
 
         private void _canvases_CommandPassed(object sender, string e)
         {
-            if (e == "Building")
-                _buildingWindow.SwitchActive();
+            if (e == "Combat")
+                _combatWindow.SwitchActive();
             else
-                _buildingWindow.gameObject.SetActive(false);
+                _combatWindow.gameObject.SetActive(false);
         }
     }
 }

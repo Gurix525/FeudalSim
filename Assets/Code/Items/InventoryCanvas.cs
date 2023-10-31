@@ -2,14 +2,14 @@ using System.Linq;
 using Misc;
 using UI;
 using UnityEngine;
-using UnityEngine.InputSystem;
-using static UnityEngine.InputSystem.InputAction;
 
 namespace Items
 {
-    public class Equipment : MonoBehaviour
+    public class InventoryCanvas : MonoBehaviour
     {
         #region Fields
+
+        [SerializeField] private Canvases _canvases;
 
         private Container _armorContainer = new(4, isArmor: true);
         private Container _inventoryContainer = new(40);
@@ -43,7 +43,7 @@ namespace Items
         public static Container InventoryContainer => Instance._inventoryContainer;
         public static Container ArmorContainer => Instance._armorContainer;
 
-        private static Equipment Instance { get; set; }
+        private static InventoryCanvas Instance { get; set; }
 
         #endregion Properties
 
@@ -82,15 +82,6 @@ namespace Items
 
         #endregion Public
 
-        #region Input
-
-        private void OnTab(InputValue value)
-        {
-            SwitchEquipmentState();
-        }
-
-        #endregion Input
-
         #region Unity
 
         private void Awake()
@@ -118,6 +109,16 @@ namespace Items
             _inventoryWindow.SetActive(false);
             _armorContainer.CollectionUpdated.AddListener(OnArmorCollectionUpdated);
             CreateInventorySlots();
+        }
+
+        private void OnEnable()
+        {
+            _canvases.CommandPassed += _canvases_CommandPassed;
+        }
+
+        private void OnDisable()
+        {
+            _canvases.CommandPassed -= _canvases_CommandPassed;
         }
 
         #endregion Unity
@@ -153,7 +154,7 @@ namespace Items
         private void SwitchEquipmentState()
         {
             if (_armorWindow.activeInHierarchy)
-                HideEquipment(new());
+                HideEquipment();
             else
                 ShowEquipment();
         }
@@ -164,10 +165,18 @@ namespace Items
             _armorWindow.SetActive(true);
         }
 
-        private void HideEquipment(CallbackContext context)
+        private void HideEquipment()
         {
             _armorWindow.SetActive(false);
             _inventoryWindow.SetActive(false);
+        }
+
+        private void _canvases_CommandPassed(object sender, string e)
+        {
+            if (e == "Inventory")
+                SwitchEquipmentState();
+            else
+                HideEquipment();
         }
 
         #endregion Private

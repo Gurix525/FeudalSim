@@ -101,9 +101,9 @@ namespace Controls
 
         private void PlaceBuilding()
         {
-            if (!Equipment.InventoryContainer.MatchesRecipe(_buildingPrefab.Recipe))
+            if (!InventoryCanvas.InventoryContainer.MatchesRecipe(_buildingPrefab.Recipe))
                 return;
-            Equipment.InventoryContainer.RemoveRecipeItems(_buildingPrefab.Recipe);
+            InventoryCanvas.InventoryContainer.RemoveRecipeItems(_buildingPrefab.Recipe);
             Vector2Int chunkPosition = World.Terrain.GetChunkCoordinates(
                 new Vector2(transform.position.x, transform.position.z));
             ChunkRenderer chunkRenderer = TerrainRenderer.GetChunkRenderer(chunkPosition);

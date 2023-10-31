@@ -101,8 +101,8 @@ namespace Saves
             player.SetActive(false);
             player.transform.position = playerInfo.Position;
             player.SetActive(true);
-            Equipment.SetInventoryContainer((Container)playerInfo.InventoryContainer);
-            Equipment.SetArmorContainer((Container)playerInfo.ArmorContainer);
+            InventoryCanvas.SetInventoryContainer((Container)playerInfo.InventoryContainer);
+            InventoryCanvas.SetArmorContainer((Container)playerInfo.ArmorContainer);
             return playerInfo;
         }
 

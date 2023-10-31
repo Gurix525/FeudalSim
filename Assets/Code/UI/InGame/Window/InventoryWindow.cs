@@ -8,9 +8,9 @@ namespace UI
         [SerializeField] private SortButton _sortButton;
 
         private Container _container;
-        private Equipment _equipment;
+        private InventoryCanvas _equipment;
 
-        public void Initialize(Container container, Equipment equipment)
+        public void Initialize(Container container, InventoryCanvas equipment)
         {
             _container = container;
             _equipment = equipment;
