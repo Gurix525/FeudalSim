@@ -29,7 +29,6 @@ namespace UI
 
         private void Start()
         {
-            _pauseMenu.SetActive(false);
             _returnToGameButton.Clicked += ReturnToGameButton_Clicked;
         }
 

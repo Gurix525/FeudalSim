@@ -6,5 +6,10 @@ namespace UI
     {
         protected static Vector2 _offset = new(0F, 160F);
         protected RectTransform _rectTransform;
+
+        public void SwitchActive()
+        {
+            gameObject.SetActive(!gameObject.activeInHierarchy);
+        }
     }
 }

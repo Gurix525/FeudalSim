@@ -8,11 +8,6 @@ namespace UI
     {
         [SerializeField] private RightHandItemHook _rightHandItemHook;
 
-        public void SwitchActive()
-        {
-            gameObject.SetActive(!gameObject.activeInHierarchy);
-        }
-
         private void OnEnable()
         {
             if (CombatCursor.Current != null)

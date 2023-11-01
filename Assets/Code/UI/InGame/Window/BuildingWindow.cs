@@ -15,15 +15,6 @@ namespace UI
 
         private GameObject _buildingButtonPrefab;
 
-        #region Public
-
-        public void SwitchActive()
-        {
-            gameObject.SetActive(!gameObject.activeInHierarchy);
-        }
-
-        #endregion Public
-
         #region Unity
 
         private void Awake()

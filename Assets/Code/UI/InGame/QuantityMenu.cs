@@ -8,9 +8,15 @@ namespace UI
 {
     public class QuantityMenu : MonoBehaviour
     {
+        #region Events
+
         public event EventHandler<FloatChangedEventArgs> QuantityChanged;
 
         public event EventHandler<FloatChangedEventArgs> MaxQuantityChanged;
+
+        #endregion Events
+
+        #region Fields
 
         [SerializeField] private TMP_InputField _inputField;
         [SerializeField] private Slider _slider;
@@ -27,6 +33,10 @@ namespace UI
         private Container _destinationContainer;
         private int _sourceIndex;
         private int _destinationIndex;
+
+        #endregion Fields
+
+        #region Properties
 
         public float Quantity
         {
@@ -58,6 +68,10 @@ namespace UI
 
         public static QuantityMenu Current { get; private set; }
 
+        #endregion Properties
+
+        #region Public
+
         public void Show(Container source, int sourceIndex, Container destination, int destinationIndex, Vector2 screenPosition)
         {
             _hasToDrop = false;
@@ -71,6 +85,10 @@ namespace UI
             _dropRotation = dropRotation;
             Initialize(itemReference.Container, itemReference.Index, null, 0, screenPosition);
         }
+
+        #endregion Public
+
+        #region Unity
 
         private void Awake()
         {
@@ -86,6 +104,10 @@ namespace UI
             MaxQuantityChanged += QuantityMenu_MaxQuantityChanged;
             gameObject.SetActive(false);
         }
+
+        #endregion Unity
+
+        #region Private
 
         private void Initialize(Container source, int sourceIndex, Container destination, int destinationIndex, Vector2 screenPosition)
         {
@@ -161,5 +183,7 @@ namespace UI
         {
             _slider.maxValue = e.NewValue;
         }
+
+        #endregion Private
     }
 }
