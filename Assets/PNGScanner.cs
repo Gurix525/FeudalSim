@@ -11,6 +11,11 @@ public class PNGScanner : MonoBehaviour
 
     public static PNGScanner Current { get; private set; }
 
+    private void Awake()
+    {
+        Current = this;
+    }
+
     public static Sprite RenderSprite(GameObject target)
     {
         GameObject clone = Instantiate(target);
@@ -24,6 +29,7 @@ public class PNGScanner : MonoBehaviour
         Current._camera.Render();
         RenderPipelineManager.endCameraRendering -= RenderPipelineManager_endCameraRendering;
         Current._light.SetActive(false);
+        clone.transform.position = Vector3.one * 100F;
         Destroy(clone);
         Sprite sprite = Sprite.Create(_destinationTexture, _rect, Vector2.zero);
         return sprite;
@@ -31,13 +37,8 @@ public class PNGScanner : MonoBehaviour
 
     private static void RenderPipelineManager_endCameraRendering(ScriptableRenderContext arg1, Camera arg2)
     {
+        _destinationTexture = new(64, 64, TextureFormat.RGBA32, false);
         _destinationTexture.ReadPixels(_rect, 0, 0);
         _destinationTexture.Apply();
-    }
-
-    private void Awake()
-    {
-        Current = this;
-        _destinationTexture = new(64, 64, TextureFormat.RGBA32, false);
     }
 }
