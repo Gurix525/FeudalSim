@@ -1,4 +1,5 @@
 using Buildings;
+using Dialogues;
 using Items;
 using UnityEngine;
 
@@ -25,6 +26,7 @@ namespace Controls
         {
             Item.LoadResources();
             Building.LoadResources();
+            Dialogue.LoadResources();
         }
     }
 }

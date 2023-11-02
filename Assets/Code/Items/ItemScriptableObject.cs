@@ -2,7 +2,7 @@
 
 namespace Items
 {
-    [CreateAssetMenu(fileName = "Item", menuName = "ScriptableObjects/Item")]
+    [CreateAssetMenu(fileName = "Item", menuName = "Scriptable Objects/Item")]
     public class ItemScriptableObject : ScriptableObject
     {
     }
