@@ -152,7 +152,7 @@ namespace PlayerControls
 
         private void CheckConditions()
         {
-            IsGrounded = Physics.CheckSphere(transform.position, 0.24F, _groundMask);
+            IsGrounded = Physics.CheckSphere(transform.position + Vector3.down * 0.2F, 0.24F, _groundMask);
         }
 
         private void Move()
