@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using UnityEngine;
 
 namespace Dialogues
@@ -9,7 +10,7 @@ namespace Dialogues
         #region Properties
 
         [field: TextArea(1, 10)][field: SerializeField] public string Text { get; set; } = string.Empty;
-
+        [field: SerializeField] public Sprite Sprite { get; set; }
         [field: SerializeField] public VerseRuleScriptableObject[] VerseRules { get; set; }
         public static Verse Empty { get; } = new();
 

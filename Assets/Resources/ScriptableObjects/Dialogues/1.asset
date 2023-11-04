@@ -13,9 +13,18 @@ MonoBehaviour:
   m_Name: 1
   m_EditorClassIdentifier: 
   <Verses>k__BackingField:
-  - <Text>k__BackingField: "Nam strzela\u0107 nie kazano, wst\u0105pi\u0142em na
-      dzia\u0142o"
+  - <Text>k__BackingField: No one rejects, dislikes or avoids pleasure itself, because
+      it is pleasure, but because those who do not know how to pursue pleasure rationally
+      encounter consequences that are extremely painful. Nor again is there anyone
+      who loves or pursues or desires to obtain pain of itself, because it is pain,
+      but occasionally circumstances occur in which toil and pain can procure him
+      some great pleasure.
+    <Sprite>k__BackingField: {fileID: 21300000, guid: 4bf4237907beb434b85be3abe530cf93,
+      type: 3}
     <VerseRules>k__BackingField: []
-  - <Text>k__BackingField: "I spojrza\u0142em na pole \u2013 dwie\u015Bcie harmat
-      grzmia\u0142o"
+  - <Text>k__BackingField: Nor again is there anyone who loves or pursues or desires
+      to obtain pain of itself, because it is pain, but occasionally circumstances
+      occur in which toil and pain can procure him some great pleasure.
+    <Sprite>k__BackingField: {fileID: 21300000, guid: 4bf4237907beb434b85be3abe530cf93,
+      type: 3}
     <VerseRules>k__BackingField: []
