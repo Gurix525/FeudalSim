@@ -70,7 +70,7 @@ namespace Items
             _isClicked = false;
             Cursor.Current.RelaseItemReference();
             Item item = Container.ExtractAt(0);
-            Equipment.InventoryContainer.Insert(item);
+            InventoryCanvas.InventoryContainer.Insert(item);
         }
 
         public void OnHoverEnd()

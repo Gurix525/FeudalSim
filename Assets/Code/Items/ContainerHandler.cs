@@ -38,7 +38,7 @@ namespace Items
 
         private void OnTab(InputValue value)
         {
-            if (Equipment.IsVisible)
+            if (InventoryCanvas.IsVisible)
                 HideContainer();
         }
 

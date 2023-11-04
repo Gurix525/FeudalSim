@@ -44,7 +44,7 @@ namespace UI
                     Resources.Load<GameObject>("Prefabs/UI/HotbarSlot"),
                     transform)
                     .GetComponent<HotbarSlot>();
-                _slots[i].Initialize(i, Equipment.InventoryContainer, this);
+                _slots[i].Initialize(i, InventoryCanvas.InventoryContainer, this);
             }
         }
 

@@ -17,7 +17,7 @@ namespace Nature
             if (this == null)
                 return;
             Item item = Item.Create("Wood", 20);
-            Equipment.Insert(item);
+            InventoryCanvas.Insert(item);
             if (item.Count > 0)
                 item.Drop(Player.Position);
             //GameObject log = Instantiate(
@@ -31,7 +31,7 @@ namespace Nature
             //    200F);
             Destroy(transform.parent.gameObject);
             TerrainRenderer.MarkNavMeshToReload();
-            Player.Instance.Stats.AddSkill("Woodcutting", 1F);
+            Player.Current.Stats.AddSkill("Woodcutting", 1F);
         }
 
         #endregion Public

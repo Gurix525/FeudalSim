@@ -4,31 +4,15 @@ namespace PlayerControls
 {
     public class RightHandItemHook : MonoBehaviour
     {
-        private GameObject _assignedItem;
+        [SerializeField] private GameObject _assignedItem;
 
-        //private void Awake()
-        //{
-        //    Controls.Cursor.CombatModeSwitched.AddListener(ChangeAssignedItem);
-        //}
-
-        //private void ChangeAssignedItem(bool combatState)
-        //{
-        //    throw new NotImplementedException();
-        //}
-
-        //private void ChangeAssignedItem(Item item)
-        //{
-        //    Destroy(_assignedItem);
-        //    if (item == null)
-        //        return;
-        //    if (item.WeaponPrefab == null)
-        //        return;
-        //    if (item.WeaponPrefab.GetComponent<Weapon>().IsLeftHanded)
-        //        return;
-        //    _assignedItem = Instantiate(item.WeaponPrefab);
-        //    _assignedItem.transform.SetParent(transform, true);
-        //    _assignedItem.transform
-        //        .SetLocalPositionAndRotation(Vector3.zero, Quaternion.identity);
-        //}
+        public void SetItemActive(string name, bool state)
+        {
+            foreach (Transform child in transform)
+            {
+                if (child.name == name)
+                    child.gameObject.SetActive(state);
+            }
+        }
     }
 }

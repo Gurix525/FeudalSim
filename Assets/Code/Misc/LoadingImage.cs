@@ -1,3 +1,4 @@
+using TMPro.EditorUtilities;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -12,11 +13,13 @@ namespace Misc
 
         public static void Enable()
         {
+            Instance.gameObject.SetActive(true);
             Instance._loadingCount++;
         }
 
         public static void Disable()
         {
+            Instance.gameObject.SetActive(false);
             Instance._loadingCount--;
             Instance._loadingCount = Instance._loadingCount < 0
                 ? 0
@@ -27,6 +30,7 @@ namespace Misc
         {
             Instance = this;
             _image = GetComponent<Image>();
+            gameObject.SetActive(false);
         }
 
         private void Update()

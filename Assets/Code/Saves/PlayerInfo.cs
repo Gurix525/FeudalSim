@@ -25,8 +25,8 @@ namespace Saves
         public void Initialize()
         {
             Position = References.GetReference("Player").transform.position;
-            InventoryContainer = new(Equipment.InventoryContainer);
-            ArmorContainer = new(Equipment.ArmorContainer);
+            InventoryContainer = new(InventoryCanvas.InventoryContainer);
+            ArmorContainer = new(InventoryCanvas.ArmorContainer);
         }
     }
 }

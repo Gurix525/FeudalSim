@@ -1,26 +1,19 @@
 ﻿using System;
 using Buildings;
 using Controls;
+using PlayerControls;
 using UnityEngine;
 
 namespace UI
 {
     public class BuildingWindow : Window
     {
+        [SerializeField] private RightHandItemHook _rightHandItemHook;
         [SerializeField] private Button _structuresButton;
         [SerializeField] private Button _furtnitureButton;
         [SerializeField] private Transform _structuresList;
 
         private GameObject _buildingButtonPrefab;
-
-        #region Public
-
-        public void SwitchActive()
-        {
-            gameObject.SetActive(!gameObject.activeInHierarchy);
-        }
-
-        #endregion Public
 
         #region Unity
 
@@ -36,12 +29,16 @@ namespace UI
             LoadStructures();
             if (BuildingCursor.Current != null)
                 BuildingCursor.Current.gameObject.SetActive(true);
+            if (_rightHandItemHook != null)
+                _rightHandItemHook.SetItemActive("Hammer", true);
         }
 
         private void OnDisable()
         {
             if (BuildingCursor.Current != null)
                 BuildingCursor.Current.gameObject.SetActive(false);
+            if (_rightHandItemHook != null)
+                _rightHandItemHook.SetItemActive("Hammer", false);
         }
 
         #endregion Unity
