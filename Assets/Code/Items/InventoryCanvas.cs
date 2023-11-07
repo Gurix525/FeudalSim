@@ -8,15 +8,15 @@ namespace Items
     public class InventoryCanvas : MonoBehaviour
     {
         #region Fields
-
+        [SerializeField] private GameObject _craftingWindow;
+        [SerializeField] private GameObject _armorWindow;
+        [SerializeField] private GameObject _inventoryWindow;
         [SerializeField] private Canvases _canvases;
 
         private Container _armorContainer = new(4, isArmor: true);
         private Container _inventoryContainer = new(40);
         private GameObject[] _armorSlots;
-        private GameObject _armorWindow;
         private GameObject[] _inventorySlots = new GameObject[0];
-        private GameObject _inventoryWindow;
 
         #endregion Fields
 
@@ -163,12 +163,14 @@ namespace Items
         {
             _inventoryWindow.SetActive(true);
             _armorWindow.SetActive(true);
+            _craftingWindow.SetActive(true);
         }
 
         private void HideEquipment()
         {
             _armorWindow.SetActive(false);
             _inventoryWindow.SetActive(false);
+            _craftingWindow.SetActive(false);
         }
 
         private void _canvases_CommandPassed(object sender, string e)
