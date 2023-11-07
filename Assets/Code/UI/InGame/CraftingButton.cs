@@ -3,6 +3,7 @@ using Controls;
 using Items;
 using UnityEngine;
 using UnityEngine.UI;
+using World;
 
 namespace UI
 {
@@ -22,6 +23,14 @@ namespace UI
         {
             ItemModel = itemModel;
             _itemImage.sprite = itemModel.Sprite;
+        }
+
+        private void CraftItem()
+        {
+            if (!InventoryCanvas.InventoryContainer.MatchesRecipe(ItemModel.Recipe))
+                return;
+            InventoryCanvas.InventoryContainer.RemoveRecipeItems(ItemModel.Recipe);
+            InventoryCanvas.InventoryContainer.Insert(Item.Create(ItemModel.Name));
         }
     }
 }

@@ -40,6 +40,7 @@ namespace Items
         public string Description => _model.Description;
         public ItemModel Model => _model;
         public Sprite Sprite => _model.Sprite;
+        public Recipe Recipe => _model.Recipe;
         public Material Material => _model.Material;
         public Mesh[] BuildingMeshes => _model.BuildingMeshes;
         public Mesh Mesh => _model.Mesh;
@@ -157,7 +158,7 @@ namespace Items
         {
             _itemModels = Resources
                 .LoadAll<ItemScriptableObject>("ScriptableObjects/Items")
-                .ToDictionary(item => item.name, item => new ItemModel(item.name));
+                .ToDictionary(item => item.name, item => new ItemModel(item.name, recipe: item.Recipe));
         }
 
         #endregion Private

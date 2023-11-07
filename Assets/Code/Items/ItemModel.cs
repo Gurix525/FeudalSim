@@ -21,6 +21,7 @@ namespace Items
         public string Description { get; }
         public Sprite Sprite { get; }
         public Dictionary<string, string> Stats { get; }
+        public Recipe Recipe { get; }
         public Material Material => _material ??= Materials.GetMaterial(Name) ?? Materials.DefaultMaterial;
 
         public GameObject WeaponPrefab =>
@@ -52,12 +53,14 @@ namespace Items
         public ItemModel(
             string name,
             string description = "",
-            Dictionary<string, string> stats = null)
+            Dictionary<string, string> stats = null,
+            Recipe recipe = null)
         {
             Name = name;
             Description = description;
             Stats = stats ?? new();
             Sprite = Resources.Load<Sprite>("Sprites/Items/" + name);
+            Recipe = recipe;
         }
 
         #endregion Constructors

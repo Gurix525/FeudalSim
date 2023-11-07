@@ -12,3 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4948d85c3f0d1384dae3f83bd9fc3d46, type: 3}
   m_Name: Plank
   m_EditorClassIdentifier: 
+  <Recipe>k__BackingField:
+    <Items>k__BackingField:
+    - <Item>k__BackingField: {fileID: 11400000, guid: 48051b8d27586994dab141b4e53870fa,
+        type: 2}
+      <Count>k__BackingField: 1

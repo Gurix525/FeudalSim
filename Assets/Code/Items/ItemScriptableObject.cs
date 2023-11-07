@@ -5,5 +5,6 @@ namespace Items
     [CreateAssetMenu(fileName = "Item", menuName = "Scriptable Objects/Item")]
     public class ItemScriptableObject : ScriptableObject
     {
+        [field: SerializeField] public Recipe Recipe { get; set; }
     }
 }
