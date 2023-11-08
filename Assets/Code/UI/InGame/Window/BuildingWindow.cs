@@ -8,6 +8,8 @@ namespace UI
 {
     public class BuildingWindow : Window
     {
+        #region Fields
+
         [SerializeField] private RightHandItemHook _rightHandItemHook;
         [SerializeField] private Button _structuresButton;
         [SerializeField] private Button _furtnitureButton;
@@ -16,6 +18,9 @@ namespace UI
         [SerializeField] private GameObject _destroyingImage;
 
         private GameObject _buildingButtonPrefab;
+        private BuildingMode _buildingMode;
+
+        #endregion Fields
 
         #region Unity
 
@@ -27,14 +32,19 @@ namespace UI
             _destroyingButton.Clicked += _destroyingButton_Clicked;
         }
 
-
         private void OnEnable()
         {
-            LoadStructures();
             if (BuildingCursor.Current != null)
                 BuildingCursor.Current.gameObject.SetActive(true);
             if (_rightHandItemHook != null)
                 _rightHandItemHook.SetItemActive("Hammer", true);
+            Action methodToCall = _buildingMode switch
+            {
+                BuildingMode.Furniture => ActivateFurnitureMode,
+                BuildingMode.Destroying => ActivateDestryingMode,
+                _ => ActivateStructuresMode,
+            };
+            methodToCall();
         }
 
         private void OnDisable()
@@ -51,38 +61,52 @@ namespace UI
 
         private void _structuresButton_Clicked(object sender, EventArgs e)
         {
-            LoadStructures();
-            BuildingCursor.Current.IsDestroying = false;
-            _destroyingImage.SetActive(false);
+            ActivateStructuresMode();
         }
 
         private void _furtnitureButton_Clicked(object sender, EventArgs e)
         {
-            LoadFurniture();
-            BuildingCursor.Current.IsDestroying = false;
-            _destroyingImage.SetActive(false);
+            ActivateFurnitureMode();
         }
 
         private void _destroyingButton_Clicked(object sender, EventArgs e)
         {
+            ActivateDestryingMode();
+        }
+
+        private void ActivateStructuresMode()
+        {
+            _buildingMode = BuildingMode.Structures;
+            LoadBuildings(Building.Structures);
+            BuildingCursor.Current.IsDestroying = false;
+            _destroyingImage.SetActive(false);
+        }
+
+        private void ActivateFurnitureMode()
+        {
+            _buildingMode = BuildingMode.Furniture;
+            LoadBuildings(Building.Furniture);
+            BuildingCursor.Current.IsDestroying = false;
+            _destroyingImage.SetActive(false);
+        }
+
+        private void ActivateDestryingMode()
+        {
+            _buildingMode = BuildingMode.Destroying;
             ClearButtons();
             BuildingCursor.Current.BuildingPrefab = null;
             BuildingCursor.Current.IsDestroying = true;
             _destroyingImage.SetActive(true);
         }
 
-        private void LoadStructures()
+        private void LoadBuildings(GameObject[] buildings)
         {
             ClearButtons();
-            foreach (var structure in Building.Structures)
+            foreach (var building in buildings)
             {
                 GameObject button = Instantiate(_buildingButtonPrefab, _structuresList);
-                button.GetComponent<BuildingButton>().Initialize(structure);
+                button.GetComponent<BuildingButton>().Initialize(building);
             }
-        }
-
-        private void LoadFurniture()
-        {
         }
 
         private void ClearButtons()
@@ -94,5 +118,12 @@ namespace UI
         }
 
         #endregion Private
+
+        private enum BuildingMode
+        {
+            Structures,
+            Furniture,
+            Destroying
+        }
     }
 }
