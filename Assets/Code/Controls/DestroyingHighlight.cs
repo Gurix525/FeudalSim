@@ -1,4 +1,5 @@
 ﻿using Buildings;
+using Items;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -79,6 +80,10 @@ namespace Controls
         {
             if (_cursorWorldHit.collider.TryGetComponent(out Building building))
             {
+                foreach (Item item in Item.GetFromRecipe(building.Recipe))
+                {
+                    InventoryCanvas.InventoryContainer.Insert(item);
+                }
                 Destroy(building.gameObject);
                 _meshFilter.sharedMesh = null;
             }

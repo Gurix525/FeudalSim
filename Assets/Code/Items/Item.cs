@@ -125,6 +125,16 @@ namespace Items
             return new(itemModel, count, stats);
         }
 
+        public static IEnumerable<Item> GetFromRecipe(Recipe recipe)
+        {
+            List<Item> items = new();
+            foreach (var item in recipe.Items)
+            {
+                items.Add(Create(item.Item.name, item.Count));
+            }
+            return items;
+        }
+
         public static ItemModel GetModel(string name)
         {
             _itemModels.TryGetValue(name, out ItemModel itemModel);
