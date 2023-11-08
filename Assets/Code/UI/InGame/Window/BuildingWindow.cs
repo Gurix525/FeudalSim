@@ -11,7 +11,9 @@ namespace UI
         [SerializeField] private RightHandItemHook _rightHandItemHook;
         [SerializeField] private Button _structuresButton;
         [SerializeField] private Button _furtnitureButton;
+        [SerializeField] private Button _destroyingButton;
         [SerializeField] private Transform _structuresList;
+        [SerializeField] private GameObject _destroyingImage;
 
         private GameObject _buildingButtonPrefab;
 
@@ -22,7 +24,9 @@ namespace UI
             _buildingButtonPrefab = Resources.Load<GameObject>("Prefabs/UI/BuildingButton");
             _structuresButton.Clicked += _structuresButton_Clicked;
             _furtnitureButton.Clicked += _furtnitureButton_Clicked;
+            _destroyingButton.Clicked += _destroyingButton_Clicked;
         }
+
 
         private void OnEnable()
         {
@@ -48,11 +52,23 @@ namespace UI
         private void _structuresButton_Clicked(object sender, EventArgs e)
         {
             LoadStructures();
+            BuildingCursor.Current.IsDestroying = false;
+            _destroyingImage.SetActive(false);
         }
 
         private void _furtnitureButton_Clicked(object sender, EventArgs e)
         {
             LoadFurniture();
+            BuildingCursor.Current.IsDestroying = false;
+            _destroyingImage.SetActive(false);
+        }
+
+        private void _destroyingButton_Clicked(object sender, EventArgs e)
+        {
+            ClearButtons();
+            BuildingCursor.Current.BuildingPrefab = null;
+            BuildingCursor.Current.IsDestroying = true;
+            _destroyingImage.SetActive(true);
         }
 
         private void LoadStructures()

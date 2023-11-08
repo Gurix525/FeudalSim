@@ -14,6 +14,7 @@ namespace Controls
         [SerializeField] private MainCursor _mainCursor;
         [SerializeField] private BuildingCursor _buildingCursor;
         [SerializeField] private Material _notBlockedMaterial;
+        [SerializeField] private Material _blockedMaterial;
 
         private MeshFilter _meshFilter;
         private PlayerInput _playerInput;
