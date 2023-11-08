@@ -16,7 +16,7 @@ namespace UI
         protected override void Execute()
         {
             base.Execute();
-            // To be added
+            CraftItem();
         }
 
         public void Initialize(ItemModel itemModel)

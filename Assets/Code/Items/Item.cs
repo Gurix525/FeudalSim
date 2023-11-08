@@ -158,7 +158,7 @@ namespace Items
         {
             _itemModels = Resources
                 .LoadAll<ItemScriptableObject>("ScriptableObjects/Items")
-                .ToDictionary(item => item.name, item => new ItemModel(item.name, recipe: item.Recipe));
+                .ToDictionary(item => item.name, item => new ItemModel(item));
         }
 
         #endregion Private

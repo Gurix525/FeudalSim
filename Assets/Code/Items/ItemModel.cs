@@ -53,14 +53,24 @@ namespace Items
         public ItemModel(
             string name,
             string description = "",
+            Sprite sprite = null,
             Dictionary<string, string> stats = null,
             Recipe recipe = null)
         {
             Name = name;
             Description = description;
             Stats = stats ?? new();
-            Sprite = Resources.Load<Sprite>("Sprites/Items/" + name);
+            Sprite = sprite;
             Recipe = recipe;
+        }
+
+        public ItemModel(ItemScriptableObject item)
+        {
+            Name = item.name;
+            Description = item.Description;
+            Stats = new();
+            Sprite = item.Sprite;
+            Recipe = item.Recipe;
         }
 
         #endregion Constructors

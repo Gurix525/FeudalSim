@@ -34,7 +34,7 @@ namespace UI
             ClearButtons();
             foreach (var item in Item.ItemModels)
             {
-                if (item.Recipe.Items.Length == 0)
+                if (item.Recipe.IsEmpty)
                     continue;
                 GameObject button = Instantiate(_craftingButtonPrefab, _itemsList);
                 button.GetComponent<CraftingButton>().Initialize(item);

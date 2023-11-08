@@ -8,6 +8,8 @@ namespace Items
     {
         [field: SerializeField] public RecipeItem[] Items { get; set; }
 
+        public bool IsEmpty => Items == null ? true : Items.Length == 0;
+
         [Serializable]
         public class RecipeItem
         {
