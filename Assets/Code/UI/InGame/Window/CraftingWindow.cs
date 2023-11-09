@@ -24,11 +24,11 @@ namespace UI
 
         private void Start()
         {
-            LoadItems();
         }
 
         private void OnEnable()
         {
+            LoadItems();
             InventoryCanvas.InventoryContainer.CollectionUpdated
                 .AddListener(InventoryContainer_CollectionUpdated);
         }
@@ -49,7 +49,7 @@ namespace UI
             List<CraftingButton> buttons = new();
             foreach (var item in Item.ItemModels)
             {
-                if (item.Recipe.IsEmpty)
+                if (item.Recipe.IsEmpty || !item.Recipe.IsDiscovered)
                     continue;
                 GameObject button = Instantiate(_craftingButtonPrefab, _itemsList);
                 CraftingButton craftingButton = button.GetComponent<CraftingButton>();
@@ -57,7 +57,6 @@ namespace UI
                 buttons.Add(craftingButton);
             }
             _buttons = buttons.ToArray();
-            UpdateCounters();
         }
 
         private void ClearButtons()
@@ -76,6 +75,7 @@ namespace UI
 
         private void InventoryContainer_CollectionUpdated()
         {
+            LoadItems();
             UpdateCounters();
         }
 

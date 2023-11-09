@@ -22,6 +22,7 @@ namespace Items
         public Sprite Sprite { get; }
         public Dictionary<string, string> Stats { get; }
         public Recipe Recipe { get; }
+        public bool IsDiscovered { get; private set; }
         public Material Material => _material ??= Materials.GetMaterial(Name) ?? Materials.DefaultMaterial;
 
         public GameObject WeaponPrefab =>
@@ -74,5 +75,14 @@ namespace Items
         }
 
         #endregion Constructors
+
+        #region Public
+
+        public void MarkDiscovered()
+        {
+            IsDiscovered = true;
+        }
+
+        #endregion Public
     }
 }

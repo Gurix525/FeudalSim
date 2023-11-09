@@ -8,6 +8,7 @@ namespace Items
     public class InventoryCanvas : MonoBehaviour
     {
         #region Fields
+
         [SerializeField] private GameObject _craftingWindow;
         [SerializeField] private GameObject _armorWindow;
         [SerializeField] private GameObject _inventoryWindow;
@@ -87,6 +88,7 @@ namespace Items
         private void Awake()
         {
             Instance = this;
+            _inventoryContainer.CollectionUpdated.AddListener(_inventoryContainer_CollectionUpdated);
         }
 
         private void Start()
@@ -179,6 +181,15 @@ namespace Items
                 SwitchEquipmentState();
             else
                 HideEquipment();
+        }
+
+        private void _inventoryContainer_CollectionUpdated()
+        {
+            foreach (var item in _inventoryContainer)
+            {
+                if (item != null)
+                    item.Model.MarkDiscovered();
+            }
         }
 
         #endregion Private

@@ -118,6 +118,8 @@ namespace UI
             List<BuildingButton> buttons = new();
             foreach (var building in buildings)
             {
+                if (!building.GetComponent<Building>().Recipe.IsDiscovered)
+                    continue;
                 GameObject button = Instantiate(_buildingButtonPrefab, _structuresList);
                 var buildingButton = button.GetComponent<BuildingButton>();
                 buildingButton.Initialize(building);
