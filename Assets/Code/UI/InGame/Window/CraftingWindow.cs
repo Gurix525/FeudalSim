@@ -57,6 +57,7 @@ namespace UI
                 buttons.Add(craftingButton);
             }
             _buttons = buttons.ToArray();
+            UpdateCounters();
         }
 
         private void ClearButtons()
@@ -76,7 +77,6 @@ namespace UI
         private void InventoryContainer_CollectionUpdated()
         {
             LoadItems();
-            UpdateCounters();
         }
 
         #endregion Private

@@ -6,9 +6,8 @@ namespace Items
     [Serializable]
     public class Recipe
     {
+        private bool _isDiscovered = false;
         [field: SerializeField] public RecipeItem[] Items { get; set; }
-
-        private bool _isDiscovered;
 
         public bool IsEmpty => Items == null ? true : Items.Length == 0;
 
@@ -16,16 +15,22 @@ namespace Items
         {
             get
             {
-                if (_isDiscovered)
-                    return true;
+                //Debug.Log(_isDiscovered);
+                //if (_isDiscovered)
+                //    return true;
                 foreach (var item in Items)
                 {
-                    if (!Item.GetModel(item.Item.name).IsDiscovered)
+                    if (!Item.GetModel(item.Name).IsDiscovered)
                         return false;
                 }
-                _isDiscovered = true;
+                //_isDiscovered = true;
                 return true;
             }
+        }
+
+        public override string ToString()
+        {
+            return string.Join('\n', (object)Items);
         }
 
         [Serializable]
@@ -33,6 +38,13 @@ namespace Items
         {
             [field: SerializeField] public ItemScriptableObject Item { get; set; }
             [field: SerializeField] public int Count { get; set; }
+
+            public string Name => Item.name;
+
+            public override string ToString()
+            {
+                return $"{Item.name}: {Count}";
+            }
         }
     }
 }

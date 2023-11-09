@@ -22,7 +22,7 @@ namespace Items
         public Sprite Sprite { get; }
         public Dictionary<string, string> Stats { get; }
         public Recipe Recipe { get; }
-        public bool IsDiscovered { get; private set; }
+        public bool IsDiscovered { get; private set; } = false;
         public Material Material => _material ??= Materials.GetMaterial(Name) ?? Materials.DefaultMaterial;
 
         public GameObject WeaponPrefab =>
@@ -81,6 +81,11 @@ namespace Items
         public void MarkDiscovered()
         {
             IsDiscovered = true;
+        }
+
+        public override string ToString()
+        {
+            return Name;
         }
 
         #endregion Public
