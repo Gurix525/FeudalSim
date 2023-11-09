@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using Buildings;
 using Controls;
+using Items;
 using PlayerControls;
 using UnityEngine;
 
@@ -18,6 +20,7 @@ namespace UI
         [SerializeField] private GameObject _destroyingImage;
 
         private GameObject _buildingButtonPrefab;
+        private BuildingButton[] _buttons;
         private BuildingMode _buildingMode;
 
         #endregion Fields
@@ -45,6 +48,9 @@ namespace UI
                 _ => ActivateStructuresMode,
             };
             methodToCall();
+            UpdateCounters();
+            InventoryCanvas.InventoryContainer.CollectionUpdated
+                .AddListener(InventoryContainer_CollectionUpdated);
         }
 
         private void OnDisable()
@@ -53,6 +59,8 @@ namespace UI
                 BuildingCursor.Current.gameObject.SetActive(false);
             if (_rightHandItemHook != null)
                 _rightHandItemHook.SetItemActive("Hammer", false);
+            InventoryCanvas.InventoryContainer.CollectionUpdated
+                .RemoveListener(InventoryContainer_CollectionUpdated);
         }
 
         #endregion Unity
@@ -72,6 +80,11 @@ namespace UI
         private void _destroyingButton_Clicked(object sender, EventArgs e)
         {
             ActivateDestryingMode();
+        }
+
+        private void InventoryContainer_CollectionUpdated()
+        {
+            UpdateCounters();
         }
 
         private void ActivateStructuresMode()
@@ -102,11 +115,16 @@ namespace UI
         private void LoadBuildings(GameObject[] buildings)
         {
             ClearButtons();
+            List<BuildingButton> buttons = new();
             foreach (var building in buildings)
             {
                 GameObject button = Instantiate(_buildingButtonPrefab, _structuresList);
-                button.GetComponent<BuildingButton>().Initialize(building);
+                var buildingButton = button.GetComponent<BuildingButton>();
+                buildingButton.Initialize(building);
+                buttons.Add(buildingButton);
             }
+            _buttons = buttons.ToArray();
+            UpdateCounters();
         }
 
         private void ClearButtons()
@@ -115,6 +133,13 @@ namespace UI
             {
                 Destroy(_structuresList.GetChild(i).gameObject);
             }
+            _buttons = new BuildingButton[0];
+        }
+
+        private void UpdateCounters()
+        {
+            foreach (var button in _buttons)
+                button.UpdateCounter();
         }
 
         #endregion Private

@@ -1,15 +1,15 @@
-using Buildings;
-using Controls;
 using Items;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using World;
 
 namespace UI
 {
     public class CraftingButton : Button
     {
         [SerializeField] private Image _itemImage;
+        [SerializeField] private TextMeshProUGUI _counter;
+        [SerializeField] private GameObject _buttonBlock;
 
         public ItemModel ItemModel { get; private set; }
 
@@ -23,6 +23,13 @@ namespace UI
         {
             ItemModel = itemModel;
             _itemImage.sprite = itemModel.Sprite;
+        }
+
+        public void UpdateCounter()
+        {
+            _counter.text = InventoryCanvas.InventoryContainer
+                .GetRecipeMatchCount(ItemModel.Recipe).ToString();
+            _buttonBlock.SetActive(_counter.text == "0");
         }
 
         private void CraftItem()

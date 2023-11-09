@@ -1,17 +1,19 @@
-﻿using System;
-using Buildings;
-using Controls;
+﻿using System.Collections.Generic;
 using Items;
-using PlayerControls;
 using UnityEngine;
 
 namespace UI
 {
     public class CraftingWindow : Window
     {
+        #region Fields
+
         [SerializeField] private Transform _itemsList;
 
         private GameObject _craftingButtonPrefab;
+        private CraftingButton[] _buttons;
+
+        #endregion Fields
 
         #region Unity
 
@@ -20,9 +22,21 @@ namespace UI
             _craftingButtonPrefab = Resources.Load<GameObject>("Prefabs/UI/CraftingButton");
         }
 
-        private void OnEnable()
+        private void Start()
         {
             LoadItems();
+        }
+
+        private void OnEnable()
+        {
+            InventoryCanvas.InventoryContainer.CollectionUpdated
+                .AddListener(InventoryContainer_CollectionUpdated);
+        }
+
+        private void OnDisable()
+        {
+            InventoryCanvas.InventoryContainer.CollectionUpdated
+                .RemoveListener(InventoryContainer_CollectionUpdated);
         }
 
         #endregion Unity
@@ -32,13 +46,18 @@ namespace UI
         private void LoadItems()
         {
             ClearButtons();
+            List<CraftingButton> buttons = new();
             foreach (var item in Item.ItemModels)
             {
                 if (item.Recipe.IsEmpty)
                     continue;
                 GameObject button = Instantiate(_craftingButtonPrefab, _itemsList);
-                button.GetComponent<CraftingButton>().Initialize(item);
+                CraftingButton craftingButton = button.GetComponent<CraftingButton>();
+                craftingButton.Initialize(item);
+                buttons.Add(craftingButton);
             }
+            _buttons = buttons.ToArray();
+            UpdateCounters();
         }
 
         private void ClearButtons()
@@ -47,6 +66,17 @@ namespace UI
             {
                 Destroy(_itemsList.GetChild(i).gameObject);
             }
+        }
+
+        private void UpdateCounters()
+        {
+            foreach (var button in _buttons)
+                button.UpdateCounter();
+        }
+
+        private void InventoryContainer_CollectionUpdated()
+        {
+            UpdateCounters();
         }
 
         #endregion Private
