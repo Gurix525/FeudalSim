@@ -32,6 +32,7 @@ namespace Controls
         [SerializeField] private MeshHighlight _meshHighlight;
         [SerializeField] private GameObject _buildingCursor;
         [SerializeField] private GameObject _combatCursor;
+        [SerializeField] private TooltipWindow _tooltipWindow;
 
         private ItemReference _itemReference;
         private GameObject _objectUnderCursor;
@@ -109,7 +110,7 @@ namespace Controls
 
         #region Conditions
 
-        private bool CanInteractWithWorld => 
+        private bool CanInteractWithWorld =>
             !_buildingCursor.activeInHierarchy
             && !_combatCursor.activeInHierarchy;
 
@@ -305,10 +306,18 @@ namespace Controls
                     .ToList()
                     .ForEach(handler => handler.OnHoverEnd());
             if (e.NewObject)
+            {
                 e.NewObject
                     .GetComponents<IMouseHandler>()
                     .ToList()
                     .ForEach(handler => handler.OnHoverStart());
+                if (e.NewObject.TryGetComponent(out ITooltipSource tooltipSource))
+                {
+                    _tooltipWindow.ShowTooltip(tooltipSource.GetTooltip());
+                }
+                else
+                    _tooltipWindow.HideTooltip();
+            }
         }
 
         private void SetDraggedObject(GameObject value)
