@@ -313,10 +313,10 @@ namespace Controls
                     .ForEach(handler => handler.OnHoverStart());
                 if (e.NewObject.TryGetComponent(out ITooltipSource tooltipSource))
                 {
-                    _tooltipWindow.ShowTooltip(tooltipSource.GetTooltip());
+                    _tooltipWindow?.ShowTooltip(tooltipSource.GetTooltip());
                 }
                 else
-                    _tooltipWindow.HideTooltip();
+                    _tooltipWindow?.HideTooltip();
             }
         }
 

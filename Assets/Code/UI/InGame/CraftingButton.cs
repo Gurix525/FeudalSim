@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 namespace UI
 {
-    public class CraftingButton : Button
+    public class CraftingButton : Button, ITooltipSource
     {
         [SerializeField] private Image _itemImage;
         [SerializeField] private TextMeshProUGUI _counter;
@@ -38,6 +38,14 @@ namespace UI
                 return;
             InventoryCanvas.InventoryContainer.RemoveRecipeItems(ItemModel.Recipe);
             InventoryCanvas.InventoryContainer.Insert(Item.Create(ItemModel.Name));
+        }
+
+        public Tooltip GetTooltip()
+        {
+            TooltipElement title = new(ItemModel.Name, TooltipElement.FontType.Title);
+            TooltipElement description = new(ItemModel.Description);
+            Tooltip thisTooltip = new(title, description);
+            return thisTooltip.Merge(ItemModel.Recipe.GetTooltip());
         }
     }
 }

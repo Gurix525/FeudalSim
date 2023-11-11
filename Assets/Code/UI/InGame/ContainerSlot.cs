@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 namespace UI
 {
-    public class ContainerSlot : MonoBehaviour, IMouseHandler
+    public class ContainerSlot : MonoBehaviour, IMouseHandler, ITooltipSource
     {
         #region Fields
 
@@ -51,6 +51,15 @@ namespace UI
         public void Clear()
         {
             _container.CollectionUpdated.RemoveListener(OnCollectionUpdated);
+        }
+
+        public Tooltip GetTooltip()
+        {
+            if (_container[_slotIndex] == null)
+                return null;
+            TooltipElement title = new(_container[_slotIndex].Name, TooltipElement.FontType.Title);
+            TooltipElement description = new(_container[_slotIndex].Description);
+            return new(title, description);
         }
 
         #endregion Public
