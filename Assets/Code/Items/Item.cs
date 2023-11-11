@@ -40,6 +40,7 @@ namespace Items
         public string Description => _model.Description;
         public ItemModel Model => _model;
         public Sprite Sprite => _model.Sprite;
+        public Recipe Recipe => _model.Recipe;
         public Material Material => _model.Material;
         public Mesh[] BuildingMeshes => _model.BuildingMeshes;
         public Mesh Mesh => _model.Mesh;
@@ -124,11 +125,22 @@ namespace Items
             return new(itemModel, count, stats);
         }
 
+        public static IEnumerable<Item> GetFromRecipe(Recipe recipe)
+        {
+            List<Item> items = new();
+            foreach (var item in recipe.Items)
+            {
+                items.Add(Create(item.Item.name, item.Count));
+            }
+            return items;
+        }
+
         public static ItemModel GetModel(string name)
         {
             _itemModels.TryGetValue(name, out ItemModel itemModel);
             return itemModel;
         }
+
 
         #endregion Public
 
@@ -157,7 +169,7 @@ namespace Items
         {
             _itemModels = Resources
                 .LoadAll<ItemScriptableObject>("ScriptableObjects/Items")
-                .ToDictionary(item => item.name, item => new ItemModel(item.name));
+                .ToDictionary(item => item.name, item => new ItemModel(item));
         }
 
         #endregion Private

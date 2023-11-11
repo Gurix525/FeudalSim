@@ -1,3 +1,4 @@
+using System.Linq;
 using Items;
 using UnityEngine;
 
@@ -18,7 +19,7 @@ namespace Buildings
         {
             Structures = Resources.LoadAll<GameObject>("Prefabs/Buildings/Structures");
             Furniture = Resources.LoadAll<GameObject>("Prefabs/Buildings/Furniture");
-            foreach (GameObject structure in Structures)
+            foreach (GameObject structure in Structures.Concat(Furniture))
             {
                 var building = structure.GetComponent<Building>();
                 building.RenderSprite = PNGScanner.RenderSprite(structure);

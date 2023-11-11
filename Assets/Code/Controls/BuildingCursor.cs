@@ -1,6 +1,4 @@
 ﻿using System;
-using Buildings;
-using Extensions;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -12,6 +10,8 @@ namespace Controls
 
         public event EventHandler<ObjectChangedEventArgs> BuildingPrefabChanged;
 
+        public event EventHandler<bool> DestroyingModeChanged;
+
         #endregion Events
 
         #region Fields
@@ -20,10 +20,9 @@ namespace Controls
         //[SerializeField] private GameObject _meshHighlight;
 
         private GameObject _buildingPrefab;
-        private Vector3 _pivotOffset;
-        private Vector3 _cursorWorldPosition;
-        private Vector3 _adjustedWorldPosition;
+        private RaycastHit _cursorRaycastHit;
         private bool _isOverUI;
+        private bool _isDestroying;
 
         #endregion Fields
 
@@ -39,6 +38,19 @@ namespace Controls
                     ObjectChangedEventArgs eventArgs = new(_buildingPrefab, value);
                     _buildingPrefab = value;
                     BuildingPrefabChanged?.Invoke(this, eventArgs);
+                }
+            }
+        }
+
+        public bool IsDestroying
+        {
+            get => _isDestroying;
+            set
+            {
+                if (value != _isDestroying)
+                {
+                    _isDestroying = value;
+                    DestroyingModeChanged?.Invoke(this, value);
                 }
             }
         }
@@ -66,13 +78,13 @@ namespace Controls
             Current = this;
             _mainCursor.WorldPositionChanged += _mainCursor_WorldPositionChanged;
             _mainCursor.OverUIStateChanged += _mainCursor_OverUIStateChanged;
-            BuildingPrefabChanged += BuildingCursor_BuildingPrefabChanged;
             gameObject.SetActive(false);
         }
 
         private void OnDisable()
         {
             BuildingPrefab = null;
+            IsDestroying = false;
         }
 
         #endregion Unity
@@ -88,20 +100,7 @@ namespace Controls
 
         private void _mainCursor_WorldPositionChanged(object sender, RaycastHitChangedEventArgs e)
         {
-            //_cursorWorldPosition = e.NewRaycastHit.Value.point;
-            //_adjustedWorldPosition = _cursorWorldPosition.Floor() + _pivotOffset;
-            //_meshHighlight.transform.position = _adjustedWorldPosition;
-        }
-
-        private void BuildingCursor_BuildingPrefabChanged(object sender, ObjectChangedEventArgs e)
-        {
-            //if (e.NewObject != null)
-            //{
-            //    _pivotOffset = e.NewObject.GetComponent<Building>().PivotOffset;
-            //    _meshHighlight.GetComponent<MeshFilter>().sharedMesh = e.NewObject.GetComponent<MeshFilter>().sharedMesh;
-            //}
-            //else
-            //    _meshHighlight.GetComponent<MeshFilter>().sharedMesh = null;
+            _cursorRaycastHit = e.NewRaycastHit.Value;
         }
 
         private void OnLeftMouseButtonPress()

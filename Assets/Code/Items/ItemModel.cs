@@ -21,6 +21,8 @@ namespace Items
         public string Description { get; }
         public Sprite Sprite { get; }
         public Dictionary<string, string> Stats { get; }
+        public Recipe Recipe { get; }
+        public bool IsDiscovered { get; private set; } = false;
         public Material Material => _material ??= Materials.GetMaterial(Name) ?? Materials.DefaultMaterial;
 
         public GameObject WeaponPrefab =>
@@ -52,14 +54,40 @@ namespace Items
         public ItemModel(
             string name,
             string description = "",
-            Dictionary<string, string> stats = null)
+            Sprite sprite = null,
+            Dictionary<string, string> stats = null,
+            Recipe recipe = null)
         {
             Name = name;
             Description = description;
             Stats = stats ?? new();
-            Sprite = Resources.Load<Sprite>("Sprites/Items/" + name);
+            Sprite = sprite;
+            Recipe = recipe;
+        }
+
+        public ItemModel(ItemScriptableObject item)
+        {
+            Name = item.name;
+            Description = item.Description;
+            Stats = new();
+            Sprite = item.Sprite;
+            Recipe = item.Recipe;
         }
 
         #endregion Constructors
+
+        #region Public
+
+        public void MarkDiscovered()
+        {
+            IsDiscovered = true;
+        }
+
+        public override string ToString()
+        {
+            return Name;
+        }
+
+        #endregion Public
     }
 }

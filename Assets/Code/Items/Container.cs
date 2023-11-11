@@ -184,15 +184,26 @@ namespace Items
 
         public bool MatchesRecipe(Recipe recipe)
         {
+            return GetRecipeMatchCount(recipe) > 0;
+        }
+
+        public int GetRecipeMatchCount(Recipe recipe)
+        {
+            int max = int.MaxValue;
             foreach (var item in recipe.Items)
             {
-                if (!Contains(Item.GetModel(item.Item.name), item.Count))
-                    return false;
+                ItemModel model = Item.GetModel(item.Item.name);
+                max = Math.Min(max, GetItemCount(model) / item.Count);
             }
-            return true;
+            return max;
         }
 
         public bool Contains(ItemModel model, int count)
+        {
+            return GetItemCount(model) >= count;
+        }
+
+        public int GetItemCount(ItemModel model)
         {
             int foundCount = 0;
             foreach (var item in _items)
@@ -202,7 +213,7 @@ namespace Items
                 if (item.Model == model)
                     foundCount += item.Count;
             }
-            return foundCount >= count;
+            return foundCount;
         }
 
         public Item Extract(ItemModel model, int count = 0)
