@@ -255,21 +255,21 @@ namespace World
 
         private static Vector2Int[] GetChunksToReload(Vector2Int cellPosition)
         {
-            List<Vector2Int> chunks = new();
+            List<Vector2Int> chunkPositions = new();
             Vector2Int centralChunk = GetChunkCoordinates(cellPosition);
-            chunks.Add(centralChunk);
+            chunkPositions.Add(centralChunk);
             Vector2Int vertice = GetVerticeCoordinates(cellPosition);
             if (vertice.x <= 1)
-                chunks.Add(new(centralChunk.x - 1, centralChunk.y));
+                chunkPositions.Add(new(centralChunk.x - 1, centralChunk.y));
             else if (vertice.x >= 48)
-                chunks.Add(new(centralChunk.x + 1, centralChunk.y));
+                chunkPositions.Add(new(centralChunk.x + 1, centralChunk.y));
             if (vertice.y <= 1)
-                chunks.Add(new(centralChunk.x, centralChunk.y - 1));
+                chunkPositions.Add(new(centralChunk.x, centralChunk.y - 1));
             else if (vertice.y >= 48)
-                chunks.Add(new(centralChunk.x, centralChunk.y + 1));
-            if (chunks.Count == 3)
-                chunks.Add(new(chunks[1].x, chunks[2].y));
-            return chunks.ToArray();
+                chunkPositions.Add(new(centralChunk.x, centralChunk.y + 1));
+            if (chunkPositions.Count == 3)
+                chunkPositions.Add(new(chunkPositions[1].x, chunkPositions[2].y));
+            return chunkPositions.ToArray();
         }
 
         private static Cell[] Get4Neighbours(Vector2Int cellPosition)

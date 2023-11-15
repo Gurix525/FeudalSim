@@ -39,9 +39,9 @@ namespace World
         {
             Color[] colors = new Color[2601];
             var thisChunk = Terrain.Chunks[Position].Colors;
-            var rightChunk = Terrain.Chunks[new(Position.x + 1, Position.y)].Colors;
-            var upChunk = Terrain.Chunks[new(Position.x, Position.y + 1)].Colors;
-            var diagonalChunk = Terrain.Chunks[new(Position.x + 1, Position.y + 1)].Colors;
+            Terrain.Chunks.TryGetValue(new(Position.x + 1, Position.y), out Chunk rightChunk);
+            Terrain.Chunks.TryGetValue(new(Position.x, Position.y + 1), out Chunk upChunk);
+            Terrain.Chunks.TryGetValue(new(Position.x + 1, Position.y + 1), out Chunk diagonalChunk);
             for (int z = 0; z < 51; z++)
             {
                 for (int x = 0; x < 51; x++)
@@ -49,11 +49,26 @@ namespace World
                     if (z < 50 && x < 50)
                         colors[z * 51 + x] = thisChunk[z * 50 + x];
                     else if (x == 50 && z < 50)
-                        colors[z * 51 + x] = rightChunk[z * 50];
+                    {
+                        if (rightChunk != null)
+                            colors[z * 51 + x] = rightChunk.Colors[z * 50];
+                        else
+                            colors[z * 51 + x] = thisChunk[z * 50 + x - 1];
+                    }
                     else if (z == 50 && x < 50)
-                        colors[z * 51 + x] = upChunk[x];
+                    {
+                        if (upChunk != null)
+                            colors[z * 51 + x] = upChunk.Colors[x];
+                        else
+                            colors[z * 51 + x] = thisChunk[2500 + x];
+                    }
                     else
-                        colors[2600] = diagonalChunk[0];
+                    {
+                        if (diagonalChunk != null)
+                            colors[2600] = diagonalChunk.Colors[0];
+                        else
+                            colors[2600] = thisChunk[^1];
+                    }
                 }
             }
             _mesh.SetColors(colors);
@@ -68,9 +83,9 @@ namespace World
 
             Vector3[] vertices = new Vector3[2601];
             var thisChunk = Terrain.Chunks[Position].Vertices;
-            var rightChunk = Terrain.Chunks[new(Position.x + 1, Position.y)].Vertices;
-            var upChunk = Terrain.Chunks[new(Position.x, Position.y + 1)].Vertices;
-            var diagonalChunk = Terrain.Chunks[new(Position.x + 1, Position.y + 1)].Vertices;
+            Terrain.Chunks.TryGetValue(new(Position.x + 1, Position.y), out Chunk rightChunk);
+            Terrain.Chunks.TryGetValue(new(Position.x, Position.y + 1), out Chunk upChunk);
+            Terrain.Chunks.TryGetValue(new(Position.x + 1, Position.y + 1), out Chunk diagonalChunk);
             for (int z = 0; z < 51; z++)
             {
                 for (int x = 0; x < 51; x++)
@@ -78,11 +93,26 @@ namespace World
                     if (z < 50 && x < 50)
                         vertices[z * 51 + x] = thisChunk[z * 50 + x];
                     else if (x == 50 && z < 50)
-                        vertices[z * 51 + x] = rightChunk[z * 50];
+                    {
+                        if (rightChunk != null)
+                            vertices[z * 51 + x] = rightChunk.Vertices[z * 50];
+                        else
+                            vertices[z * 51 + x] = thisChunk[z * 50 + x - 1];
+                    }
                     else if (z == 50 && x < 50)
-                        vertices[z * 51 + x] = upChunk[x];
+                    {
+                        if (upChunk != null)
+                            vertices[z * 51 + x] = upChunk.Vertices[x];
+                        else
+                            vertices[z * 51 + x] = thisChunk[(z - 1) * 50 + x];
+                    }
                     else
-                        vertices[2600] = diagonalChunk[0];
+                    {
+                        if (diagonalChunk != null)
+                            vertices[2600] = diagonalChunk.Vertices[0];
+                        else
+                            vertices[2600] = thisChunk[^1];
+                    }
                 }
             }
             int[] triangles = new int[15000];

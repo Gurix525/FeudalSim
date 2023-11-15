@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Extensions;
 using Misc;
 using Unity.AI.Navigation;
 using UnityEngine;
@@ -17,6 +18,9 @@ namespace World
         private Dictionary<Vector2Int, ChunkRenderer> _chunks = new();
         private static TerrainRenderer _instance;
         private static float _timeSinceLastNavMeshRebuild = 0F;
+
+        private static readonly int _minChunkNumber = -9;
+        private static readonly int _maxChunkNumber = 10;
 
         #endregion Fields
 
@@ -56,6 +60,8 @@ namespace World
 
         public static void ReloadChunk(Vector2Int position)
         {
+            if (!IsChunkPositionValid(position))
+                return;
             _instance._chunks[position].GenerateMesh();
             TerrainUpdating.Invoke(ActiveChunk.Position);
         }
@@ -129,16 +135,18 @@ namespace World
 
         private static void GenerateChunks(Vector2Int activePosition)
         {
-            int mod = activePosition == Vector2Int.zero ? 2 : 0;
+            int mod = activePosition == Vector2Int.zero ? 11 : 0;
             for (int z = activePosition.y - 1 - mod; z <= activePosition.y + 2 + mod; z++)
                 for (int x = activePosition.x - 1 - mod; x <= activePosition.x + 2 + mod; x++)
-                    if (!Terrain.Chunks.ContainsKey(new(x, z)))
-                        Terrain.Chunks.Add(new(x, z), new(new Vector2Int(x, z)));
+                    if (IsChunkPositionValid(new(x, z)))
+                        if (!Terrain.Chunks.ContainsKey(new(x, z)))
+                            Terrain.Chunks.Add(new(x, z), new(new Vector2Int(x, z)));
 
             for (int z = activePosition.y - 1; z <= activePosition.y + 1; z++)
                 for (int x = activePosition.x - 1; x <= activePosition.x + 1; x++)
                     if (!_instance._chunks.ContainsKey(new(x, z)))
-                        GenerateChunk(x, z);
+                        if (IsChunkPositionValid(new(x, z)))
+                            GenerateChunk(x, z);
 
             foreach (var chunk in Terrain.Chunks.Values)
             {
@@ -173,6 +181,12 @@ namespace World
             _timeSinceLastNavMeshRebuild = 0F;
             NavMeshHasToRebuild = false;
             NavMeshSurface.BuildNavMesh();
+        }
+
+        private static bool IsChunkPositionValid(Vector2Int position)
+        {
+            return position.x.IsInRangeInclusive(_minChunkNumber, _maxChunkNumber)
+                && position.y.IsInRangeInclusive(_minChunkNumber, _maxChunkNumber);
         }
 
         #endregion Private
