@@ -4,6 +4,7 @@
  * Note: Not yet compatible with Unity Burst.
  */
 
+using System;
 using System.Runtime.CompilerServices;
 
 namespace World
@@ -246,7 +247,8 @@ namespace World
             double yr = xz * -ROOT3OVER3 + yy;
 
             // Evaluate both lattices to form a BCC lattice.
-            return Noise3_UnrotatedBase(seed, xr, yr, zr);
+            float unrotatedBase = Noise3_UnrotatedBase(seed, xr, yr, zr);
+            return unrotatedBase * Math.Sign(unrotatedBase);
         }
 
         /**

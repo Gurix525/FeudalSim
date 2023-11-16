@@ -37,7 +37,7 @@ namespace UI
             GameManager.WorldName = _nameInput.Text;
             GameManager.WorldCreationTime = DateTime.Now.Ticks;
             GameManager.LastPlayedTime = DateTime.Now.Ticks;
-            TerrainRenderer.GenerateWorld(Vector2Int.zero);
+            yield return TerrainRenderer.GenerateWorld(Vector2Int.zero);
             GrassInstancer.MarkToReload();
             float originHeight = World.Terrain.GetHeight(new(0F, 0F));
             var player = References.GetReference("Player");

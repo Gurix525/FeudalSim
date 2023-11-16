@@ -1,5 +1,4 @@
 ﻿using Extensions;
-using UnityEditor;
 using UnityEngine;
 
 namespace World
@@ -30,7 +29,7 @@ namespace World
             float remapped = sum.Remap(0F, maxStrength, 0F, 1F);
 
             System.Random random = new();
-            return (float)random.NextDouble() + 0.3F > remapped ? 0 : 1;
+            return (float)random.NextDouble() + 0.5F > remapped ? 0 : 1;
         }
 
         public static float GetBouldersNoise(float x, float z)
@@ -47,17 +46,18 @@ namespace World
             float remapped = sum.Remap(0F, maxStrength, 0F, 1F);
 
             System.Random random = new();
-            return (float)random.NextDouble() + 0.25F > remapped ? 0 : 1;
+            return (float)random.NextDouble() + 0.4F > remapped ? 0 : 1;
         }
 
         public static float GetNoise(float x, float y, float min = 0F, float max = 1F, float detailScale = 1F)
         {
-            return OpenSimplex2S.Noise3_ImproveXZ(
+            float a = OpenSimplex2S.Noise3_ImproveXZ(
                 Seed,
                 x * detailScale,
                 Seed,
-                y * detailScale)
-                .Remap(0F, 1F, min, max);
+                y * detailScale);
+            float b = a.Remap(0F, 1F, min, max);
+            return b;
         }
 
         public static float GetNoise(Vector3 position, float min = 0F, float max = 1F, float detailScale = 1F)
@@ -70,7 +70,7 @@ namespace World
             float mediumNoise = GetMediumNoise(x, z);
             float largeNoise = GetLargeNoise(x, z);
             int mapEndModifier = GetMapEndModifier(x, z);
-            return Mathf.RoundToInt(Mathf.Round(Mathf.Round(mediumNoise * largeNoise * 2F) / 2F) / 4F) + 3 - mapEndModifier;
+            return Mathf.RoundToInt(Mathf.Round(Mathf.Round(mediumNoise * largeNoise * 2F) / 2F) / 4F) - 1 - mapEndModifier;
         }
 
         private static float GetMediumNoise(int x, int z)
@@ -109,7 +109,7 @@ namespace World
             float modifier = (distanceFromOrigin - 400F).Remap(0F, 100F, 0F, 1F).Clamp(0F, 1F);
             if (modifier != 0F)
             {
-                modifier *= GetNoise(x, z, 0.5F, 1F, 0.025F);
+                modifier *= GetNoise(x, z, 0.2F, 1F, 0.015F);
                 modifier = Mathf.Sqrt(modifier);
             }
             return Mathf.RoundToInt(modifier * 20F);

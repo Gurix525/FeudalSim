@@ -46,7 +46,7 @@ namespace UI
             while (!_hasToStop)
             {
                 _instance._text.text = "Loading" + GetDots(i++);
-                await Task.Yield();
+                await Task.Delay(250);
             }
             _isActive = false;
         }

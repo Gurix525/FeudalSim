@@ -46,15 +46,15 @@ namespace World
         {
             LoadingImage.Enable();
             yield return null;
-            GenerateChunks(position);
+            yield return GenerateChunks(position);
             ActiveChunk = Terrain.Chunks[position];
             yield return _instance.StartCoroutine(Reload());
             LoadingImage.Disable();
         }
 
-        public static void GenerateWorld(Vector2Int startChunkPosition)
+        public static IEnumerator GenerateWorld(Vector2Int startChunkPosition)
         {
-            GenerateChunks(startChunkPosition);
+            yield return GenerateChunks(startChunkPosition);
             _instance.StartCoroutine(Reload());
         }
 
@@ -133,14 +133,17 @@ namespace World
             Terrain.Chunks[ActiveChunk.Position].RecalculateBorderSteepness();
         }
 
-        private static void GenerateChunks(Vector2Int activePosition)
+        private static IEnumerator GenerateChunks(Vector2Int activePosition)
         {
             int mod = activePosition == Vector2Int.zero ? 12 : 0;
-            for (int z = activePosition.y - 1 - mod; z <= activePosition.y + 2 + mod; z++)
-                for (int x = activePosition.x - 1 - mod; x <= activePosition.x + 2 + mod; x++)
+            for (int z = activePosition.y - mod; z <= activePosition.y + mod; z++)
+                for (int x = activePosition.x - mod; x <= activePosition.x + mod; x++)
                     if (IsChunkPositionValid(new(x, z)))
                         if (!Terrain.Chunks.ContainsKey(new(x, z)))
+                        {
                             Terrain.Chunks.Add(new(x, z), new(new Vector2Int(x, z)));
+                            yield return null;
+                        }
 
             for (int z = activePosition.y - 1; z <= activePosition.y + 1; z++)
                 for (int x = activePosition.x - 1; x <= activePosition.x + 1; x++)
