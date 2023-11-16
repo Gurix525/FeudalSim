@@ -1,4 +1,5 @@
 ﻿using Extensions;
+using UnityEditor;
 using UnityEngine;
 
 namespace World
@@ -10,7 +11,7 @@ namespace World
         private static readonly float _amplitudeFactor = 2F;
         private static readonly int _octaves = 4;
 
-        public static long Seed { get; set; } // 42 for testing
+        public static long Seed { get; set; }
 
         public static void SetSeed(long seed)
         {
@@ -68,7 +69,8 @@ namespace World
         {
             float mediumNoise = GetMediumNoise(x, z);
             float largeNoise = GetLargeNoise(x, z);
-            return Mathf.RoundToInt(Mathf.Round(Mathf.Round(mediumNoise * largeNoise * 2F) / 2F) / 4F) + 3;
+            int mapEndModifier = GetMapEndModifier(x, z);
+            return Mathf.RoundToInt(Mathf.Round(Mathf.Round(mediumNoise * largeNoise * 2F) / 2F) / 4F) + 3 - mapEndModifier;
         }
 
         private static float GetMediumNoise(int x, int z)
@@ -99,6 +101,18 @@ namespace World
                 z * _detailScale / _frequencyFactor * 2 + Seed.GetHashCode() * 100);
             float remapped = result.Remap(0F, 1F, 0F, 10F);
             return Mathf.Round(remapped);
+        }
+
+        private static int GetMapEndModifier(int x, int z)
+        {
+            float distanceFromOrigin = Mathf.Sqrt(x * x + z * z);
+            float modifier = (distanceFromOrigin - 400F).Remap(0F, 100F, 0F, 1F).Clamp(0F, 1F);
+            if (modifier != 0F)
+            {
+                modifier *= GetNoise(x, z, 0.5F, 1F, 0.025F);
+                modifier = Mathf.Sqrt(modifier);
+            }
+            return Mathf.RoundToInt(modifier * 20F);
         }
     }
 }

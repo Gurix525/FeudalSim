@@ -1,0 +1,5 @@
+C:\Users\Kamil\Documents\GitHub\FeudalSim\UnitTests\obj\Debug\net6.0\UnitTests.csproj.AssemblyReference.cache
+C:\Users\Kamil\Documents\GitHub\FeudalSim\UnitTests\obj\Debug\net6.0\UnitTests.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Kamil\Documents\GitHub\FeudalSim\UnitTests\obj\Debug\net6.0\UnitTests.AssemblyInfoInputs.cache
+C:\Users\Kamil\Documents\GitHub\FeudalSim\UnitTests\obj\Debug\net6.0\UnitTests.AssemblyInfo.cs
+C:\Users\Kamil\Documents\GitHub\FeudalSim\UnitTests\obj\Debug\net6.0\UnitTests.csproj.CoreCompileInputs.cache

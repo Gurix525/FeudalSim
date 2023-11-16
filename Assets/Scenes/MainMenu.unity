@@ -4626,6 +4626,7 @@ MonoBehaviour:
   _meshHighlight: {fileID: 0}
   _buildingCursor: {fileID: 2057038155}
   _combatCursor: {fileID: 1571541466}
+  _tooltipWindow: {fileID: 0}
 --- !u!114 &1664185504
 MonoBehaviour:
   m_ObjectHideFlags: 0

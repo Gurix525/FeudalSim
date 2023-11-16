@@ -135,7 +135,7 @@ namespace World
 
         private static void GenerateChunks(Vector2Int activePosition)
         {
-            int mod = activePosition == Vector2Int.zero ? 11 : 0;
+            int mod = activePosition == Vector2Int.zero ? 12 : 0;
             for (int z = activePosition.y - 1 - mod; z <= activePosition.y + 2 + mod; z++)
                 for (int x = activePosition.x - 1 - mod; x <= activePosition.x + 2 + mod; x++)
                     if (IsChunkPositionValid(new(x, z)))
