@@ -1,7 +1,9 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Extensions;
 using Misc;
+using PlayerControls;
 using Unity.AI.Navigation;
 using UnityEngine;
 using UnityEngine.Events;
@@ -18,6 +20,7 @@ namespace World
         private Dictionary<Vector2Int, ChunkRenderer> _chunks = new();
         private static TerrainRenderer _instance;
         private static float _timeSinceLastNavMeshRebuild = 0F;
+        private static Vector3 _lastPlayerPosition;
 
         private static readonly int _minChunkNumber = -9;
         private static readonly int _maxChunkNumber = 10;
@@ -119,6 +122,12 @@ namespace World
 
         private void FixedUpdate()
         {
+            if (Vector3.Distance(Player.Current.transform.position, _lastPlayerPosition) > 5F)
+            {
+                MarkNavMeshToReload();
+                _lastPlayerPosition = Player.Current.transform.position;
+            }
+
             _timeSinceLastNavMeshRebuild += Time.fixedDeltaTime;
             if (NavMeshHasToRebuild && _timeSinceLastNavMeshRebuild > 1F)
                 RebuildNavMesh();
@@ -183,6 +192,7 @@ namespace World
         {
             _timeSinceLastNavMeshRebuild = 0F;
             NavMeshHasToRebuild = false;
+            NavMeshSurface.center = Player.Current.transform.position;
             NavMeshSurface.BuildNavMesh();
         }
 
