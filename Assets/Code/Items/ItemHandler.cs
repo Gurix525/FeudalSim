@@ -10,7 +10,7 @@ using Task = System.Threading.Tasks.Task;
 namespace Items
 {
     [RequireComponent(typeof(OutlineHandler))]
-    public class ItemHandler : MonoBehaviour, IMouseHandler, IDetectable
+    public class ItemHandler : MonoBehaviour, IMouseHandler
     {
         #region Fields
 

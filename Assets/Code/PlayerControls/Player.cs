@@ -11,7 +11,7 @@ namespace PlayerControls
     [RequireComponent(typeof(PlayerVFX))]
     [RequireComponent(typeof(AimCurve))]
     [RequireComponent(typeof(Stats))]
-    public class Player : MonoBehaviour, IDetectable
+    public class Player : MonoBehaviour
     {
         #region Fields
 
