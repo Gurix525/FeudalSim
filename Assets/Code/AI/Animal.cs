@@ -23,7 +23,8 @@ namespace AI
         [SerializeField] private Vector3 _healthBarOffset = Vector3.up;
         [SerializeField] private Attack[] _attacks;
 
-        private Agent _agent;
+        protected Agent _agent;
+
         private Health _health;
         private Animator _animator;
         private Stats _stats;
@@ -133,7 +134,7 @@ namespace AI
             SetAnimatorParameters();
         }
 
-        private void FixedUpdate()
+        protected virtual void FixedUpdate()
         {
             RandomizeIdleType();
         }

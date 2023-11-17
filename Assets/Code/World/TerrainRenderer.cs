@@ -12,6 +12,12 @@ namespace World
 {
     public class TerrainRenderer : MonoBehaviour
     {
+        #region Events
+
+        public event EventHandler NavMeshRebaked;
+
+        #endregion Events
+
         #region Fields
 
         [SerializeField] private Material _material;
@@ -194,6 +200,7 @@ namespace World
             NavMeshHasToRebuild = false;
             NavMeshSurface.center = Player.Current.transform.position;
             NavMeshSurface.BuildNavMesh();
+            _instance.NavMeshRebaked?.Invoke(_instance, EventArgs.Empty);
         }
 
         private static bool IsChunkPositionValid(Vector2Int position)

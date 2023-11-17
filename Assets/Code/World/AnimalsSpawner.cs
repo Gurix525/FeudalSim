@@ -58,7 +58,7 @@ namespace World
 
         private IEnumerator SpawnAnimals()
         {
-            yield return new WaitUntil(() => NavMesh.SamplePosition(new Vector3(50F, 0F, 50F), out NavMeshHit hit, 10F, NavMesh.AllAreas));
+            yield return new WaitUntil(() => NavMesh.SamplePosition(new Vector3(0F, 0F, 0F), out NavMeshHit hit, 10F, NavMesh.AllAreas));
             yield return 10;
             System.Random random = new();
             var prefabs = Resources.LoadAll<GameObject>("Prefabs/Animals");

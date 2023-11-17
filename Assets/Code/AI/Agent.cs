@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.AI;
+using World;
 
 namespace AI
 {
@@ -8,6 +9,7 @@ namespace AI
         #region Fields
 
         private NavMeshAgent _agent;
+        private TerrainRenderer _terrainRenderer;
 
         #endregion Fields
 
@@ -71,5 +73,36 @@ namespace AI
         }
 
         #endregion Public
+
+        #region Unity
+
+
+        private void OnEnable()
+        {
+            _terrainRenderer ??= FindObjectOfType<TerrainRenderer>();
+            _terrainRenderer.NavMeshRebaked += _terrainRenderer_NavMeshRebaked;
+        }
+
+        private void OnDisable()
+        {
+            _terrainRenderer.NavMeshRebaked -= _terrainRenderer_NavMeshRebaked;
+        }
+
+        #endregion Unity
+
+        #region Private
+
+        private void _terrainRenderer_NavMeshRebaked(object sender, System.EventArgs e)
+        {
+            if (NavMesh.SamplePosition(transform.position, out NavMeshHit hit, 1F, NavMesh.AllAreas))
+            {
+                transform.position = hit.position;
+                Enable();
+            }
+            else
+                Disable();
+        }
+
+        #endregion Private
     }
 }
