@@ -23,6 +23,7 @@ namespace World
         public Vector2Int Position { get; private set; }
         public Transform Buildings { get; private set; }
         public Transform ItemHandlers { get; private set; }
+        public Transform Spawners { get; private set; }
         public Transform Trees { get; private set; }
         public Transform Boulders { get; private set; }
 
@@ -60,7 +61,7 @@ namespace World
                         if (upChunk != null)
                             colors[z * 51 + x] = upChunk.Colors[x];
                         else
-                            colors[z * 51 + x] = thisChunk[2500 + x];
+                            colors[z * 51 + x] = thisChunk[(z - 1) * 50 + x];
                     }
                     else
                     {
@@ -164,6 +165,9 @@ namespace World
 
             ItemHandlers = new GameObject("ItemHandlers").transform;
             ItemHandlers.transform.parent = transform;
+
+            Spawners = new GameObject("Spawners").transform;
+            Spawners.transform.parent = transform;
 
             Boulders = new GameObject("Boulders").transform;
             Boulders.transform.parent = transform;

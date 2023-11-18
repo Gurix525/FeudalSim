@@ -1,6 +1,6 @@
 ﻿namespace AI
 {
-    public class Boar : Animal
+    public class Boar : Entity
     {
     }
 }

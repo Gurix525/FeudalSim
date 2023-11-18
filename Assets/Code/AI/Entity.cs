@@ -16,7 +16,7 @@ namespace AI
     [RequireComponent(typeof(Health))]
     [RequireComponent(typeof(Animator))]
     [RequireComponent(typeof(Stats))]
-    public abstract class Animal : MonoBehaviour
+    public abstract class Entity : MonoBehaviour
     {
         #region Fields
 

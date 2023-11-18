@@ -11,8 +11,19 @@ namespace UI
         private static bool _isActive = false;
         private static bool _hasToStop = false;
         private static Task _loadingTask;
+        private static string _overwriteText = string.Empty;
 
         private static LoadingScreen _instance;
+
+        public static void OverwriteText(string text)
+        {
+            _overwriteText = text;
+        }
+
+        public static void ClearText()
+        {
+            _overwriteText = string.Empty;
+        }
 
         public static void Enable()
         {
@@ -45,14 +56,18 @@ namespace UI
             _isActive = true;
             while (!_hasToStop)
             {
-                _instance._text.text = "Loading" + GetDots(i++);
-                await Task.Delay(250);
+                if (_overwriteText != string.Empty)
+                    _instance._text.text = _overwriteText;
+                else
+                    _instance._text.text = "Loading" + GetDots(i++);
+                await Task.Yield();
             }
             _isActive = false;
         }
 
         private static string GetDots(int i)
         {
+            i /= 20;
             string dots = "";
             for (int j = 0; j < i % 5; j++)
             {

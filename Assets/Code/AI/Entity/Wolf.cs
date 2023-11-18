@@ -2,7 +2,7 @@ using PlayerControls;
 
 namespace AI
 {
-    public class Wolf : Animal
+    public class Wolf : Entity
     {
         protected override void FixedUpdate()
         {

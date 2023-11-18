@@ -8390,6 +8390,7 @@ GameObject:
   - component: {fileID: 1207663844}
   - component: {fileID: 1207663849}
   - component: {fileID: 1207663848}
+  - component: {fileID: 1207663851}
   m_Layer: 0
   m_Name: Terrain
   m_TagString: Untagged
@@ -8424,6 +8425,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 95e767be0f542c44599606be5bab9759, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _worldPopulator: {fileID: 1207663851}
   _material: {fileID: 2100000, guid: 7c7079c72890187419cad118509e9be5, type: 2}
 --- !u!114 &1207663844
 MonoBehaviour:
@@ -8500,6 +8502,24 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _player: {fileID: 744291010}
+--- !u!114 &1207663851
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1207663837}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a50e7fa6db0163a4a97df03b1cbf0fa3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _spawnerPrefab: {fileID: 1255938059085203743, guid: d2638990de13da645bd7f651ab900c40,
+    type: 3}
+  _items:
+  - <SpawnerModel>k__BackingField: {fileID: 11400000, guid: afbad28274c99cc4f855e188a0cc8964,
+      type: 2}
+    <Count>k__BackingField: 50
 --- !u!1 &1221274384
 GameObject:
   m_ObjectHideFlags: 0
@@ -10024,9 +10044,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1369169442}
-  - component: {fileID: 1369169443}
   m_Layer: 0
-  m_Name: Animals
+  m_Name: Entities
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -10047,18 +10066,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1369169443
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1369169441}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cd32ab3539245304a91de594bc568c59, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1370740769
 GameObject:
   m_ObjectHideFlags: 0

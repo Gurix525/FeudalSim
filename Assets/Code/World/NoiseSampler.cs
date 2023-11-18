@@ -8,7 +8,11 @@ namespace World
         private static readonly float _detailScale = 0.007F;
         private static readonly float _frequencyFactor = 2F;
         private static readonly float _amplitudeFactor = 2F;
+        private static readonly float _islandRadius = 250F;
+        private static readonly float _oceanWidth = 50F;
         private static readonly int _octaves = 4;
+
+        public static float IslandRadius => _islandRadius;
 
         public static long Seed { get; set; }
 
@@ -106,7 +110,7 @@ namespace World
         private static int GetMapEndModifier(int x, int z)
         {
             float distanceFromOrigin = Mathf.Sqrt(x * x + z * z);
-            float modifier = (distanceFromOrigin - 400F).Remap(0F, 100F, 0F, 1F).Clamp(0F, 1F);
+            float modifier = (distanceFromOrigin - _islandRadius).Remap(0F, _oceanWidth, 0F, 1F).Clamp(0F, 1F);
             if (modifier != 0F)
             {
                 modifier *= GetNoise(x, z, 0.2F, 1F, 0.015F);

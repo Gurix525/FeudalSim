@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Extensions;
 using Misc;
 using PlayerControls;
+using UI;
 using Unity.AI.Navigation;
 using UnityEngine;
 using UnityEngine.Events;
@@ -20,6 +21,7 @@ namespace World
 
         #region Fields
 
+        [SerializeField] private WorldPopulator _worldPopulator;
         [SerializeField] private Material _material;
 
         private Chunk _activeChunk;
@@ -28,8 +30,7 @@ namespace World
         private static float _timeSinceLastNavMeshRebuild = 0F;
         private static Vector3 _lastPlayerPosition;
 
-        private static readonly int _minChunkNumber = -9;
-        private static readonly int _maxChunkNumber = 10;
+        private static readonly int _maxChunkNumber = 6;
 
         #endregion Fields
 
@@ -64,14 +65,15 @@ namespace World
         public static IEnumerator GenerateWorld(Vector2Int startChunkPosition)
         {
             yield return GenerateChunks(startChunkPosition);
+            _instance._worldPopulator.PopulateWorld();
             _instance.StartCoroutine(Reload());
         }
 
-        public static void ReloadChunk(Vector2Int position)
+        public static void ReloadChunk(Vector2Int chunkPosition)
         {
-            if (!IsChunkPositionValid(position))
+            if (!IsChunkPositionValid(chunkPosition))
                 return;
-            _instance._chunks[position].GenerateMesh();
+            _instance._chunks[chunkPosition].GenerateMesh();
             TerrainUpdating.Invoke(ActiveChunk.Position);
         }
 
@@ -150,15 +152,21 @@ namespace World
 
         private static IEnumerator GenerateChunks(Vector2Int activePosition)
         {
-            int mod = activePosition == Vector2Int.zero ? 12 : 0;
-            for (int z = activePosition.y - mod; z <= activePosition.y + mod; z++)
-                for (int x = activePosition.x - mod; x <= activePosition.x + mod; x++)
+            int iteration = 0;
+            int mod = activePosition == Vector2Int.zero ? _maxChunkNumber : 0;
+            for (int z = activePosition.y + mod - 1; z >= activePosition.y - mod; z--)
+                for (int x = activePosition.x + mod - 1; x >= activePosition.x - mod; x--)
                     if (IsChunkPositionValid(new(x, z)))
                         if (!Terrain.Chunks.ContainsKey(new(x, z)))
                         {
-                            Terrain.Chunks.Add(new(x, z), new(new Vector2Int(x, z)));
+                            LoadingScreen.OverwriteText($"Generating chunks:\n{iteration++} of {_maxChunkNumber * _maxChunkNumber * 4}");
+                            Chunk chunk = new(new Vector2Int(x, z));
+                            Terrain.Chunks.Add(new(x, z), chunk);
+                            if (!_instance._chunks.ContainsKey(new(x, z)))
+                                GenerateChunk(x, z);
                             yield return null;
                         }
+            LoadingScreen.ClearText();
 
             for (int z = activePosition.y - 1; z <= activePosition.y + 1; z++)
                 for (int x = activePosition.x - 1; x <= activePosition.x + 1; x++)
@@ -205,8 +213,8 @@ namespace World
 
         private static bool IsChunkPositionValid(Vector2Int position)
         {
-            return position.x.IsInRangeInclusive(_minChunkNumber, _maxChunkNumber)
-                && position.y.IsInRangeInclusive(_minChunkNumber, _maxChunkNumber);
+            return position.x.IsInRangeInclusive(-_maxChunkNumber, _maxChunkNumber)
+                && position.y.IsInRangeInclusive(-_maxChunkNumber, _maxChunkNumber);
         }
 
         #endregion Private

@@ -115,7 +115,16 @@ namespace World
 
         public static float GetHeight(Vector2 inputPosition)
         {
-            return GetCell(inputPosition).Height;
+            Cell cell = GetCell(inputPosition);
+            if (cell == null)
+                return 0;
+            else
+                return cell.Height;
+        }
+
+        public static float GetHeight(float x, float z)
+        {
+            return GetHeight(new(x, z));
         }
 
         public static float GetSteepness(Vector2 inputPosition)
