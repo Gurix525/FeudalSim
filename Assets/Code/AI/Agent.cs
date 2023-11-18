@@ -15,6 +15,8 @@ namespace AI
 
         #region Properties
 
+        public bool IsActive => _agent.isActiveAndEnabled;
+
         public Vector3 Destination => NavAgent.destination;
 
         public Vector3 Velocity { get => NavAgent.velocity; set => NavAgent.velocity = value; }
@@ -69,13 +71,16 @@ namespace AI
 
         public void Move(Vector3 offset)
         {
+            if (!IsActive)
+                return;
+            if (!NavAgent.isOnNavMesh)
+                return;
             NavAgent.Move(offset);
         }
 
         #endregion Public
 
         #region Unity
-
 
         private void OnEnable()
         {

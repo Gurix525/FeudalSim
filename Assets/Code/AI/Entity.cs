@@ -18,6 +18,12 @@ namespace AI
     [RequireComponent(typeof(Stats))]
     public abstract class Entity : MonoBehaviour
     {
+        #region Events
+
+        public event EventHandler EntityDestroyed;
+
+        #endregion Events
+
         #region Fields
 
         [SerializeField] private Vector3 _healthBarOffset = Vector3.up;
@@ -50,6 +56,8 @@ namespace AI
 
         #region Properties
 
+        public Spawner Spawner { get; private set; }
+
         public UnityEvent<Hitbox> DealedHit { get; } = new();
         public Stats Stats => _stats;
         public IReadOnlyCollection<Attack> Attacks => _attacks;
@@ -67,6 +75,11 @@ namespace AI
         #endregion Properties
 
         #region Public
+
+        public void Initialize(Spawner spawner)
+        {
+            Spawner = spawner;
+        }
 
         /// <summary>
         /// -1 oznacza wszystkie ataki przypisane do tego zwierzęcia
@@ -118,7 +131,7 @@ namespace AI
 
         #region Unity
 
-        protected void Awake()
+        protected virtual void Awake()
         {
             _agent = GetComponent<Agent>();
             _animator = GetComponent<Animator>();
@@ -137,6 +150,11 @@ namespace AI
         protected virtual void FixedUpdate()
         {
             RandomizeIdleType();
+        }
+
+        protected virtual void OnDestroy()
+        {
+            EntityDestroyed?.Invoke(this, EventArgs.Empty);
         }
 
         #endregion Unity
@@ -215,6 +233,8 @@ namespace AI
 
         private IEnumerator KnockBack(Attack attack)
         {
+            if (!_agent.IsActive)
+                yield break;
             _isKnockbackActive = true;
             float elapsedTime = 0F;
             float blockedTime = 0.25F;

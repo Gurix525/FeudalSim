@@ -23,6 +23,7 @@ namespace World
                     GameObject spawner = Instantiate(_spawnerPrefab, spawnerPosition, Quaternion.identity, chunk.Spawners);
                     var spawnerComponent = spawner.GetComponent<Spawner>();
                     spawnerComponent.Initialize(item.SpawnerModel);
+                    spawnerComponent.SpawnAll();
                 }
             }
         }

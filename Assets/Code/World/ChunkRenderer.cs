@@ -24,6 +24,7 @@ namespace World
         public Transform Buildings { get; private set; }
         public Transform ItemHandlers { get; private set; }
         public Transform Spawners { get; private set; }
+        public Transform Entities { get; private set; }
         public Transform Trees { get; private set; }
         public Transform Boulders { get; private set; }
 
@@ -168,6 +169,9 @@ namespace World
 
             Spawners = new GameObject("Spawners").transform;
             Spawners.transform.parent = transform;
+
+            Entities = new GameObject("Entities").transform;
+            Entities.transform.parent = transform;
 
             Boulders = new GameObject("Boulders").transform;
             Boulders.transform.parent = transform;
