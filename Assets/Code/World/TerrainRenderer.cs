@@ -32,6 +32,8 @@ namespace World
 
         private static readonly int _maxChunkNumber = 6;
 
+        private static bool _isInitialized = false;
+
         #endregion Fields
 
         #region Properties
@@ -118,9 +120,10 @@ namespace World
             NavMeshHasToRebuild = true;
         }
 
-        public static void Reset()
+        public static void Clear()
         {
             _instance._chunks.Clear();
+            _isInitialized = false;
         }
 
         #endregion Public
@@ -130,11 +133,9 @@ namespace World
         private void Awake()
         {
             _instance = this;
-            Reset();
+            Clear();
             InitializeNavMesh();
         }
-
-        
 
         private void FixedUpdate()
         {
@@ -160,6 +161,9 @@ namespace World
 
         private static IEnumerator GenerateChunks()
         {
+            if (_isInitialized)
+                yield break;
+            _isInitialized = true;
             int iteration = 0;
             int mod = _maxChunkNumber;
             for (int z = mod - 1; z >= -mod; z--)
@@ -180,7 +184,8 @@ namespace World
                             GenerateChunk(x, z);
                         yield return null;
                     }
-            LoadingScreen.Reset();
+
+            LoadingScreen.Clear();
 
             foreach (var chunk in Terrain.Chunks.Values)
             {

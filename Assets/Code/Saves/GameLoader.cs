@@ -92,8 +92,8 @@ namespace Saves
 
         private void LoadWorld()
         {
-            Terrain.Reset();
-            TerrainRenderer.Reset();
+            Terrain.Clear();
+            TerrainRenderer.Clear();
             WorldInfo worldInfo = JsonUtility.FromJson<WorldInfo>(
                 File.ReadAllText(Path.Combine(_savePath, "World.txt")));
             NoiseSampler.SetSeed(worldInfo.Seed);

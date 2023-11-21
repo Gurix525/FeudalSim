@@ -16,7 +16,7 @@ namespace World
 
         #region Public
 
-        public static void Reset()
+        public static void Clear()
         {
             Chunks.Clear();
         }

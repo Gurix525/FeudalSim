@@ -20,9 +20,10 @@ namespace UI
             _overwriteText = text;
         }
 
-        public static void Reset()
+        public static void Clear()
         {
             _overwriteText = string.Empty;
+            _instance._text.text = "Loading";
         }
 
         public static void Enable()
@@ -46,6 +47,8 @@ namespace UI
                 _instance = this;
                 DontDestroyOnLoad(gameObject);
             }
+            else
+                Destroy(gameObject);
             GetComponent<Canvas>().sortingOrder = 1000;
             gameObject.SetActive(false);
         }
@@ -56,7 +59,7 @@ namespace UI
             _isActive = true;
             while (!_hasToStop)
             {
-                if (_overwriteText != string.Empty)
+                if (_overwriteText.Length != 0)
                     _instance._text.text = _overwriteText;
                 else
                     _instance._text.text = "Loading" + GetDots(i++);

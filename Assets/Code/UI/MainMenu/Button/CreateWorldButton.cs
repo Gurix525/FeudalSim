@@ -32,7 +32,7 @@ namespace UI
             while (!sceneLoading.isDone)
                 yield return null;
             yield return null;
-            World.Terrain.Reset();
+            World.Terrain.Clear();
             NoiseSampler.SetSeed(_seedInput.Seed);
             GameManager.WorldName = _nameInput.Text;
             GameManager.WorldCreationTime = DateTime.Now.Ticks;
