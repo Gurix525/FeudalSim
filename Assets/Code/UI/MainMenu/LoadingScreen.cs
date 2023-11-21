@@ -20,7 +20,7 @@ namespace UI
             _overwriteText = text;
         }
 
-        public static void ClearText()
+        public static void Reset()
         {
             _overwriteText = string.Empty;
         }

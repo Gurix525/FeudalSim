@@ -56,15 +56,15 @@ namespace World
         {
             LoadingImage.Enable();
             yield return null;
-            yield return GenerateChunks(position);
+            yield return GenerateChunks();
             ActiveChunk = Terrain.Chunks[position];
             yield return _instance.StartCoroutine(Reload());
             LoadingImage.Disable();
         }
 
-        public static IEnumerator GenerateWorld(Vector2Int startChunkPosition)
+        public static IEnumerator GenerateWorld()
         {
-            yield return GenerateChunks(startChunkPosition);
+            yield return GenerateChunks();
             _instance._worldPopulator.PopulateWorld();
             _instance.StartCoroutine(Reload());
         }
@@ -118,6 +118,11 @@ namespace World
             NavMeshHasToRebuild = true;
         }
 
+        public static void Reset()
+        {
+            _instance._chunks.Clear();
+        }
+
         #endregion Public
 
         #region Unity
@@ -125,8 +130,11 @@ namespace World
         private void Awake()
         {
             _instance = this;
+            Reset();
             InitializeNavMesh();
         }
+
+        
 
         private void FixedUpdate()
         {
@@ -150,29 +158,29 @@ namespace World
             Terrain.Chunks[ActiveChunk.Position].RecalculateBorderSteepness();
         }
 
-        private static IEnumerator GenerateChunks(Vector2Int activePosition)
+        private static IEnumerator GenerateChunks()
         {
             int iteration = 0;
-            int mod = activePosition == Vector2Int.zero ? _maxChunkNumber : 0;
-            for (int z = activePosition.y + mod - 1; z >= activePosition.y - mod; z--)
-                for (int x = activePosition.x + mod - 1; x >= activePosition.x - mod; x--)
+            int mod = _maxChunkNumber;
+            for (int z = mod - 1; z >= -mod; z--)
+                for (int x = mod - 1; x >= -mod; x--)
                     if (IsChunkPositionValid(new(x, z)))
+                    {
+                        LoadingScreen.OverwriteText($"Loading chunks:\n{iteration++} " +
+                            $"of {_maxChunkNumber * _maxChunkNumber * 4}");
+                        Chunk chunk = Chunk.Empty;
                         if (!Terrain.Chunks.ContainsKey(new(x, z)))
                         {
-                            LoadingScreen.OverwriteText($"Generating chunks:\n{iteration++} of {_maxChunkNumber * _maxChunkNumber * 4}");
-                            Chunk chunk = new(new Vector2Int(x, z));
+                            chunk = new(new Vector2Int(x, z));
                             Terrain.Chunks.Add(new(x, z), chunk);
-                            if (!_instance._chunks.ContainsKey(new(x, z)))
-                                GenerateChunk(x, z);
-                            yield return null;
                         }
-            LoadingScreen.ClearText();
-
-            for (int z = activePosition.y - 1; z <= activePosition.y + 1; z++)
-                for (int x = activePosition.x - 1; x <= activePosition.x + 1; x++)
-                    if (!_instance._chunks.ContainsKey(new(x, z)))
-                        if (IsChunkPositionValid(new(x, z)))
+                        else
+                            chunk = Terrain.Chunks[new(x, z)];
+                        if (!_instance._chunks.ContainsKey(new(x, z)))
                             GenerateChunk(x, z);
+                        yield return null;
+                    }
+            LoadingScreen.Reset();
 
             foreach (var chunk in Terrain.Chunks.Values)
             {
@@ -181,7 +189,7 @@ namespace World
                     GenerateChunk(chunk.Position.x, chunk.Position.y);
             }
 
-            ActiveChunk ??= Terrain.Chunks[activePosition];
+            ActiveChunk ??= Terrain.Chunks[new(0, 0)];
         }
 
         private static void GenerateChunk(int x, int z)

@@ -154,7 +154,8 @@ namespace AI
 
         protected virtual void OnDestroy()
         {
-            EntityDestroyed?.Invoke(this, EventArgs.Empty);
+            if (gameObject.scene.isLoaded)
+                EntityDestroyed?.Invoke(this, EventArgs.Empty);
         }
 
         #endregion Unity

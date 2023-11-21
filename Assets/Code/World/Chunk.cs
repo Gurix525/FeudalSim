@@ -11,6 +11,7 @@ namespace World
         #region Properties
 
         public Vector2Int Position { get; }
+
         public bool IsNatureSpawned { get; set; }
 
         public Dictionary<Vector2Int, Cell> Cells { get; private set; } = new();
@@ -25,6 +26,8 @@ namespace World
         public Color[] Colors => Cells.Values
             .Select(cell => cell.Color)
             .ToArray();
+
+        public static Chunk Empty => new();
 
         #endregion Properties
 
@@ -58,6 +61,10 @@ namespace World
                 index++;
             }
             CalculateSteepness();
+        }
+
+        private Chunk()
+        {
         }
 
         #endregion Constructors

@@ -8,7 +8,7 @@ namespace World
         private static readonly float _detailScale = 0.005F;
         private static readonly float _frequencyFactor = 2F;
         private static readonly float _amplitudeFactor = 2F;
-        private static readonly float _islandRadius = 250F;
+        private static readonly float _islandRadius = 230F;
         private static readonly float _oceanWidth = 50F;
         private static readonly int _octaves = 4;
 
@@ -109,14 +109,28 @@ namespace World
 
         private static int GetMapEndModifier(int x, int z)
         {
+            float noise = GetNoise(x, z, 0.5F, 1F, 0.015F);
+
             float distanceFromOrigin = Mathf.Sqrt(x * x + z * z);
-            float modifier = (distanceFromOrigin - _islandRadius).Remap(0F, _oceanWidth, 0F, 1F).Clamp(0F, 1F);
-            if (modifier != 0F)
-            {
-                modifier *= GetNoise(x, z, 0.1F, 1F, 0.015F);
-                modifier = Mathf.Sqrt(modifier);
-            }
-            return Mathf.RoundToInt(modifier * 20F);
+            float modifier = (distanceFromOrigin - _islandRadius).Remap(0F, _oceanWidth * noise, -0.5F, 1F).Clamp(0F, 1F);
+            //if (modifier != 0F)
+            //{
+            //    modifier *= GetNoise(x, z, 0.1F, 1F, 0.015F);
+            //    modifier = Mathf.Sqrt(modifier);
+            //}
+            return Mathf.RoundToInt(modifier * 4F);
         }
+
+        //private static int GetMapEndModifier(int x, int z)
+        //{
+        //    float distanceFromOrigin = Mathf.Sqrt(x * x + z * z);
+        //    float modifier = (distanceFromOrigin - _islandRadius).Remap(0F, _oceanWidth, 0F, 1F).Clamp(0F, 1F);
+        //    if (modifier != 0F)
+        //    {
+        //        modifier *= GetNoise(x, z, 0.1F, 1F, 0.015F);
+        //        modifier = Mathf.Sqrt(modifier);
+        //    }
+        //    return Mathf.RoundToInt(modifier * 20F);
+        //}
     }
 }

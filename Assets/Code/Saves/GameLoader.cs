@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
@@ -50,31 +51,39 @@ namespace Saves
 
         #region Public
 
-        public async Task LoadGame()
+        public IEnumerator LoadGame()
         {
-            try
-            {
-                ZipFile.ExtractToDirectory(_savePath + ".zip", _savePath);
-                LoadWorld();
-                var playerinfo = LoadPlayer();
-                ChunkInfo[] chunkInfos = LoadChunks();
-                TerrainRenderer.GenerateWorld(Terrain.GetChunkCoordinates(
-                    new Vector2(playerinfo.Position.x, playerinfo.Position.z)));
-                LoadChunkRenderers(chunkInfos);
-                GrassInstancer.MarkToReload();
-            }
-            catch (Exception e)
-            {
-                Debug.LogError(e.Message + e.StackTrace);
-                AsyncOperation sceneLoading = SceneManager.LoadSceneAsync("MainMenu", LoadSceneMode.Single);
-                while (!sceneLoading.isDone)
-                    await Task.Yield();
-            }
-            finally
-            {
-                Directory.Delete(_savePath, true);
-                LoadingScreen.Disable();
-            }
+            ZipFile.ExtractToDirectory(_savePath + ".zip", _savePath);
+            LoadWorld();
+            var playerinfo = LoadPlayer();
+            ChunkInfo[] chunkInfos = LoadChunks();
+            yield return TerrainRenderer.GenerateWorld();
+            LoadChunkRenderers(chunkInfos);
+            GrassInstancer.MarkToReload();
+            Directory.Delete(_savePath, true);
+            LoadingScreen.Disable();
+            //try
+            //{
+            //    ZipFile.ExtractToDirectory(_savePath + ".zip", _savePath);
+            //    LoadWorld();
+            //    var playerinfo = LoadPlayer();
+            //    ChunkInfo[] chunkInfos = LoadChunks();
+            //    yield return TerrainRenderer.GenerateWorld();
+            //    LoadChunkRenderers(chunkInfos);
+            //    GrassInstancer.MarkToReload();
+            //}
+            //catch (Exception e)
+            //{
+            //    Debug.LogError(e.Message + e.StackTrace);
+            //    AsyncOperation sceneLoading = SceneManager.LoadSceneAsync("MainMenu", LoadSceneMode.Single);
+            //    while (!sceneLoading.isDone)
+            //        yield return null;
+            //}
+            //finally
+            //{
+            //    Directory.Delete(_savePath, true);
+            //    LoadingScreen.Disable();
+            //}
         }
 
         #endregion Public
@@ -84,6 +93,7 @@ namespace Saves
         private void LoadWorld()
         {
             Terrain.Reset();
+            TerrainRenderer.Reset();
             WorldInfo worldInfo = JsonUtility.FromJson<WorldInfo>(
                 File.ReadAllText(Path.Combine(_savePath, "World.txt")));
             NoiseSampler.SetSeed(worldInfo.Seed);

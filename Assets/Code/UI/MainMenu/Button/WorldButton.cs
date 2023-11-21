@@ -35,7 +35,7 @@ namespace UI
                 yield return null;
             yield return null;
             GameLoader gameLoader = new(_nameText.text);
-            _ = gameLoader.LoadGame();
+            yield return gameLoader.LoadGame();
         }
     }
 }
