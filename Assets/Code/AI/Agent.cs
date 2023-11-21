@@ -11,6 +11,8 @@ namespace AI
         private NavMeshAgent _agent;
         private TerrainRenderer _terrainRenderer;
 
+        private Vector3 _velocity = Vector3.zero;
+
         #endregion Fields
 
         #region Properties
@@ -50,8 +52,14 @@ namespace AI
                 NavMesh.SamplePosition(targetPosition, out NavMeshHit hit, 10F, NavMesh.AllAreas);
                 targetPosition = hit.position;
             }
-            if (NavAgent.isOnNavMesh)
-                NavAgent.SetDestination(targetPosition);
+            if (Vector3.Distance(transform.position, targetPosition) > 50F)
+                return;
+            if (!NavAgent.isOnNavMesh)
+                return;
+            NavMeshPath path = new();
+            NavMesh.CalculatePath(transform.position, targetPosition, NavMesh.AllAreas, path);
+            NavAgent.SetPath(path);
+            //NavAgent.SetDestination(targetPosition);
         }
 
         public void Stop()
