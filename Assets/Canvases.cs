@@ -23,6 +23,11 @@ public class Canvases : MonoBehaviour
         SendCommand("Inventory");
     }
 
+    private void OnMap(InputValue value)
+    {
+        SendCommand("Map");
+    }
+
     private void SendCommand(string command)
     {
         if (_lastCommand == command)
