@@ -1,15 +1,12 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
-using System.Threading.Tasks;
 using Controls;
 using Items;
 using Misc;
 using UI;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using World;
 using Terrain = World.Terrain;
 
@@ -59,6 +56,7 @@ namespace Saves
             ChunkInfo[] chunkInfos = LoadChunks();
             yield return TerrainRenderer.GenerateWorld();
             LoadChunkRenderers(chunkInfos);
+            LoadMap();
             GrassInstancer.MarkToReload();
             Directory.Delete(_savePath, true);
             LoadingScreen.Disable();
@@ -201,6 +199,20 @@ namespace Saves
                     boulderInfo.Position, boulderInfo.Rotation);
                 boulder.transform.localScale = boulderInfo.Scale;
             }
+        }
+
+        private void LoadMap()
+        {
+            string mapPath = Path.Combine(_savePath, "Map.png");
+            if (!File.Exists(mapPath))
+            {
+                Map.Current.Initialize(null);
+                return;
+            }
+            var bitmap = File.ReadAllBytes(mapPath);
+            Texture2D texture = new(1, 1);
+            texture.LoadImage(bitmap);
+            Map.Current.Initialize(texture);
         }
 
         #endregion Private

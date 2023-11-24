@@ -5,6 +5,7 @@ public class MapCanvas : MonoBehaviour
 {
     [SerializeField] private Canvases _canvases;
     [SerializeField] private MapWindow _mapWindow;
+    [SerializeField] private Map _map;
 
     private void OnEnable()
     {
@@ -22,5 +23,10 @@ public class MapCanvas : MonoBehaviour
             _mapWindow.SwitchActive();
         else
             _mapWindow.gameObject.SetActive(false);
+    }
+
+    private void FixedUpdate()
+    {
+        _map.ForceFixedUpdate();
     }
 }
