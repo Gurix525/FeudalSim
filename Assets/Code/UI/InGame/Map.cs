@@ -8,10 +8,19 @@ namespace UI
     {
         [SerializeField] private Transform _playerTransform;
 
+        private static Map _current;
         private Image _image;
         private Vector3 _lastPlayerPosition = Vector3.zero;
 
-        public static Map Current { get; private set; }
+        public static Map Current
+        {
+            get
+            {
+                if (_current == null )
+                    _current = FindObjectOfType<Map>();
+                return _current;
+            }
+        }
 
         public Texture2D MapTexture { get; private set; }
 
@@ -30,7 +39,6 @@ namespace UI
 
         private void Awake()
         {
-            Current = this;
             _image = GetComponent<Image>();
             MapTexture = new(600, 600);
             UpdateMap();

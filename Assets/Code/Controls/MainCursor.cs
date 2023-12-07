@@ -10,7 +10,7 @@ using UnityEngine.UI;
 
 namespace Controls
 {
-    public partial class MainCursor : MonoBehaviour
+    public class MainCursor : MonoBehaviour
     {
         #region Events
 
