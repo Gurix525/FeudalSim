@@ -50,6 +50,8 @@ namespace Saves
 
         public IEnumerator LoadGame()
         {
+            if (Directory.Exists(_savePath))
+                Directory.Delete(_savePath, true);
             ZipFile.ExtractToDirectory(_savePath + ".zip", _savePath);
             LoadWorld();
             var playerinfo = LoadPlayer();
@@ -58,7 +60,8 @@ namespace Saves
             LoadChunkRenderers(chunkInfos);
             LoadMap();
             GrassInstancer.MarkToReload();
-            Directory.Delete(_savePath, true);
+            if (Directory.Exists(_savePath))
+                Directory.Delete(_savePath, true);
             LoadingScreen.Disable();
             //try
             //{
@@ -206,13 +209,13 @@ namespace Saves
             string mapPath = Path.Combine(_savePath, "Map.png");
             if (!File.Exists(mapPath))
             {
-                Map.Current.Initialize(null);
+                Map.Initialize(null);
                 return;
             }
             var bitmap = File.ReadAllBytes(mapPath);
             Texture2D texture = new(1, 1);
             texture.LoadImage(bitmap);
-            Map.Current.Initialize(texture);
+            Map.Initialize(texture);
         }
 
         #endregion Private

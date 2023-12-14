@@ -22,9 +22,9 @@ namespace UI
             }
         }
 
-        public Texture2D MapTexture { get; private set; }
+        public static Texture2D MapTexture { get; private set; }
 
-        public void Initialize(Texture2D texture)
+        public static void Initialize(Texture2D texture)
         {
             if (texture != null)
             {
@@ -55,6 +55,8 @@ namespace UI
 
         private void UpdateMap()
         {
+            if (MapTexture == null)
+                return;
             Vector3 position = _playerTransform.position;
             for (int z = (int)position.z - 10; z <= (int)position.z + 10; z++)
             {
