@@ -74,14 +74,15 @@ namespace Controls
         {
             _buildingCursor.BuildingPrefabChanged += _buildingCursor_BuildingPrefabChanged;
             _mainCursor.WorldPositionChanged += _mainCursor_WorldPositionChanged;
-            _mainCursor.PassedRotation += _cursor_PassedRotation;
+            _mainCursor.PassedRotation += _mainCursor_PassedRotation;
+            _mainCursor.PassedScroll += _mainCursor_PassedScroll;
         }
 
         private void OnDisable()
         {
             _buildingCursor.BuildingPrefabChanged -= _buildingCursor_BuildingPrefabChanged;
             _mainCursor.WorldPositionChanged -= _mainCursor_WorldPositionChanged;
-            _mainCursor.PassedRotation -= _cursor_PassedRotation;
+            _mainCursor.PassedRotation -= _mainCursor_PassedRotation;
             _isPlacing = false;
             EndPlacing();
         }
@@ -135,8 +136,14 @@ namespace Controls
             if (_buildingPrefab == null)
                 return;
             _cursorWorldHit = e.NewRaycastHit.Value;
-            transform.position = (_cursorWorldHit.point + _cursorWorldHit.normal * 0.01F - transform.rotation * _buildingPrefab.PivotOffset).Floor() + transform.rotation * _buildingPrefab.PivotOffset;
-            transform.position = new Vector3(transform.position.x, (_cursorWorldHit.point.y + 0.01F).Round(), transform.position.z);
+            transform.position = (
+                _cursorWorldHit.point 
+                    + _cursorWorldHit.normal * 0.01F 
+                    - transform.rotation * _buildingPrefab.PivotOffset 
+                    + new Vector3(0F, _targetHeight, 0F)
+                ).Floor() + transform.rotation * _buildingPrefab.PivotOffset;
+            //transform.position = new Vector3(transform.position.x, (_cursorWorldHit.point.y + 0.01F).Round(), transform.position.z);
+            
             // Obliczam różnicę między środkiem struktury a kursorem
             //if (_cursorWorldHit.collider.TryGetComponent(out Building building))
             //{
@@ -160,6 +167,7 @@ namespace Controls
         {
             _isPlacing = false;
             EndPlacing();
+            _targetHeight = 0F;
             if (e.NewObject == null)
             {
                 _buildingPrefab = null;
@@ -170,7 +178,7 @@ namespace Controls
             _meshFilter.sharedMesh = _buildingPrefab.GetComponent<MeshFilter>().sharedMesh;
         }
 
-        private void _cursor_PassedRotation(object sender, PassedRotationEventArgs e)
+        private void _mainCursor_PassedRotation(object sender, PassedRotationEventArgs e)
         {
             if (_buildingPrefab == null)
                 return;
@@ -181,6 +189,12 @@ namespace Controls
             //transform.Rotate(Vector3.up, -e.ya);
             //transform.Rotate(Vector3.up, -e.Yaw);
             //_targetRotation = transform.rotation;
+        }
+
+        private void _mainCursor_PassedScroll(object sender, float e)
+        {
+            _targetHeight += e;
+            transform.position += new Vector3(0F, e, 0F);
         }
 
         #endregion Private

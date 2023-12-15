@@ -22,6 +22,8 @@ namespace Controls
 
         public event EventHandler<PassedRotationEventArgs> PassedRotation;
 
+        public event EventHandler<float> PassedScroll;
+
         public event EventHandler<bool> OverUIStateChanged;
 
         #endregion Events
@@ -232,6 +234,13 @@ namespace Controls
         private void OnShift(InputValue value)
         {
             _isShiftPressed = value.isPressed;
+        }
+
+        private void OnMouseScroll(InputValue value)
+        {
+            float scrollValue = value.Get<float>();
+            if (scrollValue != 0F)
+                PassedScroll?.Invoke(this, Math.Sign(scrollValue));
         }
 
         #endregion Input
