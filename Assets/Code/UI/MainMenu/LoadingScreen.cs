@@ -11,18 +11,18 @@ namespace UI
         private static bool _isActive = false;
         private static bool _hasToStop = false;
         private static Task _loadingTask;
-        private static string _overwriteText = string.Empty;
+        private static string _textOverride = string.Empty;
 
         private static LoadingScreen _instance;
 
-        public static void OverwriteText(string text)
+        public static void OverrideText(string text)
         {
-            _overwriteText = text;
+            _textOverride = text;
         }
 
         public static void Clear()
         {
-            _overwriteText = string.Empty;
+            _textOverride = string.Empty;
             _instance._text.text = "Loading";
         }
 
@@ -59,8 +59,8 @@ namespace UI
             _isActive = true;
             while (!_hasToStop)
             {
-                if (_overwriteText.Length != 0)
-                    _instance._text.text = _overwriteText;
+                if (_textOverride.Length != 0)
+                    _instance._text.text = _textOverride;
                 else
                     _instance._text.text = "Loading" + GetDots(i++);
                 await Task.Yield();

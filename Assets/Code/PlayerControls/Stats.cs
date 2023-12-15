@@ -20,11 +20,11 @@ public class Stats : MonoBehaviour
         { "Parrying", Skill.Zero }
     };
 
-    private float _currentHP = 10F;
-    private float _maxHP = 10F;
-    private float _currentStamina = 100F;
-    private float _maxStamina = 100F;
-    private float _staminaRegenerationSpeed = 20F;
+    private float _currentHP = 50F;
+    private float _maxHP = 50F;
+    private float _currentStamina = 200F;
+    private float _maxStamina = 200F;
+    private float _staminaRegenerationSpeed = 50F;
     private float _staminaRegenerationBlockTime = 0.5F;
 
     private float _timeSinceStaminaSubtraction;

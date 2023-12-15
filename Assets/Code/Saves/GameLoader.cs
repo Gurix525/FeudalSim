@@ -7,6 +7,7 @@ using Items;
 using Misc;
 using UI;
 using UnityEngine;
+using UnityEngine.AI;
 using World;
 using Terrain = World.Terrain;
 
@@ -54,11 +55,11 @@ namespace Saves
                 Directory.Delete(_savePath, true);
             ZipFile.ExtractToDirectory(_savePath + ".zip", _savePath);
             LoadWorld();
-            var playerinfo = LoadPlayer();
             ChunkInfo[] chunkInfos = LoadChunks();
             yield return TerrainRenderer.GenerateWorld();
             LoadChunkRenderers(chunkInfos);
             LoadMap();
+            var playerinfo = LoadPlayer();
             GrassInstancer.MarkToReload();
             if (Directory.Exists(_savePath))
                 Directory.Delete(_savePath, true);
@@ -108,7 +109,7 @@ namespace Saves
         {
             PlayerInfo playerInfo = JsonUtility.FromJson<PlayerInfo>(
                 File.ReadAllText(Path.Combine(_savePath, "Player.txt")));
-            var player = References.GetReference("Player");
+            var player = GameObject.Find("Player");
             player.SetActive(false);
             player.transform.position = playerInfo.Position;
             player.SetActive(true);

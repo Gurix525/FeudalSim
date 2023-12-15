@@ -6674,6 +6674,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5191a11cc0add3e4ebcb5e9797b5aacb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _input: {fileID: 744291021}
   _cursor: {fileID: 1243102505}
   _playerMovement: {fileID: 744291015}
   _vfx: {fileID: 744291017}

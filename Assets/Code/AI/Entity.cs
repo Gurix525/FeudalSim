@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Combat;
 using Extensions;
+using PlayerControls;
 using TaskManager;
 using UnityEngine;
 using UnityEngine.Events;
@@ -44,10 +45,10 @@ namespace AI
 
         private Dictionary<MoveSpeedType, MoveSpeed> _moveSpeeds = new()
         {
-            { MoveSpeedType.Walk, new(2F, 2F) },
-            { MoveSpeedType.Trot, new(4F, 4F) },
-            { MoveSpeedType.Chase, new(6F, 6F) },
-            { MoveSpeedType.RunAway, new(8F, 8F) }
+            { MoveSpeedType.Walk, new(2F, 8F) },
+            { MoveSpeedType.Trot, new(4F, 16F) },
+            { MoveSpeedType.Chase, new(6F, 24F) },
+            { MoveSpeedType.RunAway, new(8F, 32F) }
         };
 
         private static AIHealthBar _healthBarPrefab;
@@ -59,6 +60,8 @@ namespace AI
         public Spawner Spawner { get; private set; }
 
         public UnityEvent<Hitbox> DealedHit { get; } = new();
+        public UnityEvent<Attack> ReceivedHit { get; } = new();
+
         public Stats Stats => _stats;
         public IReadOnlyCollection<Attack> Attacks => _attacks;
 
@@ -140,6 +143,8 @@ namespace AI
             InitializeHealth();
             InitializeHealthBar();
             InitializeAttacks();
+            _health.GotHit.AddListener((attack) => ReceivedHit?.Invoke(attack));
+            ReceivedHit.AddListener((attack) => { if (_stats.CurrentHP > 0F) StartCoroutine(AttackTimeout()); });
         }
 
         private void Update()
@@ -213,13 +218,16 @@ namespace AI
 
         private void InitializeAttacks()
         {
+            _attacks = GetComponentsInChildren<Attack>();
             foreach (Attack attack in Attacks)
             {
                 attack.Sender = this;
+                attack.Target = GameObject.Find("Player").GetComponent<Player>();
                 attack.Damage = 4F;
                 attack.DealedHit.AddListener((hitbox, contact) => DealedHit.Invoke(hitbox));
+                DealedHit.AddListener((hitbox) => StartCoroutine(AttackTimeout()));
             }
-            SetAttackActive(false);
+            //SetAttackActive(false);
         }
 
         private void RandomizeIdleType()
@@ -238,7 +246,7 @@ namespace AI
                 yield break;
             _isKnockbackActive = true;
             float elapsedTime = 0F;
-            float blockedTime = 0.25F;
+            float blockedTime = 1F;
             Vector3 direction = (transform.position - attack.transform.position).normalized * 10F;
             while (elapsedTime < blockedTime)
             {
@@ -247,6 +255,13 @@ namespace AI
                 yield return new WaitForFixedUpdate();
             }
             _isKnockbackActive = false;
+        }
+
+        private IEnumerator AttackTimeout()
+        {
+            SetAttackActive(false);
+            yield return new WaitForSeconds(1F);
+            SetAttackActive(true);
         }
 
         private void DestroySafely()

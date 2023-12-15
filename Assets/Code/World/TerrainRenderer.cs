@@ -115,6 +115,11 @@ namespace World
             return renderer;
         }
 
+        public static void ForceNavmeshReload()
+        {
+            RebuildNavMesh();
+        }
+
         public static void MarkNavMeshToReload()
         {
             NavMeshHasToRebuild = true;
@@ -170,7 +175,7 @@ namespace World
                 for (int x = mod - 1; x >= -mod; x--)
                     if (IsChunkPositionValid(new(x, z)))
                     {
-                        LoadingScreen.OverwriteText($"Loading chunks:\n{iteration++} " +
+                        LoadingScreen.OverrideText($"Loading chunks:\n{iteration++} " +
                             $"of {_maxChunkNumber * _maxChunkNumber * 4}");
                         Chunk chunk = Chunk.Empty;
                         if (!Terrain.Chunks.ContainsKey(new(x, z)))

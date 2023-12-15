@@ -1,7 +1,11 @@
-using AI;
+using System.Collections;
 using Combat;
+using UI;
 using UnityEngine;
+using UnityEngine.AI;
+using UnityEngine.InputSystem;
 using VFX;
+using World;
 using MainCursor = Controls.MainCursor;
 
 namespace PlayerControls
@@ -15,6 +19,7 @@ namespace PlayerControls
     {
         #region Fields
 
+        [SerializeField] private PlayerInput _input;
         [SerializeField] private MainCursor _cursor;
 
         [SerializeField] private PlayerMovement _playerMovement;
@@ -74,9 +79,26 @@ namespace PlayerControls
             _stats.CurrentHP -= attack.Damage;
             if (_stats.CurrentHP <= 0F)
             {
-                Debug.Log("Zabito gracza.");
-                _stats.CurrentHP = _stats.MaxHP;
+                StartCoroutine(KillPlayer());
+                KillPlayer();
             }
+        }
+
+        private IEnumerator KillPlayer()
+        {
+            transform.position = Vector3.zero;
+            TerrainRenderer.ForceNavmeshReload();
+            //gameObject.SetActive(false);
+            LoadingScreen.Enable();
+            LoadingScreen.OverrideText("You are dead.\nLoading...");
+            _input.DeactivateInput();
+            yield return new WaitForSeconds(3F);
+            LoadingScreen.Clear();
+            LoadingScreen.Disable();
+            _input.ActivateInput();
+            NavMesh.SamplePosition(Vector3.zero, out NavMeshHit hit, 50F, NavMesh.AllAreas);
+            transform.position = hit.position;
+            _stats.CurrentHP = _stats.MaxHP;
         }
 
         #endregion Private
