@@ -1,9 +1,6 @@
-﻿using System;
-using Buildings;
+﻿using Buildings;
 using Extensions;
 using Items;
-using UnityEditor.ShaderGraph.Internal;
-using UnityEditorInternal;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using World;
@@ -29,6 +26,7 @@ namespace Controls
         private RaycastHit _cursorWorldHit;
         private Vector3 _placingStartPosition;
         private float _targetRotation = 0F;
+        private float _targetHeight = 0F;
 
         #endregion Fields
 
@@ -137,7 +135,7 @@ namespace Controls
             if (_buildingPrefab == null)
                 return;
             _cursorWorldHit = e.NewRaycastHit.Value;
-            transform.position = (_cursorWorldHit.point + _cursorWorldHit.normal * 0.01F).Floor() + _buildingPrefab.PivotOffset;
+            transform.position = (_cursorWorldHit.point + _cursorWorldHit.normal * 0.01F - transform.rotation * _buildingPrefab.PivotOffset).Floor() + transform.rotation * _buildingPrefab.PivotOffset;
             transform.position = new Vector3(transform.position.x, (_cursorWorldHit.point.y + 0.01F).Round(), transform.position.z);
             // Obliczam różnicę między środkiem struktury a kursorem
             if (_cursorWorldHit.collider.TryGetComponent(out Building building))
@@ -174,8 +172,13 @@ namespace Controls
 
         private void _cursor_PassedRotation(object sender, PassedRotationEventArgs e)
         {
-            _targetRotation += e.Yaw;
-            Debug.Log(_targetRotation);
+            if (_buildingPrefab == null)
+                return;
+            _targetRotation -= e.Yaw;
+            transform.position -= transform.rotation * _buildingPrefab.PivotOffset;
+            transform.rotation = Quaternion.Euler(0F, (((int)_targetRotation + 45) / 90) * 90, 0F);
+            transform.position += transform.rotation * _buildingPrefab.PivotOffset;
+            //transform.Rotate(Vector3.up, -e.ya);
             //transform.Rotate(Vector3.up, -e.Yaw);
             //_targetRotation = transform.rotation;
         }

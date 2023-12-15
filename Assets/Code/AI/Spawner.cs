@@ -57,7 +57,7 @@ namespace AI
 
         private IEnumerator WaitAndSpawn()
         {
-            yield return new WaitUntil(() => Vector3.Distance(transform.position, _player.position) > 20F);
+            yield return new WaitUntil(() => Vector3.Distance(transform.position, _player.position) > 30F);
             SpawnAll();
         }
     }
