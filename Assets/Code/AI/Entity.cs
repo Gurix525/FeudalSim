@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Combat;
 using Extensions;
+using Items;
 using PlayerControls;
 using TaskManager;
 using UnityEngine;
@@ -29,6 +30,7 @@ namespace AI
 
         [SerializeField] private Vector3 _healthBarOffset = Vector3.up;
         [SerializeField] private Attack[] _attacks;
+        [SerializeField] private Recipe _drop;
 
         protected Agent _agent;
 
@@ -194,6 +196,10 @@ namespace AI
                 Effect.Spawn("DeathBloodCloud", transform.position + Vector3.up);
                 Effect.Spawn("DeathBloodSplatter", transform.position + Vector3.up);
                 Effect.Spawn("DeathHit", transform.position + Vector3.up);
+                foreach (var item in _drop.Items)
+                {
+                    Item.Create(item.Name, item.Count).Drop(transform.position + Vector3.up);
+                }
                 DestroySafely();
                 return;
             }
@@ -218,7 +224,7 @@ namespace AI
 
         private void InitializeAttacks()
         {
-            _attacks = GetComponentsInChildren<Attack>();
+            //_attacks = GetComponentsInChildren<Attack>();
             foreach (Attack attack in Attacks)
             {
                 attack.Sender = this;
