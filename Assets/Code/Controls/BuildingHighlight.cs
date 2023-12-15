@@ -1,6 +1,9 @@
-﻿using Buildings;
+﻿using System;
+using Buildings;
 using Extensions;
 using Items;
+using UnityEditor.ShaderGraph.Internal;
+using UnityEditorInternal;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using World;
@@ -25,6 +28,7 @@ namespace Controls
         private bool _isPlacing;
         private RaycastHit _cursorWorldHit;
         private Vector3 _placingStartPosition;
+        private float _targetRotation = 0F;
 
         #endregion Fields
 
@@ -72,12 +76,14 @@ namespace Controls
         {
             _buildingCursor.BuildingPrefabChanged += _buildingCursor_BuildingPrefabChanged;
             _mainCursor.WorldPositionChanged += _mainCursor_WorldPositionChanged;
+            _mainCursor.PassedRotation += _cursor_PassedRotation;
         }
 
         private void OnDisable()
         {
             _buildingCursor.BuildingPrefabChanged -= _buildingCursor_BuildingPrefabChanged;
             _mainCursor.WorldPositionChanged -= _mainCursor_WorldPositionChanged;
+            _mainCursor.PassedRotation -= _cursor_PassedRotation;
             _isPlacing = false;
             EndPlacing();
         }
@@ -143,7 +149,7 @@ namespace Controls
                     var difference = cursorPosition - otherPosition;
                     difference = difference.Round();
                     transform.position += difference;
-                        transform.position = new(transform.position.x, transform.position.y + _cursorWorldHit.normal.y.Round(), transform.position.z);
+                    transform.position = new(transform.position.x, transform.position.y + _cursorWorldHit.normal.y.Round(), transform.position.z);
                 }
             }
             if (_isPlacing)
@@ -164,6 +170,14 @@ namespace Controls
             }
             _buildingPrefab = e.NewObject.GetComponent<Building>();
             _meshFilter.sharedMesh = _buildingPrefab.GetComponent<MeshFilter>().sharedMesh;
+        }
+
+        private void _cursor_PassedRotation(object sender, PassedRotationEventArgs e)
+        {
+            _targetRotation += e.Yaw;
+            Debug.Log(_targetRotation);
+            //transform.Rotate(Vector3.up, -e.Yaw);
+            //_targetRotation = transform.rotation;
         }
 
         #endregion Private

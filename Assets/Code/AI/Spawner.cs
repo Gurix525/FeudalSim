@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using Assets.Code.AI;
 using UnityEngine;
@@ -8,14 +9,15 @@ namespace AI
 {
     public class Spawner : MonoBehaviour
     {
+        private Transform _player;
         private List<SpawnerItem> _entities = new();
-
         private List<GameObject> _aliveEntities = new();
         private Transform _entitiesParent;
 
-        public void Initialize(SpawnerModelScriptableObject model)
+        public void Initialize(SpawnerModelScriptableObject model, Transform player)
         {
             _entities = model.Entities;
+            _player = player;
         }
 
         public void SpawnAll()
@@ -29,7 +31,7 @@ namespace AI
                 {
                     GameObject entity = Instantiate(item.EntityPrefab, transform.position, Quaternion.identity, _entitiesParent);
                     _aliveEntities.Add(entity);
-                    var entityComponent = entity.GetComponent<Entity>(); 
+                    var entityComponent = entity.GetComponent<Entity>();
                     entityComponent.EntityDestroyed += Spawner_EntityDestroyed;
                     entityComponent.Initialize(this);
                 }
@@ -45,12 +47,18 @@ namespace AI
                 return;
             _aliveEntities.Remove(entity.gameObject);
             if (_aliveEntities.Count == 0)
-                SpawnAll();
+                StartCoroutine(WaitAndSpawn());
         }
 
         public override string ToString()
         {
             return string.Join("\n", _entities);
+        }
+
+        private IEnumerator WaitAndSpawn()
+        {
+            yield return new WaitUntil(() => Vector3.Distance(transform.position, _player.position) > 20F);
+            SpawnAll();
         }
     }
 }

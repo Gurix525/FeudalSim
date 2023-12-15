@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using AI;
 using Misc;
+using PlayerControls;
 using UnityEngine;
 
 namespace World
@@ -12,6 +13,7 @@ namespace World
 
         public void PopulateWorld()
         {
+            Transform player = FindObjectOfType<Player>().transform;
             foreach (var item in _items)
             {
                 for (int i = 0; i < item.Count; i++)
@@ -22,7 +24,7 @@ namespace World
                         continue;
                     GameObject spawner = Instantiate(_spawnerPrefab, spawnerPosition, Quaternion.identity, chunk.Spawners);
                     var spawnerComponent = spawner.GetComponent<Spawner>();
-                    spawnerComponent.Initialize(item.SpawnerModel);
+                    spawnerComponent.Initialize(item.SpawnerModel, player);
                     spawnerComponent.SpawnAll();
                 }
             }
