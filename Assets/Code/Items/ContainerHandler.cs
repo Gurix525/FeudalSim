@@ -68,7 +68,7 @@ namespace Items
                 var containerSlot = _slots[i].GetComponent<ContainerSlot>();
                 containerSlot.Initialize(i, _container);
             }
-            StartTest();
+            //StartTest();
         }
 
         //private void FixedUpdate()

@@ -13,8 +13,11 @@ GameObject:
   - component: {fileID: 4081573156867663657}
   - component: {fileID: -8827518199806226112}
   - component: {fileID: -6836520298758196325}
+  - component: {fileID: 537969806936086612}
+  - component: {fileID: 1733026987121974001}
+  - component: {fileID: 386087374587646377}
   m_Layer: 0
-  m_Name: Workbench
+  m_Name: Chest
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -63,7 +66,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 773d09efdda517040b92a54c7a8d11b1, type: 2}
+  - {fileID: 2100000, guid: 9df877fcd9d1d2b44bfdcf09fa6800ed, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -101,11 +104,11 @@ MonoBehaviour:
     <Items>k__BackingField:
     - <Item>k__BackingField: {fileID: 11400000, guid: 4d6807086a770924882eecadb57e1d64,
         type: 2}
-      <Count>k__BackingField: 10
+      <Count>k__BackingField: 5
   <RenderSprite>k__BackingField: {fileID: 0}
-  <PivotOffset>k__BackingField: {x: 0, y: 0, z: 0}
+  <PivotOffset>k__BackingField: {x: 1, y: 0, z: 0}
   <IsMultipleMode>k__BackingField: 0
-  <Name>k__BackingField: 
+  <Name>k__BackingField: Chest
 --- !u!64 &-6836520298758196325
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -128,3 +131,46 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: -5495902117074765545, guid: 481c58654f6ffc246a0c34ecf24c2c6a, type: 3}
+--- !u!114 &537969806936086612
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6147608752374890260}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fea29bb7c508c244a1f805a5fd3fc4d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  outlineMode: 0
+  outlineColor: {r: 1, g: 1, b: 1, a: 1}
+  outlineWidth: 2
+  precomputeOutline: 0
+  bakeKeys: []
+  bakeValues: []
+--- !u!114 &1733026987121974001
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6147608752374890260}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bd4ea0d5b30e0c14d94b8476fdc461a6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _cursor: {fileID: 0}
+--- !u!114 &386087374587646377
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6147608752374890260}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2a3f53f27f941aa4f80c426c8cd8d679, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

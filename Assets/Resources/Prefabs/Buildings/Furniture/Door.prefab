@@ -106,7 +106,7 @@ MonoBehaviour:
         type: 2}
       <Count>k__BackingField: 5
   <RenderSprite>k__BackingField: {fileID: 0}
-  <PivotOffset>k__BackingField: {x: 0, y: 0, z: 0}
+  <PivotOffset>k__BackingField: {x: -1, y: 0, z: 0}
   <IsMultipleMode>k__BackingField: 0
   <Name>k__BackingField: Door
 --- !u!64 &-6836520298758196325
