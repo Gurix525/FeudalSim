@@ -12,9 +12,9 @@ GameObject:
   - component: {fileID: 6168840563544562198}
   - component: {fileID: 8284854858708810190}
   - component: {fileID: 6978036003505997920}
-  - component: {fileID: 2100567339869397822}
+  - component: {fileID: -2207863287669376156}
   m_Layer: 0
-  m_Name: Plank Floor
+  m_Name: Stone Stairs
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -42,7 +42,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2416554689982524598}
-  m_Mesh: {fileID: -462981019419857548, guid: 4cc6c25381f3437469a34c19db6e5273, type: 3}
+  m_Mesh: {fileID: -462981019419857548, guid: 5cdaeddd71ce308428978c98ca24600e, type: 3}
 --- !u!23 &8284854858708810190
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -63,7 +63,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 9df877fcd9d1d2b44bfdcf09fa6800ed, type: 2}
+  - {fileID: 2100000, guid: 0e6414a118a855e47a245ef059275cb0, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -99,15 +99,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Recipe>k__BackingField:
     <Items>k__BackingField:
-    - <Item>k__BackingField: {fileID: 11400000, guid: 4d6807086a770924882eecadb57e1d64,
+    - <Item>k__BackingField: {fileID: 11400000, guid: c96e70f691d991843a2a5e20b934f03e,
         type: 2}
       <Count>k__BackingField: 1
   <RenderSprite>k__BackingField: {fileID: 0}
   <PivotOffset>k__BackingField: {x: 0.5, y: 0, z: 0.5}
   <IsMultipleMode>k__BackingField: 1
-  <Name>k__BackingField: 
---- !u!65 &2100567339869397822
-BoxCollider:
+  <Name>k__BackingField: Stone Stairs
+--- !u!64 &-2207863287669376156
+MeshCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -124,6 +124,7 @@ BoxCollider:
   m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 0.99999994, y: 0.13733876, z: 1}
-  m_Center: {x: 0, y: 0.01866936, z: 0}
+  serializedVersion: 5
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: -462981019419857548, guid: 5cdaeddd71ce308428978c98ca24600e, type: 3}
