@@ -6,6 +6,7 @@ namespace Buildings
 {
     public class Building : MonoBehaviour
     {
+        [field: SerializeField] public string AnalyticsParameterName;
         [field: SerializeField] public Recipe Recipe { get; set; }
         [field: SerializeField] public Sprite RenderSprite { get; set; }
         [field: SerializeField] public Vector3 PivotOffset { get; set; }

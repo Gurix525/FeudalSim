@@ -1,0 +1,49 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3d44140064d842c4bbf605923bdf1aa5, type: 3}
+  m_Name: 3
+  m_EditorClassIdentifier: 
+  <Verses>k__BackingField:
+  - <Text>k__BackingField: There are several major things you can do here. First,
+      you can gather resources by clicking on them.
+    <Sprite>k__BackingField: {fileID: 21300000, guid: 4bf4237907beb434b85be3abe530cf93,
+      type: 3}
+    <VerseRules>k__BackingField: []
+  - <Text>k__BackingField: Second, you can build something. Click B to open the building
+      menu.
+    <Sprite>k__BackingField: {fileID: 21300000, guid: 4bf4237907beb434b85be3abe530cf93,
+      type: 3}
+    <VerseRules>k__BackingField: []
+  - <Text>k__BackingField: Third, you can craft something from your resources. Click
+      TAB to open your inventory. Try moving items from the inventory to the ground
+      with shift and without it.
+    <Sprite>k__BackingField: {fileID: 21300000, guid: 4bf4237907beb434b85be3abe530cf93,
+      type: 3}
+    <VerseRules>k__BackingField: []
+  - <Text>k__BackingField: If you want to pick up something, you can click on it
+      while holding shift, or simply hold it and leave on the inventory screen.
+    <Sprite>k__BackingField: {fileID: 21300000, guid: 4bf4237907beb434b85be3abe530cf93,
+      type: 3}
+    <VerseRules>k__BackingField: []
+  - <Text>k__BackingField: Under the L button you can see your skills level.
+    <Sprite>k__BackingField: {fileID: 21300000, guid: 4bf4237907beb434b85be3abe530cf93,
+      type: 3}
+    <VerseRules>k__BackingField: []
+  - <Text>k__BackingField: And lastly, the R button enables combat mode. Useful for
+      when you need to kick some asses.
+    <Sprite>k__BackingField: {fileID: 21300000, guid: 4bf4237907beb434b85be3abe530cf93,
+      type: 3}
+    <VerseRules>k__BackingField: []
+  - <Text>k__BackingField: That's all for now. Talk to me if you ever need.
+    <Sprite>k__BackingField: {fileID: 21300000, guid: 4bf4237907beb434b85be3abe530cf93,
+      type: 3}
+    <VerseRules>k__BackingField: []

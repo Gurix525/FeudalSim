@@ -585,6 +585,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 907efb5080bcce347b0a86058ff3e576, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _buttonClickedParameterName: selectWorldReturnButton
   _nextCanvas: {fileID: 1002013550}
 --- !u!114 &175058545
 MonoBehaviour:
@@ -1204,6 +1205,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d2ee3dc1fbf403949a1e633108475d8d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _buttonClickedParameterName: createANewWorldCreateWorldButton
   _nameInput: {fileID: 1359404780}
   _seedInput: {fileID: 1921506335}
 --- !u!114 &299996314
@@ -3180,6 +3182,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b8c5e43fb0ce7ac47b4e39e3975524c7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _buttonClickedParameterName: 
   _nameText: {fileID: 234570256}
   _creationTime: {fileID: 0}
   _lastPlayedTime: {fileID: 0}
@@ -3827,6 +3830,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 907efb5080bcce347b0a86058ff3e576, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _buttonClickedParameterName: selectWorldCreateNewWorldButton
   _nextCanvas: {fileID: 877497338}
 --- !u!114 &1122044783
 MonoBehaviour:
@@ -4005,6 +4009,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 907efb5080bcce347b0a86058ff3e576, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _buttonClickedParameterName: createANewWorldReturnButton
   _nextCanvas: {fileID: 2007434815}
 --- !u!114 &1209797387
 MonoBehaviour:
@@ -4685,6 +4690,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 907efb5080bcce347b0a86058ff3e576, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _buttonClickedParameterName: mainMenuSettingsButton
   _nextCanvas: {fileID: 2020225676}
 --- !u!1 &1514850693
 GameObject:
@@ -5512,6 +5518,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 907efb5080bcce347b0a86058ff3e576, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _buttonClickedParameterName: settingsReturnButton
   _nextCanvas: {fileID: 1002013550}
 --- !u!114 &1822573637
 MonoBehaviour:
@@ -5962,6 +5969,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b8c5e43fb0ce7ac47b4e39e3975524c7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _buttonClickedParameterName: 
   _nameText: {fileID: 178931457}
   _creationTime: {fileID: 0}
   _lastPlayedTime: {fileID: 0}
@@ -7015,6 +7023,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3a52eddc26f5aec4bbd6d943aa6fcf49, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _buttonClickedParameterName: mainMenuExitButton
 --- !u!1 &2018035933
 GameObject:
   m_ObjectHideFlags: 0
@@ -7952,6 +7961,11 @@ PrefabInstance:
       propertyPath: _nextCanvas
       value: 
       objectReference: {fileID: 2007434815}
+    - target: {fileID: 8240246577068682596, guid: 56288fa435fa87142af17c1f11f99dba,
+        type: 3}
+      propertyPath: _buttonClickedParameterName
+      value: mainMenuPlayButton
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4948d85c3f0d1384dae3f83bd9fc3d46, type: 3}
   m_Name: Plank
   m_EditorClassIdentifier: 
+  <AnalyticsParameterName>k__BackingField: plank
   <Sprite>k__BackingField: {fileID: 21300000, guid: d7faa038e1163324e91c811a80dd32ea,
     type: 3}
   <Description>k__BackingField: A wooden plank, perfect for simple buildings.

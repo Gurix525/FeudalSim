@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4948d85c3f0d1384dae3f83bd9fc3d46, type: 3}
   m_Name: Hare Skin
   m_EditorClassIdentifier: 
+  <AnalyticsParameterName>k__BackingField: hareSkin
   <Sprite>k__BackingField: {fileID: 21300000, guid: 4fcad8422135f1844bcd6ddc41ad7842,
     type: 3}
   <Description>k__BackingField: A skin of a dead hare.

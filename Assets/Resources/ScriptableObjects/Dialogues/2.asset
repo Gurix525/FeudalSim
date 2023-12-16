@@ -10,16 +10,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3d44140064d842c4bbf605923bdf1aa5, type: 3}
-  m_Name: 1
+  m_Name: 2
   m_EditorClassIdentifier: 
   <Verses>k__BackingField:
-  - <Text>k__BackingField: Hello. I'm the guide, who will guide you through the game.
-      Just talk to me whenever you're in trouble.
+  - <Text>k__BackingField: As far as I know, we're both trapped on a small island.
+      Try not to swim in the ocean, it may be lethal.
     <Sprite>k__BackingField: {fileID: 21300000, guid: 4bf4237907beb434b85be3abe530cf93,
       type: 3}
     <VerseRules>k__BackingField: []
-  - <Text>k__BackingField: Remember, all I can do is give you some advice. I'm powerless,
-      useless, and probably not even relatable. Goodbye.
+  - <Text>k__BackingField: Ah, why do I look like that? It's simple, the game's author
+      is lazybones.
     <Sprite>k__BackingField: {fileID: 21300000, guid: 4bf4237907beb434b85be3abe530cf93,
       type: 3}
     <VerseRules>k__BackingField: []

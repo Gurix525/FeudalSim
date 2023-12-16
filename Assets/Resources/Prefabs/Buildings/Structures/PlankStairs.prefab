@@ -97,6 +97,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9adb370498291904eb923965308c43db, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  AnalyticsParameterName: plankStairs
   <Recipe>k__BackingField:
     <Items>k__BackingField:
     - <Item>k__BackingField: {fileID: 11400000, guid: 4d6807086a770924882eecadb57e1d64,

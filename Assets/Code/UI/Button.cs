@@ -1,4 +1,5 @@
 using System;
+using Assets;
 using Controls;
 using UnityEngine;
 using UnityEngine.UI;
@@ -9,6 +10,8 @@ namespace UI
     {
         public event EventHandler Clicked;
 
+        [SerializeField] private string _buttonClickedParameterName;
+
         private Image _image;
         private Color _originalColor;
 
@@ -17,6 +20,12 @@ namespace UI
         private void Awake()
         {
             _originalColor = Image.color;
+            Clicked += Button_Clicked;
+        }
+
+        private void Button_Clicked(object sender, EventArgs e)
+        {
+            AnalyticsBase.Add("buttonClicked", _buttonClickedParameterName);
         }
 
         public void OnHoverStart()

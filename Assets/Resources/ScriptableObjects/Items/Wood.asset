@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4948d85c3f0d1384dae3f83bd9fc3d46, type: 3}
   m_Name: Wood
   m_EditorClassIdentifier: 
+  <AnalyticsParameterName>k__BackingField: wood
   <Sprite>k__BackingField: {fileID: 21300000, guid: d8c5802b8e2a82e48b44736a4efe7659,
     type: 3}
   <Description>k__BackingField: A chunk of wooden log.

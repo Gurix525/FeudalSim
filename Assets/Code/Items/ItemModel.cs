@@ -18,6 +18,7 @@ namespace Items
         #region Properties
 
         public string Name { get; }
+        public string AnalyticsParameterName { get; }
         public string Description { get; }
         public Sprite Sprite { get; }
         public Dictionary<string, string> Stats { get; }
@@ -68,6 +69,7 @@ namespace Items
         public ItemModel(ItemScriptableObject item)
         {
             Name = item.name;
+            AnalyticsParameterName = item.AnalyticsParameterName;
             Description = item.Description;
             Stats = new();
             Sprite = item.Sprite;

@@ -37,6 +37,7 @@ namespace Items
 
         public int Count { get; set; }
         public string Name => _model.Name;
+        public string AnalyticsParameterName => _model.AnalyticsParameterName;
         public string Description => _model.Description;
         public ItemModel Model => _model;
         public Sprite Sprite => _model.Sprite;

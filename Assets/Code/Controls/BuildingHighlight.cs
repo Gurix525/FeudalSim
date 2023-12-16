@@ -1,4 +1,5 @@
-﻿using Buildings;
+﻿using Assets;
+using Buildings;
 using Extensions;
 using Items;
 using UnityEngine;
@@ -114,6 +115,7 @@ namespace Controls
                 new Vector2(transform.position.x, transform.position.z));
             ChunkRenderer chunkRenderer = TerrainRenderer.GetChunkRenderer(chunkPosition);
             Instantiate(_buildingPrefab, transform.position, transform.rotation, chunkRenderer.Buildings);
+            AnalyticsBase.Add("buildingBuilt", _buildingPrefab.AnalyticsParameterName);
         }
 
         private void PlaceGrid()

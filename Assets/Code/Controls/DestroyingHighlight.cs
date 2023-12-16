@@ -1,4 +1,5 @@
-﻿using Buildings;
+﻿using Assets;
+using Buildings;
 using Items;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -84,6 +85,7 @@ namespace Controls
                 {
                     InventoryCanvas.InventoryContainer.Insert(item);
                 }
+                AnalyticsBase.Add("buildingDestroyed", building.AnalyticsParameterName);
                 Destroy(building.gameObject);
                 _meshFilter.sharedMesh = null;
             }

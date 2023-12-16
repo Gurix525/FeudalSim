@@ -60,6 +60,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0f2ce8e0a07b8294a920bbc19c086f8f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _buttonClickedParameterName: selectWorldDeleteButton
 --- !u!114 &3105655109574989249
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1146,6 +1147,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b8c5e43fb0ce7ac47b4e39e3975524c7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _buttonClickedParameterName: selectWorldWorldButton
   _nameText: {fileID: 9063943691132227061}
   _creationTime: {fileID: 4765498251736859534}
   _lastPlayedTime: {fileID: 7025991275655244963}

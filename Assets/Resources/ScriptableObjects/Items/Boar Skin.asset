@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4948d85c3f0d1384dae3f83bd9fc3d46, type: 3}
   m_Name: Boar Skin
   m_EditorClassIdentifier: 
+  <AnalyticsParameterName>k__BackingField: boarSkin
   <Sprite>k__BackingField: {fileID: 21300000, guid: d39e9d4bee58674448e6bea1ad79df10,
     type: 3}
   <Description>k__BackingField: A skin of a dead boar.
