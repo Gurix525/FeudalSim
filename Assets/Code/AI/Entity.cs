@@ -28,6 +28,9 @@ namespace AI
 
         #region Fields
 
+        [SerializeField] private float _maxHp;
+        [SerializeField] private float _attackDamage;
+
         [SerializeField] private Vector3 _healthBarOffset = Vector3.up;
         [SerializeField] private Attack[] _attacks;
         [SerializeField] private Recipe _drop;
@@ -141,6 +144,8 @@ namespace AI
             _agent = GetComponent<Agent>();
             _animator = GetComponent<Animator>();
             _stats = GetComponent<Stats>();
+            _stats.MaxHP = _maxHp;
+            _stats.CurrentHP = _maxHp;
             SetSpeed(MoveSpeedType.Walk);
             InitializeHealth();
             InitializeHealthBar();
@@ -198,7 +203,7 @@ namespace AI
                 Effect.Spawn("DeathHit", transform.position + Vector3.up);
                 foreach (var item in _drop.Items)
                 {
-                    Item.Create(item.Name, item.Count).Drop(transform.position + Vector3.up);
+                    Item.Create(item.Name, item.Count).Drop(transform.position + Vector3.up * 2F);
                 }
                 DestroySafely();
                 return;
@@ -229,7 +234,7 @@ namespace AI
             {
                 attack.Sender = this;
                 attack.Target = GameObject.Find("Player").GetComponent<Player>();
-                attack.Damage = 4F;
+                attack.Damage = _attackDamage;
                 attack.DealedHit.AddListener((hitbox, contact) => DealedHit.Invoke(hitbox));
                 DealedHit.AddListener((hitbox) => StartCoroutine(AttackTimeout()));
             }

@@ -1,7 +1,9 @@
+using System.Collections;
 using System.Linq;
 using Controls;
 using Extensions;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace UI
 {
@@ -9,9 +11,11 @@ namespace UI
     {
         [SerializeField] private MainCursor _mainCursor;
         [SerializeField] private CanvasGroup _canvasGroup;
+        [SerializeField] private VerticalLayoutGroup _verticalLayoutGroup;
         private GameObject _tooltipElementViewPrefab;
         private Tooltip _tooltip;
         private bool _isVisible;
+        private bool _isAlphaLocked = false;
 
         public void ShowTooltip(Tooltip tooltip)
         {
@@ -20,6 +24,7 @@ namespace UI
             if (_tooltip == tooltip || tooltip.Elements.Count() == 0)
                 return;
             ClearElements();
+            _canvasGroup.alpha = 0F;
             _tooltip = tooltip;
             _isVisible = true;
             foreach (TooltipElement element in tooltip.Elements)
@@ -27,6 +32,7 @@ namespace UI
                 GameObject view = Instantiate(_tooltipElementViewPrefab, transform);
                 view.GetComponent<TooltipElementView>().Initialize(element);
             }
+            StartCoroutine(RefreshVerticalLayoutGroup());
         }
 
         public void HideTooltip()
@@ -38,6 +44,7 @@ namespace UI
         private void Awake()
         {
             _tooltipElementViewPrefab = Resources.Load<GameObject>("Prefabs/UI/TooltipElementView");
+            _verticalLayoutGroup = GetComponent<VerticalLayoutGroup>();
         }
 
         private void Update()
@@ -47,8 +54,12 @@ namespace UI
 
         private void FixedUpdate()
         {
+            if (!_isAlphaLocked)
+            {
             _canvasGroup.alpha += _isVisible ? 0.2F : -0.2F;
             _canvasGroup.alpha = _canvasGroup.alpha.Clamp(0F, 1F);
+
+            }
         }
 
         private void ClearElements()
@@ -57,6 +68,18 @@ namespace UI
             {
                 Destroy(transform.GetChild(i).gameObject);
             }
+        }
+
+        private IEnumerator RefreshVerticalLayoutGroup()
+        {
+            _isAlphaLocked = true;
+            float oldAlpha = _canvasGroup.alpha;
+            _canvasGroup.alpha = 0F;
+            _verticalLayoutGroup.enabled = false;
+            yield return null;
+            _verticalLayoutGroup.enabled = true;
+            _canvasGroup.alpha = oldAlpha;
+            _isAlphaLocked = false;
         }
     }
 }

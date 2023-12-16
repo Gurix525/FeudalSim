@@ -9748,9 +9748,15 @@ MonoBehaviour:
   _spawnerPrefab: {fileID: 1255938059085203743, guid: d2638990de13da645bd7f651ab900c40,
     type: 3}
   _items:
+  - <SpawnerModel>k__BackingField: {fileID: 11400000, guid: 64445fa93ef599541838073f6d69c121,
+      type: 2}
+    <Count>k__BackingField: 30
   - <SpawnerModel>k__BackingField: {fileID: 11400000, guid: afbad28274c99cc4f855e188a0cc8964,
       type: 2}
-    <Count>k__BackingField: 50
+    <Count>k__BackingField: 30
+  - <SpawnerModel>k__BackingField: {fileID: 11400000, guid: 26815f0fa67e82a488c44945e66179d9,
+      type: 2}
+    <Count>k__BackingField: 30
 --- !u!1 &1221274384
 GameObject:
   m_ObjectHideFlags: 0
@@ -14879,6 +14885,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _mainCursor: {fileID: 1243102505}
   _canvasGroup: {fileID: 251960277}
+  _verticalLayoutGroup: {fileID: 0}
 --- !u!114 &1743398022
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -17413,7 +17420,7 @@ Light:
   m_Type: 0
   m_Shape: 0
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Intensity: 1000
+  m_Intensity: 200
   m_Range: 20
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208

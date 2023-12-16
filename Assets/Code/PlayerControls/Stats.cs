@@ -51,7 +51,7 @@ public class Stats : MonoBehaviour
     public float MaxHP
     {
         get => _maxHP;
-        private set
+        set
         {
             _maxHP = value;
             StatsChanged.Invoke(this);

@@ -1326,6 +1326,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5c68d8f4eeb7b914bba0ee37ad16e21a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _maxHp: 60
+  _attackDamage: 5
   _healthBarOffset: {x: 0, y: 1, z: 0}
   _attacks:
   - {fileID: 3019825464308662574}

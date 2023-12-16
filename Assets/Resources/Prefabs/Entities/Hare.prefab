@@ -32,6 +32,100 @@ Transform:
   - {fileID: 4236247612124002178}
   m_Father: {fileID: 7248279050643840981}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &522269108807249957
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3040090453822188334}
+  - component: {fileID: 6747746215000424551}
+  - component: {fileID: 6744481183113186464}
+  - component: {fileID: 171404281825725978}
+  m_Layer: 7
+  m_Name: Attack
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3040090453822188334
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 522269108807249957}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1016782961279025314}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &6747746215000424551
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 522269108807249957}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.37043017, y: 0.9852935, z: 0.29186088}
+  m_Center: {x: 0.0010187626, y: 0.48273033, z: 0.38}
+--- !u!54 &6744481183113186464
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 522269108807249957}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
+--- !u!114 &171404281825725978
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 522269108807249957}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4d5661ec1b1b47d42b5f3579c47964ec, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1016782961279025334
 GameObject:
   m_ObjectHideFlags: 0
@@ -46,7 +140,7 @@ GameObject:
   - component: {fileID: 9099692814382115513}
   - component: {fileID: 1016782961279025319}
   - component: {fileID: 1016782961279025336}
-  - component: {fileID: 1016782961279025312}
+  - component: {fileID: 5719363022071056416}
   - component: {fileID: 1016782961279025338}
   - component: {fileID: 1016782961279025313}
   - component: {fileID: 3766733249959142382}
@@ -70,6 +164,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 3040090453822188334}
   - {fileID: 1016782961823612656}
   - {fileID: 6807213239801878345}
   - {fileID: 6795663286655628782}
@@ -187,7 +282,7 @@ NavMeshAgent:
   m_BaseOffset: -0.12
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
---- !u!114 &1016782961279025312
+--- !u!114 &5719363022071056416
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -196,11 +291,19 @@ MonoBehaviour:
   m_GameObject: {fileID: 1016782961279025334}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b1b8017652fb5e74880f7b233b764446, type: 3}
+  m_Script: {fileID: 11500000, guid: 5c68d8f4eeb7b914bba0ee37ad16e21a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _maxHp: 10
+  _attackDamage: 1
   _healthBarOffset: {x: 0, y: 1, z: 0}
-  _attacks: []
+  _attacks:
+  - {fileID: 171404281825725978}
+  _drop:
+    <Items>k__BackingField:
+    - <Item>k__BackingField: {fileID: 11400000, guid: 9c7a917f9467d684bbb08e8ae8dce9f7,
+        type: 2}
+      <Count>k__BackingField: 1
 --- !u!114 &1016782961279025338
 MonoBehaviour:
   m_ObjectHideFlags: 0

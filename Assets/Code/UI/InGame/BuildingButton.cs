@@ -7,7 +7,7 @@ using UnityEngine.UI;
 
 namespace UI
 {
-    public class BuildingButton : Button
+    public class BuildingButton : Button, ITooltipSource
     {
         [SerializeField] private Image _buildingImage;
         [SerializeField] private TextMeshProUGUI _counter;
@@ -36,6 +36,15 @@ namespace UI
             _counter.text = InventoryCanvas.InventoryContainer
                 .GetRecipeMatchCount(_recipe).ToString();
             _buttonBlock.SetActive(_counter.text == "0");
+        }
+
+        public Tooltip GetTooltip()
+        {
+            TooltipElement title = new(BuildingPrefab.name, TooltipElement.FontType.Title);
+            //TooltipElement description = new(BuildingPrefab.Description);
+            //Tooltip thisTooltip = new(title, description);
+            Tooltip thisTooltip = new(title);
+            return thisTooltip.Merge(_recipe.GetTooltip());
         }
     }
 }

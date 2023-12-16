@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Assets.Code;
 using Assets.Code.AI;
 using UnityEngine;
 using World;
@@ -27,7 +28,8 @@ namespace AI
                 return;
             foreach (SpawnerItem item in _entities)
             {
-                for (int i = 0; i < item.EntitiesCount; i++)
+                int roll = Dice.Roll(item.EntitiesCount);
+                for (int i = 0; i < roll; i++)
                 {
                     GameObject entity = Instantiate(item.EntityPrefab, transform.position, Quaternion.identity, _entitiesParent);
                     _aliveEntities.Add(entity);

@@ -39,6 +39,7 @@ namespace Items
             var rigidbody = gameObject.AddComponent<Rigidbody>();
             rigidbody.mass = (meshCollider.bounds.size.GetVolume() * 5F)
                 .Clamp(1F, float.PositiveInfinity);
+            rigidbody.collisionDetectionMode = CollisionDetectionMode.ContinuousDynamic;
             while (!rigidbody.IsSleeping())
             {
                 await Task.Yield();
@@ -85,6 +86,15 @@ namespace Items
         private void OnEnable()
         {
             Container.CollectionUpdated.AddListener(OnCollectionUpdated);
+        }
+
+        private void FixedUpdate()
+        {
+            if (transform.position.y < -10F)
+            {
+                transform.position += Vector3.up * 25F;
+                GetComponent<Rigidbody>().velocity = Vector3.down * 0.2F;
+            }
         }
 
         private void OnDisable()

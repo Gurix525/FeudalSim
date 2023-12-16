@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 6978036003505997920}
   - component: {fileID: 2100567339869397822}
   m_Layer: 0
-  m_Name: StoneFloor
+  m_Name: Wood Floor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -42,7 +42,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2416554689982524598}
-  m_Mesh: {fileID: -462981019419857548, guid: fcacae86deb9b3740b317f10de99d594, type: 3}
+  m_Mesh: {fileID: -462981019419857548, guid: b9535ab8f23205e42be3bbde38913006, type: 3}
 --- !u!23 &8284854858708810190
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -63,7 +63,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 0e6414a118a855e47a245ef059275cb0, type: 2}
+  - {fileID: 2100000, guid: 773d09efdda517040b92a54c7a8d11b1, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -99,13 +99,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Recipe>k__BackingField:
     <Items>k__BackingField:
-    - <Item>k__BackingField: {fileID: 11400000, guid: c96e70f691d991843a2a5e20b934f03e,
+    - <Item>k__BackingField: {fileID: 11400000, guid: 48051b8d27586994dab141b4e53870fa,
         type: 2}
       <Count>k__BackingField: 1
   <RenderSprite>k__BackingField: {fileID: 0}
   <PivotOffset>k__BackingField: {x: 0.5, y: 0, z: 0.5}
   <IsMultipleMode>k__BackingField: 1
-  <Name>k__BackingField: StoneFloor
 --- !u!65 &2100567339869397822
 BoxCollider:
   m_ObjectHideFlags: 0
