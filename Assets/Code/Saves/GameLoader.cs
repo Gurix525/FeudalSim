@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
+using System.Linq;
+using Buildings;
 using Controls;
 using Items;
 using UI;
@@ -148,6 +150,16 @@ namespace Saves
 
         private void LoadBuildings(ChunkInfo chunkInfo, ChunkRenderer chunkRenderer)
         {
+            Dictionary<string, GameObject> buildings = Building.Structures
+                .Concat(Building.Furniture)
+                .ToDictionary((building) => building.name, (building) => building);
+            foreach (var buildingInfo in chunkInfo.Buildings)
+            {
+                GameObject prefab = buildings[buildingInfo.Name];
+                GameObject building = GameObject.Instantiate(prefab, chunkRenderer.Buildings);
+                building.transform.SetPositionAndRotation(
+                    buildingInfo.Position, buildingInfo.Rotation);
+            }
             // To be added
             //foreach (var buildingInfo in chunkInfo.Buildings)
             //{

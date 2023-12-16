@@ -7,8 +7,7 @@ namespace Saves
     [Serializable]
     public class BuildingInfo : GameObjectInfo
     {
-        public ItemInfo BackingItem;
-        public BuildingMode BuildingMode;
+        public string Name;
 
         public BuildingInfo()
         {
@@ -22,9 +21,8 @@ namespace Saves
         public void Initialize(Building building)
         {
             // To be added
-            //base.Initialize(building);
-            //BackingItem = new(building.BackingItem);
-            //BuildingMode = building.BuildingMode;
+            base.Initialize(building);
+            Name = building.Name;
         }
     }
 }
