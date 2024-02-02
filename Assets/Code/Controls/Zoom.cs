@@ -88,7 +88,6 @@ namespace Controls
             if (!_canSteer)
                 return;
             SetTargetAngle(mouseDelta.x);
-            SetTargetZoom(mouseDelta.y);
             AdjustRotation();
         }
 
@@ -126,6 +125,11 @@ namespace Controls
         private void OnMouseDelta(InputValue value)
         {
             SteerCamera(value.Get<Vector2>());
+        }
+
+        private void OnMouseScroll(InputValue value)
+        {
+            SetTargetZoom(value.Get<float>() / 2F);
         }
 
         #endregion Private

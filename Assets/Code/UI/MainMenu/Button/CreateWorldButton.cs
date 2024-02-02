@@ -44,6 +44,7 @@ namespace UI
             player.SetActive(false);
             player.transform.position = new(0F, originHeight + 2F, 0F);
             player.SetActive(true);
+            BGMManager.PlaySoundtrack(BGMManager.BGMType.Default);
             LoadingScreen.Disable();
         }
     }

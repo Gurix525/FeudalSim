@@ -2759,11 +2759,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _menuClips:
-  - {fileID: 8300000, guid: 96bf8fb7c4526264eb14dbae1b0af23c, type: 3}
+  - {fileID: 8300000, guid: 12b1dd4ef2cc65f4bbe99289947b641c, type: 3}
   _defaultClips:
-  - {fileID: 8300000, guid: 96bf8fb7c4526264eb14dbae1b0af23c, type: 3}
+  - {fileID: 8300000, guid: 0b9bb7b52f37f1d40858778a9457ad62, type: 3}
   _combatClips:
-  - {fileID: 8300000, guid: 96bf8fb7c4526264eb14dbae1b0af23c, type: 3}
+  - {fileID: 8300000, guid: 0b9bb7b52f37f1d40858778a9457ad62, type: 3}
 --- !u!1 &652009878
 GameObject:
   m_ObjectHideFlags: 0

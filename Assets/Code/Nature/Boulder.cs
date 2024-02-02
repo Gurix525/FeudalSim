@@ -1,3 +1,4 @@
+using Assets;
 using Controls;
 using Items;
 using Misc;
@@ -23,6 +24,7 @@ namespace Nature
             Destroy(gameObject);
             Player.Current.Stats.AddSkill("Digging", 1F);
             TerrainRenderer.MarkNavMeshToReload();
+            AnalyticsBase.Add("natureDestroyed", "boulder");
         }
 
         #endregion Public

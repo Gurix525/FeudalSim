@@ -1,4 +1,5 @@
 using System.Collections;
+using Assets;
 using Combat;
 using UI;
 using UnityEngine;
@@ -86,6 +87,7 @@ namespace PlayerControls
 
         private IEnumerator KillPlayer()
         {
+            AnalyticsBase.Add("entityKilled", "player");
             transform.position = Vector3.zero;
             TerrainRenderer.ForceNavmeshReload();
             //gameObject.SetActive(false);

@@ -60,6 +60,7 @@ namespace Saves
             LoadChunkRenderers(chunkInfos);
             LoadMap();
             var playerinfo = LoadPlayer();
+            BGMManager.PlaySoundtrack(BGMManager.BGMType.Default);
             GrassInstancer.MarkToReload();
             if (Directory.Exists(_savePath))
                 Directory.Delete(_savePath, true);

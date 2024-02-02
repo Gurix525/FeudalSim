@@ -1,3 +1,4 @@
+using Assets;
 using Controls;
 using Items;
 using Misc;
@@ -32,6 +33,7 @@ namespace Nature
             Destroy(transform.parent.gameObject);
             TerrainRenderer.MarkNavMeshToReload();
             Player.Current.Stats.AddSkill("Woodcutting", 1F);
+            AnalyticsBase.Add("natureDestroyed", "boulder");
         }
 
         #endregion Public

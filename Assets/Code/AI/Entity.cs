@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Assets;
 using Combat;
 using Extensions;
 using Items;
@@ -28,6 +29,7 @@ namespace AI
 
         #region Fields
 
+        [SerializeField] private string _analyticsParameterName;
         [SerializeField] private float _maxHp;
         [SerializeField] private float _attackDamage;
 
@@ -205,6 +207,7 @@ namespace AI
                 {
                     Item.Create(item.Name, item.Count).Drop(transform.position + Vector3.up * 2F);
                 }
+                AnalyticsBase.Add("entityKilled", _analyticsParameterName);
                 DestroySafely();
                 return;
             }

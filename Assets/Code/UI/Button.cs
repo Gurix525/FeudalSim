@@ -25,6 +25,8 @@ namespace UI
 
         private void Button_Clicked(object sender, EventArgs e)
         {
+            if (_buttonClickedParameterName == string.Empty)
+                return;
             AnalyticsBase.Add("buttonClicked", _buttonClickedParameterName);
         }
 

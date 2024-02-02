@@ -1,12 +1,37 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace Assets
 {
     public static class AnalyticsBase
     {
-        public static Dictionary<string, Dictionary<string, int>> Events { get; } = new()
+        public static Dictionary<string, Dictionary<string, int>> Events { get; private set; } = GetClearDictionary();
+
+        public static void Add(string eventName, string parameterName, int number = 1)
         {
-            { "buttonClicked", 
+            if (!Events.ContainsKey(eventName))
+                return;
+            if (!Events[eventName].ContainsKey(parameterName))
+                return;
+            Events[eventName][parameterName] += number;
+        }
+
+        public static void Send()
+        {
+            foreach (var item in Events)
+            {
+                Analytics.SendEvent(item.Key, dictionary: item.Value.ToDictionary(
+                    (lol) => lol.Key,
+                    (lol) => (object)lol.Value));
+            }
+            Events = GetClearDictionary();
+        }
+
+        private static Dictionary<string, Dictionary<string, int>> GetClearDictionary()
+        {
+            return new()
+        {
+            { "buttonClicked",
                 new()
                 {
                     { "mainMenuPlayButton", 0 },
@@ -96,11 +121,6 @@ namespace Assets
                 }
             }
         };
-
-
-        public static void Add(string eventName, string parameterName, int number = 1)
-        {
-            Events[eventName][parameterName] += number;
         }
     }
 }

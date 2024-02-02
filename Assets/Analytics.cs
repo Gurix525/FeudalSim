@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Assets;
 using Unity.Services.Analytics;
 using Unity.Services.Core;
 using Unity.Services.Core.Environments;
@@ -14,6 +15,11 @@ public class Analytics : MonoBehaviour
             dictionary[parameter.Name] = parameter.Value;
         }
 
+        AnalyticsService.Instance.CustomData(eventName, dictionary);
+    }
+
+    public static void SendEvent(string eventName, Dictionary<string, object> dictionary)
+    {
         AnalyticsService.Instance.CustomData(eventName, dictionary);
     }
 

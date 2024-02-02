@@ -19,15 +19,16 @@ public class BGMManager : MonoBehaviour
 
     private void Awake()
     {
-        if (_current != null)
+        if (_current == null)
+            _current = this;
+        _audioSource = GetComponent<AudioSource>();
+        PlaySoundtrack(BGMType.Menu);
+        if (_current != this)
         {
             Destroy(gameObject);
             return;
         }
-        _current = this;
-        _audioSource = GetComponent<AudioSource>();
         DontDestroyOnLoad(gameObject);
-        Play(BGMType.Menu);
     }
 
     private void Play(BGMType type)
