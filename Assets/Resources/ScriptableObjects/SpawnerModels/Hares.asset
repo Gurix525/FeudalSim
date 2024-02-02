@@ -15,4 +15,4 @@ MonoBehaviour:
   <Entities>k__BackingField:
   - EntityPrefab: {fileID: 1016782961279025334, guid: 100fb46dc718fc547829b5013079cfab,
       type: 3}
-    EntitiesCount: 10
+    EntitiesCount: 5
